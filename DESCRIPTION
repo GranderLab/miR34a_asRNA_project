@@ -13,5 +13,6 @@ Suggests:
     rmarkdown,
     printr,
     RCurl,
-    ggthemes
+    ggthemes,
+    repmis
 VignetteBuilder: knitr

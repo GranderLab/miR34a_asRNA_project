@@ -18,6 +18,11 @@ library(printr)
 library(RCurl)
 ```
 
+```{r}
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+```
+
 ### Figure 1a
 ####Introduction
 An antisense transcript to the miR34a HG was detected using the UCSC genome browser.
@@ -29,7 +34,6 @@ The USCS genome browser was utilized for the bioinformatic evaluation of antisen
 
 ####Results
 ```{r, out.width = "850px"}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "miR34aLocus/miR34aLocus_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
 ```
@@ -75,7 +79,6 @@ primers
 
 ####Results
 ```{r, out.width = "850px"}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "miR34aASExpressionCellPanel/cellPanelLarge.png"
 knitr::include_graphics(file.path(projectUrl, url))
 ```
@@ -93,7 +96,6 @@ We were able to detect co-expression of both miR34a HG and miR34a AS in a variet
 
 ####Results
 ```{r, out.width = "850px"}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "TCGAcorrelation/miR34a_RP3-510D11.2_diploid_only_edited.png"
 knitr::include_graphics(file.path(projectUrl, url))
 ```
@@ -110,7 +112,6 @@ All cell lines were cultured at 5% CO2 and 37° C with U2OS cells grown in McCoy
 
 ####Results
 ```{r, out.width = "850px"}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "3primeRACE/results_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
 ```
@@ -160,7 +161,6 @@ primers
 ####Results
 
 ```{r, out.width = "850px"}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "primerWalk/schematic_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
 ```
@@ -170,7 +170,6 @@ A schematic picture of the miR34a asRNA locus including the location of the prim
 <br></br>
 
 ```{r, out.width = "500px"}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "primerWalk/gel.png"
 knitr::include_graphics(file.path(projectUrl, url))
 ```
@@ -195,7 +194,6 @@ Protein-coding capacity was evaluated using the [Coding-potential Assessment Too
 
 
 ```{r}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "codingPotential/CodingPotentialAssessmentTool/results.txt"
 cpat <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
 cpat
@@ -207,9 +205,8 @@ Coding potential analysis results from the Coding-potential Assessment Tool incl
 
 #####Coding Potential Calculator
 ```{r}
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 url <- "codingPotential/CodingPotentialCalculator/results.txt"
-cpc <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
+cpc <- read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
 cpc
 ```
 
@@ -222,6 +219,228 @@ Coding potential analysis results using the Coding-potential calculator for miR3
 ####Conclusions
 Results indicated that miR34a asRNA has a similar lack of coding capacity to the known non-coding transcripts HOTAIR and XIST and differs greatly when examining these parameters to the known coding transcripts beta-actin, tubulin, and MYC. However, to fully evaluate coding potential methods such as mass spectrometry or ribosome profiling must be used. 
 
+###Figure 2a
+
+####Introduction
+miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression with cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated p53+/+ and p53-/- HCT116 cells with increasing concentrations of the DNA damaging agent doxorubicin and monitored miR34a asRNA expression.
+
+####Methods
+HCT116 cells were cultured in DMEM high modified (Hyclone, GE healthcare) supplemented with supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum.  
+25 x 10^5 HCT116 cells were plated in 6 well plates. 24 hours later media was exchanged and doxorubicin was added to a final concentration of 100, 200 or 500 ng/ml. Cells were harvested for RNA extraction 24 hours later using trypsin. RNA was extracted using Nucleospin RNA kit (Machery-Nagel Ref. 740955) according to manufacturer‟s protocol and DNase treated using Ambion Turbo DNA-free according to manufacturer‟s protocol (Life Technologies Ref. AM1907). cDNA was synthesized using ~500 ng RNA with M-MLV (Life Technologies Ref 28025013) and a mixture of oligo(dT) with nanomers in accordance with the manufacturer's protocol.
+qPCR quantification was carried out using the PowerUp SYBR Green Master Mix (Thermo Fisher Scientific, Ref. A25777) on the CFX96 Touch Real-Time PCR Detection System: 50°C for 2 min, 95°C for 2min, and 95°C for 1 sec followed by 60°C for 30 sec repeated for 40 cycles. The following primers were used:
+
+#####Primers
+```{r}
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a HG_F",
+        "miR34a HG_R",
+        "miR34a_asF1",
+        "miR34a_asR1"
+        
+    ),
+    sequence=c(
+        "AGGTCATCACCATTGGCAATGAG",
+        "CTTTCGGGATGTCCACGTCA",
+        "TCTGCTCCAGTGGCTGATGAGAAA",
+        "GTTCACTGGCCTCAAAGTTGGCAT",
+        "AGCGGCATCTCCTCCACCTGAAA",
+        "TTGCCTCGTGAGTCCAAGGAGAAT"
+        
+    )
+)
+primers
+```
+
+####Results
+```{r}
+library(reshape2)
+library(ggplot2)
+library(ggthemes)
+library(plyr)
+url <- "HCT116null.rda?raw=True"
+repmis::source_data(file.path(dataUrl, url))
+goi <- subset(data, Gene %in% c("miR34a AS", "miR34a HG")) 
+hk <- subset(data, Gene == "Actin")
+
+colnames(goi)[c(6:7)] <- c("Ct1GOI", "Ct2GOI")
+colnames(hk)[c(6:7)] <- c("Ct1HK", "Ct2HK")
+
+data <- merge(goi, hk[, colnames(hk) != "Gene"], by = c("Condition", "Treatment", "Biological.Replicate", "Cell.line"))
+
+
+#ddct
+data$meanGOI <- rowMeans(data[, c("Ct1GOI", "Ct2GOI")])
+data$meanHK <- rowMeans(data[, c("Ct1HK", "Ct2HK")])
+data$dct <- data$meanGOI - data$meanHK
+ddct <- ddply(
+    data,
+    c("Gene", "Condition", "Treatment", "Biological.Replicate"),
+    summarize,
+    ddct=dct-data[data$Gene == Gene & data$Condition == Condition & data$Treatment == 0 & data$Biological.Replicate == Biological.Replicate, "dct"]
+)
+
+data <- merge(data, ddct, by=c("Gene", "Condition", "Treatment", "Biological.Replicate"))
+data$fold <- 2^-data$ddct
+data$log2fold <- log2(data$fold)
+
+#calculate stats
+stats <- ddply(
+    data, 
+    c("Gene", "Condition", "Treatment"),
+    summarize,
+    n=length(log2fold),
+    mean=mean(log2fold),
+    pValue=t.test(log2fold, data[data$Gene == Gene & data$Condition == "WT" & data$Treatment == Treatment, "log2fold"])$p.value,
+    CI95l=t.test(log2fold)$conf.int[1],
+    CI95h=t.test(log2fold)$conf.int[2]
+)
+
+data <- merge(data, stats, by = c("Gene", "Condition", "Treatment"))
+#data$pValue <- ifelse(data$pValue == 1, NA, data$pValue)
+
+data$pStars <- ifelse(
+    data$pValue < 0.05 & data$pValue > 0.0049, 
+    "\u2605", 
+    ifelse(
+        data$pValue < 0.005 & data$pValue > 0.00049, 
+        "\u2605\u2605",
+        ifelse(
+            data$pValue < 0.0005, 
+            "\u2605\u2605\u2605",
+            "n.s."
+        )
+    )
+)
+
+yS <- ddply(data, c("Gene", "Treatment"), summarize, max = max(CI95h))
+pBars <- ddply(
+    data, 
+    c("Gene", "Condition", "Treatment"),
+    summarize,
+    CI95l = unique(CI95l),
+    CI95h = unique(CI95h),
+    pStars = unique(pStars),
+    pValue = unique(pValue)
+)
+pBars[pBars$Condition == "WT", "pStars"] <- ""
+pBars <- merge(pBars, yS, by = c("Gene", "Treatment"))
+pBars$x <- dplyr::case_when(
+    pBars$Treatment ==   0 ~ 1 + 0.25,
+    pBars$Treatment == 100 ~ 2 + 0.25,
+    pBars$Treatment == 200 ~ 3 + 0.25,
+    pBars$Treatment == 500 ~ 4 + 0.25
+)
+
+pBars$xend <- dplyr::case_when(
+    pBars$Treatment ==   0 ~ 1 - 0.25,
+    pBars$Treatment == 100 ~ 2 - 0.25,
+    pBars$Treatment == 200 ~ 3 - 0.25,
+    pBars$Treatment == 500 ~ 4 - 0.25
+)
+
+#prepare for plotting
+data$Treatment <- factor(data$Treatment, levels=c("0", "100", "200", "500"))
+pBars$Treatment <- factor(pBars$Treatment, levels=c("0", "100", "200", "500"))
+data$Condition <- ifelse(data$Condition == "WT", "p53-wt", "p53-null")
+pBars$Condition <- ifelse(pBars$Condition == "WT", "p53-wt", "p53-null")
+data$Condition <- factor(data$Condition, levels=c("p53-wt", "p53-null"))
+pBars$Condition <- factor(pBars$Condition, levels=c("p53-wt", "p53-null"))
+
+data$Gene <- ifelse(data$Gene == "miR34a AS", "miR34a asRNA", "miR34a HG")
+data$Gene <- factor(data$Gene, levels = c("miR34a HG", "miR34a asRNA"))
+pBars$Gene <- ifelse(pBars$Gene == "miR34a AS", "miR34a asRNA", "miR34a HG")
+pBars$Gene <- factor(pBars$Gene, levels = c("miR34a HG", "miR34a asRNA"))
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
+#plot for Rmarkdown
+ggplot(data = NULL) +
+    geom_violin(
+        data = data,
+        aes(x = Treatment, y = log2fold, fill = Condition),
+        trim = TRUE,
+        alpha = 0.3,
+        color = NA,
+        scale = "width",
+        show.legend = TRUE
+    ) +
+    geom_point(
+        data = data,
+        aes(x = Treatment, y = mean, group = Condition), 
+        position = position_dodge(width = 0.9), 
+        size = 4
+    ) +
+    facet_grid(. ~ Gene) +
+    geom_linerange(
+        data = pBars,
+        aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
+        colour = "black",
+        position = position_dodge(width = 0.9),
+        show.legend = FALSE
+    ) +
+    geom_label(
+        data = pBars,
+        aes(x = Treatment, y = max + 0.22, label = pStars),
+        label.size = 0,
+        label.padding = unit(0.01, "lines"),
+        show.legend = FALSE,
+        fill = "white",
+        size = 5,
+        family = "Arial Unicode MS",
+        position = position_dodge(width = 0.9)
+    ) +
+    geom_segment(
+        data = pBars,
+        aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
+        colour="grey43",
+        show.legend = FALSE
+    ) +
+    scale_y_continuous(
+        "\u0394\u0394Ct",
+        breaks=c(-1,0,1,2,3,4,5),
+        sec.axis = sec_axis(
+            ~2^., 
+            name = expression(2^{- ~ Delta ~ Delta ~ "Ct"}), 
+            breaks=c(2^-1,2^0,2^1,2^2,2^3,2^4,2^5)
+        )
+    )+
+    labs(
+      x="Treatment",
+      title="miR34a asRNA regulation by p53 induction",
+      caption=
+            "Monitoring the effects of 24 hours doxorubicin treatment on miR34a asRNA and HG in P53+/+ and p53-/- HCT116 cells."
+    )+
+    theme_few()+
+    scale_fill_ptol()+
+    scale_colour_ptol()+
+    #values=c("#014d64", "#6794a7")
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face="bold",
+            size=20
+        ),
+        plot.caption = element_text(
+            hjust=0, 
+            margin=margin(t=15),
+            family="Arial Unicode MS"
+        ),
+        legend.position = "top",
+        legend.title=element_text(size=17),
+        legend.text=element_text(size=15),
+        axis.title=element_text(size=17),
+        axis.title.x=element_text(margin=margin(t=10)),
+        axis.text=element_text(size=15),
+        strip.text.x=element_text(size=17)
+    )+
+    guides(fill = guide_legend(title = "Cell line", override.aes = list(size=3)))
+```
+
+#Conclusions
+We observed increasing miR34a HG and asRNA expression with increasing doses of doxorubicin indicating that these two transcripts are co-regulated by p53. Although p53+/+ cells showed a 25-fold increase over untreated cells in miR34a AS expression at the highest tested doxorubicin concentration, this effect was largely abrogated, 11 fold over untreated, in p53-/- cells, indicating that p53 is a major regulator of miR34a asRNA expression. 
 ```{r}
 sessionInfo()
 ```
