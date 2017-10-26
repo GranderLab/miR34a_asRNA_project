@@ -1,0 +1,331 @@
+---
+title: "Promoter experiments with shRNA and doxorubicin treatment"
+author: "Jason T. Serviss"
+date: "09/01/2017"
+output:
+  html_document:
+    theme: flatly
+    toc: no
+    code_folding: hide
+---
+
+#Introduction
+Our previous results showed that miR34a HG and asRNA are simultaneously up-regulated in response to doxorubicin treatment leading us to consider the possibility that miR34a asRNA may be necessary for an appropriate miR34a response to apoptotic signaling. To explore this possibility we again utilized the p1 construct, co-transfecting it with an shRNA targeting renilla, and treating HCT116 cells with increasing levels of doxorubicin.
+
+#Methods
+We utilized the P1 construct where the overlapping region of miR34a HG and miR34a AS is cloned with luciferase downstream of miR34a HG and renilla downstream of miR34a AS. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43. All cell lines were cultured at 5% CO2 and 37° C with HCT116 cells cultured in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. 2.5x10^5 HCT116wt cells were seeded in a 12-well plate. After 24hrs these were co-transfected with the P1 construct (25ng) and shRenilla2.1 (250ng) using lipo2000 (Life Technologies) standard protocol. 24hrs post-transfection, doxorubicin treatment was initiated using 0, 300, or 500ng/ml. 24hrs post-treatment, RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+
+##Constructs
+```{r}
+library(printr)
+p1 <- data.frame(
+    name="p1",
+    sequence="GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT
+              CCC GTC GGT CTG GGG ACA GCC CAG CTC CCC GGA TCC CGG GCT GGA GAG ACG CGT CGC GGC   
+              CCC GGG GCC TGG TGG CAC GAG CAG GAA GGA GGA CCC GGC GGC GGG CTC TGC CTG GGC TTG 
+              CCT GGG CTT GTT CCG AGC CGG GCT GCT TCT CGG TGA CCA CGC AGA TCG GGG GCA TTT GGA
+              GAT TTT GCG GGA GTC CTG CAG CCA AGC TCC GGG GCA GGA GAG GCC TGG AAG CCT GCA CTA
+              CCT GCT C"
+)
+p1
+```
+
+##shRNAs
+```{r}
+shRNAs <- data.frame(
+    name=c(
+        "shRenilla2.1"
+    ),
+    sequence=c(
+        "TAA CGG GAT TTC ACG AGG C"
+    )
+)
+shRNAs
+```
+
+##Primers
+```{r}
+primers <- data.frame(
+    name=c(
+        "Luc_set_II_F",
+        "Luc_set_II_R",
+        "Renilla_pBiDir_F1",
+        "Renilla_pBiDir_R1",
+        "B-actin_F",
+        "B-actin_R"
+    ),
+    sequence=c(
+        "AAG ATT CAA AGT GCG CTG CTG",
+        "TTG CCT GAT ACC TGG CAG ATG",
+        "TAA CGC GGC CTC TTC TTA TTT",
+        "GAT TTG CCT GAT TTG CCC ATA",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
+)
+primers
+```
+
+
+#Results
+
+```{r, warning=FALSE}
+library(reshape2)
+library(ggplot2)
+library(ggthemes)
+library(plyr)
+data <- read.table('~/GitHub/miR34aFigures/inst/P1shRNAdox/QPCRdata.txt', header=TRUE, sep="\t")
+
+#analyze Luciferase expression 
+luc <- subset(data, correspondsWith %in% c("Luciferase"))
+goi <- subset(luc, gene %in% c("Luciferase"))
+hk <- subset(luc, gene  == "B-actin")
+hk[,c("gene", "alias")] <- NULL
+colnames(goi)[c(7,8)] <- c("Ct1GOI", "Ct2GOI")
+colnames(hk)[c(5,6)] <- c("Ct1HK", "Ct2HK")
+
+if(all(as.logical(hk[,1:3] == goi[,1:3]) == TRUE)) {
+    luc <- cbind(goi, hk[,c("Ct1HK", "Ct2HK")])
+}
+
+luc$meanCtGOI <- rowMeans(luc[,c("Ct1GOI", "Ct2GOI")])
+luc$meanCtHK <- rowMeans(luc[,c("Ct1HK", "Ct2HK")])
+luc$dct <- luc$meanCtGOI - luc$meanCtHK
+ddct <- ddply(
+    luc,
+    c("experiment", "treatment", "shRNA"),
+    summarize,
+    ddct = dct - luc[luc$experiment == experiment & luc$treatment == 0 & luc$shRNA == "shCtrl", "dct"]
+)
+
+luc <- merge(luc, ddct, by=c("experiment", "treatment", "shRNA"), all.x=TRUE)
+
+#analyze renilla expression
+ren <- subset(data, correspondsWith %in% c("Renilla"))
+goi <- subset(ren, gene %in% c("Renilla"))
+hk <- subset(ren, gene  == "B-actin")
+hk[,c("gene", "alias")] <- NULL
+colnames(goi)[c(7,8)] <- c("Ct1GOI", "Ct2GOI")
+colnames(hk)[c(5,6)] <- c("Ct1HK", "Ct2HK")
+
+if(all(as.logical(hk[,1:3] == goi[,1:3]) == TRUE)) {
+    ren <- cbind(goi, hk[,c("Ct1HK", "Ct2HK")])
+}
+
+ren$meanCtGOI <- rowMeans(ren[,c("Ct1GOI", "Ct2GOI")])
+ren$meanCtHK <- rowMeans(ren[,c("Ct1HK", "Ct2HK")])
+ren$dct <- ren$meanCtGOI - ren$meanCtHK
+ddct <- ddply(
+    ren,
+    c("experiment", "treatment", "shRNA"),
+    summarize,
+    ddct = dct - ren[ren$experiment == experiment & ren$treatment == 0 & ren$shRNA == "shCtrl", "dct"]
+)
+
+ren <- merge(ren, ddct, by=c("experiment", "treatment", "shRNA"), all.x=TRUE)
+
+#concatenate 
+data <- rbind(luc, ren)
+data$fold <- 2^-data$ddct
+data$log2fold <- log2(data$fold)
+
+#calculate stats
+stats <- ddply(
+    data,
+    c("treatment", "shRNA", "gene", "correspondsWith"),
+    summarize,
+    mean=mean(log2fold),
+    pValue = t.test(log2fold, data[data$treatment == treatment & data$shRNA == "shCtrl" & data$gene == gene & data$correspondsWith == correspondsWith, "log2Fold"])$p.value,
+    CI95l = t.test(log2fold)$conf.int[1],
+    CI95h = t.test(log2fold)$conf.int[2]
+)
+stats[stats$shRNA == "shCtrl", c("pValue")] <- NA
+data <- merge(data, stats, by=c("treatment", "shRNA", "gene", "correspondsWith"), all.x=TRUE)
+
+data$pStars <- ifelse(
+    data$pValue < 0.05 & data$pValue > 0.0049, 
+    "\u2605", 
+    ifelse(
+        data$pValue < 0.005 & data$pValue > 0.00049, 
+        "\u2605\u2605",
+        ifelse(
+            data$pValue < 0.0005, 
+            "\u2605\u2605\u2605",
+            ""
+        )
+    )
+)
+
+#prepare for plotting
+data$correspondsWith <- NULL
+data$shRNA <- ifelse(data$shRNA == "shCtrl", "shRNA Control", "shRNA Renilla")
+data$gene <- ifelse(data$gene == "Luciferase", "  Luciferase\n(miR34a HG)", "        Renilla\n(miR34a asRNA)")
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
+#plot for rmarkdown
+ggplot(data, aes(x=factor(treatment), y=log2fold))+
+    geom_violin(
+        aes(fill=gene),
+        trim=TRUE,
+        scale="width",
+        alpha=0.3,
+        colour=NA,
+        show.legend = FALSE
+    )+
+    geom_point( 
+        aes(colour=gene),
+        size=4,
+        position=position_dodge(width=0.9)
+    )+
+    geom_linerange(
+        aes(ymin=CI95l, ymax=CI95h, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        show.legend = FALSE
+    )+
+    geom_point(
+        aes(y=mean, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        show.legend = FALSE
+    )+
+    facet_grid(.~shRNA, scale="free")+
+    geom_label(
+        aes(y=CI95h+0.1, label=pStars, group=gene),
+        label.size=0,
+        label.padding=unit(0.01, "lines"),
+        show.legend = FALSE,
+        position=position_dodge(width=0.9),
+        fill="white",
+        size=5,
+        family="Arial Unicode MS"
+    )+
+    scale_y_continuous(
+        "\u0394\u0394Ct", 
+        sec.axis = sec_axis(
+            ~2^., 
+            name = expression(2^{- ~ Delta ~ Delta ~ "Ct"}), 
+            breaks=c(0.025,0.1,0.5,0.25,1,2.5,5)
+        )
+    )+
+    labs(
+      x="Doxorubicin (ng/ml)",
+      title="HCT116",
+      caption=
+            "miR34a (luficerase) and miR34a asRNA (renilla) in HCT116 cells which were co-transfected with the P1 construct and the specified shRNA after which they\nwere treated with the indicated dose of doxorubicin. Error bars (black vertical) indicate 95% CI and black points represent the mean.\n\u2605 = p < 0.05; \u2605\u2605 = p < 0.005, \u2605\u2605\u2605 = p < 0.0005."
+    )+
+    theme_few()+
+    scale_fill_ptol()+
+    scale_color_ptol()+
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face="bold",
+            size=20
+        ),
+        plot.caption = element_text(
+            hjust=0, 
+            margin=margin(t=15),
+            family="Arial Unicode MS"
+        ),
+        legend.position="top",
+        legend.title=element_text(size=17),
+        legend.text=element_text(size=15, hjust=0.5),
+        axis.title=element_text(size=17),
+        axis.title.x=element_text(margin=margin(t=10)),
+        axis.text=element_text(size=15)
+    )+ 
+    guides(
+        color=guide_legend(
+        title="Gene", 
+        override.aes = list(size=4)
+        )
+    )
+
+#plot for pdf
+p <- ggplot(data, aes(x=factor(treatment), y=log2fold))+
+    geom_violin(
+        aes(fill=gene),
+        trim=TRUE,
+        scale="width",
+        alpha=0.3,
+        colour=NA,
+        lwd = 0.1
+    )+
+    #geom_point( 
+    #    aes(colour=gene),
+    #    size=0.4,
+    #    position=position_dodge(width=0.9)
+    #)+
+    geom_linerange(
+        aes(ymin=CI95l, ymax=CI95h, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        show.legend = FALSE,
+        lwd=0.2
+    )+
+    geom_point(
+        aes(y=mean, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        size=0.1,
+        show.legend = FALSE
+    )+
+    facet_grid(.~shRNA, scale="free")+
+    geom_label(
+        aes(y=CI95h+0.2, label=pStars, group=gene),
+        label.size=0,
+        label.padding=unit(0.01, "lines"),
+        show.legend = FALSE,
+        position=position_dodge(width=0.9),
+        fill="white",
+        size=1,
+        family="Arial Unicode MS"
+    )+
+    scale_y_continuous(
+        "\u0394\u0394Ct"
+        #sec.axis = sec_axis(
+        #    ~2^., 
+        #    name = expression(2^{- ~ Delta ~ Delta ~ "Ct"}), 
+        #    breaks=c(0.025,0.1,0.5,0.25,1,2.5,5)
+        #)
+    )+
+    labs(
+      x="Doxorubicin (ng/ml)"
+      #title="HCT116"
+    )+
+    theme_few()+
+    scale_fill_ptol()+
+    scale_color_ptol()+
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face="bold",
+            size=10
+        ),
+        plot.margin = unit(rep(0.1,4), "lines"),
+        legend.position="top",
+        legend.title=element_text(size=9),
+        legend.text=element_text(size=8),
+        legend.margin=unit(1,"mm"),
+        legend.key.size = unit(1/5, "cm"),
+        axis.title=element_text(size=9),
+        axis.title.x=element_text(margin=margin(t=5)),
+        axis.text.y=element_text(size=8),
+        axis.text.x=element_text(size=5),
+        axis.ticks = element_line(size=0.25),
+        axis.ticks.length = unit(1/15, "cm"),
+        panel.border = element_rect(fill=NA, size=0.15)
+    )+ 
+    guides(fill=guide_legend(
+        title="Gene", 
+        override.aes = list(size=2)
+    ))
+
+ggsave(plot=p, filename="~/GitHub/miR34aFigures/inst/P1shRNAdox/P1shRNAdox.pdf", device=cairo_pdf, height=60, width=83, units="mm")
+
+```
+
+#Conclusion
+Levels of luciferase were abrogated in the shRenilla-transfected cells compared to control shRNA-transfected cells. Collectively, these results indicate that miR34a asRNA positively regulates levels of miR34a HG and is crucial for a proper miR34a response to apoptotic stimuli.

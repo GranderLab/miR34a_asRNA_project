@@ -1,0 +1,14 @@
+id	filename	md5	size	state
+c9b15d3d-7e1c-45f1-9119-cb5b9d8a4246	nationwidechildrens.org_clinical.TCGA-14-0781.xml	a58dcc32de372e14e1486ce2edea2c4a	23205	live
+4fc747e8-c9a0-47f3-9273-4eb78ddbda9b	nationwidechildrens.org_clinical.TCGA-IK-7675.xml	0794943fa361b978e62fed85d928ecaf	47305	live
+527feea3-6c28-4d80-a34b-728f32cc5a34	nationwidechildrens.org_clinical.TCGA-LN-A49K.xml	5a279dcc55e8f67043c65eb729e5d632	36940	live
+98d79484-cd10-4759-bd2f-927e966f4b03	nationwidechildrens.org_clinical.TCGA-16-0861.xml	41d81b2b1a8090d321172abf4239436d	23598	live
+b1766b5f-350c-4c28-b430-2b0933e941e6	nationwidechildrens.org_clinical.TCGA-GM-A3NW.xml	da205ad0a672c215ed3e038cfeafc9ea	74849	live
+dec3fdbb-d6cf-4f7e-a6b7-32168711aa93	nationwidechildrens.org_clinical.TCGA-YL-A8SJ.xml	0350a6f189884713a0cf7768f784b781	37825	live
+3682054e-8840-4e43-baa9-da88d93b83e8	nationwidechildrens.org_clinical.TCGA-BR-8589.xml	a9a17208e75b679b286938ba6bf66671	42193	live
+b8929945-24c7-47be-b2fd-1beaa84b6147	nationwidechildrens.org_clinical.TCGA-AO-A0JJ.xml	3a105fa2dd7c6a41bf8ea7250d2a5f3c	106368	live
+a2f5ae3f-4681-4aa5-abec-9eb3db4b4491	nationwidechildrens.org_clinical.TCGA-EE-A2GR.xml	2a2fff196ffdf6453d07457c2e384770	33851	live
+24dc2a14-6298-4b95-bd8f-267faef00ba2	nationwidechildrens.org_clinical.TCGA-A7-A13D.xml	d797b7ccf9241ab9cd116ef2814d75ba	88158	live
+43f983a0-debf-43a8-acf5-edbd39e13f14	nationwidechildrens.org_clinical.TCGA-OX-A56R.xml	5d7f6650dcb276637306a245cbfae551	12029	live
+1e119fda-eb2e-4bc3-b6a4-3396ebbcd908	nationwidechildrens.org_clinical.TCGA-YU-A90Q.xml	34c5c57822341d49ab07f6b46d4fbc9e	44152	live
+ebcbde9d-0430-43e1-ae5d-6ebb463142ab	nationwidechildrens.org_clinical.TCGA-86-8669.xml	1ae945dd47d93ccf223f4a23b331bfe4	46957	live

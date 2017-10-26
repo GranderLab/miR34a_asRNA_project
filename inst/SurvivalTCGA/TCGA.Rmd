@@ -1,0 +1,15 @@
+---
+title: "miR34a asRNA role in survival with TCGA"
+author: "Jason T. Serviss"
+date: "13/10/2017"
+output: html_document
+---
+
+```{r}
+
+#write an if statment to look in the package and see if the processed data exist
+#download data
+p53status <- system.file("SurvivalTCGA/cases.2017-10-13T09_46_35.333491.json", package="miR34aFigures")
+
+```
+

@@ -1,0 +1,25 @@
+---
+title: "miR34a locus"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    toc: no
+    code_folding: hide
+---
+
+#Introduction
+An antisense transcript to the miR34a HG was detected using the UCSC genome browser.
+
+#Methods
+The USCS genome browser was utilized for the bioinformatic evaluation of antisense transcription utilizing the Human EST and ENCODE RNAseq tracks.
+
+#Results
+<br></br>
+<center>![miR34a locus and cloning of P1 and P2 constructs.](miR34aLocus_hg38.png)</center>
+<br></br>
+A schematic picture of the miR34a locus from UCSC genome browser including miR34a HG and mature miR34a and LINC01759. H3K4me3 ChIP-seq data from ENCODE indicating the promoter region and conservation over the locus is also shown.
+
+#Conclusion
+GENCODE annotation supports the presence of a transcript orinionating in the antisense orientation from the miR34a gene. 
