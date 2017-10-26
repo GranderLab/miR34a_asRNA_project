@@ -265,8 +265,8 @@ library(reshape2)
 library(ggplot2)
 library(ggthemes)
 library(plyr)
-url <- "HCT116null.rda?raw=True"
-repmis::source_data(file.path(dataUrl, url))
+url <- "HCT116p53null.rds"
+data <- readr::read_rds(path = gzcon(url(file.path(dataUrl, url))))
 goi <- subset(data, Gene %in% c("miR34a AS", "miR34a HG")) 
 hk <- subset(data, Gene == "Actin")
 
@@ -487,7 +487,7 @@ library(reshape2)
 library(ggplot2)
 library(ggthemes)
 library(plyr)
-url <- "HctHekDox?raw=True"
+url <- "HctHekDox"
 repmis::source_data(file.path(dataUrl, url))
 
 goi <- subset(data, gene %in% c("miR34a asRNA", "miR34a HG"))
