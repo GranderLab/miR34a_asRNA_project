@@ -265,27 +265,30 @@ library(reshape2)
 library(ggplot2)
 library(ggthemes)
 library(plyr)
-url <- "HCT116p53null.rds"
-data <- readr::read_rds(path = gzcon(url(file.path(dataUrl, url))))
-goi <- subset(data, Gene %in% c("miR34a AS", "miR34a HG")) 
-hk <- subset(data, Gene == "Actin")
+url <- "HCT116p53null.rda"
+repmis::source_data(file.path(dataUrl, url))
+data <- .
 
-colnames(goi)[c(6:7)] <- c("Ct1GOI", "Ct2GOI")
-colnames(hk)[c(6:7)] <- c("Ct1HK", "Ct2HK")
+gois <- c("miR34a AS", "miR34a HG")
+hkGene <- "Actin"
 
-data <- merge(goi, hk[, colnames(hk) != "Gene"], by = c("Condition", "Treatment", "Biological.Replicate", "Cell.line"))
+goi <- data %>%
+  filter(gene %in% gois) %>%
+  rename(Ct1GOI = Ct1, Ct2GOI = Ct2)
+
+hk <- data %>%
+  filter(gene == hkGene) %>%
+  rename(Ct1HK = Ct1, Ct2HK = Ct2)
+
+groups <- c("Condition", "Treatment", "Biological Replicate", "Cell line")
+data <- full_join(goi, select(hk, -gene), by = groups) %>%
+  technicalMeans(.) %>%
+  dct(.)
 
 
 #ddct
-data$meanGOI <- rowMeans(data[, c("Ct1GOI", "Ct2GOI")])
-data$meanHK <- rowMeans(data[, c("Ct1HK", "Ct2HK")])
-data$dct <- data$meanGOI - data$meanHK
-ddct <- ddply(
-    data,
-    c("Gene", "Condition", "Treatment", "Biological.Replicate"),
-    summarize,
-    ddct=dct-data[data$Gene == Gene & data$Condition == Condition & data$Treatment == 0 & data$Biological.Replicate == Biological.Replicate, "dct"]
-)
+data <- ddct(data, Treatment, 0, c("gene", "Condition", "Biological Replicate")) %>%
+  folds(.)
 
 data <- merge(data, ddct, by=c("Gene", "Condition", "Treatment", "Biological.Replicate"))
 data$fold <- 2^-data$ddct
