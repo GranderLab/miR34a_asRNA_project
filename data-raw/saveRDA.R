@@ -3,6 +3,23 @@ library(tidyverse)
 #HCTp53null
 read_tsv('./data-raw/HCTp53null.txt', col_names = TRUE) %>%
     rename(gene = Target) %>%
+    mutate(
+        case_when(
+            Condition == "WT"       ~ "p53-wt",
+            Condition == "p53 null" ~ "p53-null",
+            TRUE                    ~ "error in saveRDA.R"
+        ),
+        case_when(
+            gene == "miR34a AS" ~ "miR34a asRNA",
+            gene == "miR34a HG" ~ "miR34a HG",
+            TRUE                ~ "error in saveRNA.R"
+        )
+    )
+    mutate(
+        Treatment = parse_factor(Treatment, levels = c("0", "100", "200", "500")),
+        Condition = parse_factor(Condition, levels = c("p53-wt", "p53-null")),
+        gene = parse_factor(gene, levels = c("miR34a HG", "miR34a asRNA"))
+    ) %>%
     save(., file = './data/HCT116p53null.rda', compress = "bzip2")
 
 #HctHekDox
