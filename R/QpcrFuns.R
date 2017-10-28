@@ -15,11 +15,11 @@ dct <- function(data) {
 #grouping variable should not include cnt.group
 ddct <- function(data, cnt.group, cnt.value, grouping) {
     quo.cnt.group <- enquo(cnt.group)
-    cnt <- dplyr::filter(data, (!!quo.cnt.group) == cnt.value) %>%
-    select(grouping, dct)
+    cnt <- filter(data, (!!quo.cnt.group) == cnt.value) %>%
+    select(grouping[grouping != quo_name(quo.cnt.group)], dct)
     
     data %>%
-    left_join(cnt, by = grouping) %>%
+    left_join(cnt, by = grouping[grouping != quo_name(quo.cnt.group)]) %>%
     mutate(ddct = dct.x - dct.y) %>%
     select(-dct.y) %>%
     rename(dct = dct.x)
@@ -33,18 +33,9 @@ folds <- function(data) {
     )
 }
 
-tData <- tibble(Condition = 1:10, other = 1:10)
-test <- function(data, cnt.group) {
-    quo.cnt.group <- enquo(cnt.group)
-    data %>%
-    filter((!!quo.cnt.group) < 5) %>%
-    select(other, !!quo.cnt.group)
-}
-test(tData, Condition)
-
 calcStats <- function(data, cnt.group, cnt.value, grouping) {
     quo.cnt.group <- enquo(cnt.group)
-    cnt <- dplyr::filter(data, (!!quo.cnt.group) == cnt.value) %>%
+    cnt <- filter(data, (!!quo.cnt.group) == cnt.value) %>%
     select(grouping, log2fold, !!quo.cnt.group)
     
     
