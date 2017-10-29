@@ -1,4 +1,17 @@
 #' @export
+reformatForDct <- function(data, gois, hk, grouping) {
+    goi <- data %>%
+    filter(gene %in% gois) %>%
+    rename(Ct1GOI = Ct1, Ct2GOI = Ct2)
+    
+    hk <- data %>%
+    filter(gene == hkGene) %>%
+    rename(Ct1HK = Ct1, Ct2HK = Ct2)
+    
+    full_join(goi, select(hk, -gene), by = grouping[grouping != "gene"])
+}
+
+#' @export
 technicalMeans <- function(data) {
     data %>%
     mutate(
@@ -13,15 +26,28 @@ dct <- function(data) {
     mutate(dct = meanGOI - meanHK)
 }
 
-#grouping variable should not include cnt.group
 #' @export
-ddct <- function(data, cnt.group, cnt.value, grouping) {
-    quo.cnt.group <- enquo(cnt.group)
-    cnt <- filter(data, (!!quo.cnt.group) == cnt.value) %>%
-    select(grouping[grouping != quo_name(quo.cnt.group)], dct)
+#ddct <- function(data, cnt.group, cnt.value, grouping) {
+#    quo.cnt.group <- enquo(cnt.group)
+#   cnt <- filter(data, (!!quo.cnt.group) == cnt.value) %>%
+#    select(grouping[grouping != quo_name(quo.cnt.group)], dct)
+#
+#    data %>%
+#    left_join(cnt, by = grouping[grouping != quo_name(quo.cnt.group)]) %>%
+#    mutate(ddct = dct.x - dct.y) %>%
+#    select(-dct.y) %>%
+#    rename(dct = dct.x)
+#}
+
+ddct <- function(data, logical, grouping) {
+    logical.grps <- colnames(logical)
+    logical <- ifelse(rowSums(logical) == ncol(logical), TRUE, FALSE)
+    
+    cnt <- filter(data, logical) %>%
+    select(grouping[!grouping %in% logical.grps], dct)
     
     data %>%
-    left_join(cnt, by = grouping[grouping != quo_name(quo.cnt.group)]) %>%
+    left_join(cnt, by = grouping[!grouping %in% logical.grps]) %>%
     mutate(ddct = dct.x - dct.y) %>%
     select(-dct.y) %>%
     rename(dct = dct.x)
