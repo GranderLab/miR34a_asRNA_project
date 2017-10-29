@@ -68,20 +68,18 @@ calcStats <- function(data, cnt.group, cnt.value, grouping) {
     cnt <- filter(data, (!!quo.cnt.group) == cnt.value) %>%
     select(grouping, log2fold, !!quo.cnt.group)
     
-    
     data %>%
     select(grouping, log2fold, !!quo.cnt.group) %>%
-    full_join(cnt, by = grouping[grouping != quo_name(quo.cnt.group)]) %>%
-    rename(Condition = Condition.x) %>%
+    full_join(cnt, by = grouping[grouping != quo_name(quo.cnt.group)], suffix = c("", ".y")) %>%
     group_by_at(grouping[grouping != "Biological Replicate"]) %>%
     summarize(
         n = n(),
-        mean = mean(.data$log2fold.x),
-        CI95l = t.test(.data$log2fold.x)$conf.int[1],
-        CI95h = t.test(.data$log2fold.x)$conf.int[2],
-        pValue = t.test(.data$log2fold.x, .data$log2fold.y)$p.value
+        mean = mean(.data$log2fold),
+        CI95l = t.test(.data$log2fold)$conf.int[1],
+        CI95h = t.test(.data$log2fold)$conf.int[2],
+        pValue = t.test(.data$log2fold, .data$log2fold.y)$p.value
     ) %>%
-    mutate((!!quo.cnt.group) != cnt.value) %>%
+    #mutate((!!quo.cnt.group) != cnt.value) %>%
     ungroup()
 }
 
