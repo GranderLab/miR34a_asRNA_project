@@ -1,4 +1,4 @@
-Package: miR34aFigures
+Package: miR34AasRNAproject
 Title: What the Package Does (one line, title case)
 Version: 0.0.0.9000
 Authors@R: person("Jason", "Serviss", email = "Jason.serviss@ki.se", role = c("aut", "cre"), comment = c(ORCID = 0000-0002-5778-7014))
@@ -14,5 +14,6 @@ Suggests:
     printr,
     RCurl,
     ggthemes,
-    repmis
+    repmis,
+    tidyverse
 VignetteBuilder: knitr

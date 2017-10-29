@@ -25,6 +25,12 @@ read_tsv('./data-raw/HCTp53null.txt', col_names = TRUE) %>%
 
 #HctHekDox
 read_tsv('./data-raw/HctHekDox.txt', col_names = TRUE) %>%
+    rename(
+        `Biological Replicate` = experiment,
+        `Cell line` = cellLine,
+        Treatment = treatment
+    ) %>%
+    mutate(Treatment = parse_factor(Treatment, levels = c("untreated", "doxorubicin"))) %>%
     save(., file = './data/HctHekDox.rda', compress = "bzip2")
 
 #P1-HCTandHEK

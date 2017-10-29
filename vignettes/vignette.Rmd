@@ -13,9 +13,12 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, message = FALSE}
 library(printr)
 library(RCurl)
+library(miR34AasRNAproject)
+library(tidyverse)
+library(ggthemes)
 ```
 
 ```{r}
@@ -261,15 +264,12 @@ primers
 
 Perform ddct analysis and statistical testing.
 ```{r}
-library(reshape2)
-library(ggplot2)
-library(ggthemes)
-library(plyr)
+#download and format data
 url <- "HCT116p53null.rda"
 repmis::source_data(file.path(dataUrl, url))
 data <- .
 
-gois <- c("miR34a AS", "miR34a HG")
+gois <- c("miR34a asRNA", "miR34a HG")
 hkGene <- "Actin"
 
 goi <- data %>%
@@ -280,87 +280,65 @@ hk <- data %>%
   filter(gene == hkGene) %>%
   rename(Ct1HK = Ct1, Ct2HK = Ct2)
 
-groups <- c("Condition", "Treatment", "Biological Replicate", "Cell line")
-data <- full_join(goi, select(hk, -gene), by = groups) %>%
+#preform ddct analysis
+groups <- c("Condition", "Treatment", "Biological Replicate", "Cell line", "gene")
+data <- full_join(goi, select(hk, -gene), by = groups[groups != "gene"]) %>%
   technicalMeans(.) %>%
-  dct(.)
-
-
-#ddct
-data <- ddct(data, Treatment, 0, c("gene", "Condition", "Biological Replicate")) %>%
+  dct(.) %>%
+  ddct(., Treatment, 0, groups) %>%
   folds(.)
 
-data <- merge(data, ddct, by=c("Gene", "Condition", "Treatment", "Biological.Replicate"))
-data$fold <- 2^-data$ddct
-data$log2fold <- log2(data$fold)
-
 #calculate stats
-stats <- ddply(
-    data, 
-    c("Gene", "Condition", "Treatment"),
-    summarize,
-    n=length(log2fold),
-    mean=mean(log2fold),
-    pValue=t.test(log2fold, data[data$Gene == Gene & data$Condition == "WT" & data$Treatment == Treatment, "log2fold"])$p.value,
-    CI95l=t.test(log2fold)$conf.int[1],
-    CI95h=t.test(log2fold)$conf.int[2]
-)
+stats <- calcStats(data, Condition, "p53-wt", groups) %>%
+  pFormat(.)
 
-data <- merge(data, stats, by = c("Gene", "Condition", "Treatment"))
+#stats <- ddply(
+#    data, 
+#    c("Gene", "Condition", "Treatment"),
+#    summarize,
+#    n=length(log2fold),
+#    mean=mean(log2fold),
+#    pValue=t.test(log2fold, data[data$Gene == Gene & data$Condition == "WT" & data$Treatment == Treatment, "log2fold"])$p.value,
+#    CI95l=t.test(log2fold)$conf.int[1],
+#    CI95h=t.test(log2fold)$conf.int[2]
+#)
+
+#data <- merge(data, stats, by = c("Gene", "Condition", "Treatment"))
 #data$pValue <- ifelse(data$pValue == 1, NA, data$pValue)
 
-data$pStars <- ifelse(
-    data$pValue < 0.05 & data$pValue > 0.0049, 
-    "\u2605", 
-    ifelse(
-        data$pValue < 0.005 & data$pValue > 0.00049, 
-        "\u2605\u2605",
-        ifelse(
-            data$pValue < 0.0005, 
-            "\u2605\u2605\u2605",
-            "n.s."
-        )
+#data$pStars <- ifelse(
+#    data$pValue < 0.05 & data$pValue > 0.0049, 
+#    "\u2605", 
+#    ifelse(
+#        data$pValue < 0.005 & data$pValue > 0.00049, 
+#        "\u2605\u2605",
+#        ifelse(
+#            data$pValue < 0.0005, 
+#            "\u2605\u2605\u2605",
+#            "n.s."
+#        )
+#    )
+#)
+
+#setup plotting variables
+stats <- stats %>%
+  group_by(gene, Treatment) %>%
+  mutate(
+    max = max(CI95h),
+    x = case_when(
+      Treatment ==   0 ~ 1 + 0.25,
+      Treatment == 100 ~ 2 + 0.25,
+      Treatment == 200 ~ 3 + 0.25,
+      Treatment == 500 ~ 4 + 0.25
+    ),
+    xend = case_when(
+      Treatment ==   0 ~ 1 - 0.25,
+      Treatment == 100 ~ 2 - 0.25,
+      Treatment == 200 ~ 3 - 0.25,
+      Treatment == 500 ~ 4 - 0.25
     )
-)
-
-yS <- ddply(data, c("Gene", "Treatment"), summarize, max = max(CI95h))
-pBars <- ddply(
-    data, 
-    c("Gene", "Condition", "Treatment"),
-    summarize,
-    CI95l = unique(CI95l),
-    CI95h = unique(CI95h),
-    pStars = unique(pStars),
-    pValue = unique(pValue)
-)
-pBars[pBars$Condition == "WT", "pStars"] <- ""
-pBars <- merge(pBars, yS, by = c("Gene", "Treatment"))
-pBars$x <- dplyr::case_when(
-    pBars$Treatment ==   0 ~ 1 + 0.25,
-    pBars$Treatment == 100 ~ 2 + 0.25,
-    pBars$Treatment == 200 ~ 3 + 0.25,
-    pBars$Treatment == 500 ~ 4 + 0.25
-)
-
-pBars$xend <- dplyr::case_when(
-    pBars$Treatment ==   0 ~ 1 - 0.25,
-    pBars$Treatment == 100 ~ 2 - 0.25,
-    pBars$Treatment == 200 ~ 3 - 0.25,
-    pBars$Treatment == 500 ~ 4 - 0.25
-)
-
-#prepare for plotting
-data$Treatment <- factor(data$Treatment, levels=c("0", "100", "200", "500"))
-pBars$Treatment <- factor(pBars$Treatment, levels=c("0", "100", "200", "500"))
-data$Condition <- ifelse(data$Condition == "WT", "p53-wt", "p53-null")
-pBars$Condition <- ifelse(pBars$Condition == "WT", "p53-wt", "p53-null")
-data$Condition <- factor(data$Condition, levels=c("p53-wt", "p53-null"))
-pBars$Condition <- factor(pBars$Condition, levels=c("p53-wt", "p53-null"))
-
-data$Gene <- ifelse(data$Gene == "miR34a AS", "miR34a asRNA", "miR34a HG")
-data$Gene <- factor(data$Gene, levels = c("miR34a HG", "miR34a asRNA"))
-pBars$Gene <- ifelse(pBars$Gene == "miR34a AS", "miR34a asRNA", "miR34a HG")
-pBars$Gene <- factor(pBars$Gene, levels = c("miR34a HG", "miR34a asRNA"))
+  ) %>%
+  ungroup()
 ```
 
 Plot the results.
@@ -377,22 +355,22 @@ ggplot(data = NULL) +
         show.legend = TRUE
     ) +
     geom_point(
-        data = data,
+        data = stats,
         aes(x = Treatment, y = mean, group = Condition), 
         position = position_dodge(width = 0.9), 
         size = 4
     ) +
-    facet_grid(. ~ Gene) +
+    facet_grid(. ~ gene) +
     geom_linerange(
-        data = pBars,
+        data = stats,
         aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
         colour = "black",
         position = position_dodge(width = 0.9),
         show.legend = FALSE
     ) +
     geom_label(
-        data = pBars,
-        aes(x = Treatment, y = max + 0.22, label = pStars),
+        data = stats,
+        aes(x = Treatment, y = max + 0.22, label = pFormat),
         label.size = 0,
         label.padding = unit(0.01, "lines"),
         show.legend = FALSE,
@@ -402,7 +380,7 @@ ggplot(data = NULL) +
         position = position_dodge(width = 0.9)
     ) +
     geom_segment(
-        data = pBars,
+        data = stats,
         aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
         colour="grey43",
         show.legend = FALSE
@@ -460,7 +438,6 @@ miR34a is a known downstream target of p53 and has been previously shown to exhi
 All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. The following day cells were treated with 0, 100, 200, or 500 ng/ml doxorubicin for 24hrs. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
 ```{r}
-library(printr)
 primers <- data.frame(
     name=c(
         "ß-actin Fwd",
@@ -485,7 +462,7 @@ primers
 ```
 
 #Results
-```{r}
+```{r, eval = FALSE}
 library(reshape2)
 library(ggplot2)
 library(ggthemes)
@@ -548,7 +525,7 @@ data$pStars <- ifelse(
 data$treatment <- factor(data$treatment, levels=c("untreated", "doxorubicin"))
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
+```{r, fig.align='center', fig.height=8, fig.width=12, eval=FALSE, message=FALSE, warning=FALSE}
 #plot for Rmarkdown
 ggplot(data, aes(x=treatment, y=log2fold))+
     geom_violin(
