@@ -59,11 +59,9 @@ read_tsv('./data-raw/p1shRNAdox.txt', col_names = TRUE) %>%
     mutate(
         shRNA = gsub("shCtrl", "shRNA Control", .data$shRNA),
         shRNA = gsub("shRenilla", "shRNA Renilla", .data$shRNA),
-        gene = gsub("Luciferase", "  Luciferase\n(miR34a HG)", .data$gene),
-        gene = gsub("Renilla", "        Renilla\n(miR34a asRNA)", .data$gene),
-        gene = gsub("B-actin", "Actin", .data$gene),
-        alias = ifelse(is.na(.data$alias), "Actin", .data$alias)
+        gene = gsub("B-actin", "Actin", .data$gene)
     ) %>%
+    select(-alias, -correspondsWith) %>%
     save(., file = './data/p1shRNAdox.rda', compress = "bzip2")
 
 #stableLineExpression
