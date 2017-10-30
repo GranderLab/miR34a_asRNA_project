@@ -95,7 +95,7 @@ We were able to detect co-expression of both miR34a HG and miR34a AS in a variet
 
 ###Figure 1c
 
-#Insert code here from Erik and write Intro Methods etc
+####Insert code here from Erik and write Intro Methods etc
 
 ####Results
 ```{r, out.width = "850px"}
@@ -269,60 +269,30 @@ url <- "HCT116p53null.rda"
 repmis::source_data(file.path(dataUrl, url))
 data <- .
 
-gois <- c("miR34a asRNA", "miR34a HG")
-hkGene <- "Actin"
-
-goi <- data %>%
-  filter(gene %in% gois) %>%
-  rename(Ct1GOI = Ct1, Ct2GOI = Ct2)
-
-hk <- data %>%
-  filter(gene == hkGene) %>%
-  rename(Ct1HK = Ct1, Ct2HK = Ct2)
-
-#preform ddct analysis
+#calculate dct
 groups <- c("Condition", "Treatment", "Biological Replicate", "Cell line", "gene")
-data <- full_join(goi, select(hk, -gene), by = groups[groups != "gene"]) %>%
-  technicalMeans(.) %>%
-  dct(.) %>%
-  ddct(., Treatment, 0, groups) %>%
+gois <- c("miR34a asRNA", "miR34a HG")
+
+data <- technicalMeans(data, groups) %>%
+  dct(., gois, Actin, groups)
+
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  Treatment = data$Treatment == 0
+)
+
+data <- data %>%
+  ddct(., logical, groups) %>%
   folds(.)
 
 #calculate stats
 stats <- calcStats(data, Condition, "p53-wt", groups) %>%
   pFormat(.)
 
-#stats <- ddply(
-#    data, 
-#    c("Gene", "Condition", "Treatment"),
-#    summarize,
-#    n=length(log2fold),
-#    mean=mean(log2fold),
-#    pValue=t.test(log2fold, data[data$Gene == Gene & data$Condition == "WT" & data$Treatment == Treatment, "log2fold"])$p.value,
-#    CI95l=t.test(log2fold)$conf.int[1],
-#    CI95h=t.test(log2fold)$conf.int[2]
-#)
-
-#data <- merge(data, stats, by = c("Gene", "Condition", "Treatment"))
-#data$pValue <- ifelse(data$pValue == 1, NA, data$pValue)
-
-#data$pStars <- ifelse(
-#    data$pValue < 0.05 & data$pValue > 0.0049, 
-#    "\u2605", 
-#    ifelse(
-#        data$pValue < 0.005 & data$pValue > 0.00049, 
-#        "\u2605\u2605",
-#        ifelse(
-#            data$pValue < 0.0005, 
-#            "\u2605\u2605\u2605",
-#            "n.s."
-#        )
-#    )
-#)
-
 #setup plotting variables
 stats <- stats %>%
-  group_by(gene, Treatment) %>%
+  group_by(GOI, Treatment) %>%
   mutate(
     max = max(CI95h),
     x = case_when(
@@ -360,7 +330,7 @@ ggplot(data = NULL) +
         position = position_dodge(width = 0.9), 
         size = 4
     ) +
-    facet_grid(. ~ gene) +
+    facet_grid(. ~ GOI) +
     geom_linerange(
         data = stats,
         aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
@@ -431,10 +401,10 @@ ggplot(data = NULL) +
 We observed increasing miR34a HG and asRNA expression with increasing doses of doxorubicin indicating that these two transcripts are co-regulated by p53. Although p53+/+ cells showed a 25-fold increase over untreated cells in miR34a AS expression at the highest tested doxorubicin concentration, this effect was largely abrogated, 11 fold over untreated, in p53-/- cells, indicating that p53 is a major regulator of miR34a asRNA expression. 
 
 ###Figure 2b
-#Introduction
+####Introduction
 miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression with cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated HCT116 and HEK293t cells with 200 ng/ml of the DNA damaging agent doxorubicin for 24 hours and monitored miR34a asRNA expression. 
 
-#Methods
+####Methods
 All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. The following day cells were treated with 0, 100, 200, or 500 ng/ml doxorubicin for 24hrs. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
 ```{r}
@@ -461,50 +431,196 @@ primers <- data.frame(
 primers
 ```
 
-#Results
-```{r, eval = FALSE}
-library(reshape2)
-library(ggplot2)
-library(ggthemes)
-library(plyr)
-url <- "HctHekDox"
+####Results
+```{r}
+url <- "HctHekDox.rda"
 repmis::source_data(file.path(dataUrl, url))
+data <- .
 
-goi <- subset(data, gene %in% c("miR34a asRNA", "miR34a HG"))
-hk <- subset(data, gene == "B-actin")
+#calculate dct
+groups <- c("Treatment", "Biological Replicate", "Cell line", "gene")
+gois <- c("miR34a asRNA", "miR34a HG")
 
-colnames(goi)[c(5:6)] <- c("Ct1GOI", "Ct2GOI")
-colnames(hk)[c(5:6)] <- c("Ct1HK", "Ct2HK")
+data <- technicalMeans(data, groups) %>%
+  dct(., gois, Actin, groups)
 
-data <- cbind(goi, hk[,c("Ct1HK", "Ct2HK")])
-
-#ddct
-data$meanGOI <- rowMeans(data[,c("Ct1GOI", "Ct2GOI")])
-data$meanHK <- rowMeans(data[,c("Ct1HK", "Ct2HK")])
-data$dct <- data$meanGOI - data$meanHK
-ddct <- ddply(
-    data,
-    c("gene", "cellLine", "treatment", "experiment"),
-    summarize,
-    ddct=dct-data[data$gene == gene & data$cellLine == cellLine & data$experiment == 1 & data$treatment == "untreated", "dct"]
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  `Biological Replicate` = pull(data, `Biological Replicate`) == 1,
+  Treatment = pull(data, Treatment) == "untreated"
 )
 
-data <- merge(data, ddct, by=c("gene", "cellLine", "treatment", "experiment"))
-data$fold <- 2^-data$ddct
-data$log2fold <- log2(data$fold)
+data <- data %>%
+  ddct(., logical, groups) %>%
+  folds(.)
 
 #calculate stats
-stats <- ddply(
+stats <- calcStats(data, Treatment, "untreated", groups) %>%
+  pFormat(.)
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+#plot for Rmarkdown
+ggplot(data = NULL) +
+  geom_violin(
+    data = data,
+    aes(x = Treatment, y = log2fold, fill = GOI),
+    trim = TRUE,
+    alpha = 0.3,
+    color = NA,
+    scale = "width",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(x = Treatment, y = mean, group = GOI),
+    size = 4,
+    position = position_dodge(width = 0.9)
+  ) +
+  facet_grid(. ~ `Cell line`) +
+  geom_linerange(
+    data = stats,
+    aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = GOI),
+    colour = "black",
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = stats,
+    aes(x = Treatment, y = CI95h + 0.15, label = pFormat, group = GOI),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 5,
+    family = "Arial Unicode MS",
+    position = position_dodge(width = 0.9)
+  )+
+  scale_y_continuous(
+    "\u0394\u0394Ct",
+    breaks=c(-1,0,1,2,3,4,5)
+  )+
+  labs(
+    x = "Treatment",
+    title = "miR34a asRNA response to p53 induction",
+    caption = 
+            "Q-PCR showing miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after treatment with 200 ng/ml doxorubicin for 24hrs.\nError bars (black vertical) indicate 95% CI and means are represented \nby black dots."
+  )+
+  theme_few()+
+  scale_fill_ptol()+
+  scale_colour_ptol()+
+  theme(
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 20
+    ),
+    plot.caption = element_text(
+      hjust = 0, 
+      margin = margin(t = 15),
+      family = "Arial Unicode MS"
+    ),
+    legend.position = "top",
+    legend.title = element_text(size = 17),
+    legend.text = element_text(size = 15),
+    axis.title = element_text(size = 17),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.text = element_text(size = 15),
+    strip.text.x = element_text(size = 17)
+  )+
+  guides(color = guide_legend(title = "Gene", override.aes = list(size = 3)))
+```
+
+####Conclusions
+We observed increases in miR34a HG and asRNA expression upon doxorubicin treatment indicating that these two transcripts are co-regulated. 
+
+###Figure 2c
+
+####Introduction
+It is likely, due to the head-to head orientation of miR34a HG and asRNA, that transcription initiation may be activated from a single promoter in a bi-directional manner. To investigate whether miR34a HG and asRNA are transcribed from the same promoter as convergent transcripts, we cloned the miR34a HG promoter, including the p53 binding site, into a luciferase/renilla dual reporter vector which we hereafter refer to as p1. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43. Due to the observance of additional conservation sites downstream of the previously published miR34a HG promoter, we also cloned a longer "promoter region", extending 251 additional base pairs into the miR34a HG into the same bi-directional reporter vector, hereafter refered to as p2.
+
+####Methods
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 10,000 cells per well in a 96-well plate with a white bottom and cultured overnight. The following day cells were co-transfected with 10ng of empty, p1, or p2 plasmid and GFP using the standard lipofektamine 2000 (Life Technologies) protocol. The expression of GFP and luminescence was measured 24 h post transfection by using the Dual-Glo Luciferase Assay System (Promega) and detected by the GloMax-Multi+ Detection System (Promega). The expression of luminescence was normalized to GFP.
+
+#####Constructs
+```{r}
+library(printr)
+ps <- data.frame(
+    name=c("p1", "p2"),
+    sequence=c("GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT
+              CCC GTC GGT CTG GGG ACA GCC CAG CTC CCC GGA TCC CGG GCT GGA GAG ACG CGT CGC GGC   
+              CCC GGG GCC TGG TGG CAC GAG CAG GAA GGA GGA CCC GGC GGC GGG CTC TGC CTG GGC TTG 
+              CCT GGG CTT GTT CCG AGC CGG GCT GCT TCT CGG TGA CCA CGC AGA TCG GGG GCA TTT GGA
+              GAT TTT GCG GGA GTC CTG CAG CCA AGC TCC GGG GCA GGA GAG GCC TGG AAG CCT GCA CTA
+              CCT GCT C",
+              "GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT 
+              CCC GTC GGT CTG GGG ACA GCC CAG CTC CCC GGA TCC CGG GCT GGA GAG ACG CGT CGC GGC
+              CCC GGG GCC TGG TGG CAC GAG CAG GAA GGA GGA CCC GGC GGC GGG CTC TGC CTG GGC TTG 
+              CCT GGG CTT GTT CCG AGC CGG GCT GCT TCT CGG TGA CCA CGC AGA TCG GGG GCA TTT GGA 
+              GAT TTT GCG GGA GTC CTG CAG CCA AGC TCC GGG GCA GGA GAG GCC TGG AAG CCT GCA CTA 
+              CCT GCT CGC CCC GTC CCA GCA TGC ACC CAG GTA AAC GCT TGT GTT TCT CAG TCC GTG CGA 
+              AAG TTT GCA AAG AAG GAG GCG GGA ACT AGA CCA ACA ACT TTA ATA ATC ATA GTC ATA ATA 
+              ATG AAA ACC CTG TTC AAT TGT GTA GCC TCC GTA AGG GGA AGA ATT TCC AAG AAG CAA CAA
+              AAT GTT CTT TGA TTT CAT AAT CTC TGG GGA GAA AGG ATT CCT TTT TTG GGG TTT TGC TCG
+              GCT AGT TCT TTC TTC CCT")
+)
+ps
+```
+
+#####Primers
+```{r}
+primers <- data.frame(
+    name=c(
+        "Luc_set_II_F",
+        "Luc_set_II_R",
+        "Renilla_pBiDir_F1",
+        "Renilla_pBiDir_R1",
+        "B-actin_F",
+        "B-actin_R"
+    ),
+    sequence=c(
+        "AAG ATT CAA AGT GCG CTG CTG",
+        "TTG CCT GAT ACC TGG CAG ATG",
+        "TAA CGC GGC CTC TTC TTA TTT",
+        "GAT TTG CCT GAT TTG CCC ATA",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
+)
+primers
+```
+
+####Results
+```{r, out.width = "850px"}
+url <- "P1-HCTandHEK/locusSimple.png"
+knitr::include_graphics(file.path(projectUrl, url))
+```
+
+<br></br><br></br>
+
+```{r, out.width = "850px"}
+url <- "P1-HCTandHEK/constructSimple.png"
+knitr::include_graphics(file.path(projectUrl, url))
+```
+
+<br></br><br></br>
+
+```{r}
+data <- read.table('~/GitHub/miR34aFigures/inst/P1-HCTandHEK/luminesenseData.txt', header=TRUE, sep="\t")
+
+summary <- ddply(
     data, 
-    c("gene", "cellLine", "treatment"),
+    c("cellLine", "gene", "construct"),
     summarize,
-    mean=mean(log2fold),
-    pValue=t.test(log2fold, data[data$gene == gene & data$cellLine == cellLine & data$treatment == "untreated", "log2fold"])$p.value,
-    CI95l=t.test(log2fold)$conf.int[1],
-    CI95h=t.test(log2fold)$conf.int[2]
+    mean = mean(value),
+    pValue = t.test(value, data[data$cellLine == cellLine & data$gene == gene & data$construct == "empty", "value"])$p.value,
+    CI95l = t.test(value)$conf.int[1],
+    CI95h = t.test(value)$conf.int[2]
 )
 
-data <- merge(data, stats, by=c("gene", "cellLine", "treatment"))
+data <- merge(data, summary, by=c("cellLine", "gene", "construct"))
+
 data$pValue <- ifelse(data$pValue == 1, NA, data$pValue)
 
 data$pStars <- ifelse(
@@ -522,12 +638,13 @@ data$pStars <- ifelse(
 )
 
 #prepare for plotting
-data$treatment <- factor(data$treatment, levels=c("untreated", "doxorubicin"))
+data$gene <- ifelse(data$gene == "renilla", "Renilla", "Luciferase")
+data$construct <-gsub("empty", "Empty", data$construct)
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=FALSE, message=FALSE, warning=FALSE}
+```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
 #plot for Rmarkdown
-ggplot(data, aes(x=treatment, y=log2fold))+
+ggplot(data, aes(x=construct, y=value))+
     geom_violin(
         aes(fill=gene),
         trim=TRUE,
@@ -539,7 +656,8 @@ ggplot(data, aes(x=treatment, y=log2fold))+
     geom_point( 
         aes(colour=gene),
         size=4,
-        position=position_dodge(width=0.9)
+        position=position_dodge(width=0.9),
+        stroke=0
     )+
     geom_linerange(
         aes(ymin=CI95l, ymax=CI95h, group=gene),
@@ -564,20 +682,12 @@ ggplot(data, aes(x=treatment, y=log2fold))+
         family="Arial Unicode MS",
         position=position_dodge(width=0.9)
     )+
-    scale_y_continuous(
-        "\u0394\u0394Ct",
-        breaks=c(-1,0,1,2,3,4,5),
-        sec.axis = sec_axis(
-            ~2^., 
-            name = expression(2^{- ~ Delta ~ Delta ~ "Ct"}), 
-            breaks=c(2^-1,2^0,2^1,2^2,2^3,2^4,2^5)
-        )
-    )+
     labs(
-      x="Treatment",
-      title="miR34a asRNA response to p53 induction",
-      caption=
-            "Q-PCR showing miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after treatment with 200 ng/ml doxorubicin for 24hrs.\nError bars (black vertical) indicate 95% CI and means are represented \nby black dots. \u2605 = p < 0.05; \u2605\u2605 = p < 0.005, \u2605\u2605\u2605 = p < 0.0005."
+        x="Construct",
+        y="Activity (a.u.)",
+        title="miR34a asRNA regulation by miR34a promoter",
+        caption=
+            "miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection with P1 and P2 constructs.\nLuciferase represents miR34a HG and renilla represents miR34a asRNA.\nError bars (black vertical) indicate 95% CI and means are represented \nby black dots. \u2605 = p < 0.05; \u2605\u2605 = p < 0.005, \u2605\u2605\u2605 = p < 0.0005."
     )+
     theme_few()+
     scale_fill_ptol()+
@@ -603,11 +713,164 @@ ggplot(data, aes(x=treatment, y=log2fold))+
         strip.text.x=element_text(size=17)
     )+
     guides(color = guide_legend(title = "Gene", override.aes = list(size=3)))
+
+#plot for pdf
+p <- ggplot(data, aes(x=construct, y=value))+
+    geom_violin(
+        aes(fill=gene),
+        trim=TRUE,
+        alpha=0.3,
+        color=NA,
+        scale="width",
+        lwd=0.1
+    )+
+    #geom_point( 
+    #    aes(colour=gene),
+    #    size=0.6,
+    #    position=position_dodge(width=0.9)
+    #)+
+    geom_linerange(
+        aes(ymin=CI95l, ymax=CI95h, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        show.legend = FALSE,
+        lwd=0.15
+    )+
+    geom_point(
+        aes(y=mean, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        show.legend = FALSE,
+        size=0.5
+    )+
+    facet_grid(.~cellLine)+
+    geom_label(
+        aes(y=CI95h+1200, label=pStars, group=gene),
+        label.size=0,
+        label.padding=unit(0.01, "lines"),
+        show.legend = FALSE,
+        fill="white",
+        size=1,
+        family="Arial Unicode MS",
+        position=position_dodge(width=0.9)
+    )+
+    labs(
+        x="Construct",
+        y="Activity (a.u.)",
+        title="miR34a asRNA promoter region"
+    )+
+    theme_few()+
+    scale_fill_ptol()+
+    scale_colour_ptol()+
+    #values=c("#014d64", "#6794a7")
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face="bold",
+            size=10,
+            margin=margin(b=2, unit="mm")
+        ),
+        plot.margin = unit(c(0.1,0.1,0.1,0.1), "lines"),
+        legend.position="top",
+        legend.margin=unit(1,"mm"),
+        legend.key.size = unit(1/5, "cm"),
+        legend.title=element_text(size=9),
+        legend.text=element_text(size=8),
+        axis.title=element_text(size=9),
+        axis.title.x=element_text(margin=margin(t=5)),
+        axis.text.y=element_text(size=8),
+        axis.text.x=element_text(size=7),
+        strip.text.x=element_text(size=9, margin = margin(0.01, 0, 0.1, 0, "cm")),
+        panel.border = element_rect(fill=NA, size=0.25),
+        axis.ticks = element_line(size=0.25),
+        axis.ticks.length = unit(1/15, "cm")
+    )+
+    guides(fill = guide_legend(title = "Gene", override.aes = list(size=2)))
+
+ggsave(plot=p, filename="~/GitHub/miR34aFigures/inst/P1-HCTandHEK/P1-HCTandHEK_P1andP2.pdf", device=cairo_pdf, height=60, width=83, units="mm")
+
+#only P1
+data <- subset(data, construct %in% c("Empty", "p1"))
+p1 <- ggplot(data, aes(x=construct, y=value))+
+    geom_violin(
+        aes(fill=gene),
+        trim=TRUE,
+        alpha=0.3,
+        color=NA,
+        scale="width",
+        lwd=0.1
+    )+
+    #geom_point( 
+    #    aes(colour=gene),
+    #    size=0.6,
+    #    position=position_dodge(width=0.9)
+    #)+
+    geom_linerange(
+        aes(ymin=CI95l, ymax=CI95h, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        show.legend = FALSE,
+        lwd=0.15
+    )+
+    geom_point(
+        aes(y=mean, group=gene),
+        colour="black",
+        position=position_dodge(width=0.9),
+        show.legend = FALSE,
+        size=0.5,
+    )+
+    facet_grid(.~cellLine)+
+    geom_label(
+        aes(y=CI95h+1200, label=pStars, group=gene),
+        label.size=0,
+        label.padding=unit(0.01, "lines"),
+        show.legend = FALSE,
+        fill="white",
+        size=1,
+        family="Arial Unicode MS",
+        position=position_dodge(width=0.9)
+    )+
+    labs(
+        x="Construct",
+        y="Activity (a.u.)"
+        #title="miR34a asRNA promoter region"
+    )+
+    theme_few()+
+    scale_fill_ptol()+
+    scale_colour_ptol()+
+    #values=c("#014d64", "#6794a7")
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face="bold",
+            size=10,
+            margin=margin(b=2, unit="mm")
+        ),
+        plot.margin = unit(c(0.1,0.1,0.1,0.1), "lines"),
+        legend.position="top",
+        legend.margin=unit(1,"mm"),
+        legend.key.size = unit(1/5, "cm"),
+        legend.title=element_text(size=9),
+        legend.text=element_text(size=8),
+        axis.title=element_text(size=9),
+        axis.title.x=element_text(margin=margin(t=5)),
+        axis.text.y=element_text(size=8),
+        axis.text.x=element_text(size=7),
+        strip.text.x=element_text(size=9, margin = margin(0.01, 0, 0.1, 0, "cm")),
+        panel.border = element_rect(fill=NA, size=0.25),
+        axis.ticks = element_line(size=0.25),
+        axis.ticks.length = unit(1/15, "cm")
+    )+
+    guides(fill = guide_legend(title = "Gene", override.aes = list(size=2)))
+
+ggsave(plot=p1, filename="~/GitHub/miR34aFigures/inst/P1-HCTandHEK/P1-HCTandHEK_P1.pdf", device=cairo_pdf, height=60, width=83, units="mm")
+
 ```
 
-#Conclusions
-We observed increases in miR34a HG and asRNA expression upon doxorubicin treatment indicating that these two transcripts are co-regulated. 
+#Conclusion
+Upon transfection of this construct in two separate cell lines we observed increases in both luciferase and renilla indicating that miR34a HG and asRNA expression is regulated by a single promoter contained within the p1 construct. Transfection of the P2 construct showed to cause a reduction in luciferase (miR34a HG) levels but not renilla (miR34a AS) levels. This could be due to the presence of a STAT3 binding site in p2 which has been previously reported to negativley regulate miR34a HG.
 
+###Session info
 ```{r}
 sessionInfo()
 ```

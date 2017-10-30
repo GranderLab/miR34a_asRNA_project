@@ -39,6 +39,18 @@ read_tsv('./data-raw/HctHekDox.txt', col_names = TRUE) %>%
 
 #P1-HCTandHEK
 read_tsv('./data-raw/P1-HCTandHEK.txt', col_names = TRUE) %>%
+    rename(
+        `Biological Replicate` = experiment,
+        `Cell line` = cellLine
+    ) %>%
+    mutate(
+        gene = case_when(
+            gene == "renilla"    ~ "Renilla",
+            gene == "luciferase" ~ "Luciferase",
+            TRUE                 ~ "error in saveRNA.R"
+        ),
+        construct = gsub("empty", "Empty", .data$construct)
+    ) %>%
     save(., file = './data/P1-HCTandHEK.rda', compress = "bzip2")
 
 #p1shRNAdox

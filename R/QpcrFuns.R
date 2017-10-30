@@ -1,29 +1,24 @@
 #' @export
-reformatForDct <- function(data, gois, hk, grouping) {
-    goi <- data %>%
-    filter(gene %in% gois) %>%
-    rename(Ct1GOI = Ct1, Ct2GOI = Ct2)
-    
-    hk <- data %>%
-    filter(gene == hkGene) %>%
-    rename(Ct1HK = Ct1, Ct2HK = Ct2)
-    
-    full_join(goi, select(hk, -gene), by = grouping[grouping != "gene"])
+technicalMeans <- function(data, grouping) {
+    data %>%
+    gather(`Tech. Replicate`, Ct, -grouping) %>%
+    group_by(!!! rlang::syms(grouping)) %>%
+    summarize(ctMean = mean(Ct)) %>%
+    ungroup()
 }
 
 #' @export
-technicalMeans <- function(data) {
+dct <- function(data, GOIs, HK, grouping) {
+    quo.hk <- enquo(HK)
+    grouping <- grouping[grouping != "gene"]
+    
     data %>%
-    mutate(
-        meanGOI = rowMeans(select(., Ct1GOI, Ct2GOI)),
-        meanHK = rowMeans(select(., Ct1HK, Ct2HK))
-    )
-}
-
-#' @export
-dct <- function(data) {
-    data %>%
-    mutate(dct = meanGOI - meanHK)
+    spread(gene, ctMean) %>%
+    mutate(HK = quo_name(quo.hk)) %>%
+    rename(ctMeanHK = !!quo.hk) %>%
+    gather(GOI, ctMeanGOI, -one_of(names(.)[!names(.) %in% gois]), factor_key = TRUE) %>%
+    mutate(dct = ctMeanGOI - ctMeanHK) %>%
+    select(grouping, HK, ctMeanHK, GOI, ctMeanGOI, dct)
 }
 
 #' @export
@@ -53,6 +48,24 @@ ddct <- function(data, logical, grouping) {
     rename(dct = dct.x)
 }
 
+test <- function(data, logical, grouping) {
+    logical.grps <- rlang::syms(c(colnames(logical), "dct"))
+    tmp <- c("untreated_1_HCT116", "untreated_1_HEK293t")
+    
+    data %>%
+    select(grouping, dct) %>%
+    unite(variables, grouping) %>%
+    group_by(variables) %>%
+    mutate(id=1:n()) %>%
+    spread(variables, dct) %>%
+    select(-id) %>%
+    gather(variables, value, -one_of(tmp)) %>%
+    separate(variables, grouping, sep = "_")
+    
+    
+    reshape2::dcast(dct ~ variables)
+}
+
 #' @export
 folds <- function(data) {
     data %>%
@@ -79,7 +92,7 @@ calcStats <- function(data, cnt.group, cnt.value, grouping) {
         CI95h = t.test(.data$log2fold)$conf.int[2],
         pValue = t.test(.data$log2fold, .data$log2fold.y)$p.value
     ) %>%
-    #mutate((!!quo.cnt.group) != cnt.value) %>%
+    #filter((!!quo.cnt.group) != cnt.value) %>%
     ungroup()
 }
 
