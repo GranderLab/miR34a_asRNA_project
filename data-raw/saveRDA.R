@@ -55,6 +55,13 @@ read_tsv('./data-raw/P1-HCTandHEK.txt', col_names = TRUE) %>%
 
 #p1shRNAdox
 read_tsv('./data-raw/p1shRNAdox.txt', col_names = TRUE) %>%
+    rename(`Biological Replicate` = experiment) %>%
+    mutate(
+        shRNA = gsub("shCtrl", "shRNA Control", .data$shRNA),
+        shRNA = gsub("shRenilla", "shRNA Renilla", .data$shRNA),
+        gene = gsub("Luciferase", "  Luciferase\n(miR34a HG)", .data$gene),
+        gene = gsub("Renilla", "        Renilla\n(miR34a asRNA)", .data$gene)
+    ) %>%
     save(., file = './data/p1shRNAdox.rda', compress = "bzip2")
 
 #stableLineExpression
