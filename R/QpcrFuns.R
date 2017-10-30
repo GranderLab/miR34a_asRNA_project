@@ -129,7 +129,3 @@ pFormat <- function(stats) {
         TRUE ~ format(stats[[idx]], scientific = TRUE, digits = 2))
     )
 }
-
-xAndxend <- function() {
-    
-}
