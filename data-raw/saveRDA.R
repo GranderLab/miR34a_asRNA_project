@@ -61,7 +61,8 @@ read_tsv('./data-raw/p1shRNAdox.txt', col_names = TRUE) %>%
         shRNA = gsub("shRenilla", "shRNA Renilla", .data$shRNA),
         gene = gsub("Luciferase", "  Luciferase\n(miR34a HG)", .data$gene),
         gene = gsub("Renilla", "        Renilla\n(miR34a asRNA)", .data$gene),
-        gene = gsub("B-actin", "Actin", .data$gene)
+        gene = gsub("B-actin", "Actin", .data$gene),
+        alias = ifelse(is.na(.data$alias), "Actin", .data$alias)
     ) %>%
     save(., file = './data/p1shRNAdox.rda', compress = "bzip2")
 
