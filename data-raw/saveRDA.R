@@ -31,6 +31,10 @@ read_tsv('./data-raw/HctHekDox.txt', col_names = TRUE) %>%
         Treatment = treatment
     ) %>%
     mutate(Treatment = parse_factor(Treatment, levels = c("untreated", "doxorubicin"))) %>%
+    mutate(gene = case_when(
+        gene == "B-actin" ~ "Actin",
+        TRUE ~ gene
+    )) %>%
     save(., file = './data/HctHekDox.rda', compress = "bzip2")
 
 #P1-HCTandHEK
