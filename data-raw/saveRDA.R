@@ -59,7 +59,8 @@ read_tsv('./data-raw/p1shRNAdox.txt', col_names = TRUE) %>%
     mutate(
         shRNA = gsub("shCtrl", "shRNA Control", .data$shRNA),
         shRNA = gsub("shRenilla", "shRNA Renilla", .data$shRNA),
-        gene = gsub("B-actin", "Actin", .data$gene)
+        gene = gsub("B-actin", "Actin", .data$gene),
+        treatment = parse_factor(treatment, levels = c("0", "300", "500"))
     ) %>%
     select(-alias, -correspondsWith) %>%
     save(., file = './data/p1shRNAdox.rda', compress = "bzip2")
