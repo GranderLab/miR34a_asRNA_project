@@ -75,12 +75,13 @@ read_tsv('./data-raw/stableLineExpression.txt', col_names = TRUE) %>%
     ) %>%
     mutate(
         `Genetic mod` = gsub("miR34a AS", "miR34a asRNA", .data$`Genetic mod`),
-        gene = gsub("miR34a asRNA F1R1", "miR34a asRNA", .data$gene)
+        gene = gsub("miR34a asRNA F1R1", "miR34a asRNA", .data$gene),
+        gene = gsub("B-actin", "Actin", .data$gene)
     ) %>%
     mutate(
         `Cell line` = parse_factor(`Cell line`, levels = c("PC3", "Skov3", "Saos2")),
         `Genetic mod` = parse_factor(`Genetic mod`, levels = c("mock", "miR34a asRNA")),
-        gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a", "B-actin", "RNU48"))
+        gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a", "Actin", "RNU48"))
     ) %>%
     save(., file = './data/stableLineExpression.rda', compress = "bzip2")
 
