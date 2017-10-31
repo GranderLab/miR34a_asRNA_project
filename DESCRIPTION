@@ -15,5 +15,6 @@ Suggests:
     RCurl,
     ggthemes,
     repmis,
-    tidyverse
+    tidyverse,
+    extrafont
 VignetteBuilder: knitr
