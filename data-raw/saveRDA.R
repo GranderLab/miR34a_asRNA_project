@@ -114,6 +114,17 @@ read_tsv('./data-raw/growthStarvation.txt', col_names = TRUE)  %>%
 
 #stableLinePolIIChIP
 read_tsv('./data-raw/stableLinePolIIChIP.txt', col_names = TRUE) %>%
+    rename(
+        `Biological Replicate` = experiment,
+        `Cell line` = cellLine
+    ) %>%
+    mutate(
+        condition = gsub("miR34a AS", "miR34a asRNA", .data$condition),
+        gene = gsub("miR34a AS", "miR34a asRNA", .data$gene)
+    ) %>%
+    mutate(
+        condition = parse_factor(condition, levels = c("mock", "miR34a asRNA"))
+    ) %>%
     save(., file = './data/stableLinePolIIChIP.rda', compress = "bzip2")
 
 #source('./data-raw/saveRDA.R')
