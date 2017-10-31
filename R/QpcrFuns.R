@@ -3,7 +3,7 @@ technicalMeans <- function(data, grouping) {
     data %>%
     gather(`Tech. Replicate`, Ct, -grouping) %>%
     group_by(!!! rlang::syms(grouping)) %>%
-    summarize(ctMean = mean(Ct)) %>%
+    summarize(ctMean = mean(Ct, na.rm = TRUE)) %>%
     ungroup()
 }
 
@@ -16,7 +16,7 @@ dct <- function(data, GOIs, HK, grouping) {
     spread(gene, ctMean) %>%
     mutate(HK = quo_name(quo.hk)) %>%
     rename(ctMeanHK = !!quo.hk) %>%
-    gather(GOI, ctMeanGOI, -one_of(names(.)[!names(.) %in% gois]), factor_key = TRUE) %>%
+    gather(GOI, ctMeanGOI, -one_of(names(.)[!names(.) %in% GOIs]), factor_key = TRUE) %>%
     mutate(dct = ctMeanGOI - ctMeanHK) %>%
     select(grouping, HK, ctMeanHK, GOI, ctMeanGOI, dct)
 }
