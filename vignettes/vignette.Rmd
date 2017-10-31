@@ -893,7 +893,7 @@ ggplot(data = NULL) +
     axis.title = element_text(size = 17),
     axis.title.x = element_text(margin = margin(t = 10)),
     axis.text = element_text(size = 15)
-  )+ 
+  ) + 
   guides(
     color = guide_legend(
       title = "Gene", 
@@ -902,8 +902,228 @@ ggplot(data = NULL) +
   )
 ```
 
-#Conclusion
+####Conclusion
 Levels of luciferase were abrogated in the shRenilla-transfected cells compared to control shRNA-transfected cells. Collectively, these results indicate that miR34a asRNA positively regulates levels of miR34a HG and is crucial for a proper miR34a response to apoptotic stimuli.
+
+###Figure 3a
+####Introduction
+We hypothesized that miR34a asRNA may function to mediate the levels of its sense gene, miR34a. To this end, we stably over-expressed miR34a asRNA, using lentiviral transduction, in 3 different p53-null cell lines and monitored the effects on miR34a.
+
+####Methods
+
+#####miR34a asRNA cloning
+RNA was harvested from U2OS cells using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was run using the miR34aAS_cloning_F4 and miR34aAS_cloning_Ex3_1 primers for 40 cycles at annealing temperature 58˚C and run on an agarose gel. Bands were excised and extracted using the QIAquick gel extraction kit (Qiagen). PCR products were cloned using the Strata Clone kit (Aligent) and sequenced (results below). The insert for the lentiviral construct (p-HIV-I2AG-U6) was subsequently sub-cloned from the sequenced plasmid using primers with PacI and NheI cleavage sites. The cloned transcript largley mirrors the GENCODE annotated transcript.
+
+######Cloning primers
+```{r}
+library(printr)
+primers <- data.frame(
+    name=c(
+        "miR34aAS_cloning_F4",
+        "miR34aAS_cloning_Ex3_1"
+    ),
+    sequence=c(
+        "ACGCGTCTCTCCAGCCCGGGAT",
+        "AATGATGGCCGCAACTAATGACGG"
+    )
+)
+primers
+```
+
+######Sequencing results
+```{r}
+construct <- data.frame(
+    name="miR34a_asRNA",
+    sequence="ACG CGT CTC TCC AGC CCG GGA TCC GGG GAG CTG GGC TGT CCC CAG ACC GAC GGG ACA GCG GCA
+                TCT CCT CCA CCT GAA AAG GAA AGA GGA CCA GTT TGC AGG ACT CCG AAC TGG GCC CGC GAG ATC 
+                TCC ACC TGC GCA AAA CGA AAG GGC GGA TTC TCC TTG GAC TCA CGA GGC AAC CGC TCC CCG GGG 
+                TGA GAA CGG GGG ACT CAT TCC TCC GGC ACT GGG AGA AGA CGA TTC TTC AGG AGG AGG ACA GGG 
+                AAG CGA ATG CTA CCC AGA TGT CTC AGT ATA CTG GCT CGC GGC ACA TCG GGC AAA TGA ACC TAT 
+                CAG ATA ACA ACG GCA GAT CAG ATG CCT GAG CAT TCA GAA GCA ACA GCT GTG GAG CCC CCG TGG 
+                GTT CAG AAG GCC TGG TTC CCG TCT CCA GAA GCC TGG CTC TCC TCC CTC CTG GGC CCA CTA CTT 
+                TGG CTT CTT GTT CCT ACG TAC AAG GAG TTG CGA AGA AGG CAA CTC TTC CCC TCC CTG AAG CCA
+                AAG GAA TGA AAC AGA CTA GGG CGG GAG AGG TGG CCA TCC GTC ATT AGT TGC GGC CAT CA"
+)
+construct
+```
+
+#####Lentivirus production and infection
+HEK293T cells were transfected with viral and expression constructs using Lipofectamine 2000 (Life Technologies), after which viral supernatants were harvested 48 and 72 hours post-transfection. Viral particles were concentrated using PEG-IT solution (Systems Biosciences) according to the manufacturer’s recommendations. HEK293T cells were used for virus titration and GFP expression was evaluated 72hrs post-infection via flow cytometry after which TU/ml was calculated. Cell lines were subsequently infected with the lentiviral particals using a multuplicity of infection = 1. After 48 hours, cells were placed under mycophenolic acid selection and the selection process was monitored using GFP expression via flow cytometry. When GFP expression was present in >90% of the cells, cells were frozen for downstream analysis.
+
+#####QPCR
+RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+QPCR for miRNA expression analysis was performed according to the protocol for the TaqMan microRNA Assay kit (Life Technologies) with primer/probe sets purchased from the same company (TaqMan® MicroRNA Assay, hsa-miR-34a, human and Control miRNA Assay, RNU48, human) and the same cycling scheme as above.
+
+######QPCR primers
+```{r}
+###Q-PCR primers
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a_asF1",
+        "miR34a_asR1"
+        
+    ),
+    sequence=c(
+        "AGGTCATCACCATTGGCAATGAG",
+        "CTTTCGGGATGTCCACGTCA",
+        "AGCGGCATCTCCTCCACCTGAAA",
+        "TTGCCTCGTGAGTCCAAGGAGAAT"
+        
+    )
+)
+primers
+```
+
+####Results
+
+```{r, message=FALSE}
+url <- "stableLineExpression.rda"
+repmis::source_data(file.path(dataUrl, url))
+data <- .
+
+#remove Skov exp 1 due to variability in technical replicates
+data <- filter(data, `Biological Replicate` != 1 | `Cell line` != "Skov3")
+
+#Have to divide the analysis due to the presence of several house 
+#keeping genes.
+gois1 <- c("miR34a asRNA", "Actin")
+gois2 <- c("miR34a", "RNU48")
+data1 <- filter(data, gene %in% gois1)
+data2 <- filter(data, gene %in% gois2)
+
+#calculate dct
+groups <- c("Genetic mod", "Biological Replicate", "Cell line", "gene")
+
+data1 <- data1 %>%
+  technicalMeans(., groups) %>%
+  dct(., gois1, Actin, groups) %>%
+  mutate(GOI = as.character(GOI))
+
+data2 <- data2 %>%
+  technicalMeans(., groups) %>%
+  dct(., gois2, RNU48, groups) %>%
+  mutate(GOI = as.character(GOI))
+
+data <- bind_rows(data1, data2) %>%
+  mutate(GOI = parse_factor(GOI, levels = c("miR34a asRNA", "miR34a")))
+
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  `Biological Replicate` = pull(data, `Biological Replicate`) == 2,
+  `Genetic mod` = pull(data, `Genetic mod`) == "mock"
+)
+
+data <- data %>%
+  ddct(., logical, groups) %>%
+  folds(.)
+
+#calculate stats
+stats <- calcStats(data, `Genetic mod`, "mock", groups) %>%
+  pFormat(.)
+
+#format for plotting
+lev <- c("PC3\nmock", "PC3\nmiR34a asRNA", "Skov3\nmock", "Skov3\nmiR34a asRNA", "Saos2\nmock",   "Saos2\nmiR34a asRNA")
+
+data <- data %>%
+  mutate(Condition = paste(`Cell line`, `Genetic mod`, sep = "\n")) %>%
+  mutate(Condition = parse_factor(Condition, levels = lev))
+
+stats <- stats %>%
+  mutate(Condition = paste(`Cell line`, `Genetic mod`, sep = "\n")) %>%
+  mutate(Condition = parse_factor(Condition, levels = lev))
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
+#plot for rmarkdown
+ggplot(data = NULL)+
+  geom_violin(
+    data = data,
+    aes(x = Condition, y = log2fold, group = interaction(Condition, GOI)),
+    trim=TRUE,
+    alpha=0.5,
+    fill="grey",
+    colour=NA,
+    scale="width",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = data,
+    aes(x = Condition, y = log2fold, colour = GOI, group = interaction(Condition, GOI)),
+    size = 2, 
+    alpha = 0.75,
+    position = position_dodge(width = 0.9)
+  ) +
+  facet_grid(
+    . ~ `Cell line`, 
+    scales = "free", 
+    space = "free"
+  ) +
+  geom_linerange(
+    data = stats,
+    aes(x = Condition, ymin = CI95l, ymax = CI95h, group = interaction(Condition, GOI)),
+    position = position_dodge(width = 0.9),
+    colour = "grey25",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(x = Condition, y=mean, group = interaction(Condition, GOI)),
+    colour = "black",
+    size = 1,
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = stats,
+    aes(x = Condition, y = CI95h + 0.5, label = pFormat, group = interaction(Condition, GOI)),
+    fill = "white",
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE,
+    fontface = "bold",
+    family = "Arial Unicode MS",
+    size = 3
+  ) +
+  scale_y_continuous("\u0394\u0394Ct")+
+  labs(
+    x = "Cell line",
+    title = "miR34a asRNA over-expressing cell lines",
+    caption = 
+            "miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-expressing miR34a asRNA compared to mock over-expressing control.\n\u0394\u0394ct = House keeping gene - Target gene - mock control. Error bars indicate 95% CI and black points represent the mean."
+  )+
+  theme_few() +
+  scale_colour_ptol() +
+  theme(
+    legend.position = "top",
+    legend.title = element_text(size = 17),
+    legend.text = element_text(size = 15),
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 20
+    ),
+    plot.caption = element_text(
+      hjust = 0, 
+      margin = margin(t = 15),
+      family = "Arial Unicode MS"
+    ),
+    axis.title = element_text(size = 17),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.text = element_text(size = 12),
+    strip.text.x = element_text(size = 17)
+  )+
+  guides(
+    color = guide_legend(title = "Gene", override.aes = list(size = 4)))
+```
+
+####Conclusion
+miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all 3 cell lines. This indicates that miR34a asRNA concordantly regulates miR34a.
+
+
 ###Session info
 ```{r}
 sessionInfo()
