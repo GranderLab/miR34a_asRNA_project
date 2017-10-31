@@ -101,7 +101,15 @@ read_tsv('./data-raw/stableLineCellCycle.txt', col_names = TRUE) %>%
     save(., file = './data/stableLineCellCycle.rda', compress = "bzip2")
 
 #growthStarvation
-read_tsv('./data-raw/growthStarvation.txt', col_names = TRUE) %>%
+read_tsv('./data-raw/growthStarvation.txt', col_names = TRUE)  %>%
+    filter(Time <= 35) %>%
+    mutate(Time = parse_factor(Time, levels = as.character(0:max(Time)))) %>%
+    mutate(Treatment = parse_factor(Treatment, levels = c("RPMI", "HBSS"))) %>%
+    mutate(`Cell line` = paste(`Cell line`, Condition, sep = " ")) %>%
+    mutate(`Cell line` = gsub("PC3 F4", "PC3 miR34a asRNA", `Cell line`)) %>%
+    select(-Condition) %>%
+    mutate(`Cell line` = parse_factor(`Cell line`, levels = c("PC3 Mock", "PC3 miR34a asRNA"))) %>%
+    rename(`Biological Replicate` = Biological.replicate, `Technical Replicate` = Technical.replicate) %>%
     save(., file = './data/growthStarvation.rda', compress = "bzip2")
 
 #stableLinePolIIChIP
