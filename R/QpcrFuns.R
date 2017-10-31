@@ -48,24 +48,6 @@ ddct <- function(data, logical, grouping) {
     rename(dct = dct.x)
 }
 
-test <- function(data, logical, grouping) {
-    logical.grps <- rlang::syms(c(colnames(logical), "dct"))
-    tmp <- c("untreated_1_HCT116", "untreated_1_HEK293t")
-    
-    data %>%
-    select(grouping, dct) %>%
-    unite(variables, grouping) %>%
-    group_by(variables) %>%
-    mutate(id=1:n()) %>%
-    spread(variables, dct) %>%
-    select(-id) %>%
-    gather(variables, value, -one_of(tmp)) %>%
-    separate(variables, grouping, sep = "_")
-    
-    
-    reshape2::dcast(dct ~ variables)
-}
-
 #' @export
 folds <- function(data) {
     data %>%
