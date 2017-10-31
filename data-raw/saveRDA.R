@@ -87,6 +87,17 @@ read_tsv('./data-raw/stableLineExpression.txt', col_names = TRUE) %>%
 
 #stableLineCellCycle
 read_tsv('./data-raw/stableLineCellCycle.txt', col_names = TRUE) %>%
+    rename(
+        `Biological Replicate` = experiment,
+        `Cell line` = cellLine
+    ) %>%
+    mutate(
+        condition = gsub("miR34a AS", "miR34a asRNA", .data$condition)
+    ) %>%
+    mutate(
+        condition = parse_factor(condition, levels = c("mock", "miR34a asRNA")),
+        phase = parse_factor(phase, levels = c("G1", "S", "G2"))
+    ) %>%
     save(., file = './data/stableLineCellCycle.rda', compress = "bzip2")
 
 #growthStarvation
