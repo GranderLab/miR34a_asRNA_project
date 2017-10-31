@@ -10,7 +10,7 @@ output:
 ---
 
 #Introduction
-As p53 is a well-known regulator of senescence and apoptosis and has been shown to specifically importatnt under conditions of cellular stress, such as starvation. Therefore, we investigated whether overexpression of miR34a AS affects growth rate under normal and starvation conditions by measuring changes in confluency over time.
+As p53 is a well-known regulator of senescence, growth, and apoptosis and has been shown to specifically important under conditions of cellular stress, such as starvation. Therefore, we investigated whether overexpression of miR34a AS affects growth rate under normal and starvation conditions by measuring changes in confluency over time.
 
 #Methods
 10^4 PC3 cells, either miR34a asRNA overexpressing or WT, were seeded in 96 well plates. After attachment (3-4h) media was replaced with either RPMI (Gibco, life technology) (supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum) or HBSS. Cells were incubated in Spark Multimode Microplate reader for 48 hours at 37°C with 5% CO2 in a humidity chamber. Confluency was measured every hour. 
