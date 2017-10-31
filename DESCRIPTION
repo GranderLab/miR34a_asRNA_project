@@ -16,5 +16,6 @@ Suggests:
     ggthemes,
     repmis,
     tidyverse,
-    extrafont
+    extrafont,
+    scales
 VignetteBuilder: knitr
