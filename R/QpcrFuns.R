@@ -10,15 +10,18 @@ technicalMeans <- function(data, grouping) {
 #' @export
 dct <- function(data, GOIs, HK, grouping) {
     quo.hk <- enquo(HK)
-    grouping <- grouping[grouping != "gene"]
+    grouping1 <- grouping[grouping != "gene"]
+    grouping2 <- grouping1[grouping1 != "Biological Replicate"]
     
     data %>%
     spread(gene, ctMean) %>%
     mutate(HK = quo_name(quo.hk)) %>%
     rename(ctMeanHK = !!quo.hk) %>%
     gather(GOI, ctMeanGOI, -one_of(names(.)[!names(.) %in% GOIs]), factor_key = TRUE) %>%
-    mutate(dct = ctMeanGOI - ctMeanHK) %>%
-    select(grouping, HK, ctMeanHK, GOI, ctMeanGOI, dct)
+    group_by(!!!rlang::syms(grouping2)) %>%
+    mutate(dct = ctMeanGOI - mean(ctMeanHK)) %>%
+    ungroup() %>%
+    select(grouping1, HK, ctMeanHK, GOI, ctMeanGOI, dct)
 }
 
 #' @export
@@ -35,6 +38,7 @@ dct <- function(data, GOIs, HK, grouping) {
 #}
 
 ddct <- function(data, logical, grouping) {
+    grouping1 <- grouping[grouping != "Biological Replicate"]
     logical.grps <- colnames(logical)
     logical <- ifelse(rowSums(logical) == ncol(logical), TRUE, FALSE)
     
@@ -43,7 +47,8 @@ ddct <- function(data, logical, grouping) {
     
     data %>%
     left_join(cnt, by = grouping[!grouping %in% logical.grps]) %>%
-    mutate(ddct = dct.x - dct.y) %>%
+    group_by(!!!rlang::syms(grouping1)) %>%
+    mutate(ddct = dct.x - mean(dct.y)) %>%
     select(-dct.y) %>%
     rename(dct = dct.x)
 }

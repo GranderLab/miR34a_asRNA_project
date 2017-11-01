@@ -30,6 +30,7 @@ rm(packages)
 projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
 ```
+##Figure 1 {.tabset}
 
 ### Figure 1a
 ####Introduction
@@ -50,11 +51,11 @@ A schematic picture of the miR34a locus from UCSC genome browser (hg38) includin
 <br></br><br></br>
 
 ####Conclusion
-GENCODE annotation supports the presence of a transcript orinionating in the antisense orientation from the miR34a gene. 
+GENCODE annotation supports the presence of a transcript orininating in the antisense orientation from the miR34a gene. 
 
 ###Figure 1b
 ####Introduction
-We wished to examine expression in different tissue types and, therefore, utilized a panel of common cell lines to detect miR34a asRNA expression, as well as, miR34a HG. We included both p53+/+ and p53-/- cell lines in the cell line panel due to the fact that miR34a is a known downstream target of p53. 
+We wished to examine expression of miR34a asRNA in different cancer tissues and, therefore, utilized a panel of common cancer cell lines to detect miR34a asRNA expression, as well as, miR34a HG. We included both p53 wild type, p53 mutated, and p53 null cell lines in the cell line panel due to the fact that miR34a is a known downstream target of p53. 
 <br></br><br></br>
 
 ####Methods
@@ -96,7 +97,7 @@ Semi-quantitative PCR data from the screening of a panel of cell lines.
 <br></br><br></br>
 
 ####Conclusions
-We were able to detect co-expression of both miR34a HG and miR34a AS in a variety of cell lines, including HCT116 human colon cancer cells and 293T human embryonic kidney cells. A correlation was observed between both miR34a HG and miR34a asRNA expression and p53 status, with p53+/+ cell lines tending to have higher expression of both transcripts.
+We were able to detect co-expression of both miR34a HG and miR34a AS in a variety of cell lines, including HCT116 human colon cancer cells and 293T human embryonic kidney cells.
 
 ###Figure 1c
 
@@ -111,12 +112,26 @@ knitr::include_graphics(file.path(projectUrl, url))
 
 ###Figure 1d
 ####Introduction
-In order to define the 3' transcription stop site for the miR34a asRNA, 3'-RACE was performed.
+In order to define the 3' transcription termination site for the miR34a asRNA, 3'-RACE was performed.
 <br></br><br></br>
 
 ####Methods
-All cell lines were cultured at 5% CO2 and 37° C with U2OS cells grown in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. U2OS cell RNA was polyA-tailed using yeast polyA polymerase after which cDNA was synthesized using oligo(dT) primers. Nested-PCR was performed first using a forward primer in miR34a asRNA exon 1 (miR-34a asRNA F10 forward primer - ACGCGTCTCTCCAGCCCGGGAT) and a tailed oligo(dT) primer (poly T T7-FAM) followed by a second PCR using an alternate miR34a asRNA exon 1 primer (miR-34a asRNA F1 forward primer - AGCGGCATCTCCTCCACCTGAAA) and a reverse primer binding to the tail of the previously used oligo(dT) primer (FAM primer). PCR products were gel purified and cloned the Strata Clone Kit (Agilent Technologies), and sequenced.
+All cell lines were cultured at 5% CO2 and 37° C with U2OS cells grown in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. U2OS cell RNA was polyA-tailed using yeast polyA polymerase after which cDNA was synthesized using oligo(dT) primers. Nested-PCR was performed first using a forward primer in miR34a asRNA exon 1 (miR34a_asRNA_F10) and a tailed oligo(dT) primer (polyT_T7FAM) followed by a second PCR using an alternate miR34a asRNA exon 1 primer (miR34a_asRNA_F1) and a reverse primer binding to the tail of the previously used oligo(dT) primer (FAMprimer). PCR products were gel purified and cloned the Strata Clone Kit (Agilent Technologies), and sequenced.
 <br></br><br></br>
+
+#####Primers
+```{r}
+primers <- data.frame(
+  name = c("miR34a_asRNA_F10", "polyT_T7FAM", "miR34a_asRNA_F1", "FAMprimer"),
+  sequence = c(
+    "ACG CGT CTC TCC AGC CCG GGA T",
+    "CAG TGA ATT GTA ATA CGA CTC ACT ATA GGG ACA TCC GTA GCT CGT CCA GGA CCC TTT TTT TTT TTT TTT TTT VN",
+    "AGC GGC ATC TCC TCC ACC TGA AA",
+    "CCG TAG CTC GTC CAG GAC CC"
+  )
+)
+primers
+```
 
 ####Results
 ```{r, out.width = "850px"}
@@ -211,7 +226,10 @@ cpat
 
 Coding potential analysis results from the Coding-potential Assessment Tool including miR34a asRNA and two characterized non-coding transcripts (HOTAIR and XIST) and 3 known coding transcripts (β-actin, tubulin, and MYC). 
 
+<br></br><br></br>
+
 #####Coding Potential Calculator
+
 ```{r}
 url <- "codingPotential/CodingPotentialCalculator/results.txt"
 cpc <- read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
@@ -227,20 +245,25 @@ Coding potential analysis results using the Coding-potential calculator for miR3
 ####Conclusions
 Results indicated that miR34a asRNA has a similar lack of coding capacity to the known non-coding transcripts HOTAIR and XIST and differs greatly when examining these parameters to the known coding transcripts beta-actin, tubulin, and MYC. However, to fully evaluate coding potential methods such as mass spectrometry or ribosome profiling must be used. 
 
+
+##Figure 2 {.tabset}
+
 ###Figure 2a
 
 ####Introduction
-miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression with cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated p53+/+ and p53-/- HCT116 cells with increasing concentrations of the DNA damaging agent doxorubicin and monitored miR34a asRNA expression.
+miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression upon cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated p53 wild type and p53 null HCT116 cells with increasing concentrations of the DNA damaging agent doxorubicin and monitored miR34a asRNA expression.
 <br></br><br></br>
 
 ####Methods
 HCT116 cells were cultured in DMEM high modified (Hyclone, GE healthcare) supplemented with supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum.  
-25 x 10^5 HCT116 cells were plated in 6 well plates. 24 hours later media was exchanged and doxorubicin was added to a final concentration of 100, 200 or 500 ng/ml. Cells were harvested for RNA extraction 24 hours later using trypsin. RNA was extracted using Nucleospin RNA kit (Machery-Nagel Ref. 740955) according to manufacturer‟s protocol and DNase treated using Ambion Turbo DNA-free according to manufacturer‟s protocol (Life Technologies Ref. AM1907). cDNA was synthesized using ~500 ng RNA with M-MLV (Life Technologies Ref 28025013) and a mixture of oligo(dT) with nanomers in accordance with the manufacturer's protocol.
-qPCR quantification was carried out using the PowerUp SYBR Green Master Mix (Thermo Fisher Scientific, Ref. A25777) on the CFX96 Touch Real-Time PCR Detection System: 50°C for 2 min, 95°C for 2min, and 95°C for 1 sec followed by 60°C for 30 sec repeated for 40 cycles. The following primers were used:
+25 x 10^5 HCT116 cells were plated in 6 well plates. 24 hours later media was exchanged and doxorubicin was added to a final concentration of 100, 200 or 500 ng/ml. Cells were harvested for RNA extraction 24 hours later using trypsin. RNA was extracted using Nucleospin RNA kit (Machery-Nagel Ref. 740955) according to manufacturer‟s protocol and DNase treated using Ambion Turbo DNA-free according to manufacturer‟s protocol (Life Technologies Ref. AM1907). cDNA was synthesized using ~500 ng RNA with M-MLV (Life Technologies Ref 28025013) and a mixture of oligo(dT) with nanomers in accordance with the manufacturer's protocol. qPCR quantification was carried out using the PowerUp SYBR Green Master Mix (Thermo Fisher Scientific, Ref. A25777) on the CFX96 Touch Real-Time PCR Detection System: 50°C for 2 min, 95°C for 2min, and 95°C for 1 sec followed by 60°C for 30 sec repeated for 40 cycles. qPCR primers are shown below. Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the dct value for the corresponding untreated sample. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the p-53 wild type and p-53 null groups in each treatment concentration and for both genes.  
+
 <br></br><br></br>
 
 #####Primers
+
 ```{r}
+
 primers <- data.frame(
     name=c(
         "ß-actin Fwd",
@@ -263,12 +286,13 @@ primers <- data.frame(
 )
 primers
 ```
+
 <br></br><br></br>
 
 ####Results
 
 Perform ddct analysis and statistical testing.
-```{r}
+```{r, message = FALSE}
 #download and format data
 url <- "HCT116p53null.rda"
 repmis::source_data(file.path(dataUrl, url))
@@ -320,90 +344,88 @@ Plot the results.
 ```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
 #plot for Rmarkdown
 ggplot(data = NULL) +
-    geom_violin(
-        data = data,
-        aes(x = Treatment, y = log2fold, fill = Condition),
-        trim = TRUE,
-        alpha = 0.3,
-        color = NA,
-        scale = "width",
-        show.legend = TRUE
-    ) +
-    geom_point(
-        data = stats,
-        aes(x = Treatment, y = mean, group = Condition), 
-        position = position_dodge(width = 0.9), 
-        size = 4
-    ) +
-    facet_grid(. ~ GOI) +
-    geom_linerange(
-        data = stats,
-        aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
-        colour = "black",
-        position = position_dodge(width = 0.9),
-        show.legend = FALSE
-    ) +
-    geom_label(
-        data = stats,
-        aes(x = Treatment, y = max + 0.22, label = pFormat),
-        label.size = 0,
-        label.padding = unit(0.01, "lines"),
-        show.legend = FALSE,
-        fill = "white",
-        size = 5,
-        family = "Arial Unicode MS",
-        position = position_dodge(width = 0.9)
-    ) +
-    geom_segment(
-        data = stats,
-        aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
-        colour="grey43",
-        show.legend = FALSE
-    ) +
-    scale_y_continuous(
-        "\u0394\u0394Ct",
-        breaks=c(-1,0,1,2,3,4,5),
-        sec.axis = sec_axis(
-            ~2^., 
-            name = expression(2^{- ~ Delta ~ Delta ~ "Ct"}), 
-            breaks=c(2^-1,2^0,2^1,2^2,2^3,2^4,2^5)
-        )
-    )+
-    labs(
-      x="Treatment",
-      title="miR34a asRNA regulation by p53 induction",
-      caption=
+  geom_violin(
+    data = data,
+    aes(x = Treatment, y = log2fold, fill = Condition),
+    trim = TRUE,
+    alpha = 0.3,
+    color = NA,
+    scale = "width",
+    show.legend = TRUE
+  ) +
+  geom_point(
+    data = data,
+    aes(x = Treatment, y = log2fold, colour = Condition),
+    size = 4,
+    position = position_dodge(width = 0.9),
+    stroke = 0
+  ) +
+  geom_point(
+    data = stats,
+    aes(x = Treatment, y = mean, group = Condition), 
+    position = position_dodge(width = 0.9), 
+    size = 4
+  ) +
+  facet_grid(. ~ GOI) +
+  geom_linerange(
+    data = stats,
+    aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
+    colour = "black",
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = stats,
+    aes(x = Treatment, y = max + 0.22, label = pFormat),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 5,
+    family = "Arial Unicode MS",
+    position = position_dodge(width = 0.9)
+  ) +
+  geom_segment(
+    data = stats,
+    aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
+    colour="grey43",
+    show.legend = FALSE
+  ) +
+  scale_y_continuous("\u0394\u0394Ct", breaks = c(-1,0,1,2,3,4,5))+
+  labs(
+    x = "Treatment",
+    title = "miR34a asRNA regulation by p53 induction",
+    caption = 
             "Monitoring the effects of 24 hours doxorubicin treatment on miR34a asRNA and HG in P53+/+ and p53-/- HCT116 cells."
-    )+
-    theme_few()+
-    scale_fill_ptol()+
-    scale_colour_ptol()+
-    #values=c("#014d64", "#6794a7")
-    theme(
-        plot.title = element_text(
-            hjust = 0.5,
-            face="bold",
-            size=20
-        ),
-        plot.caption = element_text(
-            hjust=0, 
-            margin=margin(t=15),
-            family="Arial Unicode MS"
-        ),
-        legend.position = "top",
-        legend.title=element_text(size=17),
-        legend.text=element_text(size=15),
-        axis.title=element_text(size=17),
-        axis.title.x=element_text(margin=margin(t=10)),
-        axis.text=element_text(size=15),
-        strip.text.x=element_text(size=17)
-    )+
-    guides(fill = guide_legend(title = "Cell line", override.aes = list(size=3)))
+  ) +
+  theme_few() +
+  scale_fill_ptol() +
+  scale_colour_ptol() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 20
+    ),
+    plot.caption = element_text(
+      hjust = 0, 
+      margin = margin(t = 15),
+      family = "Arial Unicode MS"
+    ),
+    legend.position = "top",
+    legend.title = element_text(size = 17),
+    legend.text = element_text(size = 15),
+    axis.title = element_text(size = 17),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.text = element_text(size = 15),
+    strip.text.x = element_text(size = 17)
+  )+
+  guides(fill = guide_legend(title = "Cell line", override.aes = list(size=3)))
 ```
 <br></br><br></br>
 
 ####Conclusions
-We observed increasing miR34a HG and asRNA expression with increasing doses of doxorubicin indicating that these two transcripts are co-regulated by p53. Although p53+/+ cells showed a 25-fold increase over untreated cells in miR34a AS expression at the highest tested doxorubicin concentration, this effect was largely abrogated, 11 fold over untreated, in p53-/- cells, indicating that p53 is a major regulator of miR34a asRNA expression. 
+We observed increasing miR34a HG and asRNA expression with increasing doses of doxorubicin indicating that these two transcripts are co-regulated by p53. Although p53 wild type cells showed a 25-fold increase over untreated cells in miR34a AS expression at the highest tested doxorubicin concentration, this effect was largely abrogated, 11 fold over untreated, in p53 null cells, indicating that p53 is a major regulator of miR34a asRNA expression. 
 
 ###Figure 2b
 ####Introduction
@@ -412,6 +434,7 @@ miR34a is a known downstream target of p53 and has been previously shown to exhi
 ####Methods
 All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. The following day cells were treated with 0, 100, 200, or 500 ng/ml doxorubicin for 24hrs. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the dct value for the corresponding untreated sample. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the p-53 wild type and p-53 null groups in each treatment concentration and for both genes. 
 ```{r}
 primers <- data.frame(
     name=c(
@@ -437,7 +460,7 @@ primers
 ```
 
 ####Results
-```{r}
+```{r, message = FALSE}
 url <- "HctHekDox.rda"
 repmis::source_data(file.path(dataUrl, url))
 data <- .
@@ -909,6 +932,9 @@ ggplot(data = NULL) +
 
 ####Conclusion
 Levels of luciferase were abrogated in the shRenilla-transfected cells compared to control shRNA-transfected cells. Collectively, these results indicate that miR34a asRNA positively regulates levels of miR34a HG and is crucial for a proper miR34a response to apoptotic stimuli.
+
+
+##Figure 3 {.tabset}
 
 ###Figure 3a
 ####Introduction
@@ -1568,6 +1594,12 @@ ggplot(data = NULL)+
 
 ####Conclusion
 Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-expressing cell lines indicating that the regulation of miR34a by miR34a asRNA is transcriptional.
+
+
+##Supplementary figure 1 {.tabset}
+###Supplementary figure 1a
+
+###Supplementary figure 1b
 
 ###Session info
 ```{r}
