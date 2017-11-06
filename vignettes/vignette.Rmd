@@ -11,6 +11,21 @@ vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+liftr:
+  maintainer: "Jason Serviss"
+  email: "jason.serviss@ki.se"
+  from: "rocker/tidyverse:3.4.2"
+  pandoc: false
+  cran:
+    - knitr/1.17
+    - rmarkdown/1.6
+    - printr/0.1
+    - ggthemes/3.4.0
+    - repmis/0.5
+    - extrafont/0.17
+    - scales/0.5.0
+  remotes:
+    - "GranderLab/miR34a_asRNA_project"
 ---
 
 ```{r, echo = FALSE, message = FALSE}
@@ -19,7 +34,6 @@ packages <- c(
     "printr",
     "ggthemes",
     "readr",
-    "RCurl",
     "miR34AasRNAproject"
 )
 purrr::walk(packages, library, character.only = TRUE)
@@ -151,6 +165,9 @@ knitr::include_graphics(file.path(projectUrl, url))
 
 <br></br><br></br>
 
+
+###Supplementary Figure 1a
+
 ###Figure 1d
 
 ####Introduction
@@ -245,16 +262,7 @@ primers
 
 ####Results
 
-```{r, out.width = "850px"}
-url <- "primerWalk/schematic_hg38.png"
-knitr::include_graphics(file.path(projectUrl, url))
-```
-
-<br></br>
-
-A schematic picture of the miR34a asRNA locus including the location of the primers used in the primer walk assay.
-
-<br></br>
+Primer placement at the locus can be viewed in Supplementary Figure 1b.
 
 ```{r, out.width = "500px"}
 url <- "primerWalk/gel.png"
@@ -272,6 +280,20 @@ The semi-quantitative PCR results from the primer walk assay performed using HEK
 It appears as though the miR34a asRNA transcript start site is somewhat upstream of the annotated start site. Although there is some product present for the F12 primer, the majority of transcription seems to be originating from the F11 primer. This indicates that the start site is between 71-224bp upstream of the annotated start site.
 
 <br></br><br></br>
+
+
+###Supplementary Figure 1b
+
+```{r, out.width = "850px"}
+url <- "primerWalk/schematic_hg38.png"
+knitr::include_graphics(file.path(projectUrl, url))
+```
+
+<br></br>
+
+A schematic picture of the miR34a asRNA locus including the location of the primers used in the primer walk assay.
+
+<br></br>
 
 ###Figure 1f and supplementary figure ??????????????
 
@@ -322,6 +344,15 @@ Coding potential analysis results using the Coding-potential calculator for miR3
 Results indicated that miR34a asRNA has a similar lack of coding capacity to the known non-coding transcripts HOTAIR and XIST and differs greatly when examining these parameters to the known coding transcripts beta-actin, tubulin, and MYC. However, to fully evaluate coding potential methods such as mass spectrometry or ribosome profiling must be used. 
 
 <br></br><br></br>
+
+
+###Move schematic from previous figure here. Supplementary Figure 1g
+
+###Supplementary Figure 1c (poly aden)
+###Supplementary Figure 1d (isoforms)
+###Supplementary Figure 1e (cellular loc)
+###Supplementary Figure 1f (stability)
+
 
 ##Figure 2 {.tabset}
 
@@ -1544,6 +1575,9 @@ miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all
 
 <br></br><br></br>
 
+
+###Supplementarty Figure 2a (stable with HEK)
+
 ###Figure 3b
 
 ####Introduction
@@ -1590,10 +1624,6 @@ stats <- data %>%
   ) %>%
   ungroup() %>%
   pFormat(.)
-  #mutate(pFormat = case_when(
-  #  pValue >= 0.05 & pValue != 1 ~ "n.s.",
-  #  TRUE ~ pFormat
-  #))
 
 #prepare for plotting
 #change value back to percent
@@ -2086,13 +2116,13 @@ Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-
 
 <br></br><br></br>
 
-##Supplementary figure 1 {.tabset}
 
-###Supplementary figure 1a
+###Supplementarty Figure 2b (CCND1 exp)
+###Supplementarty Figure 2c (CCND1 prot)
 
-###Supplementary figure 1b
 
-###Session info
+
+##Session info
 
 ```{r}
 sessionInfo()
