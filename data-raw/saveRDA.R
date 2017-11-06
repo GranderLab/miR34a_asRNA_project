@@ -127,4 +127,14 @@ read_tsv('./data-raw/stableLinePolIIChIP.txt', col_names = TRUE) %>%
     ) %>%
     save(., file = './data/stableLinePolIIChIP.rda', compress = "bzip2")
 
+#cellular localization
+read_tsv('./data-raw/cellularLocalization.txt', col_names = TRUE) %>%
+    mutate(
+        gene = gsub("miR34a asRNA", "miR34a\nasRNA", .data$gene),
+        gene = gsub("miR34a HG", "miR34a\nHG", .data$gene),
+        gene = gsub("B-actin", "Actin", .data$gene),
+        gene = parse_factor(gene, levels = c("miR34a\nasRNA", "miR34a\nHG", "Actin", "RNU48"))
+    ) %>%
+    rename(`Cell line` = cellLine) %>%
+    save(., file = './data/cellularLocalization.rda', compress = "bzip2")
 #source('./data-raw/saveRDA.R')
