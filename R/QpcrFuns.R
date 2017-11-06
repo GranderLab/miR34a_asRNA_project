@@ -15,7 +15,8 @@ dct <- function(
     data,
     GOIs,
     HK,
-    grouping
+    grouping,
+    med = TRUE
 ){
     quo.hk <- enquo(HK)
     grouping1 <- grouping[grouping != "gene"]
@@ -32,7 +33,10 @@ dct <- function(
         factor_key = TRUE
     ) %>%
     group_by(!!!rlang::syms(grouping2)) %>%
-    mutate(dct = ctMeanGOI - median(ctMeanHK)) %>%
+    mutate(dct = ctMeanGOI - case_when(
+        med ~ median(ctMeanHK),
+        TRUE ~ ctMeanHK
+    )) %>%
     ungroup() %>%
     select(grouping1, HK, ctMeanHK, GOI, ctMeanGOI, dct)
 }
