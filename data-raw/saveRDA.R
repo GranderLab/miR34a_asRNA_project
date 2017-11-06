@@ -148,4 +148,23 @@ read_tsv('./data-raw/transcriptStability.txt', col_names = TRUE) %>%
     ) %>%
     save(., file = './data/transcriptStability.rda', compress = "bzip2")
 
+#Stable line expression with HEK293t
+read_tsv('./data-raw/stableLineExpressionHEK.txt', col_names = TRUE) %>%
+    rename(
+        `Biological Replicate` = experiment,
+        `Cell line` = cellLine,
+        gene = Gene
+    ) %>%
+    mutate(
+        Condition = gsub("F4", "miR34a asRNA", Condition),
+        gene = gsub("B-actin", "Actin", gene),
+        gene = gsub("miR34a asRNA F1R1", "miR34a asRNA", gene)
+    ) %>%
+    mutate(
+        `Cell line` = parse_factor(`Cell line`, levels = c("HEK293t", "PC3", "Skov3", "Saos2")),
+        Condition = parse_factor(Condition, levels = c("wt", "mock", "miR34a asRNA"))
+    ) %>%
+    save(., file = './data/stableLineExpressionHEK.rda', compress = "bzip2")
+
+
 #source('./data-raw/saveRDA.R')
