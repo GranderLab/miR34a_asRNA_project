@@ -152,6 +152,8 @@ We were able to detect co-expression of both miR34a HG and miR34a AS in a variet
 
 ####Results
 
+See Supplementary Figure 1a for R-squared and p-values corersponding with the analysis.
+
 Insert code here from Erik and write Intro Methods etc
 
 ```{r, out.width = "850px"}
@@ -167,6 +169,17 @@ knitr::include_graphics(file.path(projectUrl, url))
 
 
 ###Supplementary Figure 1a
+
+<br></br><br></br>
+
+```{r, out.width = "850px"}
+url <- "TCGAcorrelation/table.png"
+knitr::include_graphics(file.path(projectUrl, url))
+```
+
+Add a description.
+
+<br></br><br></br>
 
 ###Figure 1d
 
@@ -284,6 +297,9 @@ It appears as though the miR34a asRNA transcript start site is somewhat upstream
 
 ###Supplementary Figure 1b
 
+<br></br><br></br>
+
+
 ```{r, out.width = "850px"}
 url <- "primerWalk/schematic_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
@@ -295,7 +311,7 @@ A schematic picture of the miR34a asRNA locus including the location of the prim
 
 <br></br>
 
-###Figure 1f and supplementary figure ??????????????
+###Figure 1f
 
 ####Introduction
 
@@ -325,7 +341,16 @@ Coding potential analysis results from the Coding-potential Assessment Tool incl
 
 <br></br>
 
-#####Coding Potential Calculator
+####Conclusions
+
+Results indicated that miR34a asRNA has a similar lack of coding capacity to the known non-coding transcripts HOTAIR and XIST and differs greatly when examining these parameters to the known coding transcripts beta-actin, tubulin, and MYC. However, to fully evaluate coding potential methods such as mass spectrometry or ribosome profiling must be used. 
+
+<br></br><br></br>
+
+
+###Supplementary Figure 1g
+
+<br></br><br></br>
 
 ```{r}
 url <- "codingPotential/CodingPotentialCalculator/results.txt"
@@ -339,20 +364,280 @@ Coding potential analysis results using the Coding-potential calculator for miR3
 
 <br></br>
 
-####Conclusions
 
-Results indicated that miR34a asRNA has a similar lack of coding capacity to the known non-coding transcripts HOTAIR and XIST and differs greatly when examining these parameters to the known coding transcripts beta-actin, tubulin, and MYC. However, to fully evaluate coding potential methods such as mass spectrometry or ribosome profiling must be used. 
+###Supplementary Figure 1c
 
 <br></br><br></br>
 
+```{r, out.width = "500px"}
+url <- "polyadenylation/polyadenylation.png"
+knitr::include_graphics(file.path(projectUrl, url))
+```
 
-###Move schematic from previous figure here. Supplementary Figure 1g
+<br></br>
 
-###Supplementary Figure 1c (poly aden)
-###Supplementary Figure 1d (isoforms)
-###Supplementary Figure 1e (cellular loc)
-###Supplementary Figure 1f (stability)
+Add description.
 
+<br></br><br></br>
+
+###Supplementary Figure 1d
+
+<br></br><br></br>
+
+```{r, out.width = "850px"}
+url <- "isoforms/isoforms.png"
+knitr::include_graphics(file.path(projectUrl, url))
+```
+
+<br></br>
+
+Add description.
+
+<br></br><br></br>
+
+###Supplementary Figure 1e
+
+####Introduction
+AsRNAs are known to be capable of exerting regulatory functions on both a transcriptional and post-transcriptional level and therefore, the cellular localization of the asRNA can be informative concerning the method of regulation. 
+
+####Methods
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. Fractionation was performed using the PARIS kit according to the manufacturer's recommendations (Life Technologies). 0.5ul RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+
+```{r}
+library(printr)
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a HG_F",
+        "miR34a HG_R",
+        "miR34a_asF1",
+        "miR34a_asR1",
+        "U48_F",
+        "U48_R"
+        
+    ),
+    sequence=c(
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TCG GGA TGT CCA CGT CA",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "AGT GAT GAT GAC CCC AGG TA",
+        "GGT CAG AGC GCT GCG GTG AT"
+        
+    )
+)
+primers
+```
+
+####Results
+```{r, message = FALSE}
+#download and format data
+url <- "cellularLocalization.rda"
+invisible(repmis::source_data(file.path(dataUrl, url)))
+data <- .
+
+#calculate dct
+groups <- c("fraction", "Cell line", "gene")
+gois <- c("miR34a\nasRNA", "miR34a\nHG")
+
+data <- data %>%
+  technicalMeans(., groups) %>%
+  mutate(antiLog = 2^-ctMean) %>%
+  group_by(gene) %>%
+  mutate(
+    total = sum(antiLog),
+    percent = 100 * (antiLog / total)
+  )
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+ggplot(data = NULL) +
+  geom_bar(
+    data = data,
+      aes(
+        x = gene,
+        y = percent,
+        fill = fraction
+      ),
+      position = "fill",
+      stat = "identity",
+      alpha = 0.6
+    ) +
+    labs(
+      x = "Gene",
+      y = "",
+      title = "miR34a asRNA cellular localization",
+      caption = 
+            "Q-PCR results from fractionated HEK293T cells investigating the cellular localization of the miR34a asRNA transcript."
+    ) +
+    theme_few() +
+    scale_y_continuous(labels = scales::percent_format()) +
+    scale_fill_ptol() +
+    scale_colour_ptol() +
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face = "bold",
+            size = 20
+        ),
+        plot.caption = element_text(
+            hjust = 0, 
+            margin = margin(t = 15),
+            family = "Arial Unicode MS"
+        ),
+        legend.position = "top",
+        legend.title = element_text(size = 17),
+        legend.text = element_text(size = 15),
+        axis.title = element_text(size = 17),
+        axis.title.x = element_text(margin = margin(t = 10)),
+        axis.text = element_text(size = 15),
+        strip.text.x = element_text(size = 17)
+    )+
+    guides(fill = guide_legend(title = "Fraction", override.aes = list(size = 3)))
+```
+
+####Conclusion
+Semi-quantitative PCR revealed that the miR34a asRNA transcript localizes to both the nucleus and cytoplasm although the majority is located in the cytoplasmic fraction.
+
+###Supplementary Figure 1f
+
+####Introduction
+We desired to deduce the relative stability of the miR34a asRNA and HG transcripts.
+
+####Methods
+All cell lines were cultured at 5% CO2 and 37° C with U2OS cells grown in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were treated with 10nM actinomycin D (Sigma) for the indicated times. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+
+```{r}
+library(printr)
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a HG_F",
+        "miR34a HG_R",
+        "miR34a_asF1",
+        "miR34a_asR1"
+        
+    ),
+    sequence=c(
+        "AGGTCATCACCATTGGCAATGAG",
+        "CTTTCGGGATGTCCACGTCA",
+        "TCTGCTCCAGTGGCTGATGAGAAA",
+        "GTTCACTGGCCTCAAAGTTGGCAT",
+        "AGCGGCATCTCCTCCACCTGAAA",
+        "TTGCCTCGTGAGTCCAAGGAGAAT"
+        
+    )
+)
+primers
+```
+
+####Results
+
+```{r, message = FALSE}
+#download and format data
+url <- "transcriptStability.rda"
+invisible(repmis::source_data(file.path(dataUrl, url)))
+data <- .
+
+#calculate dct
+groups <- c("treatment", "Biological Replicate", "gene")
+gois <- c("miR34a asRNA", "miR34a HG")
+
+data <- technicalMeans(data, groups) %>%
+  dct(., gois, Actin, groups, F)
+
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  treatment = data$treatment == 0
+)
+
+data <- data %>%
+  ddct(., logical, groups, F) %>%
+  folds(.)
+
+#calculate stats
+stats <- data %>%
+  group_by(GOI, treatment) %>%
+  summarize(mean = mean(log2fold), sd = sd(log2fold)) %>%
+  ungroup()
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
+ggplot(data = NULL)+
+  geom_point(
+    data = data,
+    aes(
+      x = treatment,
+      y = log2fold,
+      colour = GOI
+    ),
+    fill = "white",
+    size = 4,
+    alpha = 0.6,
+    position = position_dodge(width = 0.9)
+  ) +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = treatment,
+      ymin = mean - sd,
+      ymax = mean + sd,
+      group = GOI
+    ),
+    colour = "black",
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = treatment,
+      y = mean,
+      group = GOI
+    ),
+    colour = "black",
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  scale_y_continuous("\u0394\u0394Ct") +
+  labs(
+    x = "Treatment (hours)",
+    title = "miR34a asRNA and HG stability",
+    caption = 
+            "Q-PCR showing miR34a asRNA and miR34a HG levels in U2OS cells after treatment with 10nM actinomycin D.\nError bars (black vertical) indicate standard deviation and means are represented by black dots."
+  ) +
+  theme_few() +
+  scale_fill_ptol() +
+  scale_colour_ptol() +
+  theme(
+    plot.title = element_text(
+      hjust = 0.5,
+      face = "bold",
+      size = 20
+    ),
+    plot.caption = element_text(
+      hjust = 0, 
+      margin = margin(t = 15),
+      family = "Arial Unicode MS"
+    ),
+    legend.position = "top",
+    legend.title = element_text(size = 17),
+    legend.text = element_text(size = 15),
+    axis.title = element_text(size = 17),
+    axis.title.x = element_text(margin = margin(t = 10)),
+    axis.text = element_text(size = 15),
+    strip.text.x = element_text(size = 17)
+  ) +
+  guides(color = guide_legend(title = "Gene", override.aes = list(size = 3)))
+```
+
+####Conclusions
+While the levels of miR34a HG fall quickly over the 4 hour treatment period, levels of miR34a asRNA remain relativley stable.
 
 ##Figure 2 {.tabset}
 
@@ -1157,7 +1442,7 @@ logical <- tibble(
 )
 
 data <- data %>%
-  ddct(., logical, groups, F) %>%
+  ddct(., logical, groups, med = FALSE) %>%
   folds(.)
 
 #calculate stats
@@ -1577,6 +1862,16 @@ miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all
 
 
 ###Supplementarty Figure 2a (stable with HEK)
+
+<br></br><br></br>
+
+code
+
+<br></br>
+
+Description
+
+<br></br><br></br>
 
 ###Figure 3b
 
@@ -2118,9 +2413,28 @@ Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-
 
 
 ###Supplementarty Figure 2b (CCND1 exp)
+
+<br></br><br></br>
+
+Code
+
+<br></br>
+
+Description
+
+<br></br><br></br>
+
 ###Supplementarty Figure 2c (CCND1 prot)
 
+<br></br><br></br>
 
+Code
+
+<br></br>
+
+Description
+
+<br></br><br></br>
 
 ##Session info
 
