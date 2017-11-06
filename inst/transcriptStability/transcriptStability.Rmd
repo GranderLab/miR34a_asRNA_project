@@ -218,4 +218,4 @@ ggsave(plot=p, filename="~/GitHub/miR34aFigures/inst/transcriptStability/transcr
 ```
 
 #Conclusions
-We observed increases in miR34a HG and asRNA expression upon doxorubicin treatment indicating that these two transcripts are co-regulated. 
+While the levels of miR34a HG fall quickly over the 4 hour treatment period, levels of miR34a asRNA remain relativley stable.
