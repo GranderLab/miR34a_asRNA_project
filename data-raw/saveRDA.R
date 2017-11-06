@@ -156,13 +156,13 @@ read_tsv('./data-raw/stableLineExpressionHEK.txt', col_names = TRUE) %>%
         gene = Gene
     ) %>%
     mutate(
-        Condition = gsub("F4", "miR34a asRNA", Condition),
+        Condition = gsub("F4", "miR34a\nasRNA", Condition),
         gene = gsub("B-actin", "Actin", gene),
         gene = gsub("miR34a asRNA F1R1", "miR34a asRNA", gene)
     ) %>%
     mutate(
         `Cell line` = parse_factor(`Cell line`, levels = c("HEK293t", "PC3", "Skov3", "Saos2")),
-        Condition = parse_factor(Condition, levels = c("wt", "mock", "miR34a asRNA"))
+        Condition = parse_factor(Condition, levels = c("wt", "mock", "miR34a\nasRNA"))
     ) %>%
     save(., file = './data/stableLineExpressionHEK.rda', compress = "bzip2")
 
