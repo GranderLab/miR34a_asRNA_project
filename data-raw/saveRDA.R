@@ -137,4 +137,15 @@ read_tsv('./data-raw/cellularLocalization.txt', col_names = TRUE) %>%
     ) %>%
     rename(`Cell line` = cellLine) %>%
     save(., file = './data/cellularLocalization.rda', compress = "bzip2")
+
+#transcript stability
+read_tsv('./data-raw/transcriptStability.txt', col_names = TRUE) %>%
+    rename(`Biological Replicate` = experiment) %>%
+    mutate(gene = gsub("B-actin", "Actin", gene)) %>%
+    mutate(
+        treatment = parse_factor(treatment, levels = c("0", "1", "2", "4")),
+        gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a HG", "Actin"))
+    ) %>%
+    save(., file = './data/transcriptStability.rda', compress = "bzip2")
+
 #source('./data-raw/saveRDA.R')
