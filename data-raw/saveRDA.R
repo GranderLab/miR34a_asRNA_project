@@ -181,5 +181,12 @@ read_tsv('./data-raw/stableLineCCND1exp.txt', col_names = TRUE) %>%
   ) %>%
   save(., file = './data/stableLineCCND1exp.rda', compress = "bzip2")
 
+#Stable line CCND1 protein
+read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
+  rename(`Biological Replicate` = experiment) %>%
+  mutate(condition = gsub("miR34a AS", "miR34a\nasRNA", condition)) %>%
+  mutate(condition = parse_factor(condition, levels = c("mock", "miR34a\nasRNA"))) %>%
+  save(., file = './data/stableLineCCND1prot.rda', compress = "bzip2")
+
 
 #source('./data-raw/saveRDA.R')
