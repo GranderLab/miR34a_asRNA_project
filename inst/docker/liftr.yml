@@ -1,0 +1,14 @@
+maintainer: "Jason Serviss"
+  email: "jason.serviss@ki.se"
+  from: "rocker/tidyverse:3.4.2"
+  pandoc: false
+  cran:
+    - knitr/1.17
+    - rmarkdown/1.6
+    - printr/0.1
+    - ggthemes/3.4.0
+    - repmis/0.5
+    - extrafont/0.17
+    - scales/0.5.0
+  remotes:
+    - "GranderLab/miR34a_asRNA_project"

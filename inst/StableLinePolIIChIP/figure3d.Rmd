@@ -1,0 +1,248 @@
+---
+title: "PC3 stable line pollII ChIP"
+author: "Jason T. Serviss"
+date: "06/01/2017"
+output:
+  html_document:
+    theme: flatly
+    toc: no
+    code_folding: hide
+---
+
+#Introduction
+miR34a asRNA over-expression was shown to increase the expression levels of miR34a. We investigated if this increase of miR34a was due to increased levels of transcription at the miR34a promoter.
+
+#Methods
+All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine and Saos2 cells cultured in DMEM high modified (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 2-3x10^6 cells in a 15cm dish and incubated overnight. Cells were cross-linked in 1% formaldehyde, quenched in glycine (0.125M), resuspended in cell lysis buffer (5mM PIPES, 85mM KCL, 0.5% NP40, protease inhibitor), and sonicated (Bioruptor Sonicator Diagenode) in nucleus lysis buffer (50mM TRIS-HCL pH 8.0, 10mM EDTA, 1% SDS, protease inhibitor). The samples were incubated overnight at 4 °C with the appropriate antibody. Salmon sperm DNA/Protein A–agarose (Upstate/Millipore) was used to pull down the antibody. DNA was eluted in elution buffer (1% SDS, 100 mM NaHCO3), followed by reverse cross-linking, RNase-A and protease-K treatment. The DNA was eluted by using a Qiagen PCR purification kit. The following antibodies were used (4 μg/sample): phospho-polymerase II (abcam: ab5095). QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+
+```{r}
+primers <- data.frame(
+    name=c(
+        "miR34aChIP F1",
+        "miR34aChIP R1"
+    ),
+    sequence=c(
+       "AAA GTT TGC AAA GAA GGA GGC GGG",
+       "AGG GAA GAA AGA ACT AGC CGA GCA"
+    )
+)
+```
+
+#Results
+
+```{r, warning=FALSE}
+library(reshape2)
+library(ggplot2)
+library(ggthemes)
+library(plyr)
+data <- read.table('~/GitHub/miR34aFigures/inst/StableLinePolIIChIP/ChIPdata.txt', header=TRUE, sep="\t")
+data$meanQuantity <- rowMeans(data[ ,c("Quantity1", "Quantity2")])
+
+percentPullDown <- ddply(
+    data, 
+    c("experiment", "condition", "sample"), 
+    summarize,
+    percentPullDown = meanQuantity/data[data$experiment == experiment & data$condition == condition & data$sample == "input", "meanQuantity"]
+)
+data <- merge(data, percentPullDown, by=c("experiment", "condition", "sample"), all.x=TRUE)
+data$log2percentPulldown <- log2(data$percentPullDown)
+data <- subset(data, sample != "input")
+
+ASminusMock <- ddply(
+    data, 
+    c("experiment"), 
+    summarize, 
+    condition=unique(condition),
+    ASminusMock = log2percentPulldown - data[data$experiment == experiment & data$condition == "mock", "log2percentPulldown"]
+)
+data <- merge(data, ASminusMock, by=c("experiment", "condition"), all.x=TRUE)
+
+data$antilogASminusMock <- 2^data$ASminusMock
+
+#calculate stats 
+t <- t.test(data[data$condition != "mock", "ASminusMock"])
+pValue <- t$p.value
+CI95l <- t$conf.int[1]
+CI95h <- t$conf.int[2]
+
+#calculate summary
+stats <- ddply(
+    data,
+    c("condition"),
+    summarize, 
+    mean = mean(ASminusMock) 
+)
+
+stats$CI95l <- c(CI95l, 1)
+stats$CI95h <- c(CI95h, 1)
+
+pBars <- data.frame(
+    condition=c("mock", "miR34a AS"),
+    xend = c(0,2),
+    x=c(0,1),
+    xStars=c(0,1.5),
+    pStars=c("", "\u2605")
+)
+
+stats <- merge(stats, pBars, by="condition")
+data <- merge(data, stats, by=c("condition"), all.x=TRUE)
+data$condition <- as.character(data$condition)
+data[data$condition == "miR34a AS", "condition"] <- "miR34a\nasRNA"
+data$condition <- factor(data$condition, levels=c("mock", "miR34a\nasRNA"))
+#data <- droplevels(data[data$condition == "miR34a AS",])
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
+
+#plot for Rmarkdown
+ggplot(data, aes(x=condition, y=ASminusMock))+
+    geom_violin(
+        aes(fill=condition),
+        trim=TRUE,
+        #scale="width",
+        alpha=0.3,
+        colour=NA,
+        show.legend = FALSE
+    )+
+    geom_point( 
+        aes(colour=condition),
+        size=4
+    )+
+    geom_linerange(
+        aes(ymin=CI95l, ymax=CI95h),
+        colour="black",
+        show.legend = FALSE
+    )+
+    geom_point(
+        aes(y=mean),
+        colour="black",
+        show.legend = FALSE
+    )+
+    geom_segment(
+        aes(x=x, y=CI95h+0.25, xend=xend, yend=CI95h+0.25),
+        colour="grey43"
+    )+
+    geom_label(
+        aes(x=xStars, y=CI95h+0.35, label=pStars),
+        label.size=0,
+        label.padding=unit(0.01, "lines"),
+        show.legend = FALSE,
+        fill="white",
+        size=5,
+        family="Arial Unicode MS"
+    )+
+    scale_y_continuous(
+        "log2(Fold)", 
+        sec.axis = sec_axis(
+            ~2^., 
+            name = "Fold", 
+            breaks=c(1,2.5,5,7.5)
+        )
+    )+
+    labs(
+      x="Cell line",
+      y="log2(Fold polII enrichment)",
+      title="Phosphorylated Poll II ChIP",
+      caption=
+            "Phosphorylated Poll II ChIP in miR34a asRNA over-expressing PC3 stable cell lines compared to their respective mock control.\nError bars (black vertical) indicate 95% CI and black points represent the mean.\n\u2605 = p < 0.05; \u2605\u2605 = p < 0.005, \u2605\u2605\u2605 = p < 0.0005."
+    )+
+    theme_few()+
+    scale_fill_ptol()+
+    scale_color_ptol()+
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face="bold",
+            size=20
+        ),
+        plot.caption = element_text(
+            hjust=0, 
+            margin=margin(t=15),
+            family="Arial Unicode MS"
+        ),
+        legend.position="none",
+        axis.title=element_text(size=17),
+        axis.title.x=element_text(margin=margin(t=10)),
+        axis.text=element_text(size=15)
+    )
+
+#plot for pdf
+p <- ggplot(data, aes(x=condition, y=ASminusMock))+
+    geom_violin(
+        aes(fill=condition),
+        trim=TRUE,
+        #scale="width",
+        alpha=0.3,
+        colour=NA,
+        lwd=0.1
+    )+
+    #geom_point( 
+    #    aes(colour=condition),
+    #    size=1
+    #)+
+    geom_linerange(
+        aes(ymin=CI95l, ymax=CI95h),
+        colour="black",
+        show.legend = FALSE,
+        lwd=0.15
+    )+
+    geom_point(
+        aes(y=mean),
+        colour="black",
+        size=0.5,
+        show.legend = FALSE
+    )+
+    geom_segment(
+        aes(x=x, y=CI95h+0.25, xend=xend, yend=CI95h+0.25),
+        colour="grey43",
+        lwd=0.15
+    )+
+    geom_label(
+        aes(x=xStars, y=CI95h+0.4, label=pStars),
+        label.size=0,
+        label.padding=unit(0.01, "lines"),
+        show.legend = FALSE,
+        fill="white",
+        size=1,
+        family="Arial Unicode MS"
+    )+
+    #scale_y_continuous(
+    #    "log2(Fold)", 
+    #    sec.axis = sec_axis(
+    #        ~2^., 
+    #        name = "Fold", 
+    #        breaks=c(1,2.5,5,7.5)
+    #    )
+    #)+
+    labs(
+      x="Cell line",
+      y="log2(Fold polII enrichment)"
+      #title="Phosphorylated Poll II ChIP"
+    )+
+    theme_few()+
+    scale_fill_ptol()+
+    scale_color_ptol()+
+    theme(
+        plot.title = element_text(
+            hjust = 0.5,
+            face="bold",
+            size=10
+        ),
+        plot.margin = unit(rep(0.1,4), "lines"),
+        legend.position="none",
+        axis.title=element_text(size=9),
+        axis.title.x=element_text(margin=margin(t=5)),
+        axis.text=element_text(size=8),
+        axis.ticks.length = unit(1/15, "cm"),
+        axis.ticks = element_line(size=0.25),
+        panel.border = element_rect(fill=NA, size=0.15),
+        panel.margin=unit(2, "mm")
+    )
+
+ggsave(plot=p, filename="~/GitHub/miR34aFigures/inst/StableLinePolIIChIP/StableLinePolIIChIP.pdf", device=cairo_pdf, height=60, width=43, units="mm") #83
+
+```
+
+#Conclusion
+Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-expressing cell lines indicating that the regulation of miR34a by miR34a asRNA is transcriptional.
+

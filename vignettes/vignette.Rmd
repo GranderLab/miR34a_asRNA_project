@@ -1936,7 +1936,7 @@ primers
 
 ####Results
 
-```{r}
+```{r, message = FALSE}
 url <- "stableLineExpressionHEK.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -2024,7 +2024,6 @@ ggplot(data = NULL)+
     colour = "gray20",
     show.legend = FALSE
   ) +
-  scale_y_continuous("\u0394\u0394Ct") +
   labs(
     x = "Cell line",
     title = "miR34a asRNA",
@@ -2034,6 +2033,7 @@ ggplot(data = NULL)+
   theme_few() +
   scale_color_ptol() +
   scale_fill_ptol() +
+  scale_y_continuous("\u0394\u0394Ct") +
   theme(
     plot.title = element_text(
       hjust = 0.5,
