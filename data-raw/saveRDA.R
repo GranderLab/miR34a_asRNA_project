@@ -223,21 +223,28 @@ read_tsv('./data-raw/stableLineCCND1exp.txt', col_names = TRUE) %>%
     `Cell line` = cellLine
   ) %>%
   mutate(
-    condition = gsub("miR34a AS", "miR34a\nasRNA", condition),
+    condition = gsub("miR34a AS", "PC3 miR34a\nasRNA", condition),
+    condition = gsub("mock", "PC3 mock", condition),
     gene = gsub("B-actin", "Actin", gene)
   ) %>%
   mutate(
-    condition = parse_factor(condition, levels = c("mock", "miR34a\nasRNA"))
+    condition = parse_factor(
+      condition,
+      levels = c("PC3 mock", "PC3 miR34a\nasRNA")
+    )
   ) %>%
   save(., file = './data/stableLineCCND1exp.rda', compress = "bzip2")
 
 #Stable line CCND1 protein
 read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
   rename(`Biological Replicate` = experiment) %>%
-  mutate(condition = gsub("miR34a AS", "miR34a\nasRNA", condition)) %>%
+  mutate(
+    condition = gsub("miR34a AS", "PC3 miR34a\nasRNA", condition),
+    condition = gsub("mock", "PC3 mock", condition)
+  ) %>%
   mutate(condition = parse_factor(
     condition,
-    levels = c("mock", "miR34a\nasRNA")
+    levels = c("PC3 mock", "PC3 miR34a\nasRNA")
   )) %>%
   save(., file = './data/stableLineCCND1prot.rda', compress = "bzip2")
 
