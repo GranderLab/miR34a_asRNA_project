@@ -5,8 +5,8 @@ read_tsv('./data-raw/HCTp53null.txt', col_names = TRUE) %>%
   rename(gene = Target) %>%
   mutate(
     Condition = case_when(
-      Condition == "WT"       ~ "p53-wt",
-      Condition == "p53 null" ~ "p53-null",
+      Condition == "WT"       ~ "HCT116 p53-wt",
+      Condition == "p53 null" ~ "HCT116 p53-null",
       TRUE                    ~ "error in saveRDA.R"
     ),
     gene = case_when(
@@ -17,9 +17,18 @@ read_tsv('./data-raw/HCTp53null.txt', col_names = TRUE) %>%
     )
   ) %>%
   mutate(
-    Treatment = parse_factor(Treatment, levels = c("0", "100", "200", "500")),
-    Condition = parse_factor(Condition, levels = c("p53-wt", "p53-null")),
-    gene = parse_factor(gene, levels = c("miR34a HG", "miR34a asRNA", "Actin"))
+    Treatment = parse_factor(
+      Treatment,
+      levels = c("0", "100", "200", "500")
+    ),
+    Condition = parse_factor(
+      Condition,
+      levels = c("HCT116 p53-wt", "HCT116 p53-null")
+    ),
+    gene = parse_factor(
+      gene,
+      levels = c("miR34a HG", "miR34a asRNA", "Actin")
+    )
   ) %>%
   save(., file = './data/HCT116p53null.rda', compress = "bzip2")
 
@@ -30,10 +39,13 @@ read_tsv('./data-raw/HctHekDox.txt', col_names = TRUE) %>%
     `Cell line` = cellLine,
     Treatment = treatment
   ) %>%
-  mutate(Treatment = parse_factor(Treatment, levels = c("untreated", "doxorubicin"))) %>%
+  mutate(Treatment = parse_factor(
+    Treatment,
+    levels = c("untreated", "doxorubicin")
+  )) %>%
   mutate(gene = case_when(
     gene == "B-actin" ~ "Actin",
-    TRUE ~ gene
+    TRUE              ~ gene
   )) %>%
   save(., file = './data/HctHekDox.rda', compress = "bzip2")
 
@@ -79,9 +91,18 @@ read_tsv('./data-raw/stableLineExpression.txt', col_names = TRUE) %>%
     gene = gsub("B-actin", "Actin", .data$gene)
   ) %>%
   mutate(
-    `Cell line` = parse_factor(`Cell line`, levels = c("PC3", "Skov3", "Saos2")),
-    `Genetic mod` = parse_factor(`Genetic mod`, levels = c("mock", "miR34a asRNA")),
-    gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a", "Actin", "RNU48"))
+    `Cell line` = parse_factor(
+      `Cell line`,
+      levels = c("PC3", "Skov3", "Saos2")
+    ),
+    `Genetic mod` = parse_factor(
+      `Genetic mod`,
+      levels = c("mock", "miR34a asRNA")
+    ),
+    gene = parse_factor(
+      gene,
+      levels = c("miR34a asRNA", "miR34a", "Actin", "RNU48")
+    )
   ) %>%
   save(., file = './data/stableLineExpression.rda', compress = "bzip2")
 
@@ -103,13 +124,29 @@ read_tsv('./data-raw/stableLineCellCycle.txt', col_names = TRUE) %>%
 #growthStarvation
 read_tsv('./data-raw/growthStarvation.txt', col_names = TRUE)  %>%
   filter(Time <= 35) %>%
-  mutate(Time = parse_factor(Time, levels = as.character(0:max(Time)))) %>%
-  mutate(Treatment = parse_factor(Treatment, levels = c("RPMI", "HBSS"))) %>%
-  mutate(`Cell line` = paste(`Cell line`, Condition, sep = " ")) %>%
-  mutate(`Cell line` = gsub("PC3 F4", "PC3 miR34a asRNA", `Cell line`)) %>%
+  rename(
+    `Biological Replicate` = Biological.replicate,
+    `Technical Replicate` = Technical.replicate
+  ) %>%
+  mutate(
+    `Cell line` = paste(`Cell line`, Condition, sep = " "),
+    `Cell line` = gsub("PC3 F4", "PC3 miR34a asRNA", `Cell line`)
+  ) %>%
+  mutate(
+    Time = parse_factor(
+      Time,
+      levels = as.character(0:max(Time))
+    ),
+    Treatment = parse_factor(
+      Treatment,
+      levels = c("RPMI", "HBSS")
+    ),
+    `Cell line` = parse_factor(
+      `Cell line`,
+      levels = c("PC3 Mock", "PC3 miR34a asRNA")
+    )
+  ) %>%
   select(-Condition) %>%
-  mutate(`Cell line` = parse_factor(`Cell line`, levels = c("PC3 Mock", "PC3 miR34a asRNA"))) %>%
-  rename(`Biological Replicate` = Biological.replicate, `Technical Replicate` = Technical.replicate) %>%
   save(., file = './data/growthStarvation.rda', compress = "bzip2")
 
 #stableLinePolIIChIP
@@ -119,23 +156,30 @@ read_tsv('./data-raw/stableLinePolIIChIP.txt', col_names = TRUE) %>%
     `Cell line` = cellLine
   ) %>%
   mutate(
-    condition = gsub("miR34a AS", "miR34a asRNA", .data$condition),
+    condition = gsub("miR34a AS", "PC3 miR34a asRNA", .data$condition),
+    condition = gsub("mock", "PC3 mock", .data$condition),
     gene = gsub("miR34a AS", "miR34a asRNA", .data$gene)
   ) %>%
   mutate(
-    condition = parse_factor(condition, levels = c("mock", "miR34a asRNA"))
+    condition = parse_factor(
+      condition,
+      levels = c("PC3 mock", "PC3 miR34a asRNA")
+    )
   ) %>%
   save(., file = './data/stableLinePolIIChIP.rda', compress = "bzip2")
 
 #cellular localization
 read_tsv('./data-raw/cellularLocalization.txt', col_names = TRUE) %>%
+  rename(`Cell line` = cellLine) %>%
   mutate(
     gene = gsub("miR34a asRNA", "miR34a\nasRNA", .data$gene),
     gene = gsub("miR34a HG", "miR34a\nHG", .data$gene),
-    gene = gsub("B-actin", "Actin", .data$gene),
-    gene = parse_factor(gene, levels = c("miR34a\nasRNA", "miR34a\nHG", "Actin", "RNU48"))
+    gene = gsub("B-actin", "Actin", .data$gene)
   ) %>%
-  rename(`Cell line` = cellLine) %>%
+  mutate(gene = parse_factor(
+    gene,
+    levels = c("miR34a\nasRNA", "miR34a\nHG", "Actin", "RNU48")
+  )) %>%
   save(., file = './data/cellularLocalization.rda', compress = "bzip2")
 
 #transcript stability
@@ -161,8 +205,14 @@ read_tsv('./data-raw/stableLineExpressionHEK.txt', col_names = TRUE) %>%
     gene = gsub("miR34a asRNA F1R1", "miR34a asRNA", gene)
   ) %>%
   mutate(
-    `Cell line` = parse_factor(`Cell line`, levels = c("HEK293t", "PC3", "Skov3", "Saos2")),
-    Condition = parse_factor(Condition, levels = c("wt", "mock", "miR34a\nasRNA"))
+    `Cell line` = parse_factor(
+      `Cell line`,
+      levels = c("HEK293t", "PC3", "Skov3", "Saos2")
+    ),
+    Condition = parse_factor(
+      Condition,
+      levels = c("wt", "mock", "miR34a\nasRNA")
+    )
   ) %>%
   save(., file = './data/stableLineExpressionHEK.rda', compress = "bzip2")
 
@@ -185,7 +235,10 @@ read_tsv('./data-raw/stableLineCCND1exp.txt', col_names = TRUE) %>%
 read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
   rename(`Biological Replicate` = experiment) %>%
   mutate(condition = gsub("miR34a AS", "miR34a\nasRNA", condition)) %>%
-  mutate(condition = parse_factor(condition, levels = c("mock", "miR34a\nasRNA"))) %>%
+  mutate(condition = parse_factor(
+    condition,
+    levels = c("mock", "miR34a\nasRNA")
+  )) %>%
   save(., file = './data/stableLineCCND1prot.rda', compress = "bzip2")
 
 
