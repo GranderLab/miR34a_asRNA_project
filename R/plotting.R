@@ -48,7 +48,8 @@ plotRmarkdown <- function(plot) {
       plot.caption = element_text(
         hjust = 0,
         margin = margin(t = 15),
-        family = "Arial Unicode MS"
+        family = "Times New Roman",
+        size = 14
       ),
       axis.title = element_text(size = 17),
       axis.title.x = element_text(margin = margin(t = 10)),
