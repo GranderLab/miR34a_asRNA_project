@@ -248,5 +248,17 @@ read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
   )) %>%
   save(., file = './data/stableLineCCND1prot.rda', compress = "bzip2")
 
+#lnc34a CAGE
+tmp <- tmp.dir()
+
+#call perl script
+sysCmd1 <- ""
+system(sysCmd1)
+
+#get output
+data <- read.table(file.path(tmp, "fileResults.txt"))
+
+#save output
+
 
 #source('./data-raw/saveRDA.R')
