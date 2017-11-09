@@ -57,8 +57,8 @@ read_tsv('./data-raw/P1-HCTandHEK.txt', col_names = TRUE) %>%
   ) %>%
   mutate(
     gene = case_when(
-      gene == "renilla"    ~ "Renilla",
-      gene == "luciferase" ~ "Luciferase",
+      gene == "renilla"    ~ "Renilla\n(miR34a asRNA)",
+      gene == "luciferase" ~ "Luciferase\n(miR34a HG)",
       TRUE                 ~ "error in saveRNA.R"
     ),
     construct = gsub("empty", "Empty", .data$construct)
