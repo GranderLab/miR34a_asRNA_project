@@ -6,6 +6,7 @@ output:
   html_document:
     theme: flatly
     toc: yes
+    toc_depth: 3
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -28,7 +29,16 @@ liftr:
     - "GranderLab/miR34a_asRNA_project"
 ---
 
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
 ```{r, echo = FALSE, message = FALSE}
+
 packages <- c(
     "tidyverse",
     "printr",
@@ -38,43 +48,49 @@ packages <- c(
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
+
 ```
 
+
 ```{r}
+
 projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
 dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
 ```
 
 ##Figure 1 {.tabset}
 
-### Figure 1a
+###Figure 1a
 
-####Introduction
+####_Introduction_
 
 An antisense transcript to the miR34a HG was detected using the UCSC genome browser.
 
 <br></br>
 
-####Methods
+####_Methods_
 
-The USCS genome browser was utilized for the bioinformatic evaluation of antisense transcription utilizing the Human EST and ENCODE RNAseq tracks.
+The USCS genome browser was utilized for the bioinformatic evaluation of antisense transcription at the miR34a locus.
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, out.width = "850px"}
+
 url <- "miR34aLocus/miR34aLocus_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
 
+<div class = "caption">
+A schematic picture of the miR34a locus from the UCSC genome browser (hg38) including miR34a HG and mature miR34a, and LINC01759. H3K4me3 ChIP-seq and conservation over the locus is also shown.
+</div>
+
 <br></br>
 
-A schematic picture of the miR34a locus from UCSC genome browser (hg38) including miR34a HG and mature miR34a, and LINC01759. H3K4me3 ChIP-seq data and conservation over the locus is also shown.
-
-<br></br>
-
-####Conclusion
+####_Conclusion_
 
 GENCODE annotation supports the presence of a transcript orininating in the antisense orientation from the miR34a gene. 
 
@@ -82,21 +98,26 @@ GENCODE annotation supports the presence of a transcript orininating in the anti
 
 ###Figure 1b
 
-####Introduction
+####_Introduction_
 
 We wished to examine expression of miR34a asRNA in different cancer tissues and, therefore, utilized a panel of common cancer cell lines to detect miR34a asRNA expression, as well as, miR34a HG. We included both p53 wild type, p53 mutated, and p53 null cell lines in the cell line panel due to the fact that miR34a is a known downstream target of p53.
 
 <br></br>
 
-####Methods
+####_Methods_
+
+<br></br>
+
+_Cell culture and PCR_
 
 Cells were cultured with the appropriate growth medium and seeded at a desity between 50-75% confluency. The following day, RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was run for 35 or 38 or 16 cycles for miR34a asRNA, miR34a HG, and beta-actin, respectivley, with 58˚C annealing temperature. PCR products were analyzed on a 2% agarose gel.
 
 <br></br>
 
-#####Primers
+_Primers_
 
 ```{r}
+
 primers <- data.frame(
     name=c(
         "miR34a asRNA F1",
@@ -116,25 +137,28 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, out.width = "850px"}
+
 url <- "miR34aASExpressionCellPanel/cellPanelLarge.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
 
-<br></br>
-
+<div class = "caption">
 Semi-quantitative PCR data from the screening of a panel of cell lines. 
 * Indicates that, although the cell line is p53wt, other mechanisms are present which inhibit p53 function. 
+</div>
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 We were able to detect co-expression of both miR34a HG and miR34a AS in a variety of cell lines, including HCT116 human colon cancer cells and 293T human embryonic kidney cells.
 
@@ -142,62 +166,77 @@ We were able to detect co-expression of both miR34a HG and miR34a AS in a variet
 
 ###Figure 1c
 
-####Introduction
+####_Introduction_
 
 <br></br>
 
-####Methods
+####_Methods_
 
 <br></br>
 
-####Results
+####_Results_
+
+<div class="caption">
+A graphical depiction of the TCGA correlation analysis. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
+</div>
 
 See Supplementary Figure 1a for R-squared and p-values corersponding with the analysis.
 
 Insert code here from Erik and write Intro Methods etc
 
 ```{r, out.width = "850px"}
+
 url <- "TCGAcorrelation/miR34a_RP3-510D11.2_diploid_only_edited.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 <br></br><br></br>
 
 
 ###Supplementary Figure 1a
 
-<br></br><br></br>
+<br></br>
 
 ```{r, out.width = "850px"}
+
 url <- "TCGAcorrelation/table.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
 
-Add a description.
+<div class = "caption">
+R-squared and p-values from the correlation analysis investigating the correlation between miR34a and miR34a asRNA expression in p53 wild type (wt) and mutated (mut) samples within TCGA cancer types. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
+</div>
 
 <br></br><br></br>
 
 ###Figure 1d
 
-####Introduction
+####_Introduction_
 
 In order to define the 3' transcription termination site for the miR34a asRNA, 3'-RACE was performed.
 
 <br></br>
 
-####Methods
+####_Methods_
+
+<br></br>
+
+_Cell culture and 3-prime RACE_
 
 All cell lines were cultured at 5% CO2 and 37° C with U2OS cells grown in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. U2OS cell RNA was polyA-tailed using yeast polyA polymerase after which cDNA was synthesized using oligo(dT) primers. Nested-PCR was performed first using a forward primer in miR34a asRNA exon 1 (miR34a_asRNA_F10) and a tailed oligo(dT) primer (polyT_T7FAM) followed by a second PCR using an alternate miR34a asRNA exon 1 primer (miR34a_asRNA_F1) and a reverse primer binding to the tail of the previously used oligo(dT) primer (FAMprimer). PCR products were gel purified and cloned the Strata Clone Kit (Agilent Technologies), and sequenced.
 
 <br></br>
 
-#####Primers
+_Primers_
 
 ```{r}
+
 primers <- data.frame(
   name = c("miR34a_asRNA_F10", "polyT_T7FAM", "miR34a_asRNA_F1", "FAMprimer"),
   sequence = c(
@@ -208,24 +247,27 @@ primers <- data.frame(
   )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, out.width = "850px"}
+
 url <- "3primeRACE/results_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
 
+<div class = "caption">
+3’-RACE sequencing results displayed in the UCSC genome browser together with the annotated miR34a asRNA transcript (LINC01759) from GENCODE.
+</div>
+
 <br></br>
 
-3’-RACE sequencing results displayed in the UCSC genome browser together with the annotated miR34a asRNA transcript from GENCODE.
-
-<br></br>
-
-####Conclusions
+####_Conclusions_
 
 Sequencing of the resulting cloned cDNA indicated the transcripts 3’ transcription termination site to be 125bp upstream of the RP3-510D11.2 transcript’s annotated termination site.
 
@@ -233,21 +275,26 @@ Sequencing of the resulting cloned cDNA indicated the transcripts 3’ transcrip
 
 ###Figure 1e
 
-####Introduction
+####_Introduction_
 
 We desired to determine the 5'-start site for the miR34a asRNA.
 
 <br></br>
 
-####Methods
+####_Methods_
+
+<br></br>
+
+_Cell culture and PCR_
 
 To accomplish this we performed the primer walk assay. All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was performed for 35 cycles at 62°C annealing temperature and the resulting products were analyzed on a 2% agarose gel.
 
 <br></br>
 
-#####Primers
+_Primers_
 
 ```{r}
+
 primers <- data.frame(
     name=c(
         "miR34aAS_F10",
@@ -269,26 +316,29 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 Primer placement at the locus can be viewed in Supplementary Figure 1b.
 
 ```{r, out.width = "500px"}
+
 url <- "primerWalk/gel.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
 
-<br></br>
-
+<div class = "caption">
 The semi-quantitative PCR results from the primer walk assay performed using HEK293T cells.
+</div>
 
 <br></br>
 
-####Conclusion
+####_Conclusion_
 
 It appears as though the miR34a asRNA transcript start site is somewhat upstream of the annotated start site. Although there is some product present for the F12 primer, the majority of transcription seems to be originating from the F11 primer. This indicates that the start site is between 71-224bp upstream of the annotated start site.
 
@@ -297,114 +347,244 @@ It appears as though the miR34a asRNA transcript start site is somewhat upstream
 
 ###Supplementary Figure 1b
 
-<br></br><br></br>
-
-
-```{r, out.width = "850px"}
-url <- "primerWalk/schematic_hg38.png"
-knitr::include_graphics(file.path(projectUrl, url))
-```
-
 <br></br>
 
+```{r, out.width = "850px"}
+
+url <- "primerWalk/schematic_hg38.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
 A schematic picture of the miR34a asRNA locus including the location of the primers used in the primer walk assay.
+</div>
 
 <br></br>
 
 ###Figure 1f
 
-####Introduction
+####_Introduction_
 
 We utilized a bioinformatic approach to evaluate the coding potential of the miR34a asRNA transcript. The Coding-potential assessment tool uses a linear regression model to evaluate coding-potential by examining ORF length, ORF coverage, Fickett score and hexamer score. We further confirmed these results using the Coding-potential Calculator which utilizes a support based machine-based classifier and accesses an alternate set of discriminatory features.
 
 <br></br>
 
-####Methods
+####_Methods_
 
 Protein-coding capacity was evaluated using the [Coding-potential Assessment Tool](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3616698/) and [Coding-potential Calculator](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1933232/) with default settings. Transcript sequences for use with Coding-potential Assessment Tool were downloaded from the UCSC genome browser using the following IDs: HOTAIR (ENST00000455246.1), XIST (ENST00000429829.1), β-actin (ENST00000331789.5), Tubulin (ENST00000427480.1), and MYC (ENST00000377970). Transcript sequences for use with Coding-potential Calculator were downloaded from the UCSC genome browser using the following IDs: HOTAIR (uc031qho.1), β-actin (uc003soq.4).
 
 <br></br>
 
-####Results
+####_Results_
 
-#####Coding Potential Assesment Tool
+_Coding Potential Assesment Tool_
 
 ```{r}
+
 url <- "codingPotential/CodingPotentialAssessmentTool/results.txt"
 cpat <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
 cpat
+
 ```
 
-<br></br>
-
+<div class = "caption">
 Coding potential analysis results from the Coding-potential Assessment Tool including miR34a asRNA and two characterized non-coding transcripts (HOTAIR and XIST) and 3 known coding transcripts (β-actin, tubulin, and MYC). 
+</div>
+
+Results for Coding-potential Calculator are located in Supplementary figure 1g below.
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 Results indicated that miR34a asRNA has a similar lack of coding capacity to the known non-coding transcripts HOTAIR and XIST and differs greatly when examining these parameters to the known coding transcripts beta-actin, tubulin, and MYC. However, to fully evaluate coding potential methods such as mass spectrometry or ribosome profiling must be used. 
 
 <br></br><br></br>
 
-
 ###Supplementary Figure 1g
 
-<br></br><br></br>
+<br></br>
+
+For introduction and methods plesase see Figure 1f.
 
 ```{r}
+
 url <- "codingPotential/CodingPotentialCalculator/results.txt"
 cpc <- read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
 cpc
+
 ```
 
-<br></br>
-
+<div class = "caption">
 Coding potential analysis results using the Coding-potential calculator for miR34a asRNA, HOTAIR, and β-actin.
+</div>
 
 <br></br>
-
 
 ###Supplementary Figure 1c
 
-<br></br><br></br>
+####_Introduction_
 
-```{r, out.width = "500px"}
-url <- "polyadenylation/polyadenylation.png"
-knitr::include_graphics(file.path(projectUrl, url))
+We desired to access the polyadenylation status of the miR34a asRNA transcript.
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and PCR_
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was then performed and the results analyzed on a 2% agarose gel.
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "miR34aAS_F1",
+        "miR34aAS_R1",
+        "miR34aHG_F",
+        "miR34aHG_R",
+        "B-actin_F",
+        "B-actin_R",
+        "U48_F",
+        "U48_R"
+    ),
+    sequence=c(
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA",
+        "AGT GAT GAT GAC CCC AGG TA",
+        "GGT CAG AGC GCT GCG GTG AT"
+    )
+)
+primers
+
 ```
 
 <br></br>
 
-Add description.
+####_Results_
+
+```{r, out.width = "500px"}
+
+url <- "polyadenylation/polyadenylation.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+Polyadenylation status of spliced and unspliced miR34a asRNA in HEK293T cells. 
+</div>
+
+<br></br>
+
+####_Conclusions_
+
+Results indicate that miR34a asRNA is polyadenylated.
 
 <br></br><br></br>
 
 ###Supplementary Figure 1d
 
-<br></br><br></br>
+####_Introduction_
 
-```{r, out.width = "850px"}
-url <- "isoforms/isoforms.png"
-knitr::include_graphics(file.path(projectUrl, url))
+We investigated the propensity of miR34a asRNA to be alternatively spliced, using PCR cloning and sequencing.
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and cloning_
+
+All cell lines were cultured at 5% CO2 and 37° C with U2OS cells cultured in McCoy’s 5a (Life Technologies), . All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was performed with the specified primer sets with annealing temperature 60˚C unless otherwise indicated. PCR was run for 35 cycles for those primer sets with annealing temperature 60˚C and 40 cycles in other cases. Resulting PCR products were run on a agarose gel, gel extracted with the QIAquick gel extraction kit (Qiagen), cloned using the Strata Cloning kit (Agilent), and sequenced. The sequencing results were visualized in the UCSC genome browser.
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "F12",
+        "R1",
+        "R2",
+        "R3",
+        "Ex3R1"
+    ),
+    sequence=c(
+        "AAACACAAGCGTTTACCTGGGTGC",
+        "TTGCCTCGTGAGTCCAAGGAGAAT",
+        "ATAGGTTCATTTGCCCGATGTGCC",
+        "CCACAGCTGTTGCTTCTGAATGCT",
+        "TCAGATAGGTACCAAAAATGATGGCCGCAACTAATGACGGAT"
+    )
+)
+primers
+
 ```
 
 <br></br>
 
-Add description.
+####_Results_
+
+```{r, out.width = "850px"}
+
+url <- "isoforms/isoforms.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+Sequencing results from the analysis of miR34a asRNA isoforms in U2OS cells. miR34a AS ref. refers to the full length transcript as defined by the 3’-RACE and primer walk assay.
+</div>
+
+<br></br>
+
+####_Conclusions_
+
+Results indicate that the miR34a asRNA transcript is post-transcriptionally spliced to form several different isoforms.
 
 <br></br><br></br>
 
 ###Supplementary Figure 1e
 
-####Introduction
-AsRNAs are known to be capable of exerting regulatory functions on both a transcriptional and post-transcriptional level and therefore, the cellular localization of the asRNA can be informative concerning the method of regulation. 
+####_Introduction_
 
-####Methods
+asRNAs are known to be capable of exerting regulatory functions on both a transcriptional and post-transcriptional level and therefore, the cellular localization of the asRNA can be informative concerning the method of regulation. 
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and QPCR_
+
 All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. Fractionation was performed using the PARIS kit according to the manufacturer's recommendations (Life Technologies). 0.5ul RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
+<br></br>
+
+_Analysis_
+
+QPCR was performed in technical replicate for each sample. Technical mean values were subsequently moved to the linear scale by raising their additive inverse to the power of 2. The percentage in each cellular fraction fraction was then calculated by dividing each individual fraction for a specific gene by the total of all fractions for that gene and multiplying by 100. The experiment was performed in one independant experiment.
+
+<br></br>
+
+_QPCR primers_
+
 ```{r}
-library(printr)
+
 primers <- data.frame(
     name=c(
         "ß-actin Fwd",
@@ -430,11 +610,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
-####Results
+<br></br>
+
+####_Results_
+
 ```{r, message = FALSE}
-#download and format data
+
 url <- "cellularLocalization.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -451,10 +635,12 @@ data <- data %>%
     total = sum(antiLog),
     percent = 100 * (antiLog / total)
   )
+
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
-ggplot(data = NULL) +
+
+p <- ggplot(data = NULL) +
   geom_bar(
     data = data,
       aes(
@@ -469,49 +655,55 @@ ggplot(data = NULL) +
     labs(
       x = "Gene",
       y = "",
-      title = "miR34a asRNA cellular localization",
-      caption = 
-            "Q-PCR results from fractionated HEK293T cells investigating the cellular localization of the miR34a asRNA transcript."
+      title = "miR34a asRNA cellular localization"
     ) +
-    theme_few() +
     scale_y_continuous(labels = scales::percent_format()) +
-    scale_fill_ptol() +
-    scale_colour_ptol() +
-    theme(
-        plot.title = element_text(
-            hjust = 0.5,
-            face = "bold",
-            size = 20
-        ),
-        plot.caption = element_text(
-            hjust = 0, 
-            margin = margin(t = 15),
-            family = "Arial Unicode MS"
-        ),
-        legend.position = "top",
-        legend.title = element_text(size = 17),
-        legend.text = element_text(size = 15),
-        axis.title = element_text(size = 17),
-        axis.title.x = element_text(margin = margin(t = 10)),
-        axis.text = element_text(size = 15),
-        strip.text.x = element_text(size = 17)
-    )+
     guides(fill = guide_legend(title = "Fraction", override.aes = list(size = 3)))
+
+plotRmarkdown(p)
+
 ```
 
-####Conclusion
+<div class="caption">
+Q-PCR results from fractionated HEK293T cells investigating the cellular localization of the miR34a asRNA transcript.
+</div>
+
+<br></br>
+
+####_Conclusion_
+
 Semi-quantitative PCR revealed that the miR34a asRNA transcript localizes to both the nucleus and cytoplasm although the majority is located in the cytoplasmic fraction.
+
+<br></br><br></br>
 
 ###Supplementary Figure 1f
 
-####Introduction
+####_Introduction_
+
 We desired to deduce the relative stability of the miR34a asRNA and HG transcripts.
 
-####Methods
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and QPCR_
+
 All cell lines were cultured at 5% CO2 and 37° C with U2OS cells grown in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were treated with 10nM actinomycin D (Sigma) for the indicated times. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
+<br></br>
+
+_Analysis_
+
+QPCR was performed with technical replicates for each sample. Delta ct was calculated by subtracting the mean of the technical replicates for each sample from the mean of the technical replicates for the house keeping gene for the corresponding sample. Delta-delta ct was subsequently calculated by subtracting the delta ct values for the no treatment sample from the delat ct values for each individual sample. The experiment was performed in two independant experiments which are shown individually in the plot below. 95% confidence interval was calculated for each gene and treatment time point using the values obtained from each independant experiment.
+
+<br></br>
+
+_Primers_
+
 ```{r}
-library(printr)
+
 primers <- data.frame(
     name=c(
         "ß-actin Fwd",
@@ -533,12 +725,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
-####Results
+<br></br>
+
+####_Results_
 
 ```{r, message = FALSE}
-#download and format data
+
 url <- "transcriptStability.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -565,10 +760,12 @@ stats <- data %>%
   group_by(GOI, treatment) %>%
   summarize(mean = mean(log2fold), sd = sd(log2fold)) %>%
   ungroup()
+
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-ggplot(data = NULL)+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL)+
   geom_point(
     data = data,
     aes(
@@ -602,60 +799,60 @@ ggplot(data = NULL)+
     ),
     colour = "black",
     position = position_dodge(width = 0.9),
-    show.legend = FALSE
+    show.legend = FALSE,
+    shape = 95,
+    size = 6
   ) +
   scale_y_continuous("\u0394\u0394Ct") +
   labs(
     x = "Treatment (hours)",
-    title = "miR34a asRNA and HG stability",
-    caption = 
-            "Q-PCR showing miR34a asRNA and miR34a HG levels in U2OS cells after treatment with 10nM actinomycin D.\nError bars (black vertical) indicate standard deviation and means are represented by black dots."
-  ) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_colour_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "top",
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15),
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15),
-    strip.text.x = element_text(size = 17)
+    title = "miR34a asRNA and HG stability"
   ) +
   guides(color = guide_legend(title = "Gene", override.aes = list(size = 3)))
+
+plotRmarkdown(p)
+
 ```
 
-####Conclusions
+<div class="caption">
+Q-PCR showing miR34a asRNA and miR34a HG levels in U2OS cells after treatment with 10nM actinomycin D. The points represent the values obtained from each independant experiment (n = 2). 95% confidence interval (vertical black lines) and mean (horizontal black lines) are also shown.
+</div>
+
+<br></br>
+
+####_Conclusions_
+
 While the levels of miR34a HG fall quickly over the 4 hour treatment period, levels of miR34a asRNA remain relativley stable.
+
+<br></br><br></br>
 
 ##Figure 2 {.tabset}
 
 ###Figure 2a
 
-####Introduction
+####_Introduction_
 
 miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression upon cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated p53 wild type and p53 null HCT116 cells with increasing concentrations of the DNA damaging agent doxorubicin and monitored miR34a asRNA expression.
 
 <br></br>
 
-####Methods
-
-HCT116 cells were cultured in DMEM high modified (Hyclone, GE healthcare) supplemented with supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum. 25 x 10^5 HCT116 cells were plated in 6 well plates. 24 hours later media was exchanged and doxorubicin was added to a final concentration of 100, 200 or 500 ng/ml. Cells were harvested for RNA extraction 24 hours later using trypsin. RNA was extracted using Nucleospin RNA kit (Machery-Nagel Ref. 740955) according to manufacturer‟s protocol and DNase treated using Ambion Turbo DNA-free according to manufacturer‟s protocol (Life Technologies Ref. AM1907). cDNA was synthesized using ~500 ng RNA with M-MLV (Life Technologies Ref 28025013) and a mixture of oligo(dT) with nanomers in accordance with the manufacturer's protocol. qPCR quantification was carried out using the PowerUp SYBR Green Master Mix (Thermo Fisher Scientific, Ref. A25777) on the CFX96 Touch Real-Time PCR Detection System: 50°C for 2 min, 95°C for 2min, and 95°C for 1 sec followed by 60°C for 30 sec repeated for 40 cycles. qPCR primers are shown below. Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the dct value for the corresponding untreated sample. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the p-53 wild type and p-53 null groups in each treatment concentration and for both genes.  
+####_Methods_
 
 <br></br>
 
-#####Primers
+_Cell culture and QPCR_
+
+HCT116 cells were cultured in DMEM high modified (Hyclone, GE healthcare) supplemented with supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum. 25 x 10^5 HCT116 cells were plated in 6 well plates. 24 hours later media was exchanged and doxorubicin was added to a final concentration of 100, 200 or 500 ng/ml. Cells were harvested for RNA extraction 24 hours later using trypsin. RNA was extracted using Nucleospin RNA kit (Machery-Nagel Ref. 740955) according to manufacturer‟s protocol and DNase treated using Ambion Turbo DNA-free according to manufacturer‟s protocol (Life Technologies Ref. AM1907). cDNA was synthesized using ~500 ng RNA with M-MLV (Life Technologies Ref 28025013) and a mixture of oligo(dT) with nanomers in accordance with the manufacturer's protocol. qPCR quantification was carried out using the PowerUp SYBR Green Master Mix (Thermo Fisher Scientific, Ref. A25777) on the CFX96 Touch Real-Time PCR Detection System: 50°C for 2 min, 95°C for 2min, and 95°C for 1 sec followed by 60°C for 30 sec repeated for 40 cycles. qPCR primers are shown below. 
+
+<br></br>
+
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. Delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding untreated samples. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the p-53 wild type and p-53 null group's delta-delta ct values in each treatment concentration and for both genes.  
+
+<br></br>
+
+_Primers_
 
 ```{r}
 
@@ -680,14 +877,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, message = FALSE}
-#download and format data
+
 url <- "HCT116p53null.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -710,7 +908,7 @@ data <- data %>%
   folds(.)
 
 #calculate stats
-stats <- calcStats(data, Condition, "p53-wt", groups) %>%
+stats <- calcStats(data, Condition, "HCT116 p53-wt", groups) %>%
   pFormat(.)
 
 #setup plotting variables
@@ -732,11 +930,12 @@ stats <- stats %>%
     )
   ) %>%
   ungroup()
+
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
-#plot for Rmarkdown
-ggplot(data = NULL) +
+
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
@@ -799,41 +998,23 @@ ggplot(data = NULL) +
   scale_y_continuous("\u0394\u0394Ct", breaks = c(-1,0,1,2,3,4,5))+
   labs(
     x = "Treatment",
-    title = "miR34a asRNA regulation by p53 induction",
-    caption = 
-            "Monitoring the effects of 24 hours doxorubicin treatment on miR34a asRNA and HG in P53+/+ and p53-/- HCT116 cells."
+    title = "miR34a asRNA regulation by p53 induction"
   ) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_colour_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "top",
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15),
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15),
-    strip.text.x = element_text(size = 17)
-  )+
   guides(
-    fill = guide_legend(title = "Cell line", override.aes = list(size=3)),
-    colour = FALSE  
+    fill = guide_legend(title = "Cell line", override.aes = list(size = 6))
   )
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+Monitoring the effects of 24 hours doxorubicin treatment on miR34a asRNA and HG in P53+/+ and p53-/- HCT116 cells. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 We observed increasing miR34a HG and asRNA expression with increasing doses of doxorubicin indicating that these two transcripts are co-regulated by p53. Although p53 wild type cells showed a 25-fold increase over untreated cells in miR34a AS expression at the highest tested doxorubicin concentration, this effect was largely abrogated, 11 fold over untreated, in p53 null cells, indicating that p53 is a major regulator of miR34a asRNA expression. 
 
@@ -841,23 +1022,32 @@ We observed increasing miR34a HG and asRNA expression with increasing doses of d
 
 ###Figure 2b
 
-####Introduction
+####_Introduction_
 
 miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression with cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated HCT116 and HEK293t cells with 200 ng/ml of the DNA damaging agent doxorubicin for 24 hours and monitored miR34a asRNA expression. 
 
 <br></br>
 
-####Methods
-
-All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. The following day cells were treated with 0, 100, 200, or 500 ng/ml doxorubicin for 24hrs. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
-
-Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the dct value for the corresponding untreated sample. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the p-53 wild type and p-53 null groups in each treatment concentration and for both genes. 
+####_Methods_
 
 <br></br>
 
-#####Primers
+_Cell culture and QPCR_
+
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. The following day cells were treated with 0, 100, 200, or 500 ng/ml doxorubicin for 24hrs. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. qPCR primers are shown below. 
+
+<br></br>
+
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding untreated samples. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the treated vs untreated group's delta-delta ct values for both genes.
+
+<br></br>
+
+_Primers_
 
 ```{r}
+
 primers <- data.frame(
     name=c(
         "ß-actin Fwd",
@@ -879,13 +1069,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, message = FALSE}
+
 url <- "HctHekDox.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -935,11 +1127,12 @@ vl <- stats %>%
     pFormat = pFormat,
     labelX = 1.5
   )
+
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
-#plot for Rmarkdown
-ggplot(data = NULL) +
+
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
@@ -1030,41 +1223,23 @@ ggplot(data = NULL) +
   ) +
   labs(
     x = "Treatment",
-    title = "miR34a asRNA response to p53 induction",
-    caption = 
-            "Q-PCR showing miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after treatment with 200 ng/ml doxorubicin for 24hrs.\nError bars (black vertical) indicate 95% CI and means are represented by black dots."
-  ) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_colour_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "top",
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15),
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15),
-    strip.text.x = element_text(size = 17)
+    title = "miR34a asRNA response to p53 induction"
   ) +
   guides(
-    color = FALSE,
-    fill = guide_legend(title = "Gene", override.aes = list(size = 3))
+    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
   )
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+Q-PCR showing miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after treatment with 200 ng/ml doxorubicin for 24hrs. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 We observed increases in miR34a HG and asRNA expression upon doxorubicin treatment indicating that these two transcripts are co-regulated. 
 
@@ -1072,49 +1247,52 @@ We observed increases in miR34a HG and asRNA expression upon doxorubicin treatme
 
 ###Figure 2c
 
-####Introduction
+####_Introduction_
 
-It is likely, due to the head-to head orientation of miR34a HG and asRNA, that transcription initiation may be activated from a single promoter in a bi-directional manner. To investigate whether miR34a HG and asRNA are transcribed from the same promoter as convergent transcripts, we cloned the miR34a HG promoter, including the p53 binding site, into a luciferase/renilla dual reporter vector which we hereafter refer to as p1. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43. Due to the observance of additional conservation sites downstream of the previously published miR34a HG promoter, we also cloned a longer "promoter region", extending 251 additional base pairs into the miR34a HG into the same bi-directional reporter vector, hereafter refered to as p2.
+It is likely, due to the head-to head orientation of miR34a HG and asRNA, that transcription initiation may be activated from a single promoter in a bi-directional manner. To investigate whether miR34a HG and asRNA are transcribed from the same promoter as convergent transcripts, we cloned the miR34a HG promoter, including the p53 binding site, into a luciferase/renilla dual reporter vector which we hereafter refer to as p1. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43.
 
 <br></br>
 
-####Methods
+####_Methods_
+
+<br></br>
+
+_Cell culture, transfection and luminescence quantification_
 
 All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 10,000 cells per well in a 96-well plate with a white bottom and cultured overnight. The following day cells were co-transfected with 10ng of empty, p1, or p2 plasmid and GFP using the standard lipofektamine 2000 (Life Technologies) protocol. The expression of GFP and luminescence was measured 24 h post transfection by using the Dual-Glo Luciferase Assay System (Promega) and detected by the GloMax-Multi+ Detection System (Promega). The expression of luminescence was normalized to GFP.
 
 <br></br>
 
-#####Constructs
+_Analysis_
+
+Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the empty vs p1 group's log2 activity for both genes.
+
+<br></br>
+
+_Constructs_
 
 ```{r}
-library(printr)
+
 ps <- data.frame(
-    name=c("p1", "p2"),
-    sequence=c("GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT
+  name = c("p1"),
+  sequence = c("GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT
               CCC GTC GGT CTG GGG ACA GCC CAG CTC CCC GGA TCC CGG GCT GGA GAG ACG CGT CGC GGC   
               CCC GGG GCC TGG TGG CAC GAG CAG GAA GGA GGA CCC GGC GGC GGG CTC TGC CTG GGC TTG 
               CCT GGG CTT GTT CCG AGC CGG GCT GCT TCT CGG TGA CCA CGC AGA TCG GGG GCA TTT GGA
               GAT TTT GCG GGA GTC CTG CAG CCA AGC TCC GGG GCA GGA GAG GCC TGG AAG CCT GCA CTA
-              CCT GCT C",
-              "GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT 
-              CCC GTC GGT CTG GGG ACA GCC CAG CTC CCC GGA TCC CGG GCT GGA GAG ACG CGT CGC GGC
-              CCC GGG GCC TGG TGG CAC GAG CAG GAA GGA GGA CCC GGC GGC GGG CTC TGC CTG GGC TTG 
-              CCT GGG CTT GTT CCG AGC CGG GCT GCT TCT CGG TGA CCA CGC AGA TCG GGG GCA TTT GGA 
-              GAT TTT GCG GGA GTC CTG CAG CCA AGC TCC GGG GCA GGA GAG GCC TGG AAG CCT GCA CTA 
-              CCT GCT CGC CCC GTC CCA GCA TGC ACC CAG GTA AAC GCT TGT GTT TCT CAG TCC GTG CGA 
-              AAG TTT GCA AAG AAG GAG GCG GGA ACT AGA CCA ACA ACT TTA ATA ATC ATA GTC ATA ATA 
-              ATG AAA ACC CTG TTC AAT TGT GTA GCC TCC GTA AGG GGA AGA ATT TCC AAG AAG CAA CAA
-              AAT GTT CTT TGA TTT CAT AAT CTC TGG GGA GAA AGG ATT CCT TTT TTG GGG TTT TGC TCG
-              GCT AGT TCT TTC TTC CCT")
+              CCT GCT C"
+  )
 )
 ps
+
 ```
 
 <br></br>
 
-#####Primers
+_Primers_
 
 ```{r}
+
 primers <- data.frame(
     name=c(
         "Luc_set_II_F",
@@ -1134,30 +1312,44 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, out.width = "850px"}
+
 url <- "P1-HCTandHEK/locusSimple.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
+
+<div class="caption">
+A schematic representation of the miR34a locus and the region cloned in the P1 construct including the overlapping region between miR34a host gene (purple) and miR34a asRNA (green), the region cloned into the P1 construct (red), and the P53 binding site (light blue).
+</div>
 
 <br></br>
 
 ```{r, out.width = "850px"}
+
 url <- "P1-HCTandHEK/constructSimple.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
+
+<div class="caption">
+A schematic representation of the fully cloned P1 construct including the overlapping region between miR34a host gene and miR34a asRNA (green), the reported genes, luciferase (purple) and renilla (red), the primer binding sites, and the shRNA binding site (used in Figure 2d).
+</div>
 
 <br></br>
 
 ```{r, message = FALSE}
+
 url <- "P1-HCTandHEK.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- . 
+data <- .
 
 .calcP <- function(`Cell line`, gene, logValue, data) {
   bool1 <- pull(data, `Cell line`) == `Cell line`
@@ -1196,32 +1388,54 @@ vl <- stats %>%
   pFormat(.) %>%
   mutate(
     x = case_when(
-      gene ==    "Renilla" ~ 1 + 0.25,
+      gene == "Renilla" ~ 1 + 0.25,
       gene == "Luciferase" ~ 1 - 0.25
     ),
     xend = case_when(
-      gene ==    "Renilla" ~ 2 + 0.25,
+      gene == "Renilla" ~ 2 + 0.25,
       gene == "Luciferase" ~ 2 - 0.25
     ),
-    pFormat = pFormat,
-    labelX = 1.5
+    pFormat = pFormat
   ) %>%
   left_join(ys) %>%
   mutate(max = max + c(0.25, 1, 0.25, 1))
+
+#fix gene labels
+data <- data %>%
+  mutate(plotGene = case_when(
+    gene == "Luciferase" ~ "  Luciferase\n(miR34a HG)",
+    gene == "Renilla"    ~ "        Renilla\n(miR34a asRNA)",
+    TRUE ~ "somehow missed a gene"
+  ))
+
+stats <- stats %>%
+  mutate(plotGene = case_when(
+    gene == "Luciferase" ~ "  Luciferase\n(miR34a HG)",
+    gene == "Renilla"    ~ "        Renilla\n(miR34a asRNA)",
+    TRUE ~ "somehow missed a gene"
+  ))
+
+vl <- vl %>%
+  mutate(plotGene = case_when(
+    gene == "Luciferase" ~ "  Luciferase\n(miR34a HG)",
+    gene == "Renilla"    ~ "        Renilla\n(miR34a asRNA)",
+    TRUE ~ "somehow missed a gene"
+  ))
+
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
+
 data <- filter(data, construct %in% c("p1", "Empty"))
 stats <- filter(stats, construct %in% c("p1", "Empty"))
 
-#plot for Rmarkdown
-ggplot(data = NULL) +
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
       x = construct,
       y = logValue,
-      group = interaction(construct, gene)
+      group = interaction(construct, plotGene)
     ),
     trim = TRUE,
     alpha = 0.3,
@@ -1235,7 +1449,7 @@ ggplot(data = NULL) +
     aes(
       x = construct,
       y = logValue,
-      fill = gene
+      fill = plotGene
     ),
     binwidth = 1/10,
     alpha = 0.5,
@@ -1253,7 +1467,7 @@ ggplot(data = NULL) +
       x = construct,
       ymin = CI95l,
       ymax = CI95h,
-      group = gene
+      group = plotGene
     ),
     colour = "grey20",
     position = position_dodge(width = 0.9),
@@ -1264,7 +1478,7 @@ ggplot(data = NULL) +
     aes(
       x = construct,
       y = mean,
-      group = gene
+      group = plotGene
     ),
     position = position_dodge(width = 0.9),
     show.legend = FALSE,
@@ -1275,7 +1489,7 @@ ggplot(data = NULL) +
   geom_label(
     data = vl,
     aes(
-      x = labelX, 
+      x = 1.5, 
       y = max + 0.25, 
       label = pFormat, 
       group = gene
@@ -1302,41 +1516,23 @@ ggplot(data = NULL) +
   labs(
     x = "Construct",
     y = "log2 activity (a.u.)",
-    title = "miR34a asRNA regulation by miR34a promoter",
-    caption = 
-            "miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection with P1 and P2 constructs.\nLuciferase represents miR34a HG and renilla represents miR34a asRNA.\nError bars (black vertical) indicate 95% CI and means are represented \nby black dots."
-    ) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_colour_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "top",
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15),
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15),
-    strip.text.x = element_text(size = 17)
+    title = "miR34a asRNA regulation by miR34a promoter"
   ) +
   guides(
-    fill = guide_legend(title = "Gene", override.aes = list(size = 3)),
-    colour = FALSE   
+    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
   )
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection with P1 or empty constructs. Luciferase represents miR34a HG and renilla represents miR34a asRNA. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
 
 <br></br>
 
-####Conclusion
+####_Conclusion_
 
 Upon transfection of this construct in two separate cell lines we observed increases in both luciferase and renilla indicating that miR34a HG and asRNA expression is regulated by a single promoter contained within the p1 construct. Transfection of the P2 construct showed to cause a reduction in luciferase (miR34a HG) levels but not renilla (miR34a AS) levels. This could be due to the presence of a STAT3 binding site in p2 which has been previously reported to negativley regulate miR34a HG.
 
@@ -1344,22 +1540,32 @@ Upon transfection of this construct in two separate cell lines we observed incre
 
 ###Figure 2d
 
-####Introduction
+####_Introduction_
 
 Our previous results showed that miR34a HG and asRNA are simultaneously up-regulated in response to doxorubicin treatment leading us to consider the possibility that miR34a asRNA may be necessary for an appropriate miR34a response to apoptotic signaling. To explore this possibility we again utilized the p1 construct, co-transfecting it with an shRNA targeting renilla, and treating HCT116 cells with increasing levels of doxorubicin.
 
 <br></br>
 
-####Methods
-
-We utilized the P1 construct where the overlapping region of miR34a HG and miR34a AS is cloned with luciferase downstream of miR34a HG and renilla downstream of miR34a AS. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43. All cell lines were cultured at 5% CO2 and 37° C with HCT116 cells cultured in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. 2.5x10^5 HCT116wt cells were seeded in a 12-well plate. After 24hrs these were co-transfected with the P1 construct (25ng) and shRenilla2.1 (250ng) using lipo2000 (Life Technologies) standard protocol. 24hrs post-transfection, doxorubicin treatment was initiated using 0, 300, or 500ng/ml. 24hrs post-treatment, RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+####_Methods_
 
 <br></br>
 
-#####Constructs
+_Cell culture, treatment, and QPCR_
+
+We utilized the P1 construct where the overlapping region of miR34a HG and miR34a AS is cloned with luciferase downstream of miR34a HG and renilla downstream of miR34a AS. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43. All cell lines were cultured at 5% CO2 and 37° C with HCT116 cells cultured in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. 2.5x10^5 HCT116wt cells were seeded in a 12-well plate. After 24hrs these were co-transfected with the P1 construct (25ng) and shRenilla2.1 (250ng) using lipo2000 (Life Technologies) standard protocol. 24hrs post-transfection, doxorubicin treatment was initiated using 0, 300, or 500ng/ml. 24hrs post-treatment, RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. All constructs are shown below.
+
+<br></br>
+
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the dct value for the corresponding shControl samples at treatment concentration 0. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the shControl vs shRenilla group's delta-delta ct values.
+
+<br></br>
+
+_Constructs_
 
 ```{r}
-library(printr)
+
 p1 <- data.frame(
     name="p1",
     sequence="GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT
@@ -1370,13 +1576,15 @@ p1 <- data.frame(
               CCT GCT C"
 )
 p1
+
 ```
 
 <br></br>
 
-#####shRNAs
+_shRNAs_
 
 ```{r}
+
 shRNAs <- data.frame(
     name=c(
         "shRenilla2.1"
@@ -1386,13 +1594,15 @@ shRNAs <- data.frame(
     )
 )
 shRNAs
+
 ```
 
 <br></br>
 
-#####Primers
+_Primers_
 
 ```{r}
+
 primers <- data.frame(
     name=c(
         "Luc_set_II_F",
@@ -1412,13 +1622,17 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
+
+See Figure 2c for a schematic representation of the P1 construct.
 
 ```{r, message = FALSE}
+
 url <- "p1shRNAdox.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -1461,11 +1675,12 @@ stats <- stats %>%
     GOI == "Luciferase" ~ "  Luciferase\n(miR34a HG)",
     GOI == "Renilla" ~ "       Renilla\n(miR34a asRNA)"
   ))
+
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
-#plot for rmarkdown
-ggplot(data = NULL) +
+
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
@@ -1541,40 +1756,23 @@ ggplot(data = NULL) +
   scale_y_continuous("\u0394\u0394Ct") +
   labs(
     x = "Doxorubicin (ng/ml)",
-    title = "HCT116",
-    caption =
-            "miR34a (luficerase) and miR34a asRNA (renilla) in HCT116 cells which were co-transfected with the P1 construct and the specified shRNA after which they\nwere treated with the indicated dose of doxorubicin. Error bars (black vertical) indicate 95% CI and black points represent the mean."
+    title = "HCT116"
   ) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_color_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "top",
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15, hjust = 0.5),
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15)
-  ) + 
   guides(
-    fill = guide_legend(title = "Gene", override.aes = list(size = 4)),
-    colour = FALSE
+    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
   )
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+HCT116 cells were co-transfected with the p1 construct and shRNA renilla or shRNA control and subsequently treated with increasing doses of doxorubicin. 24 hours post-treatment, cells were harvested and renilla and luciferase levels were measured using QPCR. Statistical testing compared the shRNA control with shRNA renilla transfected cells using the respective treatment condition. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown.
+</div>
 
 <br></br>
 
-####Conclusion
+####_Conclusion_
 
 Levels of luciferase were abrogated in the shRenilla-transfected cells compared to control shRNA-transfected cells. Collectively, these results indicate that miR34a asRNA positively regulates levels of miR34a HG and is crucial for a proper miR34a response to apoptotic stimuli.
 
@@ -1584,25 +1782,26 @@ Levels of luciferase were abrogated in the shRenilla-transfected cells compared 
 
 ###Figure 3a
 
-####Introduction
+####_Introduction_
 
 We hypothesized that miR34a asRNA may function to mediate the levels of its sense gene, miR34a. To this end, we stably over-expressed miR34a asRNA, using lentiviral transduction, in 3 different p53-null cell lines and monitored the effects on miR34a.
 
 <br></br>
 
-####Methods
+####_Methods_
 
 <br></br>
 
-#####miR34a asRNA cloning
+_miR34a asRNA cloning_
 
 RNA was harvested from U2OS cells using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was run using the miR34aAS_cloning_F4 and miR34aAS_cloning_Ex3_1 primers for 40 cycles at annealing temperature 58˚C and run on an agarose gel. Bands were excised and extracted using the QIAquick gel extraction kit (Qiagen). PCR products were cloned using the Strata Clone kit (Aligent) and sequenced (results below). The insert for the lentiviral construct (p-HIV-I2AG-U6) was subsequently sub-cloned from the sequenced plasmid using primers with PacI and NheI cleavage sites. The cloned transcript largley mirrors the GENCODE annotated transcript.
 
 <br></br>
 
-######Cloning primers
+_Cloning primers_
 
 ```{r}
+
 primers <- data.frame(
     name=c(
         "miR34aAS_cloning_F4",
@@ -1614,13 +1813,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-######Sequencing results
+_Sequencing results_
 
 ```{r}
+
 construct <- data.frame(
     name="miR34a_asRNA",
     sequence="ACG CGT CTC TCC AGC CCG GGA TCC GGG GAG CTG GGC TGT CCC CAG ACC GAC GGG ACA GCG GCA
@@ -1634,27 +1835,53 @@ construct <- data.frame(
                 AAG GAA TGA AAC AGA CTA GGG CGG GAG AGG TGG CCA TCC GTC ATT AGT TGC GGC CAT CA"
 )
 construct
+
 ```
 
 <br></br>
 
-#####Lentivirus production and infection
+_Lentivirus production and infection_
 
 HEK293T cells were transfected with viral and expression constructs using Lipofectamine 2000 (Life Technologies), after which viral supernatants were harvested 48 and 72 hours post-transfection. Viral particles were concentrated using PEG-IT solution (Systems Biosciences) according to the manufacturer’s recommendations. HEK293T cells were used for virus titration and GFP expression was evaluated 72hrs post-infection via flow cytometry after which TU/ml was calculated. Cell lines were subsequently infected with the lentiviral particals using a multuplicity of infection = 1. After 48 hours, cells were placed under mycophenolic acid selection and the selection process was monitored using GFP expression via flow cytometry. When GFP expression was present in >90% of the cells, cells were frozen for downstream analysis.
 
 <br></br>
 
-#####QPCR
+_QPCR_
 
-RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
-QPCR for miRNA expression analysis was performed according to the protocol for the TaqMan microRNA Assay kit (Life Technologies) with primer/probe sets purchased from the same company (TaqMan® MicroRNA Assay, hsa-miR-34a, human and Control miRNA Assay, RNU48, human) and the same cycling scheme as above.
+RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. QPCR for miRNA expression analysis was performed according to the protocol for the TaqMan microRNA Assay kit (Life Technologies) with primer/probe sets purchased from the same company (TaqMan® MicroRNA Assay, hsa-miR-34a, human and Control miRNA Assay, RNU48, human) and the same cycling scheme as above. QPCR primers are shown below.
 
 <br></br>
 
-######QPCR primers
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding mock samples. At least three independant experiments (biological replicates) were performed in total (see more below). The Student's t-test was used to compare the mock vs miR34a asRNA overexpressing group's delta-delta ct values for both genes.  
+
+<br></br>
+
+The sample numbers for each group are as follows:
+```{r}
+
+n <- data.frame(
+  name = c(
+    "PC3 mock",
+    "PC3 miR34a asRNA",
+    "Skov3 mock",
+    "Skov3 miR34a asRNA",
+    "Saos2 mock",
+    "Saos2 miR34a asRNA"
+  ),
+  n = c(3, 5, 4, 4, 5, 5)
+)
+n
+
+```
+
+<br></br>
+
+_QPCR primers_
 
 ```{r}
-###Q-PCR primers
+
 primers <- data.frame(
     name=c(
         "ß-actin Fwd",
@@ -1672,13 +1899,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, message = FALSE}
+
 url <- "stableLineExpression.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -1734,11 +1963,38 @@ data <- data %>%
 stats <- stats %>%
   mutate(Condition = paste(`Cell line`, `Genetic mod`, sep = "\n")) %>%
   mutate(Condition = parse_factor(Condition, levels = lev))
+
+#vertical lines and labels in plot
+ys <- stats %>%
+  group_by(`Cell line`) %>%
+  summarize(max = max(CI95h)) 
+
+vl <- stats %>%
+  group_by(`Cell line`, GOI) %>%
+  summarize(
+    pValue = as.numeric(min(pValue))
+  ) %>%
+  ungroup() %>%
+  pFormat(.) %>%
+  mutate(
+    x = case_when(
+      GOI ==    "miR34a" ~ 1 + 0.25,
+      GOI == "miR34a asRNA" ~ 1 - 0.25
+    ),
+    xend = case_when(
+      GOI ==    "miR34a" ~ 2 + 0.25,
+      GOI == "miR34a asRNA" ~ 2 - 0.25
+    )
+  ) %>%
+  inner_join(ys) %>%
+  mutate(
+    max = max + c(0.25, 1, 0.25, 1, 0.25, 1)
+  )
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-#plot for rmarkdown
-ggplot(data = NULL) +
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
@@ -1801,12 +2057,12 @@ ggplot(data = NULL) +
     show.legend = FALSE
   ) +
   geom_label(
-    data = filter(stats, `Genetic mod` != "mock"),
+    data = vl,
     aes(
-      x = Condition, 
-      y = CI95h + 0.5, 
+      x = 1.5, 
+      y = max + 0.25, 
       label = pFormat, 
-      group = interaction(Condition, GOI)
+      group = interaction(`Cell line`, GOI)
     ),
     fill = "white",
     label.size = 0,
@@ -1817,63 +2073,63 @@ ggplot(data = NULL) +
     family = "Arial Unicode MS",
     size = 3
   ) +
+  geom_segment(
+    data = vl,
+    aes(
+      x = x,
+      y = max,
+      xend = xend,
+      yend = max
+    ),
+    colour = "grey43",
+    show.legend = FALSE
+  ) +
   scale_y_continuous("\u0394\u0394Ct")+
   labs(
     x = "Cell line",
-    title = "miR34a asRNA over-expressing cell lines",
-    caption = 
-            "miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-expressing miR34a asRNA compared to mock over-expressing control.\n\u0394\u0394ct = House keeping gene - Target gene - mock control. Error bars indicate 95% CI and black points represent the mean."
-  )+
-  theme_few() +
-  scale_colour_ptol() +
-  scale_fill_ptol() +
-  theme(
-    legend.position = "top",
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15),
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 12),
-    strip.text.x = element_text(size = 17)
+    title = "miR34a asRNA over-expressing cell lines"
   ) +
   guides(
-    fill = guide_legend(title = "Gene", override.aes = list(size = 4)),
-    colour = FALSE
+    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
   )
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-expressing miR34a asRNA compared to mock over-expressing control. The points represent the values obtained from each independant experiment (n >= 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
 
 <br></br>
 
-####Conclusion
+####_Conclusion_
 
 miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all 3 cell lines. This indicates that miR34a asRNA concordantly regulates miR34a.
 
 <br></br><br></br>
 
 
-###Supplementarty Figure 2a (stable with HEK)
+###Supplementarty Figure 2a
 
-####Introduction
+####_Introduction_
+
 miR34a asRNA over-expressing cell lines, previously generated, showed a high overexpression level of miR34a asRNA despite a low multiplicity of infection. This is most likley due to the fact that all infected cell lines have practically no endogenous miR34a asRNA expression. To investigate the physiological relevance of the over-expression the miR34a asRNA levels were compared to the expression levels in HEK293t cells, which have a high endogenous miR34a expression level.
 
-####Methods
+####_Methods_
 
-#####miR34a asRNA cloning
+<br></br>
+
+_miR34a asRNA cloning_
+
 RNA was harvested from U2OS cells using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was run using the miR34aAS_cloning_F4 and miR34aAS_cloning_Ex3_1 primers for 40 cycles at annealing temperature 58˚C and run on an agarose gel. Bands were excised and extracted using the QIAquick gel extraction kit (Qiagen). PCR products were cloned using the Strata Clone kit (Aligent) and sequenced (results below). The insert for the lentiviral construct (p-HIV-I2AG-U6) was subsequently sub-cloned from the sequenced plasmid using primers with PacI and NheI cleavage sites. The cloned transcript largley mirrors the GENCODE annotated transcript.
 
-######Cloning primers
+<br></br>
+
+_Cloning primers_
+
 ```{r}
-library(printr)
+
 primers <- data.frame(
     name=c(
         "miR34aAS_cloning_F4",
@@ -1885,10 +2141,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
-######Sequencing results
+<br></br>
+
+_Sequencing results_
+
 ```{r}
+
 construct <- data.frame(
     name="miR34a_asRNA",
     sequence="ACG CGT CTC TCC AGC CCG GGA TCC GGG GAG CTG GGC TGT CCC CAG ACC GAC GGG ACA GCG GCA
@@ -1902,19 +2163,33 @@ construct <- data.frame(
                 AAG GAA TGA AAC AGA CTA GGG CGG GAG AGG TGG CCA TCC GTC ATT AGT TGC GGC CAT CA"
 )
 construct
+
 ```
 
-#####Lentivirus production and infection
+<br></br>
+
+_Lentivirus production and infection_
+
 HEK293T cells were transfected with viral and expression constructs using Lipofectamine 2000 (Life Technologies), after which viral supernatants were harvested 48 and 72 hours post-transfection. Viral particles were concentrated using PEG-IT solution (Systems Biosciences) according to the manufacturer’s recommendations. HEK293T cells were used for virus titration and GFP expression was evaluated 72hrs post-infection via flow cytometry after which TU/ml was calculated. Cell lines were subsequently infected with the lentiviral particals using a multuplicity of infection = 1. After 48 hours, cells were placed under mycophenolic acid selection and the selection process was monitored using GFP expression via flow cytometry. When GFP expression was present in >90% of the cells, cells were frozen for downstream analysis.
 
-#####QPCR
-RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
-QPCR for miRNA expression analysis was performed according to the protocol for the TaqMan microRNA Assay kit (Life Technologies) with primer/probe sets purchased from the same company (TaqMan® MicroRNA Assay, hsa-miR-34a, human and Control miRNA Assay, RNU48, human) and the same cycling scheme as above.
+<br></br>
 
-######Primers
+_QPCR_
+
+RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. QPCR for miRNA expression analysis was performed according to the protocol for the TaqMan microRNA Assay kit (Life Technologies) with primer/probe sets purchased from the same company (TaqMan® MicroRNA Assay, hsa-miR-34a, human and Control miRNA Assay, RNU48, human) and the same cycling scheme as above.
+
+<br></br>
+
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. Delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding untreated samples. Five independant experiments were performed in total for all cell lines with the exception of PC3. Six independant experiments were preformed for the PC3 cell lines although, one experiment was removed due to excessivley high ct values (>30) in the house keeping gene, indicating an insufficient amount of RNA to sucessfully detect the genes of interest.   
+
+<br></br>
+
+_Primers_
 
 ```{r}
-###Q-PCR primers
+
 primers <- data.frame(
     name=c(
         "ß-actin Fwd",
@@ -1932,11 +2207,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
-####Results
+<br></br>
+
+####_Results_
 
 ```{r, message = FALSE}
+
 url <- "stableLineExpressionHEK.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -1971,10 +2250,12 @@ stats <- data %>%
     CI95l = t.test(log2fold)$conf.int[1],
     CI95h = t.test(log2fold)$conf.int[2]
   )
+
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-ggplot(data = NULL)+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL)+
   geom_violin(
     data = data,
     aes(
@@ -2028,35 +2309,22 @@ ggplot(data = NULL)+
   ) +
   labs(
     x = "Cell line",
-    title = "miR34a asRNA",
-    caption = 
-            "miR34a asRNA over-expression levels in PC3, Skov3, and Saos2 stable cell lines compared to HEK293t cells.\n\u0394\u0394ct = target gene - House keeping gene - HEK293t. Error bars indicate 95% CI and black points represent the mean."
+    y = "log2(Fold)",
+    title = "miR34a asRNA"
   ) +
-  theme_few() +
-  scale_color_ptol() +
-  scale_fill_ptol() +
-  scale_y_continuous("\u0394\u0394Ct") +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15)
-    ),
-    legend.position = "none",
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15),
-    strip.text.x = element_text(size = 15)
-  )
+  guides(fill = FALSE)
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+miR34a asRNA over-expression levels in PC3, Skov3, and Saos2 stable cell lines compared to HEK293t cells. The points represent the values obtained from each independant experiment (n = 5) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines) and mean (horizontal black lines) are shown.
+</div>
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 Results indicate that miR34a asRNA is over-expressed 13-22 fold greater that endogenous HEK293t levels. 
 
@@ -2064,21 +2332,31 @@ Results indicate that miR34a asRNA is over-expressed 13-22 fold greater that end
 
 ###Figure 3b
 
-####Introduction
+####_Introduction_
 
 miR34a is known to regulate cell cycle and, specifically, induce G1-phase arrest. Due to the increase observed in miR34a expression levels in cell lines over-expressing miR34a asRNA, we investigated if the cell cycle was perturbed in these cells.
 
 <br></br>
 
-####Methods
-
-All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine. All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. 1x10^5 cells per well in a 6-well plate and harvested after 24hrs. Cells were washed in PBS and fixed in 4% PFA at room temperature overnight. PFA was removed, and cells were resuspended in 95% EtOH. The samples were then rehydrated in distilled water, stained with DAPI and analyzed by flow cytometry on a LSRII (BD Biosciences) machine. Resulting data was further processed using Flowjo software.
+####_Methods_
 
 <br></br>
 
-####Results
+_Cell culture and cell cycle analysis_
+
+All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine. All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. 1x10^5 cells per well in a 6-well plate and harvested after 24hrs. Cells were washed in PBS and fixed in 4% PFA at room temperature overnight. PFA was removed, and cells were resuspended in 95% EtOH. The samples were then rehydrated in distilled water, stained with DAPI and analyzed by flow cytometry on a LSRII (BD Biosciences) machine.
+
+<br></br>
+
+_Analysis_
+Write the software used to quantify the cell cycle phases.
+
+Percentages were converted to log2 fractions for each sample. Student's t-test was used for statistical analysis comparing the mock vs miR34a asRNA overespression conditions using five (PC3) or three (Skov3) independant experiments. 
+
+####_Results_
 
 ```{r, message = FALSE}
+
 url <- "stableLineCellCycle.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -2124,11 +2402,12 @@ stats <- stats %>%
     x = rep(sort(rep(1:3, 2)), 2) - 0.25,
     xend = rep(sort(rep(1:3, 2)), 2) + 0.25
   )
+
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-#plot for rmarkdown
-ggplot(data = NULL) +
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
@@ -2214,45 +2493,27 @@ ggplot(data = NULL) +
     size = 3,
     family = "Arial Unicode MS"
   ) +
+  scale_y_continuous(labels = scales::percent_format()) +
   labs(
     x = "Cell cycle phase",
-    title = "Cell cycle",
-    caption = 
-            "Cell cycle analysis in miR34a asRNA over-expressing PC3, Skov3, and Saos2 stable cell lines compared to their respective mock control.\nError bars (black vertical) indicate 95% CI and horizontal lines (black) represent the mean."
-  )+
-  theme_few() +
-  scale_y_continuous(labels = scales::percent_format())+
-  scale_fill_ptol() +
-  scale_colour_ptol(labels = c("PC3 mock", "PC3 miR34a asRNA")) +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 22
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "top",
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15),
-    strip.text.x = element_text(size = 15),
-    axis.title.y = element_blank(),
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15)
-  ) + 
+    y = "",
+    title = "Cell cycle"
+  ) +
   guides(
-    fill = guide_legend(title = "Cell line"),
-    colour = FALSE
-  ) 
+    fill = guide_legend(title = "Condition", override.aes = list(size = 6))
+  )
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+Cell cycle analysis in miR34a asRNA over-expressing PC3, Skov3, and Saos2 stable cell lines compared to their respective mock control. The points represent the values obtained from each independant experiment (PC3 n = 5; Skov3 n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
 
 <br></br>
 
-####Conclusion
+####_Conclusion_
 
 An increase in the percentage of cells in G1-phase can be seen in cell lines overexpressing miR34a asRNA. In addition, a concominant decrease of cells in G2-phase can be observed.
 
@@ -2260,21 +2521,32 @@ An increase in the percentage of cells in G1-phase can be seen in cell lines ove
 
 ###Figure 3c
 
-####Introduction
+####_Introduction_
 
 As p53 is a well-known regulator of senescence, growth, and apoptosis and has been shown to specifically important under conditions of cellular stress, such as starvation. Therefore, we investigated whether overexpression of miR34a AS affects growth rate under normal and starvation conditions by measuring changes in confluency over time.
 
 <br></br>
 
-####Methods
+####_Methods_
+
+<br></br>
+
+_Cell culture and confluency quantification_
 
 10^4 PC3 cells, either miR34a asRNA overexpressing or WT, were seeded in 96 well plates. After attachment (3-4h) media was replaced with either RPMI (Gibco, life technology) (supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum) or HBSS. Cells were incubated in Spark Multimode Microplate reader for 48 hours at 37°C with 5% CO2 in a humidity chamber. Confluency was measured every hour. 
 
 <br></br>
 
-####Results
+_Analysis_
+
+Three technical triplicates were included in each experiment and these were independantly normalized for each condition to the 0 time point afterwhich the mean was calculated. The 95% confidence interval was then calculated based on the three independant experiments which were preformed.
+
+<br></br>
+
+####_Results_
 
 ```{r, message = FALSE}
+
 url <- "growthStarvation.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -2331,13 +2603,12 @@ stats <- data %>%
     CI95l = t.test(techMean)$conf.int[1],
     CI95h = t.test(techMean)$conf.int[2]
   )
+
 ```
 
-####Results
+```{r, fig.align='center', fig.height=8, fig.width=12}
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-#plot for Rmarkdown
-ggplot(data = NULL) + 
+p <- ggplot(data = NULL) +
   geom_ribbon(
     data = stats,
     aes(
@@ -2373,44 +2644,27 @@ ggplot(data = NULL) +
     show.legend = TRUE
   ) +
   facet_grid(. ~ Treatment) +
-  scale_x_discrete(breaks = seq(0, 47, 5)) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_colour_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "top",
-    legend.title = element_text(size = 17),
-    legend.text = element_text(size = 15),
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15),
-    strip.text.x = element_text(size = 17)
-  ) +
+  scale_x_discrete(breaks = seq(0, 35, 5)) +
   labs(
     x = "Time (hours)", 
     y = "Normalized % confluency",
-    title = "miR34a asRNA's role in growth regulation.",
-    caption = "The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line."
-  ) +
+    title = "miR34a asRNA's role in growth regulation."
+  ) + 
   guides(
-    fill = guide_legend(title = "Cell line"), 
-    colour = guide_legend(title = "Cell line")
+    colour = guide_legend(title = "Cell line", override.aes = list(size = 3))
   )
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. The points represent the mean values obtained from each independant experiment (n = 3) whereas, the shadow represents 95% confidence interval, and the vertical line represents the minimum and maximum values from the independant experiments.
+</div>
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 miR34a asRNA overexpression causes a minor decrease in cell growth under normal conditions (RPMI) although under conditions of cellular stress through starvation, this effect is increased dramatically. 
 
@@ -2418,21 +2672,32 @@ miR34a asRNA overexpression causes a minor decrease in cell growth under normal 
 
 ###Figure 3d
 
-####Introduction
+####_Introduction_
 
 miR34a asRNA over-expression was shown to increase the expression levels of miR34a. We investigated if this increase of miR34a was due to increased levels of transcription at the miR34a promoter.
 
 <br></br>
 
-####Methods
+####_Methods_
+
+<br></br>
+
+_Cell culture, QPCR, and ChIP_
 
 All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine and Saos2 cells cultured in DMEM high modified (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 2-3x10^6 cells in a 15cm dish and incubated overnight. Cells were cross-linked in 1% formaldehyde, quenched in glycine (0.125M), resuspended in cell lysis buffer (5mM PIPES, 85mM KCL, 0.5% NP40, protease inhibitor), and sonicated (Bioruptor Sonicator Diagenode) in nucleus lysis buffer (50mM TRIS-HCL pH 8.0, 10mM EDTA, 1% SDS, protease inhibitor). The samples were incubated overnight at 4 °C with the appropriate antibody. Salmon sperm DNA/Protein A–agarose (Upstate/Millipore) was used to pull down the antibody. DNA was eluted in elution buffer (1% SDS, 100 mM NaHCO3), followed by reverse cross-linking, RNase-A and protease-K treatment. The DNA was eluted by using a Qiagen PCR purification kit. The following antibodies were used (4 μg/sample): phospho-polymerase II (abcam: ab5095). QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
 <br></br>
 
-#####Primers
+_Analysis_
+
+QPCR was performed in technical replicate for each sample and the mean of the technical replicates was subsequently used to calculate the fraction of input. The fold change of the miR34a asRNA overexpression samples was then calculated by dividing the values by the values for the corresponding mock samples. The fold values were then log2 transformed and the Student's t-test was used to test for significant differences under the null hypothesis that the true mean value of log2 transformed fold changes were equal to 0.
+
+<br></br>
+
+_Primers_
 
 ```{r}
+
 primers <- data.frame(
     name=c(
         "miR34aChIP F1",
@@ -2443,13 +2708,16 @@ primers <- data.frame(
        "AGG GAA GAA AGA ACT AGC CGA GCA"
     )
 )
+primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, message = FALSE}
+
 url <- "stableLinePolIIChIP.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -2475,7 +2743,7 @@ data <- data %>%
 #calculate fold over mock
 .foldOverControl <- function(data, fractionInput, Biological.Replicate) {
   bool1 <- data$`Biological Replicate` == 3
-  bool2 <- data$condition == "mock"
+  bool2 <- data$condition == "PC3 mock"
   bool <- bool1 & bool2
   fractionInput / pull(data, fractionInput)[bool]
 }
@@ -2499,14 +2767,15 @@ stats <- data %>%
   ) %>%
   pFormat(.) %>%
   mutate(pFormat = case_when(
-    condition == "mock" ~ "", 
+    condition == "PC3 mock" ~ "", 
     TRUE ~ pFormat
   ))
+
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-#plot for Rmarkdown
-ggplot(data = NULL)+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL)+
   geom_violin(
     data = data,
     aes(
@@ -2551,7 +2820,7 @@ ggplot(data = NULL)+
     show.legend = FALSE
   ) +
   geom_segment(
-    data = filter(stats, condition == "miR34a asRNA"),
+    data = filter(stats, condition == "PC3 miR34a asRNA"),
     aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
     colour = "grey43"
   ) +
@@ -2569,55 +2838,54 @@ ggplot(data = NULL)+
   labs(
     x = "Cell line",
     y = "log2(Fold polII enrichment)",
-    title = "Phosphorylated Poll II ChIP",
-    caption = 
-            "Phosphorylated Poll II ChIP in miR34a asRNA over-expressing PC3 stable cell lines compared to their respective mock control.\nError bars (black vertical) indicate 95% CI and black points represent the mean."
-  )+
-  theme_few() +
-  scale_fill_ptol() +
-  scale_color_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "none",
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15)
-  )
+    title = "Phosphorylated Poll II ChIP"
+  ) +
+  guides(fill = FALSE)
+
+plotRmarkdown(p)
+
 ```
 
-####Conclusion
+<div class="caption">
+Phosphorylated Poll II ChIP in miR34a asRNA over-expressing PC3 stable cell lines compared to their respective mock control. The points represent the values obtained from each independant experiment (n = 4) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
+
+<br></br>
+
+####_Conclusion_
 
 Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-expressing cell lines indicating that the regulation of miR34a by miR34a asRNA is transcriptional.
 
 <br></br><br></br>
 
-###Supplementarty Figure 2b (CCND1 exp)
+###Supplementarty Figure 2b
 
-####Introduction
+####_Introduction_
 
 To further investigate the characteristics of the miR34a asRNA stable lines, we measured the expression level of known miR34a target cyclin D1. miR34a has been previously shown to inhibit cell cycle progression, partially via its regulation of cyclin D1.
 
 <br></br>
 
-####Methods
+####_Methods_
+
+<br></br>
+
+_Cell culture and QPCR_
 
 All cell lines were cultured at 5% CO2 and 37° C with PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine. All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were seeded at 2x10^5 cells per well in a 12-well plate. After 24 hours, RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
 <br></br>
 
-#####Primers
+_Analysis_
+
+Two technical replicates were included for each sample and each QPCR run. Delta ct was calculated by subtracting the mean of the technical replicates for each sample from the mean value for the technical replicates from the house keeping gene for the corresponding sample. Delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding mock samples. Six independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the mock and miR34a asRNA overexpressing group's delta-delta ct values with the null hypothesis that there was no difference in the two group's means.
+
+<br></br>
+
+_Primers_
 
 ```{r}
-library(printr)
+
 primers <- data.frame(
     name=c(
         "CCND1 Fwd",	
@@ -2633,13 +2901,15 @@ primers <- data.frame(
     )
 )
 primers
+
 ```
 
 <br></br>
 
-####Results
+####_Results_
 
 ```{r, warning=FALSE, message=FALSE}
+
 url <- "stableLineCCND1exp.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -2655,7 +2925,7 @@ data <- data %>%
 #calculate ddct
 groups[groups == "gene"] <- "GOI"
 logical <- tibble(
-  condition = pull(data, condition) == "mock"
+  condition = pull(data, condition) == "PC3 mock"
 )
  
 data <- data %>%
@@ -2663,12 +2933,14 @@ data <- data %>%
   folds(.)
 
 #calculate stats
-stats <- calcStats(data, condition, "mock", groups) %>%
+stats <- calcStats(data, condition, "PC3 mock", groups) %>%
   pFormat(.)
+
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-ggplot(data = NULL) +
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
@@ -2742,65 +3014,68 @@ ggplot(data = NULL) +
   scale_y_continuous("\u0394\u0394Ct") +
   labs(
     x = "Cell line",
-    title = "CCND1",
-    caption = 
-            "Q-PCR showing cyclin D1 levels in PC3 miR34a asRNA over-expressing stable lines. Error bars (black vertical) indicate 95% CI and means are represented \nby black dots."
+    title = "CCND1"
   ) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_colour_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "none",
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15)
-  )
+  guides(fill = FALSE)
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+Q-PCR showing cyclin D1 levels in PC3 miR34a asRNA over-expressing stable lines. The points represent the values obtained from each independant experiment (n = 6) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 CCND1 expression levels are decreased in PC3 cell lines stably over-expressing miR34a asRNA.
 
 <br></br><br></br>
 
-###Supplementarty Figure 2c (CCND1 prot)
+###Supplementarty Figure 2c
 
-####Introduction
+####_Introduction_
 
 After observing decreased mRNA levels for the miR34a target CCND1, we were interested whether this has also consequences for its protein levels. 
 
 <br></br>
 
-####Methods
+####_Methods_
 
+<br></br>
+
+_Cell culture and western blot_
 All cell lines were cultured at 5% CO2 and 37° C with PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine. All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. We seeded three independent experiments of 150,000 cells/well in a six well plate (PC3 mock vs. PC3 miR34a AS F4) and grew them for 24 hours. Before harvesting cells were controlled for their confluency. Cells with a confluence of 60-75%, were harvested using trypsin. Cell pellets were frozen down at -80°C before lysed for Western Blot analysis. Western Blot analysis was performed following Lottes’ protocol. Cells were lysed in RIPA Buffer and run on a 4-12% Bis-Tris-SDS Gel using MOPS running buffer. Proteins were transferred onto a nitrocellulose membrane using iBlot Turbo Blotting Device. Proteins were transferred for 7 minutes. Membranes were blocked for 1 hour at room temperature in 5% milk. Membranes were incubated with a cyclin D1 antibody (92G2 Rabbit mAb, Cell Signalling) overnight at 4°C. The membrane was incubated using a goat anti-rabbit antibody conjugated to HRP for 1 hour at room temperature. Membranes were washed 3-times for 5min each in TBS-T. Membranes were developed using chemiluminescence. After the picture was taken, the membrane was stripped using 0.4M NaOH solution for 20min. Blocking step was repeated and primary antibody against GAPDH was incubated for overnight at 4°C. Consequently, the membrane was incubated using a goat anti-rabbit antibody conjugated to HRP for 1 hour at room temperature. Membranes were washed 3-times for 5min in TBS-T. Membranes were developed using chemiluminescence.
 
 <br></br>
 
-####Results
+_Analysis_
 
-#####Representative experiment
+Resulting bands on the western blots were quantified using the ImageJ software with three parameters being measured, intensity, background, and pixel. The quantative value was derived for each band by first subtracting the background from the intensity and subsequently multiplying this value by the pixel value. The fraction of CCND1 over the house keeping gene was then calculated using each sample's values and the corresponding house keeping genes values. Fold change was then calculated by dividing the normalized CCND1 values in the miR34a asRNA overexpressing samples by the median of the corresponding mock samples. Fold change values were subsequently log2 transformed and the Student's t-test was utilized to compare mock vs. miR34a asRNA overexpressing samples using three independant experiments with the null hypothesis that the mean values were the same in each group.
+
+<br></br>
+
+####_Results_
+
+_Representative experiment_
 ```{r, out.width = "500px"}
+
 url <- "StableLineCCND1prot/singleExp.png"
 knitr::include_graphics(file.path(projectUrl, url))
+
 ```
+
+<div class="caption">
+A resulting western blot representative of the results from the three independant experiments.
+</div>
 
 <br></br><br></br>
 
-#####Quantification
+_Quantification_
 ```{r, message = FALSE}
+
 url <- "stableLineCCND1prot.rda"
 invisible(repmis::source_data(file.path(dataUrl, url)))
 data <- .
@@ -2813,7 +3088,7 @@ data <- data %>%
   mutate(normHK = CCND1 / GAPDH)
 
 #normalize to mock
-cnt <- filter(data, condition == "mock") %>% 
+cnt <- filter(data, condition == "PC3 mock") %>% 
   pull(normHK) %>% 
   median
 
@@ -2827,13 +3102,15 @@ stats <- data %>%
     mean = mean(log2fold),
     CI95l = t.test(log2fold)$conf.int[1],
     CI95h = t.test(log2fold)$conf.int[2],
-    pValue = t.test(log2fold, pull(filter(data, condition == "mock"), log2fold))$p.value
+    pValue = t.test(log2fold, pull(filter(data, condition == "PC3 mock"), log2fold))$p.value
   ) %>%
   pFormat(.)
+
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, eval=TRUE, message=FALSE, warning=FALSE}
-ggplot(data = NULL) +
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
@@ -2909,34 +3186,21 @@ ggplot(data = NULL) +
   scale_y_continuous("log2(Fold)") +
   labs(
     x = "Cell line",
-    title = "CCND1 protein",
-    caption = 
-            "Western blot showing cyclin D1 protein levels in PC3 miR34a asRNA over-expressing stable lines.\nFold = Fraction mock std. to GAPDH. Error bars (black vertical) indicate 95% CI and means are represented by black dots."
+    title = "CCND1 protein"
   ) +
-  theme_few() +
-  scale_fill_ptol() +
-  scale_colour_ptol() +
-  theme(
-    plot.title = element_text(
-      hjust = 0.5,
-      face = "bold",
-      size = 20
-    ),
-    plot.caption = element_text(
-      hjust = 0, 
-      margin = margin(t = 15),
-      family = "Arial Unicode MS"
-    ),
-    legend.position = "none",
-    axis.title = element_text(size = 17),
-    axis.title.x = element_text(margin = margin(t = 10)),
-    axis.text = element_text(size = 15)
-  )
+  guides(fill = FALSE)
+
+plotRmarkdown(p)
+
 ```
+
+<div class="caption">
+Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA over-expressing stable lines compared to mock. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
 
 <br></br>
 
-####Conclusions
+####_Conclusions_
 
 Cyclin D1 protein levels are significantly reduced in PC3 cells overexpressing miR34a asRNA, consistent with increased miR34a expression levels and the reduced G1 cell cycle phase observed in PC3 cells.
 

@@ -1,0 +1,13 @@
+./sampleFiles/wgEncodeRikenCageAg04450CellPapTssHmm.bedRnaElements	chr1	9242221	9242335	chr1:9242221:9242335:+:2.12:1.000000	0	+	1.9368	2.95e-03	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageGm12878CellPapTssHmm.bedRnaElements	chr1	9242221	9242293	chr1:9242221:9242293:+:0.69:1.000000	0	+	0.5548	2.77e-02	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageH1hescCellPapTssHmm.bedRnaElements	chr1	9242205	9242324	chr1:9242205:9242324:+:0.72:1.000000	0	+	0.8509	5.98e-03	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageHaoecCellPapTssHmm.bedRnaElements	chr1	9242225	9242289	chr1:9242225:9242289:+:0.997775	0	+	3.0293	1.22e-02	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageHmscucCellPapTssHmm.bedRnaElements	chr1	9242202	9242287	chr1:9242202:9242287:+:0.997836	0	+	1.8424	6.96e-04	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageHobCellPapTssHmm.bedRnaElements	chr1	9242224	9242291	chr1:9242224:9242291:+:0.991643	0	+	1.4355	1.62e-03	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageHpcplCellPapTssHmm.bedRnaElements	chr1	9242202	9242305	chr1:9242202:9242305:+:0.997318	0	+	1.3637	3.53e-02	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageHsavecCellPapTssHmm.bedRnaElements	chr1	9242161	9242321	chr1:9242161:9242321:+:0.998597	0	+	2.7802	6.11e-04	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageHuvecCellPapTssHmm.bedRnaElements	chr1	9242195	9242324	chr1:9242195:9242324:+:0.80:1.000000	0	+	1.9222	3.49e-06	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageHwpCellPapTssHmm.bedRnaElements	chr1	9242211	9242292	chr1:9242211:9242292:+:0.978745	0	+	1.0890	3.63e-02	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageImr90CellPapTssHmm.bedRnaElements	chr1	9242201	9242297	chr1:9242201:9242297:+:0.999725	0	+	0.8827	4.01e-03	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageNhdfCellPapTssHmm.bedRnaElements	chr1	9242205	9242324	chr1:9242205:9242324:+:0.951560	0	+	1.5686	9.65e-03	0	miR34aAS
+./sampleFiles/wgEncodeRikenCageNhekCellPapTssHmm.bedRnaElements	chr1	9242211	9242329	chr1:9242211:9242329:+:1.67:1.000000	0	+	1.2132	9.34e-04	0	miR34aAS
