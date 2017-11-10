@@ -1,4 +1,5 @@
 library(tidyverse)
+library(magrittr)
 
 #HCTp53null
 read_tsv('./data-raw/HCTp53null.txt', col_names = TRUE) %>%
@@ -249,16 +250,65 @@ read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
   save(., file = './data/stableLineCCND1prot.rda', compress = "bzip2")
 
 #lnc34a CAGE
-tmp <- tmp.dir()
+#the chromosomal regions correspond to 200 bp upstream of the lnc34a start
+#site and 200 bp downstream of the GENCODE annotated miR34a asRNA start site.
+read_tsv('./data-raw/lnc34aCAGE.txt') %>%
+  pull(14) %>%
+  data_frame(filename = .) %>%
+  mutate(file_contents = map(
+    filename,
+    read_tsv,
+    col_names = FALSE,
+    col_types = list(
+      col_character(), col_double(), col_double(), col_character(),
+      col_double(), col_character(), col_double(), col_character(),
+      col_double()
+  ))) %>%
+  unnest() %>%
+  mutate(
+    X8 = as.numeric(replace(X8, X8 == ".", NA)),
+    filename = basename(filename)
+  ) %>%
+  rename(
+    chr = X1, strand = X6, start = X2, stop = X3,
+    reads = X9, RPKM = X7, signif = X8
+  ) %>%
+  select(chr, start, stop, strand, reads, RPKM, signif, filename) %>%
+  filter(
+    chr == "chr1" & start >= (9241796 - 200) &
+    stop <= (9242263 + 200) & strand == "+"
+  ) %>%
+  filter(RPKM >= 1) %T>%
+  save(., file = './data/lnc34aCAGE.rda', compress = "bzip2") %>%
+  select(chr, start, stop) %>%
+  write_tsv(path = "./data-raw/lnc34aCAGE.bed", col_names = FALSE)
 
-#call perl script
-sysCmd1 <- ""
-system(sysCmd1)
-
-#get output
-data <- read.table(file.path(tmp, "fileResults.txt"))
-
-#save output
+#lnc34a splice junctions
+read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
+  pull(16) %>%
+  data_frame(filename = .) %>%
+  mutate(file_contents = map(
+    filename,
+    read_tsv,
+    col_names = FALSE,
+    col_types = list(
+      col_character(), col_double(), col_double(), col_character(),
+      col_double(), col_character(), col_double(), col_character(),
+      col_double()
+    )
+)) %>%
+  unnest() %>%
+  mutate(filename = basename(filename)) %>%
+  rename(
+    chr = X1, strand = X6, start = X2, stop = X3,
+    reads = X9, signif = X8
+  ) %>%
+  select(filename, chr, start, stop, strand, reads, signif) %>%
+  filter(chr == "chr1" & start >= 9241596 & stop <= 9257102 & strand == "+") %>%
+  filter(reads >= 2) %T>%
+  save(., file = './data/lnc34aSpliceJncs.rda', compress = "bzip2") %>%
+  select(chr, start, stop) %>%
+  write_tsv(path = "./data-raw/lnc34aSpliceJncs.bed", col_names = FALSE)
 
 
 #source('./data-raw/saveRDA.R')
