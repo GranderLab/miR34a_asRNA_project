@@ -308,6 +308,7 @@ read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
   filter(reads >= 2) %T>%
   save(., file = './data/lnc34aSpliceJncs.rda', compress = "bzip2") %>%
   select(chr, start, stop) %>%
+  distinct() %>%
   write_tsv(path = "./data-raw/lnc34aSpliceJncs.bed", col_names = FALSE)
 
 
