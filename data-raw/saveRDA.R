@@ -31,7 +31,7 @@ read_tsv('./data-raw/HCTp53null.txt', col_names = TRUE) %>%
       levels = c("miR34a HG", "miR34a asRNA", "Actin")
     )
   ) %>%
-  save(., file = './data/HCT116p53null.rda', compress = "bzip2")
+  write_rds(path = './data/HCT116p53null.rda', compress = "bz2")
 
 #HctHekDox
 read_tsv('./data-raw/HctHekDox.txt', col_names = TRUE) %>%
