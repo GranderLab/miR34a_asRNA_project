@@ -252,17 +252,6 @@ read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
 #lnc34a CAGE
 #the chromosomal regions correspond to 200 bp upstream of the lnc34a start
 #site and 200 bp downstream of the GENCODE annotated miR34a asRNA start site.
-
-.readAndFilter <- function(
-  x,
-  start,
-  stop,
-  col_types
-){
-  read_tsv(x, col_names = FALSE, col_types = col_types) %>%
-    filter(X1 == "chr1" & X2 >= start & X3 <= stop & X6 == "+")
-}
-
 read_tsv('./data-raw/lnc34aCAGE.txt') %>%
   pull(14) %>%
   data_frame(filename = .) %>%
@@ -293,9 +282,8 @@ read_tsv('./data-raw/lnc34aCAGE.txt') %>%
   write_rds(., path = './data/lnc34aCAGE.rds')
 
 #lnc34a splice junctions
-
 read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
-  pull(16) %>% `[`(1:2) %>%
+  pull(16) %>%
   data_frame(filename = .) %>%
   mutate(file_contents = map(
     filename,
