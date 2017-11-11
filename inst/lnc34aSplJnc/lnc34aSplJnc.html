@@ -161,9 +161,9 @@ data &lt;- tibble(
 )
 
 #splice junctions
-load('/Users/jasonserviss/Github/miR34a_asRNA_project/data/lnc34aSpliceJncs.rda')
-splJnc &lt;- .
-rm(.)
+dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data&quot;
+url &lt;- &quot;lnc34aSpliceJncs.rds&quot;
+splJnc &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 splJnc &lt;- splJnc %&gt;%
   mutate(

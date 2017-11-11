@@ -44,9 +44,9 @@ data <- tibble(
 )
 
 #splice junctions
-load('/Users/jasonserviss/Github/miR34a_asRNA_project/data/lnc34aSpliceJncs.rda')
-splJnc <- .
-rm(.)
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+url <- "lnc34aSpliceJncs.rds"
+splJnc <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 splJnc <- splJnc %>%
   mutate(
