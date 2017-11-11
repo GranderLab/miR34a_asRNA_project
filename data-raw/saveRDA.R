@@ -48,7 +48,7 @@ read_tsv('./data-raw/HctHekDox.txt', col_names = TRUE) %>%
     gene == "B-actin" ~ "Actin",
     TRUE              ~ gene
   )) %>%
-  save(., file = './data/HctHekDox.rda', compress = "bzip2")
+  write_rds(., path = './data/HctHekDox.rds')
 
 #P1-HCTandHEK
 read_tsv('./data-raw/P1-HCTandHEK.txt', col_names = TRUE) %>%
@@ -64,7 +64,7 @@ read_tsv('./data-raw/P1-HCTandHEK.txt', col_names = TRUE) %>%
     ),
     construct = gsub("empty", "Empty", .data$construct)
   ) %>%
-  save(., file = './data/P1-HCTandHEK.rda', compress = "bzip2")
+  write_rds(., path = './data/P1-HCTandHEK.rds')
 
 #p1shRNAdox
 read_tsv('./data-raw/p1shRNAdox.txt', col_names = TRUE) %>%
@@ -76,7 +76,7 @@ read_tsv('./data-raw/p1shRNAdox.txt', col_names = TRUE) %>%
     treatment = parse_factor(treatment, levels = c("0", "300", "500"))
   ) %>%
   select(-alias, -correspondsWith) %>%
-  save(., file = './data/p1shRNAdox.rda', compress = "bzip2")
+  write_rds(., path = './data/p1shRNAdox.rds')
 
 #stableLineExpression
 read_tsv('./data-raw/stableLineExpression.txt', col_names = TRUE) %>%
@@ -105,7 +105,7 @@ read_tsv('./data-raw/stableLineExpression.txt', col_names = TRUE) %>%
       levels = c("miR34a asRNA", "miR34a", "Actin", "RNU48")
     )
   ) %>%
-  save(., file = './data/stableLineExpression.rda', compress = "bzip2")
+  write_rds(., path = './data/stableLineExpression.rds')
 
 #stableLineCellCycle
 read_tsv('./data-raw/stableLineCellCycle.txt', col_names = TRUE) %>%
@@ -120,7 +120,7 @@ read_tsv('./data-raw/stableLineCellCycle.txt', col_names = TRUE) %>%
     condition = parse_factor(condition, levels = c("mock", "miR34a asRNA")),
     phase = parse_factor(phase, levels = c("G1", "S", "G2"))
   ) %>%
-  save(., file = './data/stableLineCellCycle.rda', compress = "bzip2")
+  write_rds(., path = './data/stableLineCellCycle.rds')
 
 #growthStarvation
 read_tsv('./data-raw/growthStarvation.txt', col_names = TRUE)  %>%
@@ -148,7 +148,7 @@ read_tsv('./data-raw/growthStarvation.txt', col_names = TRUE)  %>%
     )
   ) %>%
   select(-Condition) %>%
-  save(., file = './data/growthStarvation.rda', compress = "bzip2")
+  write_rds(., path = './data/growthStarvation.rds')
 
 #stableLinePolIIChIP
 read_tsv('./data-raw/stableLinePolIIChIP.txt', col_names = TRUE) %>%
@@ -167,7 +167,7 @@ read_tsv('./data-raw/stableLinePolIIChIP.txt', col_names = TRUE) %>%
       levels = c("PC3 mock", "PC3 miR34a asRNA")
     )
   ) %>%
-  save(., file = './data/stableLinePolIIChIP.rda', compress = "bzip2")
+  write_rds(., path = './data/stableLinePolIIChIP.rds')
 
 #cellular localization
 read_tsv('./data-raw/cellularLocalization.txt', col_names = TRUE) %>%
@@ -181,7 +181,7 @@ read_tsv('./data-raw/cellularLocalization.txt', col_names = TRUE) %>%
     gene,
     levels = c("miR34a\nasRNA", "miR34a\nHG", "Actin", "RNU48")
   )) %>%
-  save(., file = './data/cellularLocalization.rda', compress = "bzip2")
+  write_rds(., path = './data/cellularLocalization.rds')
 
 #transcript stability
 read_tsv('./data-raw/transcriptStability.txt', col_names = TRUE) %>%
@@ -191,7 +191,7 @@ read_tsv('./data-raw/transcriptStability.txt', col_names = TRUE) %>%
     treatment = parse_factor(treatment, levels = c("0", "1", "2", "4")),
     gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a HG", "Actin"))
   ) %>%
-  save(., file = './data/transcriptStability.rda', compress = "bzip2")
+  write_rds(., path = './data/transcriptStability.rds')
 
 #Stable line expression with HEK293t
 read_tsv('./data-raw/stableLineExpressionHEK.txt', col_names = TRUE) %>%
@@ -215,7 +215,7 @@ read_tsv('./data-raw/stableLineExpressionHEK.txt', col_names = TRUE) %>%
       levels = c("wt", "mock", "miR34a\nasRNA")
     )
   ) %>%
-  save(., file = './data/stableLineExpressionHEK.rda', compress = "bzip2")
+  write_rds(., path = './data/stableLineExpressionHEK.rds')
 
 #Stable line CCND1 expression
 read_tsv('./data-raw/stableLineCCND1exp.txt', col_names = TRUE) %>%
@@ -234,7 +234,7 @@ read_tsv('./data-raw/stableLineCCND1exp.txt', col_names = TRUE) %>%
       levels = c("PC3 mock", "PC3 miR34a\nasRNA")
     )
   ) %>%
-  save(., file = './data/stableLineCCND1exp.rda', compress = "bzip2")
+  write_rds(., path = './data/stableLineCCND1exp.rds')
 
 #Stable line CCND1 protein
 read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
@@ -247,23 +247,38 @@ read_tsv('./data-raw/stableLineCCND1prot.txt', col_names = TRUE) %>%
     condition,
     levels = c("PC3 mock", "PC3 miR34a\nasRNA")
   )) %>%
-  save(., file = './data/stableLineCCND1prot.rda', compress = "bzip2")
+  write_rds(., path = './data/stableLineCCND1prot.rds')
 
 #lnc34a CAGE
 #the chromosomal regions correspond to 200 bp upstream of the lnc34a start
 #site and 200 bp downstream of the GENCODE annotated miR34a asRNA start site.
+
+.readAndFilter <- function(
+  x,
+  start,
+  stop,
+  col_types
+){
+  read_tsv(x, col_names = FALSE, col_types = col_types) %>%
+    filter(X1 == "chr1" & X2 >= start & X3 <= stop & X6 == "+")
+}
+
 read_tsv('./data-raw/lnc34aCAGE.txt') %>%
   pull(14) %>%
   data_frame(filename = .) %>%
   mutate(file_contents = map(
     filename,
-    read_tsv,
-    col_names = FALSE,
-    col_types = list(
-      col_character(), col_double(), col_double(), col_character(),
-      col_double(), col_character(), col_double(), col_character(),
-      col_double()
-  ))) %>%
+    ~ .readAndFilter(
+      .,
+      start = (9241796 - 200),
+      stop = (9242263 + 200),
+      col_types = list(
+        col_character(), col_double(), col_double(), col_character(),
+        col_double(), col_character(), col_double(), col_character(),
+        col_double()
+      )
+    )
+  )) %>%
   unnest() %>%
   mutate(
     X8 = as.numeric(replace(X8, X8 == ".", NA)),
@@ -274,29 +289,27 @@ read_tsv('./data-raw/lnc34aCAGE.txt') %>%
     reads = X9, RPKM = X7, signif = X8
   ) %>%
   select(chr, start, stop, strand, reads, RPKM, signif, filename) %>%
-  filter(
-    chr == "chr1" & start >= (9241796 - 200) &
-    stop <= (9242263 + 200) & strand == "+"
-  ) %>%
   filter(RPKM >= 1) %T>%
-  save(., file = './data/lnc34aCAGE.rda', compress = "bzip2") %>%
-  select(chr, start, stop) %>%
-  write_tsv(path = "./data-raw/lnc34aCAGE.bed", col_names = FALSE)
+  write_rds(., path = './data/lnc34aCAGE.rds')
 
 #lnc34a splice junctions
+
 read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
-  pull(16) %>%
+  pull(16) %>% `[`(1:2) %>%
   data_frame(filename = .) %>%
   mutate(file_contents = map(
     filename,
-    read_tsv,
-    col_names = FALSE,
-    col_types = list(
-      col_character(), col_double(), col_double(), col_character(),
-      col_double(), col_character(), col_double(), col_character(),
-      col_double()
+    ~ .readAndFilter(
+      .,
+      start = 9241596,
+      stop = 9257102,
+      col_types = list(
+        col_character(), col_double(), col_double(), col_character(),
+        col_double(), col_character(), col_double(), col_character(),
+        col_double()
+      )
     )
-)) %>%
+  )) %>%
   unnest() %>%
   mutate(filename = basename(filename)) %>%
   rename(
@@ -304,12 +317,8 @@ read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
     reads = X9, signif = X8
   ) %>%
   select(filename, chr, start, stop, strand, reads, signif) %>%
-  filter(chr == "chr1" & start >= 9241596 & stop <= 9257102 & strand == "+") %>%
   filter(reads >= 2) %T>%
-  save(., file = './data/lnc34aSpliceJncs.rda', compress = "bzip2") %>%
-  select(chr, start, stop) %>%
-  distinct() %>%
-  write_tsv(path = "./data-raw/lnc34aSpliceJncs.bed", col_names = FALSE)
+  write_rds(., path = './data/lnc34aSpliceJncs.rds')
 
 
 #source('./data-raw/saveRDA.R')
