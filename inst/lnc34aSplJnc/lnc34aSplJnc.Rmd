@@ -1,0 +1,117 @@
+---
+title: "lnc34a splice junctions"
+author: "Jason T. Serviss"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE, message = FALSE}
+packages <- c(
+    "tidyverse",
+    "grid",
+    "gtable",
+    "miR34AasRNAproject"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+```
+
+```{r}
+#locus
+data <- tibble(
+  gene = readr::parse_factor(
+    c(rep("miR34a asRNA", 5), rep("lnc34a", 3)),
+    levels = c("miR34a asRNA", "lnc34a")
+  ),
+  feature = c(
+    "exon", "intron", "exon", "intron",
+    "exon", "exon", "intron", "exon"
+  ),
+  start = c(
+    9242262, 9242375, 9243691, 9243866,
+    9251451, 9241796, 9242354, 9256971),
+  stop = c(
+    9242375, 9243691, 9243866, 9251451,
+    9252148, 9242354, 9256971, 9257102
+  )
+)
+
+#splice junctions
+load('/Users/jasonserviss/Github/miR34a_asRNA_project/data/lnc34aSpliceJncs.rda')
+splJnc <- .
+rm(.)
+
+splJnc <- splJnc %>%
+  mutate(
+    cellline = gsub(".*LongRnaSeq(.*)Cell.*", "\\1", filename),
+    feature = "splice junction",
+    tag = paste(cellline, feature, sep = "-"),
+    gene = "NA"
+  ) %>%
+  select(cellline, feature, start, stop, tag) %>%
+  group_by(start, stop) %>%
+  summarize(n = n()) %>%
+  ungroup() %>%
+  arrange(desc(n)) %>%
+  mutate(y = 1:length(.data$n))
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+###locus
+p1 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = filter(data, feature == "exon"),
+    aes(xmin = start, xmax = stop, y = gene, fill = gene),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    colour = "gray"
+  ) +
+  ggthemes::theme_few() +
+  ggthemes::scale_fill_ptol() +
+  geom_segment(
+    data = filter(data, feature == "intron"),
+    aes(x = start, xend = stop, y = gene, yend = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 1
+  ) +
+  xlim(9241000, 9257900) +
+  labs(x = "Chromosome 1", y = "Genes") +
+  guides(fill = FALSE)
+
+##splice junctions
+p2 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = splJnc,
+    aes(xmin = start, xmax = stop, y = y, fill = n),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    colour = "gray"
+  ) +
+  viridis::scale_fill_viridis() +
+  ggthemes::theme_few() +
+  theme(
+    axis.title.x = element_blank(),
+    legend.position = "top",
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(y = "Splice junctions") +
+  xlim(9241000, 9257900) +
+  guides(fill = guide_colourbar(title = "n reads", title.position = "top", title.hjust = 0.5))
+
+
+g2 <- ggplotGrob(p1)
+g3 <- ggplotGrob(p2)
+g <- rbind(g3, g2, size = "last")
+grid.newpage()
+grid.draw(g)
+
+```
