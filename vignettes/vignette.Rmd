@@ -619,9 +619,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "cellularLocalization.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "cellularLocalization.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
 groups <- c("fraction", "Cell line", "gene")
@@ -734,9 +733,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "transcriptStability.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "transcriptStability.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
 groups <- c("treatment", "Biological Replicate", "gene")
@@ -886,9 +884,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "HCT116p53null.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "HCT116p53null.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
 groups <- c("Condition", "Treatment", "Biological Replicate", "Cell line", "gene")
@@ -1078,9 +1075,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "HctHekDox.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "HctHekDox.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
 groups <- c("Treatment", "Biological Replicate", "Cell line", "gene")
@@ -1347,9 +1343,8 @@ A schematic representation of the fully cloned P1 construct including the overla
 
 ```{r, message = FALSE}
 
-url <- "P1-HCTandHEK.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "P1-HCTandHEK.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 .calcP <- function(`Cell line`, gene, logValue, data) {
   bool1 <- pull(data, `Cell line`) == `Cell line`
@@ -1633,9 +1628,8 @@ See Figure 2c for a schematic representation of the P1 construct.
 
 ```{r, message = FALSE}
 
-url <- "p1shRNAdox.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "p1shRNAdox.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #Luciferase = miR34a HG
 #Renilla = miR34a AS
@@ -1908,9 +1902,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "stableLineExpression.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "stableLineExpression.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove Skov exp 1 due to variability in technical replicates
 data <- filter(data, `Biological Replicate` != 1 | `Cell line` != "Skov3")
@@ -2216,9 +2209,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "stableLineExpressionHEK.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "stableLineExpressionHEK.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove PC3 experiment 6, B-act mean Ct > 30, too high.
 data <- filter(data, `Biological Replicate` != 6 | `Cell line` != "PC3")
@@ -2357,9 +2349,8 @@ Percentages were converted to log2 fractions for each sample. Student's t-test w
 
 ```{r, message = FALSE}
 
-url <- "stableLineCellCycle.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "stableLineCellCycle.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #convert the value (precent) to log2(fraction)
 data <- mutate(data, value = log2(value / 100))
@@ -2547,9 +2538,8 @@ Three technical triplicates were included in each experiment and these were inde
 
 ```{r, message = FALSE}
 
-url <- "growthStarvation.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "growthStarvation.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to first time point for control (Mock)
 .normFun <- function(
@@ -2718,9 +2708,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "stableLinePolIIChIP.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "stableLinePolIIChIP.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate means of technical replicates
 data <- mutate(data, techMean = rowMeans(select(data, Quantity1, Quantity2)))
@@ -2910,9 +2899,8 @@ primers
 
 ```{r, warning=FALSE, message=FALSE}
 
-url <- "stableLineCCND1exp.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "stableLineCCND1exp.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
 groups <- c("condition", "Biological Replicate", "Cell line", "gene")
@@ -3076,9 +3064,8 @@ A resulting western blot representative of the results from the three independan
 _Quantification_
 ```{r, message = FALSE}
 
-url <- "stableLineCCND1prot.rda"
-invisible(repmis::source_data(file.path(dataUrl, url)))
-data <- .
+url <- "stableLineCCND1prot.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to house keeping gene
 data <- data %>%
