@@ -4,7 +4,7 @@ technicalMeans <- function(
     grouping
 ){
     data %>%
-    gather(`Tech. Replicate`, Ct, -grouping) %>%
+    gather(`Tech. Replicate`, Ct, -one_of(grouping)) %>%
     group_by(!!! rlang::syms(grouping)) %>%
     summarize(ctMean = mean(Ct, na.rm = TRUE)) %>%
     ungroup()
