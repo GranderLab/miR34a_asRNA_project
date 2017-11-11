@@ -257,7 +257,7 @@ read_tsv('./data-raw/lnc34aCAGE.txt') %>%
   data_frame(filename = .) %>%
   mutate(file_contents = map(
     filename,
-    ~ .readAndFilter(
+    ~ miR34AasRNAproject:::.readAndFilter(
       .,
       start = (9241796 - 200),
       stop = (9242263 + 200),
@@ -287,7 +287,7 @@ read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
   data_frame(filename = .) %>%
   mutate(file_contents = map(
     filename,
-    ~ .readAndFilter(
+    ~ miR34AasRNAproject:::.readAndFilter(
       .,
       start = 9241596,
       stop = 9257102,
