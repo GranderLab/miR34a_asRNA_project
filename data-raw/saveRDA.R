@@ -276,8 +276,6 @@ read_tsv('./data-raw/lnc34aCAGE.txt') %>%
     chr = X1, start = X2, stop = X3, name = X4, score = X5,
     strand = X6, level = X7, signif = X8, score2 = X9,
   ) %>%
-#  select(chr, start, stop, strand, reads, RPKM, signif, filename) %>%
-#  filter(RPKM >= 1) %T>%
   write_rds(., path = './data/lnc34aCAGE.rds')
 
 #lnc34a splice junctions
@@ -303,8 +301,6 @@ read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
     chr = X1, start = X2, stop = X3, name = X4, score = X5,
     strand = X6, level = X7, signif = X8, score2 = X9
   ) %>%
-#  select(filename, chr, start, stop, strand, reads, signif) %>%
-#  filter(reads >= 2) %T>%
   write_rds(., path = './data/lnc34aSpliceJncs.rds')
 
 

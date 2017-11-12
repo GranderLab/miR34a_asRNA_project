@@ -1,5 +1,5 @@
 ---
-title: "lnc34a splice junctions"
+title: "lnc34a CAGE"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
 output:
@@ -14,7 +14,7 @@ vignette: >
 
 Add number of cell lines included in figure.
 
-```{r, echo = FALSE, message = FALSE}
+```{r, message = FALSE}
 packages <- c(
     "tidyverse",
     "grid",
@@ -26,7 +26,6 @@ rm(packages)
 ```
 
 ```{r}
-#locus
 data <- tibble(
   gene = readr::parse_factor(
     c(rep("miR34a asRNA", 5), rep("lnc34a", 3)),
@@ -45,24 +44,17 @@ data <- tibble(
   )
 )
 
-#splice junctions
 dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
-url <- "lnc34aSpliceJncs.rds"
-splJnc <- read_rds(gzcon(url(file.path(dataUrl, url))))
+url <- "lnc34aCAGE.rds"
+cage <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+    arrange(desc(level)) %>%
+    mutate(y = 1:length(pull(., level)))
 
-splJnc <- splJnc %>%
-  mutate(cellline = gsub(".*LongRnaSeq(.*)Cell.*", "\\1", filename)) %>%
-  select(cellline, start, stop, score2) %>%
-  group_by(start, stop) %>%
-  summarize(n = sum(score2)) %>%
-  ungroup() %>%
-  filter(n > 2) %>%
-  arrange(desc(n)) %>%
-  mutate(y = 1:length(.data$n))
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
-###locus
+###plot
+
 p1 <- ggplot(data = NULL) +
   gggenes::geom_gene_arrow(
     data = filter(data, feature == "exon"),
@@ -84,30 +76,41 @@ p1 <- ggplot(data = NULL) +
   labs(x = "Chromosome 1", y = "Genes") +
   guides(fill = FALSE)
 
-##splice junctions
 p2 <- ggplot(data = NULL) +
   gggenes::geom_gene_arrow(
-    data = splJnc,
-    aes(xmin = start, xmax = stop, y = y, fill = n),
+    data = cage,
+    aes(xmin = start, xmax = stop, y = y, fill = level),
     arrowhead_width = unit(0, "mm"),
     arrowhead_height = unit(0, "mm"),
-    arrow_body_height = unit(1, "mm"),
-    colour = "gray"
+    arrow_body_height = unit(2, "mm"),
+    colour = "gray",
+    show.legend = TRUE
   ) +
-  viridis::scale_fill_viridis() +
   ggthemes::theme_few() +
+  viridis::scale_fill_viridis() +
   theme(
     axis.title.x = element_blank(),
     legend.position = "top",
     axis.text = element_blank(),
     axis.ticks = element_blank()
   ) +
-  labs(y = "Splice junctions") +
+  labs(y = "Cage reads") +
   xlim(9241000, 9257900) +
-  guides(fill = guide_colourbar(title = "Reads", title.position = "top", title.hjust = 0.5))
+  guides(fill = guide_colourbar(title = "RPKM", title.position = "top", title.hjust = 0.5))
 
-grobz <- lapply(list(p1, p2), ggplotGrob)
-g <- rbind(grobz[[2]], grobz[[1]], size = "last")
+p3 <- ggplot(data = NULL) + 
+  geom_density(data = cage, aes(x = start)) +
+  ggthemes::theme_few() +
+  xlim(9241000, 9257900) +
+  theme(
+    axis.text = element_blank(),
+    axis.title.x = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(y = "Density")
+
+grobz <- lapply(list(p1, p2, p3), ggplotGrob)
+g <- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = "last")
 grid.newpage()
-grid.draw(resize_heights(g, unit(c(3,1), "null")))
+grid.draw(resize_heights(g, unit(c(3,1,1), "null")))
 ```
