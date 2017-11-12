@@ -49,16 +49,12 @@ url <- "lnc34aSpliceJncs.rds"
 splJnc <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 splJnc <- splJnc %>%
-  mutate(
-    cellline = gsub(".*LongRnaSeq(.*)Cell.*", "\\1", filename),
-    feature = "splice junction",
-    tag = paste(cellline, feature, sep = "-"),
-    gene = "NA"
-  ) %>%
-  select(cellline, feature, start, stop, tag) %>%
+  mutate(cellline = gsub(".*LongRnaSeq(.*)Cell.*", "\\1", filename)) %>%
+  select(cellline, start, stop, score2) %>%
   group_by(start, stop) %>%
-  summarize(n = n()) %>%
+  summarize(n = sum(score2)) %>%
   ungroup() %>%
+  filter(n > 2) %>%
   arrange(desc(n)) %>%
   mutate(y = 1:length(.data$n))
 ```
@@ -93,6 +89,7 @@ p2 <- ggplot(data = NULL) +
     aes(xmin = start, xmax = stop, y = y, fill = n),
     arrowhead_width = unit(0, "mm"),
     arrowhead_height = unit(0, "mm"),
+    arrow_body_height = unit(1, "mm"),
     colour = "gray"
   ) +
   viridis::scale_fill_viridis() +
