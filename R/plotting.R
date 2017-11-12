@@ -60,3 +60,10 @@ plotRmarkdown <- function(plot) {
   return(p)
 }
 
+#' @export
+resize_heights <- function(g, heights = unit(rep(1, length(idpanels)), "null")) {
+  idpanels <- unique(g$layout[grepl("panel",g$layout$name), "t"])
+  g$heights <- grid:::unit.list(g$heights)
+  g$heights[idpanels] <- heights
+  g
+}
