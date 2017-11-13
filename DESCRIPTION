@@ -17,5 +17,7 @@ Suggests:
     repmis,
     tidyverse,
     extrafont,
-    scales
+    scales,
+    grid,
+    gtable
 VignetteBuilder: knitr
