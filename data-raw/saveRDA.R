@@ -1,4 +1,5 @@
 library(tidyverse)
+library(miR34AasRNAproject)
 
 #HCTp53null
 read_tsv('./data-raw/HCTp53null.txt', col_names = TRUE) %>%
