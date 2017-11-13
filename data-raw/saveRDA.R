@@ -286,7 +286,7 @@ read_tsv('./data-raw/lnc34aSpliceJncs.txt') %>%
     filename,
     ~ miR34AasRNAproject:::.readAndFilter(
       .,
-      start = 9241596,
+      start = 9241796,
       stop = 9257102,
       col_types = list(
         col_character(), col_double(), col_double(), col_character(),
