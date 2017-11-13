@@ -12,6 +12,14 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
 Add number of cell lines included in figure.
 
 ```{r, echo = FALSE, message = FALSE}
@@ -24,6 +32,19 @@ packages <- c(
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
 ```
+
+####Introduction
+
+[Wang et al.](https://www.ncbi.nlm.nih.gov/pubmed/27077950) have previously published concerning a antisense transcript arising from the miR34a locus that they named "lnc34a". Wang et al. state find that this transcript is expressed at "significantly higher levels in colon cancer stem cells spheres (CCSCs)" compared to 9 commonly used colorectal cancer cell lines. After obtaining the sequence for lnc34a we could confirm that neither our primer walk analysis or our 3' RACE detected the lnc34a transcripts presence in the cell lines we had utilized. To further investigate the presence of lnc34a in non-CCSC cell lines we interogated RNAseq splice junction data generated in conjunction with the ENCODE project to search for introns present at the miR34a locus.
+
+<br></br>
+
+####Methods
+All available splice junction data was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDA.R file. Spliced reads mapping to the plus strand of chromosome 1 and in regions corresponding to the lnc34a start (9241796) and transcription termination (9257102) sites were filtered from the total data. All splice junctions were plotted and colored according to the number of reads corresponding to each. ADD NUMBER OF CELL LINES.
+
+<br></br>
+
+####Results
 
 ```{r}
 #locus
@@ -111,3 +132,14 @@ g <- rbind(grobz[[2]], grobz[[1]], size = "last")
 grid.newpage()
 grid.draw(resize_heights(g, unit(c(3,1), "null")))
 ```
+
+<div class="caption">
+Splice junctions (top) detected in RNAseq data from the ENCODE project and antisense genes (bottom) at the miR34a locus. Splice junctions are colored according to the corresponding total read count.
+</div>
+
+<br></br>
+
+####Conclusions
+Multiple splice junctions correspond to the miR34a asRNA transcrips and its isoforms (Supplementary figure XX) with those being the mist highly expressed corresponding to the annotated miR34a asRNA transcript. Despite this, no splice junctions appear to correspond to the intron in the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected.
+
+<br></br><br></br>
