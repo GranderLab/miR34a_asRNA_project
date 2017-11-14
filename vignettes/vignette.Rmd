@@ -44,7 +44,9 @@ packages <- c(
     "printr",
     "ggthemes",
     "readr",
-    "miR34AasRNAproject"
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
@@ -79,7 +81,7 @@ The USCS genome browser was utilized for the bioinformatic evaluation of antisen
 
 ```{r, out.width = "850px"}
 
-url <- "miR34aLocus/miR34aLocus_hg38.png"
+url <- "figure1a_miR34aLocus/miR34aLocus_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -146,7 +148,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "miR34aASExpressionCellPanel/cellPanelLarge.png"
+url <- "figure1b_miR34aASExpressionCellPanel/cellPanelLarge.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -186,7 +188,7 @@ Insert code here from Erik and write Intro Methods etc
 
 ```{r, out.width = "850px"}
 
-url <- "TCGAcorrelation/miR34a_RP3-510D11.2_diploid_only_edited.png"
+url <- "figure1c_TCGAcorrelation/miR34a_RP3-510D11.2_diploid_only_edited.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -204,7 +206,7 @@ knitr::include_graphics(file.path(projectUrl, url))
 
 ```{r, out.width = "850px"}
 
-url <- "TCGAcorrelation/table.png"
+url <- "suppFigure1a_TCGAcorrelationTable/table.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -256,7 +258,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "3primeRACE/results_hg38.png"
+url <- "figure1d_3primeRACE/results_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -327,7 +329,7 @@ Primer placement at the locus can be viewed in Supplementary Figure 1b.
 
 ```{r, out.width = "500px"}
 
-url <- "primerWalk/gel.png"
+url <- "figure1e_primerWalk/gel.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -351,7 +353,7 @@ It appears as though the miR34a asRNA transcript start site is somewhat upstream
 
 ```{r, out.width = "850px"}
 
-url <- "primerWalk/schematic_hg38.png"
+url <- "suppFigure1b_primerWalkSchematic/schematic_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -382,7 +384,7 @@ _Coding Potential Assesment Tool_
 
 ```{r}
 
-url <- "codingPotential/CodingPotentialAssessmentTool/results.txt"
+url <- "figure1f_codingPotentialCPAT/results.txt"
 cpat <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
 cpat
 
@@ -406,11 +408,11 @@ Results indicated that miR34a asRNA has a similar lack of coding capacity to the
 
 <br></br>
 
-For introduction and methods plesase see Figure 1f.
+For introduction and methods please see Figure 1f.
 
 ```{r}
 
-url <- "codingPotential/CodingPotentialCalculator/results.txt"
+url <- "suppFigure1g_codingPotentialCPC/results.txt"
 cpc <- read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
 cpc
 
@@ -475,7 +477,7 @@ primers
 
 ```{r, out.width = "500px"}
 
-url <- "polyadenylation/polyadenylation.png"
+url <- "suppFigure1c_polyadenylation/polyadenylation.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -540,7 +542,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "isoforms/isoforms.png"
+url <- "suppFigure1d_isoforms/isoforms.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -619,7 +621,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "cellularLocalization.rds"
+url <- "suppFigure1e_cellularLocalization.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -733,7 +735,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "transcriptStability.rds"
+url <- "suppFigure1f_transcriptStability.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -884,7 +886,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "HCT116p53null.rds"
+url <- "figure2a_HCT116p53null.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -1075,7 +1077,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "HctHekDox.rds"
+url <- "figure2b_HctHekDox.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -1241,7 +1243,7 @@ We observed increases in miR34a HG and asRNA expression upon doxorubicin treatme
 
 <br></br><br></br>
 
-###Figure 2c
+###Figure 2c and 2d
 
 ####_Introduction_
 
@@ -1317,7 +1319,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "P1-HCTandHEK/locusSimple.png"
+url <- "figure2c_P1construct/locusSimple.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -1330,7 +1332,7 @@ A schematic representation of the miR34a locus and the region cloned in the P1 c
 
 ```{r, out.width = "850px"}
 
-url <- "P1-HCTandHEK/constructSimple.png"
+url <- "figure2c_P1construct/constructSimple.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -1343,7 +1345,7 @@ A schematic representation of the fully cloned P1 construct including the overla
 
 ```{r, message = FALSE}
 
-url <- "P1-HCTandHEK.rds"
+url <- "figure2d_P1-HCTandHEK.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 .calcP <- function(`Cell line`, gene, logValue, data) {
@@ -1533,7 +1535,7 @@ Upon transfection of this construct in two separate cell lines we observed incre
 
 <br></br><br></br>
 
-###Figure 2d
+###Figure 2e
 
 ####_Introduction_
 
@@ -1628,7 +1630,7 @@ See Figure 2c for a schematic representation of the P1 construct.
 
 ```{r, message = FALSE}
 
-url <- "p1shRNAdox.rds"
+url <- "figure2e_P1shRNAdox.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #Luciferase = miR34a HG
@@ -1902,7 +1904,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "stableLineExpression.rds"
+url <- "figure3a_stableLineExpression.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove Skov exp 1 due to variability in technical replicates
@@ -2209,7 +2211,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "stableLineExpressionHEK.rds"
+url <- "suppFigure2a_stableLineExpressionHEK.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove PC3 experiment 6, B-act mean Ct > 30, too high.
@@ -2349,7 +2351,7 @@ Percentages were converted to log2 fractions for each sample. Student's t-test w
 
 ```{r, message = FALSE}
 
-url <- "stableLineCellCycle.rds"
+url <- "figure3b_stableLineCellCycle.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #convert the value (precent) to log2(fraction)
@@ -2538,7 +2540,7 @@ Three technical triplicates were included in each experiment and these were inde
 
 ```{r, message = FALSE}
 
-url <- "growthStarvation.rds"
+url <- "figure3c_stableLineGrowthStarvation.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to first time point for control (Mock)
@@ -2708,7 +2710,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "stableLinePolIIChIP.rds"
+url <- "figure3d_stableLinePolIIChIP.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate means of technical replicates
@@ -2899,7 +2901,7 @@ primers
 
 ```{r, warning=FALSE, message=FALSE}
 
-url <- "stableLineCCND1exp.rds"
+url <- "suppFigure2b_stableLineCCND1exp.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -3050,7 +3052,7 @@ Resulting bands on the western blots were quantified using the ImageJ software w
 _Representative experiment_
 ```{r, out.width = "500px"}
 
-url <- "StableLineCCND1prot/singleExp.png"
+url <- "suppFigure2c_stableLineCCND1prot/singleExp.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -3064,7 +3066,7 @@ A resulting western blot representative of the results from the three independan
 _Quantification_
 ```{r, message = FALSE}
 
-url <- "stableLineCCND1prot.rds"
+url <- "suppFigure2c_stableLineCCND1prot.rds"
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to house keeping gene
@@ -3192,6 +3194,9 @@ Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA
 Cyclin D1 protein levels are significantly reduced in PC3 cells overexpressing miR34a asRNA, consistent with increased miR34a expression levels and the reduced G1 cell cycle phase observed in PC3 cells.
 
 <br></br><br></br>
+
+
+###Supplementary Figure 2d
 
 ##Session info
 

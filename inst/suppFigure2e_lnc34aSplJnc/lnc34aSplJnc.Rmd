@@ -1,0 +1,145 @@
+---
+title: "lnc34a splice junctions"
+author: "Jason T. Serviss"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+Add number of cell lines included in figure.
+
+```{r, echo = FALSE, message = FALSE}
+packages <- c(
+    "tidyverse",
+    "grid",
+    "gtable",
+    "miR34AasRNAproject"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+```
+
+####Introduction
+
+[Wang et al.](https://www.ncbi.nlm.nih.gov/pubmed/27077950) have previously published concerning a antisense transcript arising from the miR34a locus that they named "lnc34a". Wang et al. state find that this transcript is expressed at "significantly higher levels in colon cancer stem cells spheres (CCSCs)" compared to 9 commonly used colorectal cancer cell lines. After obtaining the sequence for lnc34a we could confirm that neither our primer walk analysis or our 3' RACE detected the lnc34a transcripts presence in the cell lines we had utilized. To further investigate the presence of lnc34a in non-CCSC cell lines we interogated RNAseq splice junction data generated in conjunction with the ENCODE project to search for introns present at the miR34a locus.
+
+<br></br>
+
+####Methods
+All available splice junction data was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDA.R file. Spliced reads mapping to the plus strand of chromosome 1 and in regions corresponding to the lnc34a start (9241796) and transcription termination (9257102) sites were filtered from the total data. All splice junctions were plotted and colored according to the number of reads corresponding to each. ADD NUMBER OF CELL LINES.
+
+<br></br>
+
+####Results
+
+```{r}
+#locus
+data <- tibble(
+  gene = readr::parse_factor(
+    c(rep("miR34a asRNA", 5), rep("lnc34a", 3)),
+    levels = c("miR34a asRNA", "lnc34a")
+  ),
+  feature = c(
+    "exon", "intron", "exon", "intron",
+    "exon", "exon", "intron", "exon"
+  ),
+  start = c(
+    9242262, 9242375, 9243691, 9243866,
+    9251451, 9241796, 9242354, 9256971),
+  stop = c(
+    9242375, 9243691, 9243866, 9251451,
+    9252148, 9242354, 9256971, 9257102
+  )
+)
+
+#splice junctions
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+url <- "suppFigure2e_lnc34aSplJnc.rds"
+splJnc <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+splJnc <- splJnc %>%
+  mutate(cellline = gsub(".*LongRnaSeq(.*)Cell.*", "\\1", filename)) %>%
+  select(cellline, start, stop, score2) %>%
+  group_by(start, stop) %>%
+  summarize(n = sum(score2)) %>%
+  ungroup() %>%
+  filter(n > 2) %>%
+  arrange(desc(n)) %>%
+  mutate(y = 1:length(.data$n))
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+###locus
+p1 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = filter(data, feature == "exon"),
+    aes(xmin = start, xmax = stop, y = gene, fill = gene),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    colour = "gray"
+  ) +
+  ggthemes::theme_few() +
+  ggthemes::scale_fill_ptol() +
+  geom_segment(
+    data = filter(data, feature == "intron"),
+    aes(x = start, xend = stop, y = gene, yend = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 1
+  ) +
+  xlim(9241000, 9257900) +
+  labs(x = "Chromosome 1", y = "Genes") +
+  guides(fill = FALSE)
+
+##splice junctions
+p2 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = splJnc,
+    aes(xmin = start, xmax = stop, y = y, fill = n),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    arrow_body_height = unit(1, "mm"),
+    colour = "gray"
+  ) +
+  viridis::scale_fill_viridis() +
+  ggthemes::theme_few() +
+  theme(
+    axis.title.x = element_blank(),
+    legend.position = "top",
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  ) +
+  labs(y = "Splice junctions") +
+  xlim(9241000, 9257900) +
+  guides(fill = guide_colourbar(title = "Reads", title.position = "top", title.hjust = 0.5))
+
+grobz <- lapply(list(p1, p2), ggplotGrob)
+g <- rbind(grobz[[2]], grobz[[1]], size = "last")
+grid.newpage()
+grid.draw(resize_heights(g, unit(c(3,1), "null")))
+```
+
+<div class="caption">
+Splice junctions (top) detected in RNAseq data from the ENCODE project and antisense genes (bottom) at the miR34a locus. Splice junctions are colored according to the corresponding total read count.
+</div>
+
+<br></br>
+
+####Conclusions
+Multiple splice junctions correspond to the miR34a asRNA transcrips and its isoforms (Supplementary figure XX) with those being the mist highly expressed corresponding to the annotated miR34a asRNA transcript. Despite this, no splice junctions appear to correspond to the intron in the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected.
+
+<br></br><br></br>
