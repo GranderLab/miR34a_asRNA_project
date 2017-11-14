@@ -1,0 +1,161 @@
+---
+title: "Supplementary Figure 1e"
+subtitle: "miR34a asRNA cellular localisation"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+asRNAs are known to be capable of exerting regulatory functions on both a transcriptional and post-transcriptional level and therefore, the cellular localization of the asRNA can be informative concerning the method of regulation. 
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and QPCR_
+
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. Fractionation was performed using the PARIS kit according to the manufacturer's recommendations (Life Technologies). 0.5ul RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+
+<br></br>
+
+_Analysis_
+
+QPCR was performed in technical replicate for each sample. Technical mean values were subsequently moved to the linear scale by raising their additive inverse to the power of 2. The percentage in each cellular fraction fraction was then calculated by dividing each individual fraction for a specific gene by the total of all fractions for that gene and multiplying by 100. The experiment was performed in one independant experiment.
+
+<br></br>
+
+_QPCR primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a HG_F",
+        "miR34a HG_R",
+        "miR34a_asF1",
+        "miR34a_asR1",
+        "U48_F",
+        "U48_R"
+        
+    ),
+    sequence=c(
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TCG GGA TGT CCA CGT CA",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "AGT GAT GAT GAC CCC AGG TA",
+        "GGT CAG AGC GCT GCG GTG AT"
+        
+    )
+)
+primers
+
+```
+
+<br></br>
+
+####_Results_
+
+```{r, message = FALSE}
+
+url <- "suppFigure1e_cellularLocalization.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+#calculate dct
+groups <- c("fraction", "Cell line", "gene")
+gois <- c("miR34a\nasRNA", "miR34a\nHG")
+
+data <- data %>%
+  technicalMeans(., groups) %>%
+  mutate(antiLog = 2^-ctMean) %>%
+  group_by(gene) %>%
+  mutate(
+    total = sum(antiLog),
+    percent = 100 * (antiLog / total)
+  )
+
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, message=FALSE, warning=FALSE}
+
+p <- ggplot(data = NULL) +
+  geom_bar(
+    data = data,
+      aes(
+        x = gene,
+        y = percent,
+        fill = fraction
+      ),
+      position = "fill",
+      stat = "identity",
+      alpha = 0.6
+    ) +
+    labs(
+      x = "Gene",
+      y = "",
+      title = "miR34a asRNA cellular localization"
+    ) +
+    scale_y_continuous(labels = scales::percent_format()) +
+    guides(fill = guide_legend(title = "Fraction", override.aes = list(size = 3)))
+
+plotRmarkdown(p)
+
+```
+
+<div class="caption">
+Q-PCR results from fractionated HEK293T cells investigating the cellular localization of the miR34a asRNA transcript.
+</div>
+
+<br></br>
+
+####_Conclusion_
+
+Semi-quantitative PCR revealed that the miR34a asRNA transcript localizes to both the nucleus and cytoplasm although the majority is located in the cytoplasmic fraction.
+
+<br></br><br></br>

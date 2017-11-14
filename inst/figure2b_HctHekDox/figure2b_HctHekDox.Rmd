@@ -1,0 +1,267 @@
+---
+title: "Figure 2b"
+subtitle: "miR34a asRNA expression in HCT116 and HEK293t upon doxorubicin treatment"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression with cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated HCT116 and HEK293t cells with 200 ng/ml of the DNA damaging agent doxorubicin for 24 hours and monitored miR34a asRNA expression. 
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and QPCR_
+
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 300,000 cells per well in a 6-well plate and cultured overnight. The following day cells were treated with 0, 100, 200, or 500 ng/ml doxorubicin for 24hrs. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. qPCR primers are shown below. 
+
+<br></br>
+
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding untreated samples. Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the treated vs untreated group's delta-delta ct values for both genes.
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a HG_F",
+        "miR34a HG_R",
+        "miR34a_asF1",
+        "miR34a_asR1"
+        
+    ),
+    sequence=c(
+        "AGGTCATCACCATTGGCAATGAG",
+        "CTTTCGGGATGTCCACGTCA",
+        "TCTGCTCCAGTGGCTGATGAGAAA",
+        "GTTCACTGGCCTCAAAGTTGGCAT",
+        "AGCGGCATCTCCTCCACCTGAAA",
+        "TTGCCTCGTGAGTCCAAGGAGAAT"
+        
+    )
+)
+primers
+
+```
+
+<br></br>
+
+####_Results_
+
+```{r, message = FALSE}
+
+url <- "figure2b_HctHekDox.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+#calculate dct
+groups <- c("Treatment", "Biological Replicate", "Cell line", "gene")
+gois <- c("miR34a asRNA", "miR34a HG")
+
+data <- technicalMeans(data, groups) %>%
+  dct(., gois, Actin, groups)
+
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  `Biological Replicate` = pull(data, `Biological Replicate`) == 1,
+  Treatment = pull(data, Treatment) == "untreated"
+)
+
+data <- data %>%
+  ddct(., logical, groups) %>%
+  folds(.)
+
+#calculate stats
+stats <- calcStats(data, Treatment, "untreated", groups) %>%
+  pFormat(.)
+
+#prepare for plotting
+
+#vertical lines and labels
+vl <- stats %>%
+  group_by(`Cell line`, GOI) %>%
+  summarize(
+    max = max(CI95h),
+    pValue = as.numeric(min(pValue))
+  ) %>%
+  ungroup() %>%
+  pFormat(.) %>%
+  mutate(
+    x = case_when(
+      GOI == "miR34a asRNA" ~ 1 - 0.25,
+      GOI ==    "miR34a HG" ~ 1 + 0.25
+    ),
+    xend = case_when(
+      GOI == "miR34a asRNA" ~ 2 - 0.25,
+      GOI ==    "miR34a HG" ~ 2 + 0.25
+    ),
+    pFormat = pFormat,
+    labelX = 1.5
+  )
+
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL) +
+  geom_violin(
+    data = data,
+    aes(
+      x = Treatment,
+      y = log2fold,
+      group = interaction(GOI, Treatment)
+    ),
+    trim = TRUE,
+    fill = "gray",
+    alpha = 0.3,
+    color = NA,
+    scale = "width",
+    show.legend = FALSE
+  ) +
+  geom_dotplot(
+    data = data, 
+    aes(
+      x = Treatment,
+      y = log2fold,
+      fill = GOI
+    ),
+    binwidth = 1/10,
+    colour = NA,
+    alpha = 0.5,
+    position = position_dodge(width = 0.9), 
+    binaxis='y', 
+    stackdir='center',
+    dotsize = 2,
+    show.legend = TRUE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = Treatment,
+      y = mean,
+      group = GOI
+    ),
+    size = 6,
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE,
+    shape = 95,
+    colour = "gray20"
+  ) +
+  facet_grid(. ~ `Cell line`) +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = Treatment,
+      ymin = CI95l,
+      ymax = CI95h,
+      group = GOI
+    ),
+    colour = "gray20",
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = vl,
+    aes(
+      x = labelX,
+      y = max + 0.25,
+      label = pFormat,
+      group = GOI
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 5,
+    family = "Arial Unicode MS",
+    position = position_dodge(width = 0.9)
+  ) +
+  geom_segment(
+    data = vl,
+    aes(
+      x = x,
+      y = max + 0.1,
+      xend = xend,
+      yend = max + 0.1,
+      group = GOI
+    ),
+    colour="grey43",
+    show.legend = FALSE
+  ) +
+  scale_y_continuous(
+    "\u0394\u0394Ct",
+    breaks=c(-1,0,1,2,3,4,5)
+  ) +
+  labs(
+    x = "Treatment",
+    title = "miR34a asRNA response to p53 induction"
+  ) +
+  guides(
+    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
+  )
+
+plotRmarkdown(p)
+
+```
+
+<div class="caption">
+Q-PCR showing miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after treatment with 200 ng/ml doxorubicin for 24hrs. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
+
+<br></br>
+
+####_Conclusions_
+
+We observed increases in miR34a HG and asRNA expression upon doxorubicin treatment indicating that these two transcripts are co-regulated. 
+
+<br></br><br></br>

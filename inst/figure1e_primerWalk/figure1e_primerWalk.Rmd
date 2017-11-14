@@ -1,0 +1,115 @@
+---
+title: "Figure 1e"
+subtitle: "miR34a asRNA primer walk"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+We desired to determine the 5'-start site for the miR34a asRNA.
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and PCR_
+
+To accomplish this we performed the primer walk assay. All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was performed for 35 cycles at 62°C annealing temperature and the resulting products were analyzed on a 2% agarose gel.
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "miR34aAS_F10",
+        "miR34aAS_F11",
+        "miR34aAS_F12",
+        "miR34aAS_F13",
+        "miR34aAS_F14",
+        "miR34aAS_F15",
+        "miR34aAS_R1"
+    ),
+    sequence=c(
+        "ACG CGT CTC TCC AGC CCG GGA T",
+        "ATC TGC GTG GTC ACC GAG AAG CA",
+        "CGC ACG GAC TGA GAA ACA CAA G",
+        "ACG GAG GCT ACA CAA TTG AAC AGG",
+        "AGG GAA GAA AGA ACT AGC CGA GCA",
+        "CAT TTG CTG CAA TAT CAC CGT GGC",
+        "TTG CCT CGT GAG TCC AAG GAG AAT"
+    )
+)
+primers
+
+```
+
+<br></br>
+
+####_Results_
+
+Primer placement at the locus can be viewed in Supplementary Figure 1b.
+
+```{r, out.width = "500px"}
+
+url <- "figure1e_primerWalk/gel.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+The semi-quantitative PCR results from the primer walk assay performed using HEK293T cells.
+</div>
+
+<br></br>
+
+####_Conclusion_
+
+It appears as though the miR34a asRNA transcript start site is somewhat upstream of the annotated start site. Although there is some product present for the F12 primer, the majority of transcription seems to be originating from the F11 primer. This indicates that the start site is between 71-224bp upstream of the annotated start site.
+
+<br></br><br></br>

@@ -1,0 +1,60 @@
+---
+title: "Supplementary Figure 1b"
+subtitle: "Primer walk schematic"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+<br></br>
+
+```{r, out.width = "850px"}
+
+url <- "suppFigure1b_primerWalkSchematic/schematic_hg38.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+A schematic picture of the miR34a asRNA locus including the location of the primers used in the primer walk assay.
+</div>
+
+<br></br>

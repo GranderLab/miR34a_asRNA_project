@@ -394,7 +394,7 @@ cpat
 Coding potential analysis results from the Coding-potential Assessment Tool including miR34a asRNA and two characterized non-coding transcripts (HOTAIR and XIST) and 3 known coding transcripts (β-actin, tubulin, and MYC). 
 </div>
 
-Results for Coding-potential Calculator are located in Supplementary figure 1g below.
+*Results for Coding-potential Calculator are located in Supplementary figure 1g.
 
 <br></br>
 
@@ -1768,7 +1768,7 @@ HCT116 cells were co-transfected with the p1 construct and shRNA renilla or shRN
 
 <br></br>
 
-####_Conclusion_
+####_Conclusions_
 
 Levels of luciferase were abrogated in the shRenilla-transfected cells compared to control shRNA-transfected cells. Collectively, these results indicate that miR34a asRNA positively regulates levels of miR34a HG and is crucial for a proper miR34a response to apoptotic stimuli.
 
@@ -2110,6 +2110,8 @@ miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all
 ####_Introduction_
 
 miR34a asRNA over-expressing cell lines, previously generated, showed a high overexpression level of miR34a asRNA despite a low multiplicity of infection. This is most likley due to the fact that all infected cell lines have practically no endogenous miR34a asRNA expression. To investigate the physiological relevance of the over-expression the miR34a asRNA levels were compared to the expression levels in HEK293t cells, which have a high endogenous miR34a expression level.
+
+<br></br>
 
 ####_Methods_
 

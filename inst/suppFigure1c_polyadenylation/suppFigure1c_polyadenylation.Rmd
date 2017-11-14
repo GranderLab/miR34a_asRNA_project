@@ -1,0 +1,113 @@
+---
+title: "Supplementary figure 1c"
+subtitle: "miR34a asRNA polyadenylation"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+We desired to access the polyadenylation status of the miR34a asRNA transcript.
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and PCR_
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was then performed and the results analyzed on a 2% agarose gel.
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "miR34aAS_F1",
+        "miR34aAS_R1",
+        "miR34aHG_F",
+        "miR34aHG_R",
+        "B-actin_F",
+        "B-actin_R",
+        "U48_F",
+        "U48_R"
+    ),
+    sequence=c(
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA",
+        "AGT GAT GAT GAC CCC AGG TA",
+        "GGT CAG AGC GCT GCG GTG AT"
+    )
+)
+primers
+
+```
+
+<br></br>
+
+####_Results_
+
+```{r, out.width = "500px"}
+
+url <- "suppFigure1c_polyadenylation/polyadenylation.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+Polyadenylation status of spliced and unspliced miR34a asRNA in HEK293T cells. 
+</div>
+
+<br></br>
+
+####_Conclusions_
+
+Results indicate that miR34a asRNA is polyadenylated.
+
+<br></br><br></br>
