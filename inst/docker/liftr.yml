@@ -7,8 +7,9 @@ maintainer: "Jason Serviss"
     - rmarkdown/1.6
     - printr/0.1
     - ggthemes/3.4.0
-    - repmis/0.5
     - extrafont/0.17
     - scales/0.5.0
+    - gtable/0.2.0
+    - liftr/0.7
   remotes:
     - "GranderLab/miR34a_asRNA_project"
