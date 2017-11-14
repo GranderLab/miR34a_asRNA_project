@@ -1,9 +1,9 @@
 
 #' plotFigure
 #'
-#' Subtitle
+#' Recreates any figure from scratch.
 #'
-#' Imports count, sampleType, and count.ercc data to a sp.scRNAseq object.
+#' Include description.
 #'
 #' @name plotFigure
 #' @rdname plotFigure
@@ -14,7 +14,7 @@
 #' @author Jason T. Serviss
 #' @examples
 #'
-#' \dontrun{plotFigure("figure1a")
+#' \dontrun{plotFigure("figure1a")}
 #'
 NULL
 
@@ -29,11 +29,13 @@ plotFigure <- function(figure, ...) {
 
 ####Helpers
 
+#returns the path to the figure's .rmd file
 getPath <- function(figure) {
   map <- makeMap()
   map[figure][[1]]
 }
 
+#returns a map of paths to each figures .rmd file
 makeMap <- function() {
   list(
     figure1a = "figure1a_miR34aLocus/figure1a.Rmd",
@@ -54,7 +56,7 @@ makeMap <- function() {
     figure3e = "figure3e_survival/figure3e.Rmd",
     suppFigure1a = "suppFigure1a_TCGAcorrelationTable/",
     suppFigure1b = "suppFigure1b_primerWalkSchematic/",
-    suppFigure1c = "suppFigure1c_polyadenylation/"
+    suppFigure1c = "suppFigure1c_polyadenylation/",
     suppFigure1d = "suppFigure1d_isoforms/",
     suppFigure1e = "suppFigure1e_cellularLocalization/",
     suppFigure1f = "suppFigure1f_transcriptStability/",
@@ -67,6 +69,7 @@ makeMap <- function() {
   )
 }
 
+#runs liftr render_docker and opens the html output
 runDockerAndView <- function(path) {
   sans_ext = tools::file_path_sans_ext
   
@@ -76,8 +79,12 @@ runDockerAndView <- function(path) {
   render_docker(file.path(tmpPath, basename(rmdPath)))
   
   htmlPath <- file.path(tmpPath, paste0(sans_ext(basename(rmdPath)), '.html'))
+  unlink(tmpPath, recursive = TRUE)
   browseURL(paste0('file://', htmlPath))
 }
+
+#runs lift and copies the .rmd file and Dockerfile to a tmp directory (due to
+# the fact that liftr wants everything in the same directory)
 
 moveToTmp <- function(rmdPath){
   tmpPath <- tempdir()
@@ -85,6 +92,14 @@ moveToTmp <- function(rmdPath){
   #copy rmd
   sysCmd1 <- paste("cp", rmdPath, tmpPath, sep = " ")
   system(sysCmd1)
+  
+  #lift
+  lift(
+    input = system.file('docker/dummy.Rmd', package = "miR34AasRNAproject"),
+    use_config = TRUE,
+    config_file = 'liftr.yml',
+    output_dir = system.file('docker', package = "miR34AasRNAproject")
+  )
   
   #copy docker
   dockerPath <- system.file('docker/Dockerfile', package = "miR34AasRNAproject")
