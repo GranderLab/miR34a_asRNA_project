@@ -20,8 +20,6 @@ vignette: >
 }
 </style>
 
-Add number of cell lines included in figure.
-
 ```{r, message = FALSE}
 packages <- c(
     "tidyverse",
@@ -35,11 +33,41 @@ rm(packages)
 
 ####Introduction
 
-[Wang et al.](https://www.ncbi.nlm.nih.gov/pubmed/27077950) have previously published concerning a antisense transcript arising from the miR34a locus that they named "lnc34a". Wang et al. state find that this transcript is expressed at "significantly higher levels in colon cancer stem cells spheres (CCSCs)" compared to 9 commonly used colorectal cancer cell lines. After obtaining the sequence for lnc34a we could confirm that neither our primer walk analysis or our 3' RACE detected the lnc34a transcripts presence in the cell lines we had utilized. To further investigate the presence of lnc34a in non-CCSC cell lines we interogated CAGE data from RIKEN to investigate the possibility of an alternative transcription start site upstream of the transcription start site we had characterized. 
+[Wang et al.](https://elifesciences.org/articles/14620) have previously published concerning a antisense transcript arising from the miR34a locus that they named "lnc34a". Wang et al. state find that this transcript is expressed at "significantly higher levels in colon cancer stem cells spheres (CCSCs)" compared to 9 commonly used colorectal cancer cell lines. After obtaining the sequence for lnc34a we could confirm that neither our primer walk analysis or our 3' RACE detected the lnc34a transcripts presence in the cell lines we had utilized. To further investigate the presence of lnc34a in non-CCSC cell lines we interogated CAGE data from RIKEN to investigate the possibility of an alternative transcription start site upstream of the transcription start site we had characterized. 
 <br></br>
 
 ####Methods
-All available CAGE data was downloaded from UCSC with the script entitled "lnc34a CAGE" in the data-raw/saveRDA.R file. CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200) were filtered from the total data. All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads at in the specified interval. ADD NUMBER OF CELL LINES.
+
+```{r}
+nrCellLinesDown <- function() {
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data-raw"
+  url <- "suppFigure2d_lnc34aCage.txt"
+  read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
+    pull(14) %>% 
+    gsub(
+      "^http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeRikenCage/wgEncodeRikenCage(.*)Cell.*", 
+      "\\1",
+      .
+    ) %>%
+    unique() %>%
+    length()
+}
+
+cellLinesInFinal <- function() {
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+  url <- "suppFigure2d_lnc34aCage.rds"
+  read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+    pull(filename) %>%
+    gsub(
+      "^wgEncodeRikenCage(.*)Cell.*",
+      "\\1",
+      .
+    ) %>%
+    unique()
+}
+```
+
+All available CAGE data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a CAGE" in the data-raw/saveRDA.R file. Of these `r cellLinesInFinal() %>% length()` cell lines had CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200). These cell lines included: `r cellLinesInFinal()`. All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads at in the specified interval.
 
 <br></br>
 

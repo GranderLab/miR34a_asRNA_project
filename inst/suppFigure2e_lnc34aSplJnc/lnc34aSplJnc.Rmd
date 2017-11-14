@@ -20,8 +20,6 @@ vignette: >
 }
 </style>
 
-Add number of cell lines included in figure.
-
 ```{r, echo = FALSE, message = FALSE}
 packages <- c(
     "tidyverse",
@@ -40,7 +38,37 @@ rm(packages)
 <br></br>
 
 ####Methods
-All available splice junction data was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDA.R file. Spliced reads mapping to the plus strand of chromosome 1 and in regions corresponding to the lnc34a start (9241796) and transcription termination (9257102) sites were filtered from the total data. All splice junctions were plotted and colored according to the number of reads corresponding to each. ADD NUMBER OF CELL LINES.
+
+```{r}
+nrCellLinesDown <- function() {
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data-raw"
+  url <- "suppFigure2e_lnc34aSplJnc.txt"
+  read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
+    pull(16) %>% 
+    gsub(
+      "^http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeCshlLongRnaSeq/wgEncodeCshlLongRnaSeq(.*)Cell.*", 
+      "\\1",
+      .
+    ) %>%
+    unique() %>%
+    length()
+}
+
+cellLinesInFinal <- function() {
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+  url <- "suppFigure2e_lnc34aSplJnc.rds"
+  read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+    pull(filename) %>%
+    gsub(
+      "^wgEncodeCshlLongRnaSeq(.*)Cell.*",
+      "\\1",
+      .
+    ) %>%
+    unique()
+}
+```
+
+All available splice junction data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDA.R file. Of these cell lines `r cellLinesInFinal() %>% length()` cell lines had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each.
 
 <br></br>
 
