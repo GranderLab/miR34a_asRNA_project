@@ -3,21 +3,19 @@ Title: What the Package Does (one line, title case)
 Version: 0.0.0.9000
 Authors@R: person("Jason", "Serviss", email = "Jason.serviss@ki.se", role = c("aut", "cre"), comment = c(ORCID = 0000-0002-5778-7014))
 Description: What the package does (one paragraph).
-Depends: R (>= 3.3.2)
+Depends: R (>= 3.4.2)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Suggests: 
-    knitr,
-    rmarkdown,
-    printr,
-    RCurl,
-    ggthemes,
-    repmis,
-    tidyverse,
-    extrafont,
-    scales,
-    grid,
-    gtable
+    knitr (>= 1.17),
+    rmarkdown (>= 1.6),
+    printr (>= 0.1),
+    ggthemes (>= 0.2),
+    tidyverse (>= 0.2),
+    extrafont (>= 0.17),
+    scales (>= 0.5.0),
+    gtable (>= 0.2.0),
+    liftr (>= 0.7)
 VignetteBuilder: knitr
