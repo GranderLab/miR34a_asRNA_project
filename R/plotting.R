@@ -4,16 +4,14 @@ plotPDF <- function(plot) {
   p <- plot +
     theme_few() +
     scale_fill_ptol() +
+    scale_colour_ptol() +
     theme(
-        plot.title = element_text(
-            hjust = 0.5,
-            face = "bold",
-            size = 10,
-            margin = margin(b = 2, unit = "mm")
-        ),
+        plot.title = element_blank(),
         plot.margin = unit(rep(0.1, 4), "lines"),
         legend.position = "top",
-        legend.margin = unit(1, "mm"),
+        legend.background = element_blank(),
+        legend.box.spacing = unit(5, "pt"), #this controls the spacing between strip.text.x and the legend
+        legend.margin = margin(rep(0, 4), unit = "pt"),
         legend.key.size = unit(1/5, "cm"),
         legend.title = element_text(size = 9),
         legend.text = element_text(size = 7),
@@ -23,7 +21,10 @@ plotPDF <- function(plot) {
         axis.text.x = element_text(size = 7),
         axis.ticks = element_line(size = 0.25),
         axis.ticks.length = unit(1/15, "cm"),
-        strip.text.x = element_text(size = 8, margin = margin(0.01, 0, 0.1, 0, "cm")),
+        strip.text.x = element_text(
+          size = 8,
+          margin = margin(0.01, 0, 5, 0, "pt")
+        ),
         panel.border = element_rect(fill = NA, size = 0.15)
     )
     

@@ -146,6 +146,17 @@ p <- ggplot(data = NULL) +
 
 plotRmarkdown(p)
 
+figure <- plotPDF(p)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure1e_cellularLocalization/suppFigure1e_cellularLocalization.pdf"
+
+#ggsave(
+#  plot = figure, 
+#  filename = path, 
+#  device = cairo_pdf, 
+#  height = 60,
+#  width = 83,
+#  units = "mm"
+#)
 ```
 
 <div class="caption">

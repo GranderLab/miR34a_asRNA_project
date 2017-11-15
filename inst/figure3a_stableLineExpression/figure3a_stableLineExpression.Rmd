@@ -215,15 +215,15 @@ stats <- calcStats(data, `Genetic mod`, "mock", groups) %>%
   pFormat(.)
 
 #format for plotting
-lev <- c("PC3\nmock", "PC3\nmiR34a asRNA", "Skov3\nmock", "Skov3\nmiR34a asRNA", "Saos2\nmock",   "Saos2\nmiR34a asRNA")
+lev <- c("mock", "miR34a asRNA", "Skov3\nmock", "Skov3\nmiR34a asRNA", "Saos2\nmock",   "Saos2\nmiR34a asRNA")
 
 data <- data %>%
-  mutate(Condition = paste(`Cell line`, `Genetic mod`, sep = "\n")) %>%
-  mutate(Condition = parse_factor(Condition, levels = lev))
+  mutate(`Genetic mod` = gsub("miR34a asRNA", "miR34a\nasRNA", `Genetic mod`)) %>%
+  mutate(`Genetic mod` = parse_factor(`Genetic mod`, levels = c("mock", "miR34a\nasRNA")))
 
 stats <- stats %>%
-  mutate(Condition = paste(`Cell line`, `Genetic mod`, sep = "\n")) %>%
-  mutate(Condition = parse_factor(Condition, levels = lev))
+  mutate(`Genetic mod` = gsub("miR34a asRNA", "miR34a\nasRNA", `Genetic mod`)) %>%
+  mutate(`Genetic mod` = parse_factor(`Genetic mod`, levels = c("mock", "miR34a\nasRNA")))
 
 #vertical lines and labels in plot
 ys <- stats %>%
@@ -249,7 +249,7 @@ vl <- stats %>%
   ) %>%
   inner_join(ys) %>%
   mutate(
-    max = max + c(0.25, 1, 0.25, 1, 0.25, 1)
+    max = max + c(0.25, 1.25, 0.25, 1.25, 0.25, 1.25)
   )
 ```
 
@@ -259,9 +259,9 @@ p <- ggplot(data = NULL) +
   geom_violin(
     data = data,
     aes(
-      x = Condition,
+      x = `Genetic mod`,
       y = log2fold,
-      group = interaction(Condition, GOI)
+      group = interaction(`Genetic mod`, GOI)
     ),
     trim = TRUE,
     alpha = 0.5,
@@ -273,10 +273,10 @@ p <- ggplot(data = NULL) +
   geom_dotplot(
     data = data, 
     aes(
-      x = Condition,
+      x = `Genetic mod`,
       y = log2fold,
       fill = GOI,
-      group = interaction(Condition, GOI)
+      group = interaction(`Genetic mod`, GOI)
     ),
     binwidth = 1/10,
     colour = NA,
@@ -292,13 +292,20 @@ p <- ggplot(data = NULL) +
     scales = "free", 
     space = "free"
   ) +
+  scale_y_continuous("\u0394\u0394Ct")+
+  labs(x = "Cell line") +
+  guides(
+    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
+  )
+
+markdown <- p +
   geom_linerange(
     data = stats,
     aes(
-      x = Condition,
+      x = `Genetic mod`,
       ymin = CI95l,
       ymax = CI95h,
-      group = interaction(Condition, GOI)
+      group = interaction(`Genetic mod`, GOI)
     ),
     position = position_dodge(width = 0.9),
     colour = "gray20",
@@ -307,9 +314,9 @@ p <- ggplot(data = NULL) +
   geom_point(
     data = stats,
     aes(
-      x = Condition,
+      x = `Genetic mod`,
       y = mean,
-      group = interaction(Condition, GOI)
+      group = interaction(`Genetic mod`, GOI)
     ),
     colour = "gray20",
     shape = 95,
@@ -321,7 +328,7 @@ p <- ggplot(data = NULL) +
     data = vl,
     aes(
       x = 1.5, 
-      y = max + 0.25, 
+      y = max + 0.4, 
       label = pFormat, 
       group = interaction(`Cell line`, GOI)
     ),
@@ -344,18 +351,77 @@ p <- ggplot(data = NULL) +
     ),
     colour = "grey43",
     show.legend = FALSE
-  ) +
-  scale_y_continuous("\u0394\u0394Ct")+
-  labs(
-    x = "Cell line",
-    title = "miR34a asRNA over-expressing cell lines"
-  ) +
-  guides(
-    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
   )
 
-plotRmarkdown(p)
+plotRmarkdown(markdown)
 
+pdf <- p +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = `Genetic mod`,
+      ymin = CI95l,
+      ymax = CI95h,
+      group = interaction(`Genetic mod`, GOI)
+    ),
+    position = position_dodge(width = 0.9),
+    colour = "gray20",
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = `Genetic mod`,
+      y = mean,
+      group = interaction(`Genetic mod`, GOI)
+    ),
+    colour = "gray20",
+    shape = 95,
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = vl,
+    aes(
+      x = 1.5, 
+      y = max + 0.4, 
+      label = pFormat, 
+      group = interaction(`Cell line`, GOI)
+    ),
+    fill = "white",
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE,
+    fontface = "bold",
+    family = "Arial Unicode MS",
+    size = 1
+  ) +
+  geom_segment(
+    data = vl,
+    aes(
+      x = x,
+      y = max,
+      xend = xend,
+      yend = max
+    ),
+    colour = "grey43",
+    size = 0.1,
+    show.legend = FALSE
+  )
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure3a_stableLineExpression/figure3a_stableLineExpression.pdf"
+
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 83,
+   units = "mm"
+)
 ```
 
 <div class="caption">

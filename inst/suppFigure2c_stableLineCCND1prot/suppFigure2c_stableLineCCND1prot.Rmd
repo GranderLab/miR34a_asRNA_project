@@ -147,15 +147,14 @@ p <- ggplot(data = NULL) +
     dotsize = 4,
     show.legend = TRUE
   ) +
-  geom_linerange(
-    data = stats,
-    aes(
-      x = condition,
-      ymin = CI95l,
-      ymax = CI95h
-    ),
-    colour="gray20"
+  scale_y_continuous("log2(Fold)") +
+  labs(
+    x = "Cell line",
+    title = "CCND1 protein"
   ) +
+  guides(fill = FALSE)
+
+markdown <- p +
   geom_point(
     data = stats,
     aes(
@@ -180,7 +179,7 @@ p <- ggplot(data = NULL) +
     data = stats,
     aes(
       x = 1.5,
-      y = max(CI95h) + 0.5,
+      y = max(CI95h) + 0.4,
       label = pFormat
     ),
     label.size = 0,
@@ -190,15 +189,74 @@ p <- ggplot(data = NULL) +
     size = 5,
     family = "Arial Unicode MS"
   ) +
-  scale_y_continuous("log2(Fold)") +
-  labs(
-    x = "Cell line",
-    title = "CCND1 protein"
+   geom_linerange(
+    data = stats,
+    aes(
+      x = condition,
+      ymin = CI95l,
+      ymax = CI95h
+    ),
+    colour="gray20"
+  )
+
+plotRmarkdown(markdown)
+
+pdf <- p + 
+  geom_point(
+    data = stats,
+    aes(
+      x = condition,
+      y = mean
+    ),
+    colour="gray20",
+    shape = 95
   ) +
-  guides(fill = FALSE)
+  geom_segment(
+    data = stats,
+    aes(
+      x = 1,
+      y = max(CI95h) + 0.25,
+      xend = 2,
+      yend = max(CI95h) + 0.25
+    ),
+    colour="grey43",
+    size = 0.1
+  ) +
+  geom_label(
+    data = stats,
+    aes(
+      x = 1.5,
+      y = max(CI95h) + 0.4,
+      label = pFormat
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 2,
+    family = "Arial Unicode MS"
+  ) +
+   geom_linerange(
+    data = stats,
+    aes(
+      x = condition,
+      ymin = CI95l,
+      ymax = CI95h
+    ),
+    colour="gray20",
+    size = 0.1
+  )
 
-plotRmarkdown(p)
-
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2c_stableLineCCND1prot/suppFigure2c_stableLineCCND1prot.pdf"
+ggsave(
+  plot = figure, 
+  filename = path, 
+  device = cairo_pdf, 
+  height = 60,
+  width = 83,
+  units = "mm"
+)
 ```
 
 <div class="caption">

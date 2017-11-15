@@ -143,6 +143,18 @@ p <- ggplot(data = NULL) +
     alpha = 0.2,
     show.legend = FALSE
   ) +
+  facet_grid(. ~ Treatment) +
+  scale_x_discrete(breaks = seq(0, 35, 5)) +
+  labs(
+    x = "Time (hours)", 
+    y = "Normalized % confluency",
+    title = "miR34a asRNA's role in growth regulation."
+  ) + 
+  guides(
+    colour = guide_legend(title = "Cell line", override.aes = list(size = 3))
+  )
+
+markdown <- p +
   geom_linerange(
     data = stats,
     aes(
@@ -164,24 +176,57 @@ p <- ggplot(data = NULL) +
     ), 
     position = position_dodge(width = 1),
     show.legend = TRUE
-  ) +
-  facet_grid(. ~ Treatment) +
-  scale_x_discrete(breaks = seq(0, 35, 5)) +
-  labs(
-    x = "Time (hours)", 
-    y = "Normalized % confluency",
-    title = "miR34a asRNA's role in growth regulation."
   ) + 
   guides(
     colour = guide_legend(title = "Cell line", override.aes = list(size = 3))
   )
 
-plotRmarkdown(p)
+plotRmarkdown(markdown)
 
+pdf <- p +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = Time,
+      colour = `Cell line`,
+      ymin = min,
+      ymax = max
+    ), 
+    position = position_dodge(width = 1),
+    lwd = 0.1,
+    show.legend = FALSE
+  ) + 
+  geom_point(
+    data = stats,
+    aes(
+      x = Time, 
+      y = median,
+      group = `Cell line`,
+      colour = `Cell line`
+    ), 
+    size = 0.25,
+    position = position_dodge(width = 1),
+    show.legend = TRUE
+  ) + 
+  guides(
+    colour = guide_legend(title = "Cell line", override.aes = list(size = 2))
+  )
+
+figure <- plotPDF(pdf)
+
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure3c_stableLineGrowthStarvation/figure3c_stableLineGrowthStarvation.pdf"
+# ggsave(
+#   plot = figure,
+#   filename = path,
+#   device = cairo_pdf,
+#   height = 60,
+#   width = 83,
+#   units = "mm"
+# )
 ```
 
 <div class="caption">
-The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. The points represent the mean values obtained from each independant experiment (n = 3) whereas, the shadow represents 95% confidence interval, and the vertical line represents the minimum and maximum values from the independant experiments.
+The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. The points represent the median values obtained from each independant experiment (n = 3) whereas, the shadow represents 95% confidence interval, and the vertical line represents the minimum and maximum values from the independant experiments.
 </div>
 
 <br></br>

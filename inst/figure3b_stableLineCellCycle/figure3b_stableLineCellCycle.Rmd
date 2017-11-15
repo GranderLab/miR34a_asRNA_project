@@ -154,6 +154,17 @@ p <- ggplot(data = NULL) +
     . ~ `Cell line`, 
     scale = "free"
   ) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(
+    x = "Cell cycle phase",
+    y = "",
+    title = "Cell cycle"
+  ) +
+  guides(
+    fill = guide_legend(title = "Condition", override.aes = list(size = 6))
+  )
+
+markdown <- p +
   geom_linerange(
     data = stats,
     aes(
@@ -203,19 +214,72 @@ p <- ggplot(data = NULL) +
     fill = "white",
     size = 3,
     family = "Arial Unicode MS"
-  ) +
-  scale_y_continuous(labels = scales::percent_format()) +
-  labs(
-    x = "Cell cycle phase",
-    y = "",
-    title = "Cell cycle"
-  ) +
-  guides(
-    fill = guide_legend(title = "Condition", override.aes = list(size = 6))
   )
+plotRmarkdown(markdown)
 
-plotRmarkdown(p)
+pdf <- p +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = phase, 
+      ymin = CI95l, 
+      ymax = CI95h, 
+      group = interaction(phase, condition)
+    ),
+    position = position_dodge(width = 0.9),
+    colour = "grey25",
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = phase, 
+      y = mean, 
+      group = condition
+    ), 
+    colour = "black",
+    position = position_dodge(width = 0.9),
+    shape = 95,
+    show.legend = FALSE
+  ) +
+  geom_segment(
+    data = stats,
+    aes(
+      x = x,
+      y = y + 0.01, 
+      xend = xend, 
+      yend = y + 0.01
+    ),
+    colour = "grey43",
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = stats,
+    aes(
+      x = phase, 
+      y = y + 0.025, 
+      label = pFormat
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 2,
+    family = "Arial Unicode MS"
+  )
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure3b_stableLineCellCycle/figure3b_stableLineCellCycle.pdf"
 
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
 ```
 
 <div class="caption">

@@ -131,6 +131,14 @@ stats <- data %>%
 ```{r, fig.align='center', fig.height=8, fig.width=12}
 
 p <- ggplot(data = NULL)+
+  scale_y_continuous("\u0394\u0394Ct") +
+  labs(
+    x = "Treatment (hours)",
+    title = "miR34a asRNA and HG stability"
+  ) +
+  guides(color = guide_legend(title = "Gene", override.aes = list(size = 3)))
+
+markdown <- p +
   geom_point(
     data = data,
     aes(
@@ -167,16 +175,60 @@ p <- ggplot(data = NULL)+
     show.legend = FALSE,
     shape = 95,
     size = 6
-  ) +
-  scale_y_continuous("\u0394\u0394Ct") +
-  labs(
-    x = "Treatment (hours)",
-    title = "miR34a asRNA and HG stability"
-  ) +
-  guides(color = guide_legend(title = "Gene", override.aes = list(size = 3)))
+  )
 
-plotRmarkdown(p)
+plotRmarkdown(markdown)
 
+pdf <- p +
+  geom_point(
+    data = data,
+    aes(
+      x = treatment,
+      y = log2fold,
+      colour = GOI
+    ),
+    fill = "white",
+    alpha = 0.6,
+    stroke = 0,
+    position = position_dodge(width = 0.9)
+  ) +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = treatment,
+      ymin = mean - sd,
+      ymax = mean + sd,
+      group = GOI
+    ),
+    colour = "black",
+    position = position_dodge(width = 0.9),
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = treatment,
+      y = mean,
+      group = GOI
+    ),
+    colour = "black",
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE,
+    shape = 95
+  )
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure1f_transcriptStability/suppFigure1f_transcriptStability.pdf"
+
+#ggsave(
+#  plot = figure, 
+#  filename = path, 
+#  device = cairo_pdf, 
+#  height = 60,
+#  width = 83,
+#  units = "mm"
+#)
 ```
 
 <div class="caption">

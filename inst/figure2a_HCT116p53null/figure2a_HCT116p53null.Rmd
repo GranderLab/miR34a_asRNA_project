@@ -35,6 +35,8 @@ packages <- c(
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
 
+
+library(grDevices)
 ```
 
 ```{r}
@@ -175,6 +177,14 @@ p <- ggplot(data = NULL) +
     dotsize = 2,
     show.legend = TRUE
   ) +
+  facet_grid(. ~ GOI) +
+  scale_y_continuous("\u0394\u0394Ct", breaks = c(-1,0,1,2,3,4,5))+
+  labs(x = "Treatment") +
+  guides(
+    fill = guide_legend(title = "Cell line", override.aes = list(size = 6))
+  )
+
+markdown <- p + 
   geom_point(
     data = stats,
     aes(x = Treatment, y = mean, group = Condition), 
@@ -183,7 +193,6 @@ p <- ggplot(data = NULL) +
     size = 6,
     shape = 95
   ) +
-  facet_grid(. ~ GOI) +
   geom_linerange(
     data = stats,
     aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
@@ -207,18 +216,56 @@ p <- ggplot(data = NULL) +
     aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
     colour="grey43",
     show.legend = FALSE
-  ) +
-  scale_y_continuous("\u0394\u0394Ct", breaks = c(-1,0,1,2,3,4,5))+
-  labs(
-    x = "Treatment",
-    title = "miR34a asRNA regulation by p53 induction"
-  ) +
-  guides(
-    fill = guide_legend(title = "Cell line", override.aes = list(size = 6))
-  )
+  ) 
 
-plotRmarkdown(p)
+plotRmarkdown(markdown)
 
+pdf <- p + 
+  geom_point(
+    data = stats,
+    aes(x = Treatment, y = mean, group = Condition), 
+    position = position_dodge(width = 0.9),
+    colour = "gray20",
+    shape = 95
+  ) +
+  geom_linerange(
+    data = stats,
+    aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
+    colour = "gray20",
+    position = position_dodge(width = 0.9),
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = stats,
+    aes(x = Treatment, y = max + 0.28, label = pFormat),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 1,
+    family = "Arial Unicode MS",
+    position = position_dodge(width = 0.9)
+  ) +
+  geom_segment(
+    data = stats,
+    aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
+    colour="grey43",
+    size = 0.1,
+    show.legend = FALSE
+  ) 
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2a_stableLineExpressionHEK/suppFigure2a_stableLineExpressionHEK.pdf"
+
+#ggsave(
+#  plot = figure, 
+#  filename = path, 
+#  device = cairo_pdf, 
+#  height = 60,
+#  width = 83,
+#  units = "mm"
+#)
 ```
 
 <div class="caption">

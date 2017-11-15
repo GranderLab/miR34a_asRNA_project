@@ -110,7 +110,8 @@ splJnc <- splJnc %>%
   mutate(y = 1:length(.data$n))
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12}
+```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
+#plot rmarkdown
 ###locus
 p1 <- ggplot(data = NULL) +
   gggenes::geom_gene_arrow(
@@ -159,6 +160,92 @@ grobz <- lapply(list(p1, p2), ggplotGrob)
 g <- rbind(grobz[[2]], grobz[[1]], size = "last")
 grid.newpage()
 grid.draw(resize_heights(g, unit(c(3,1), "null")))
+
+#plot pdf
+#genes
+p1 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = filter(data, feature == "exon"),
+    aes(xmin = start, xmax = stop, y = gene, fill = gene),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    arrow_body_height = grid::unit(1, "mm"),
+    colour = "gray",
+    lwd = 0.1
+  ) +
+  ggthemes::theme_few() +
+  ggthemes::scale_fill_ptol() +
+  geom_segment(
+    data = filter(data, feature == "intron"),
+    aes(x = start, xend = stop, y = gene, yend = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 0.25
+  ) +
+  xlim(9241000, 9257900) +
+  labs(x = "Chromosome 1", y = "Genes") +
+  guides(fill = FALSE) +
+  theme(
+    axis.text = element_text(size = 3),
+    axis.title.x = element_text(size = 4),
+    axis.title.y = element_text(size = 4, margin = margin(r = 8, "cm")),
+    axis.ticks.length = unit(0.5, "mm"),
+    axis.ticks = element_line(size = 0.15),
+    panel.border = element_rect(fill = NA, size = 0.1),
+    plot.margin = unit(c(0.01, 1, 0.01, 1), "mm")
+  )
+
+#splice junctions
+p2 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = splJnc,
+    aes(xmin = start, xmax = stop, y = y, fill = n),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    arrow_body_height = unit(2, "pt"),
+    colour = NA,
+    lwd = 0.1,
+    show.legend = TRUE
+  ) +
+  ggthemes::theme_few() +
+  viridis::scale_fill_viridis() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(size = 4),
+    legend.position = "top",
+    legend.title = element_text(size = 4),
+    legend.text = element_text(size = 4),
+    legend.box.spacing = unit(3, "pt"),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.border = element_rect(fill = NA, size = 0.1),
+    plot.margin = unit(c(0.01, 1, 0.01, 1), "mm"),
+    strip.text.y = element_text(angle = 0)
+  ) +
+  labs(y = "Cage reads") +
+  xlim(9241000, 9257900) +
+  guides(fill = guide_colourbar(
+    title = "Reads",
+    title.position = "top",
+    title.hjust = 0.5,
+    barheight = unit(4, "pt"),
+    barwidth = unit(40, "pt")
+  ))
+
+grobz <- lapply(list(p1, p2), ggplotGrob)
+g <- rbind(grobz[[2]], grobz[[1]], size = "last")
+g <- resize_heights(g, unit(c(6, 1), "null"))
+
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2e_lnc34aSplJnc/suppFigure2e_lnc34aSplJnc.pdf"
+ggsave(
+  plot = g, 
+  filename = path, 
+  device = cairo_pdf, 
+  height = 60,
+  width = 83,
+  units = "mm"
+)
+
 ```
 
 <div class="caption">

@@ -25,7 +25,8 @@ packages <- c(
     "tidyverse",
     "grid",
     "gtable",
-    "miR34AasRNAproject"
+    "miR34AasRNAproject",
+    "ggthemes"
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
@@ -103,13 +104,17 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
 url <- "suppFigure2d_lnc34aCage.rds"
 cage <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     arrange(desc(level)) %>%
-    mutate(y = 1:length(pull(., level)))
+    mutate(
+      y = 1:length(pull(., level)),
+      cellLine = gsub("^wgEncodeRikenCage(.*)Cell.*", "\\1", filename)
+    )
 
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12}
-###plot
+```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
+###plot rmarkdown
 
+#genes
 p1 <- ggplot(data = NULL) +
   gggenes::geom_gene_arrow(
     data = filter(data, feature == "exon"),
@@ -131,6 +136,7 @@ p1 <- ggplot(data = NULL) +
   labs(x = "Chromosome 1", y = "Genes") +
   guides(fill = FALSE)
 
+#cage
 p2 <- ggplot(data = NULL) +
   gggenes::geom_gene_arrow(
     data = cage,
@@ -151,10 +157,15 @@ p2 <- ggplot(data = NULL) +
   ) +
   labs(y = "Cage reads") +
   xlim(9241000, 9257900) +
-  guides(fill = guide_colourbar(title = "RPKM", title.position = "top", title.hjust = 0.5))
+  guides(fill = guide_colourbar(
+    title = "RPKM", 
+    title.position = "top", 
+    title.hjust = 0.5)
+  )
 
+#density
 p3 <- ggplot(data = NULL) + 
-  geom_density(data = cage, aes(x = start)) +
+  geom_line(data = cage, aes(x = start), stat="density") +
   ggthemes::theme_few() +
   xlim(9241000, 9257900) +
   theme(
@@ -168,6 +179,107 @@ grobz <- lapply(list(p1, p2, p3), ggplotGrob)
 g <- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = "last")
 grid.newpage()
 grid.draw(resize_heights(g, unit(c(3,1,1), "null")))
+
+#plot pdf
+#genes
+p1 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = filter(data, feature == "exon"),
+    aes(xmin = start, xmax = stop, y = gene, fill = gene),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    arrow_body_height = grid::unit(1, "mm"),
+    colour = "gray",
+    lwd = 0.1
+  ) +
+  ggthemes::theme_few() +
+  ggthemes::scale_fill_ptol() +
+  geom_segment(
+    data = filter(data, feature == "intron"),
+    aes(x = start, xend = stop, y = gene, yend = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 0.25
+  ) +
+  xlim(9241000, 9257900) +
+  labs(x = "Chromosome 1", y = "Genes") +
+  guides(fill = FALSE) +
+  theme(
+    axis.text = element_text(size = 3),
+    axis.title.x = element_text(size = 4),
+    axis.title.y = element_text(size = 4, margin = margin(r = 8, "cm")),
+    axis.ticks.length = unit(0.5, "mm"),
+    axis.ticks = element_line(size = 0.15),
+    panel.border = element_rect(fill = NA, size = 0.1),
+    plot.margin = unit(c(0.01, 1, 0.01, 1), "mm")
+  )
+
+#cage
+p2 <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = cage,
+    aes(xmin = start, xmax = stop, y = y, fill = level),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    arrow_body_height = unit(2, "pt"),
+    colour = NA,
+    lwd = 0.1,
+    show.legend = TRUE
+  ) +
+  ggthemes::theme_few() +
+  viridis::scale_fill_viridis() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(size = 4),
+    legend.position = "top",
+    legend.title = element_text(size = 4),
+    legend.text = element_text(size = 4),
+    legend.box.spacing = unit(3, "pt"),
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+    panel.border = element_rect(fill = NA, size = 0.1),
+    plot.margin = unit(c(0.01, 1, 0.01, 1), "mm"),
+    strip.text.y = element_text(angle = 0)
+  ) +
+  labs(y = "Cage reads") +
+  xlim(9241000, 9257900) +
+  guides(fill = guide_colourbar(
+    title = "RPKM",
+    title.position = "top",
+    title.hjust = 0.5,
+    barheight = unit(4, "pt"),
+    barwidth = unit(40, "pt")
+  ))
+
+#density
+p3 <- ggplot(data = NULL) + 
+  geom_line(data = cage, aes(x = start), stat="density", lwd = 0.1) +
+  ggthemes::theme_few() +
+  xlim(9241000, 9257900) +
+  theme(
+    axis.text = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(size = 4),
+    axis.ticks = element_blank(),
+    panel.border = element_rect(fill = NA, size = 0.1),
+    plot.margin = unit(c(0, 1, 0, 1), "mm")
+  ) +
+  labs(y = "Density")
+
+grobz <- lapply(list(p1, p2, p3), ggplotGrob)
+g <- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = "last")
+g <- resize_heights(g, unit(c(6, 1, 1), "null"))
+#grid.draw(g)
+
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2d_lnc34aCage/suppFigure2d_lnc34aCage.pdf"
+ggsave(
+  plot = g, 
+  filename = path, 
+  device = cairo_pdf, 
+  height = 60,
+  width = 83,
+  units = "mm"
+)
 ```
 
 <div class="caption">

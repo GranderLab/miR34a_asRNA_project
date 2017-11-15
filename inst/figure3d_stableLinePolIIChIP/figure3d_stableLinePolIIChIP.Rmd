@@ -176,7 +176,16 @@ p <- ggplot(data = NULL)+
     dotsize = 2,
     show.legend = TRUE
   ) +
-  geom_linerange(
+  scale_y_continuous("log2(Fold)") +
+  labs(
+    x = "Cell line",
+    y = "log2(Fold polII enrichment)",
+    title = "Phosphorylated Poll II ChIP"
+  ) +
+  guides(fill = FALSE)
+
+markdown <- p +
+    geom_linerange(
     data = stats,
     aes(x = condition, ymin = CI95l, ymax = CI95h),
     colour = "gray20",
@@ -204,17 +213,53 @@ p <- ggplot(data = NULL)+
     fill = "white",
     size = 5,
     family = "Arial Unicode MS"
-  ) +
-  scale_y_continuous("log2(Fold)") +
-  labs(
-    x = "Cell line",
-    y = "log2(Fold polII enrichment)",
-    title = "Phosphorylated Poll II ChIP"
-  ) +
-  guides(fill = FALSE)
+  )
 
-plotRmarkdown(p)
+plotRmarkdown(markdown)
 
+pdf <- p +
+    geom_linerange(
+    data = stats,
+    aes(x = condition, ymin = CI95l, ymax = CI95h),
+    colour = "gray20",
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(x = condition, y = mean),
+    colour = "gray20",
+    shape = 95,
+    show.legend = FALSE
+  ) +
+  geom_segment(
+    data = filter(stats, condition == "PC3 miR34a asRNA"),
+    aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
+    colour = "grey43",
+    size = 0.1
+  ) +
+  geom_label(
+    data = stats,
+    aes(x = 1.5, y = CI95h + 0.45, label = pFormat),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 2,
+    family = "Arial Unicode MS"
+  )
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure3d_stableLinePolIIChIP/figure3d_stableLinePolIIChIP.pdf"
+
+# ggsave(
+#   plot = figure, 
+#   filename = path, 
+#   device = cairo_pdf, 
+#   height = 60,
+#   width = 83,
+#   units = "mm"
+# )
 ```
 
 <div class="caption">

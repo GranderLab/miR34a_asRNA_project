@@ -152,6 +152,14 @@ p <- ggplot(data = NULL) +
     dotsize = 4,
     show.legend = TRUE
   ) +
+  scale_y_continuous("\u0394\u0394Ct") +
+  labs(
+    x = "Cell line",
+    title = "CCND1"
+  ) +
+  guides(fill = FALSE)
+
+markdown <- p + 
   geom_linerange(
     data = stats,
     aes(
@@ -193,16 +201,66 @@ p <- ggplot(data = NULL) +
     fill = "white",
     size = 5,
     family = "Arial Unicode MS"
-  ) +
-  scale_y_continuous("\u0394\u0394Ct") +
-  labs(
-    x = "Cell line",
-    title = "CCND1"
-  ) +
-  guides(fill = FALSE)
+  )
+  
+plotRmarkdown(markdown)
 
-plotRmarkdown(p)
+pdf <- p +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = condition,
+      ymin = CI95l,
+      ymax = CI95h
+    ),
+    colour = "gray20",
+    size = 0.1
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = condition,
+      y = mean
+    ),
+    colour = "gray20",
+    shape = 95
+  ) +
+  geom_segment(
+    aes(
+      x = 1,
+      y = 0.175, 
+      xend = 2,
+      yend = 0.175
+    ),
+    colour = "grey43",
+    size = 0.1
+  ) +
+  geom_label(
+    data = stats,
+    aes(
+      x = 1.5,
+      y = 0.2,
+      label = pFormat
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 2,
+    family = "Arial Unicode MS"
+  )
 
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2b_stableLineCCND1exp/suppFigure2b_stableLineCCND1exp.pdf"
+
+#ggsave(
+#  plot = figure, 
+#  filename = path, 
+#  device = cairo_pdf, 
+#  height = 60,
+#  width = 83,
+#  units = "mm"
+#)
 ```
 
 <div class="caption">
