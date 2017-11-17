@@ -414,14 +414,14 @@ pdf <- p +
 figure <- plotPDF(pdf)
 path <- "~/GitHub/miR34a_asRNA_project/inst/figure3a_stableLineExpression/figure3a_stableLineExpression.pdf"
 
-ggsave(
-   plot = figure,
-   filename = path,
-   device = cairo_pdf,
-   height = 60,
-   width = 83,
-   units = "mm"
-)
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
 ```
 
 <div class="caption">

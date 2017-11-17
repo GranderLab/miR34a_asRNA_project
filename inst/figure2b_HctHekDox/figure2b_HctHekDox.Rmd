@@ -184,6 +184,22 @@ p <- ggplot(data = NULL) +
     dotsize = 2,
     show.legend = TRUE
   ) +
+  facet_grid(. ~ `Cell line`) +
+  scale_y_continuous(
+    "\u0394\u0394Ct",
+    breaks=c(-1,0,1,2,3,4,5)
+  ) +
+  labs(
+    x = "Treatment",
+    title = "miR34a asRNA response to p53 induction"
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 6)
+  ))
+
+markdown <- p +
   geom_point(
     data = stats,
     aes(
@@ -197,7 +213,6 @@ p <- ggplot(data = NULL) +
     shape = 95,
     colour = "gray20"
   ) +
-  facet_grid(. ~ `Cell line`) +
   geom_linerange(
     data = stats,
     aes(
@@ -238,20 +253,86 @@ p <- ggplot(data = NULL) +
     colour="grey43",
     show.legend = FALSE
   ) +
-  scale_y_continuous(
-    "\u0394\u0394Ct",
-    breaks=c(-1,0,1,2,3,4,5)
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 6)
+  ))
+
+plotRmarkdown(markdown)
+
+pdf <- p + 
+    geom_point(
+    data = stats,
+    aes(
+      x = Treatment,
+      y = mean,
+      group = GOI
+    ),
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE,
+    shape = 95,
+    colour = "gray20"
   ) +
-  labs(
-    x = "Treatment",
-    title = "miR34a asRNA response to p53 induction"
+  geom_linerange(
+    data = stats,
+    aes(
+      x = Treatment,
+      ymin = CI95l,
+      ymax = CI95h,
+      group = GOI
+    ),
+    colour = "gray20",
+    size = 0.1,
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = vl,
+    aes(
+      x = labelX,
+      y = max + 0.3,
+      label = pFormat,
+      group = GOI
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 2,
+    family = "Arial Unicode MS",
+    position = position_dodge(width = 0.9)
+  ) +
+  geom_segment(
+    data = vl,
+    aes(
+      x = x,
+      y = max + 0.1,
+      xend = xend,
+      yend = max + 0.1,
+      group = GOI
+    ),
+    colour="grey43",
+    size = 0.1,
+    show.legend = FALSE
   ) +
   guides(
-    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
-  )
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 4)
+  ))
 
-plotRmarkdown(p)
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure2b_HctHekDox/figure2b_HctHekDox.pdf"
 
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
 ```
 
 <div class="caption">

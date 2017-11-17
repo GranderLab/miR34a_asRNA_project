@@ -215,6 +215,13 @@ p <- ggplot(data = NULL) +
     show.legend = TRUE
   ) +
   facet_grid(. ~ shRNA, scale = "free") +
+  scale_y_continuous("\u0394\u0394Ct") +
+  labs(
+    x = "Doxorubicin (ng/ml)",
+    title = "HCT116"
+  )
+
+markdown <- p + 
   geom_linerange(
     data = stats,
     aes(
@@ -256,17 +263,70 @@ p <- ggplot(data = NULL) +
     size = 5,
     family = "Arial Unicode MS"
   ) +
-  scale_y_continuous("\u0394\u0394Ct") +
-  labs(
-    x = "Doxorubicin (ng/ml)",
-    title = "HCT116"
-  ) +
   guides(
     fill = guide_legend(title = "Gene", override.aes = list(size = 6))
   )
 
-plotRmarkdown(p)
+plotRmarkdown(markdown)
 
+pdf <- p + 
+  geom_linerange(
+    data = stats,
+    aes(
+      x = treatment, 
+      ymin = CI95l, 
+      ymax = CI95h, 
+      group = plotGOI
+    ),
+    colour = "gray20",
+    position = position_dodge(width = 0.9),
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = treatment, 
+      y = mean, 
+      group = plotGOI
+    ),
+    colour = "gray20",
+    position = position_dodge(width = 0.9),
+    shape = 95,
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = stats,
+    aes(
+      x = treatment, 
+      y = CI95h + 0.2,
+      label = pFormat,
+      group = plotGOI
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    position = position_dodge(width = 0.9),
+    fill = "white",
+    size = 1,
+    family = "Arial Unicode MS"
+  ) +
+  guides(fill = guide_legend(
+    title = "Gene",
+    override.aes = list(size = 4)
+  ))
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure2e_P1shRNAdox/figure2e_P1shRNAdox.pdf"
+
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
 ```
 
 <div class="caption">
