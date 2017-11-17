@@ -256,16 +256,16 @@ pdf <- p +
   ) 
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2a_stableLineExpressionHEK/suppFigure2a_stableLineExpressionHEK.pdf"
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure2a_HCT116p53null/figure2a_HCT116p53null.pdf"
 
-#ggsave(
-#  plot = figure, 
-#  filename = path, 
-#  device = cairo_pdf, 
-#  height = 60,
-#  width = 83,
-#  units = "mm"
-#)
+ggsave(
+ plot = figure,
+ filename = path,
+ device = cairo_pdf,
+ height = 60,
+ width = 83,
+ units = "mm"
+)
 ```
 
 <div class="caption">

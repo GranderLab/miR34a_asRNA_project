@@ -358,12 +358,13 @@ figure &lt;- plotPDF(pdf)
 path &lt;- &quot;~/GitHub/miR34a_asRNA_project/inst/figure3d_stableLinePolIIChIP/figure3d_stableLinePolIIChIP.pdf&quot;
 
 ggsave(
-  plot = figure, 
-  filename = path, 
-  device = cairo_pdf, 
+  plot = figure,
+  filename = path,
+  device = cairo_pdf,
   height = 60,
   width = 83,
-  units = &quot;mm&quot;
+  units = &quot;mm&quot;,
+  dpi = 10000000
 )</code></pre>
 <div class="caption">
 <p>Phosphorylated Poll II ChIP in miR34a asRNA over-expressing PC3 stable cell lines compared to their respective mock control. The points represent the values obtained from each independant experiment (n = 4) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.</p>
