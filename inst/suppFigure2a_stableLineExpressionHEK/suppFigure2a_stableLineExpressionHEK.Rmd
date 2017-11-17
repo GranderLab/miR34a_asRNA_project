@@ -219,6 +219,14 @@ p <- ggplot(data = NULL)+
     show.legend = TRUE
   ) +
   facet_grid(. ~ `Cell line`, scales = "free") +
+  labs(
+    x = "Cell line",
+    y = "log2(Fold)",
+    title = "miR34a asRNA"
+  ) +
+  guides(fill = FALSE)
+
+markdown <- p +
   geom_point(
     data = stats,
     aes(
@@ -239,16 +247,44 @@ p <- ggplot(data = NULL)+
     ),
     colour = "gray20",
     show.legend = FALSE
-  ) +
-  labs(
-    x = "Cell line",
-    y = "log2(Fold)",
-    title = "miR34a asRNA"
-  ) +
-  guides(fill = FALSE)
+  )
 
 plotRmarkdown(p)
 
+pdf <- p +
+  geom_point(
+    data = stats,
+    aes(
+      x = Condition, 
+      y = mean
+    ),
+    colour = "grey20",
+    show.legend = FALSE,
+    shape = 95
+  ) +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = Condition, 
+      ymin = CI95l, 
+      ymax = CI95h
+    ),
+    colour = "gray20",
+    size = 0.1,
+    show.legend = FALSE
+  )
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2a_stableLineExpressionHEK/suppFigure2a_stableLineExpressionHEK.pdf"
+
+ggsave(
+ plot = figure,
+ filename = path,
+ device = cairo_pdf,
+ height = 60,
+ width = 83,
+ units = "mm"
+)
 ```
 
 <div class="caption">

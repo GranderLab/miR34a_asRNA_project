@@ -179,10 +179,7 @@ p <- ggplot(data = NULL) +
   ) +
   facet_grid(. ~ GOI) +
   scale_y_continuous("\u0394\u0394Ct", breaks = c(-1,0,1,2,3,4,5))+
-  labs(x = "Treatment") +
-  guides(
-    fill = guide_legend(title = "Cell line", override.aes = list(size = 6))
-  )
+  labs(x = "Treatment")
 
 markdown <- p + 
   geom_point(
@@ -216,7 +213,13 @@ markdown <- p +
     aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
     colour="grey43",
     show.legend = FALSE
-  ) 
+  )  +
+  guides(
+    fill = guide_legend(
+      title = "Cell line", 
+      override.aes = list(size = 6)
+    )
+  )
 
 plotRmarkdown(markdown)
 
@@ -253,7 +256,13 @@ pdf <- p +
     colour="grey43",
     size = 0.1,
     show.legend = FALSE
-  ) 
+  )   +
+  guides(
+    fill = guide_legend(
+      title = "Cell line", 
+      override.aes = list(size = 4)
+    )
+  )
 
 figure <- plotPDF(pdf)
 path <- "~/GitHub/miR34a_asRNA_project/inst/figure2a_HCT116p53null/figure2a_HCT116p53null.pdf"

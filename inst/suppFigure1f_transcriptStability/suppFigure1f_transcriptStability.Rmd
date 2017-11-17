@@ -136,7 +136,12 @@ p <- ggplot(data = NULL)+
     x = "Treatment (hours)",
     title = "miR34a asRNA and HG stability"
   ) +
-  guides(color = guide_legend(title = "Gene", override.aes = list(size = 3)))
+  guides(
+    color = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 3)
+    )
+  )
 
 markdown <- p +
   geom_point(
@@ -221,14 +226,14 @@ pdf <- p +
 figure <- plotPDF(pdf)
 path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure1f_transcriptStability/suppFigure1f_transcriptStability.pdf"
 
-#ggsave(
-#  plot = figure, 
-#  filename = path, 
-#  device = cairo_pdf, 
-#  height = 60,
-#  width = 83,
-#  units = "mm"
-#)
+ggsave(
+ plot = figure,
+ filename = path,
+ device = cairo_pdf,
+ height = 60,
+ width = 83,
+ units = "mm"
+)
 ```
 
 <div class="caption">

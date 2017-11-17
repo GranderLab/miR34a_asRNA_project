@@ -479,10 +479,7 @@ vl &lt;- stats %&gt;%
     space = &quot;free&quot;
   ) +
   scale_y_continuous(&quot;\u0394\u0394Ct&quot;)+
-  labs(x = &quot;Cell line&quot;) +
-  guides(
-    fill = guide_legend(title = &quot;Gene&quot;, override.aes = list(size = 6))
-  )
+  labs(x = &quot;Cell line&quot;)
 
 markdown &lt;- p +
   geom_linerange(
@@ -537,6 +534,12 @@ markdown &lt;- p +
     ),
     colour = &quot;grey43&quot;,
     show.legend = FALSE
+  ) +
+  guides(
+    fill = guide_legend(
+      title = &quot;Gene&quot;, 
+      override.aes = list(size = 6)
+    )
   )
 
 plotRmarkdown(markdown)</code></pre>
@@ -595,6 +598,12 @@ plotRmarkdown(markdown)</code></pre>
     colour = &quot;grey43&quot;,
     size = 0.1,
     show.legend = FALSE
+  ) +
+  guides(
+    fill = guide_legend(
+      title = &quot;Gene&quot;, 
+      override.aes = list(size = 4)
+    )
   )
 
 figure &lt;- plotPDF(pdf)

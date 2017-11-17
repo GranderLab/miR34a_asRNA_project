@@ -293,10 +293,7 @@ p <- ggplot(data = NULL) +
     space = "free"
   ) +
   scale_y_continuous("\u0394\u0394Ct")+
-  labs(x = "Cell line") +
-  guides(
-    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
-  )
+  labs(x = "Cell line")
 
 markdown <- p +
   geom_linerange(
@@ -351,6 +348,12 @@ markdown <- p +
     ),
     colour = "grey43",
     show.legend = FALSE
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 6)
+    )
   )
 
 plotRmarkdown(markdown)
@@ -409,19 +412,25 @@ pdf <- p +
     colour = "grey43",
     size = 0.1,
     show.legend = FALSE
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 4)
+    )
   )
 
 figure <- plotPDF(pdf)
 path <- "~/GitHub/miR34a_asRNA_project/inst/figure3a_stableLineExpression/figure3a_stableLineExpression.pdf"
 
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 83,
-#    units = "mm"
-# )
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 83,
+   units = "mm"
+)
 ```
 
 <div class="caption">

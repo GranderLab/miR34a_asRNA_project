@@ -178,7 +178,10 @@ markdown <- p +
     show.legend = TRUE
   ) + 
   guides(
-    colour = guide_legend(title = "Cell line", override.aes = list(size = 3))
+    colour = guide_legend(
+      title = "Cell line", 
+      override.aes = list(size = 3)
+    )
   )
 
 plotRmarkdown(markdown)
@@ -209,20 +212,23 @@ pdf <- p +
     show.legend = TRUE
   ) + 
   guides(
-    colour = guide_legend(title = "Cell line", override.aes = list(size = 2))
+    colour = guide_legend(
+      title = "Cell line", 
+      override.aes = list(size = 2)
+    )
   )
 
 figure <- plotPDF(pdf)
-
 path <- "~/GitHub/miR34a_asRNA_project/inst/figure3c_stableLineGrowthStarvation/figure3c_stableLineGrowthStarvation.pdf"
-# ggsave(
-#   plot = figure,
-#   filename = path,
-#   device = cairo_pdf,
-#   height = 60,
-#   width = 83,
-#   units = "mm"
-# )
+
+ggsave(
+  plot = figure,
+  filename = path,
+  device = cairo_pdf,
+  height = 60,
+  width = 83,
+  units = "mm"
+)
 ```
 
 <div class="caption">

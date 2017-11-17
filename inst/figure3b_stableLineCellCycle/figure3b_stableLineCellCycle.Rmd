@@ -159,9 +159,6 @@ p <- ggplot(data = NULL) +
     x = "Cell cycle phase",
     y = "",
     title = "Cell cycle"
-  ) +
-  guides(
-    fill = guide_legend(title = "Condition", override.aes = list(size = 6))
   )
 
 markdown <- p +
@@ -214,7 +211,14 @@ markdown <- p +
     fill = "white",
     size = 3,
     family = "Arial Unicode MS"
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Condition", 
+      override.aes = list(size = 6)
+    )
   )
+
 plotRmarkdown(markdown)
 
 pdf <- p +
@@ -268,18 +272,25 @@ pdf <- p +
     fill = "white",
     size = 2,
     family = "Arial Unicode MS"
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Condition", 
+      override.aes = list(size = 4)
+    )
   )
+
 figure <- plotPDF(pdf)
 path <- "~/GitHub/miR34a_asRNA_project/inst/figure3b_stableLineCellCycle/figure3b_stableLineCellCycle.pdf"
 
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 83,
-#    units = "mm"
-# )
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 83,
+   units = "mm"
+)
 ```
 
 <div class="caption">

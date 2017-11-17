@@ -264,7 +264,10 @@ markdown <- p +
     family = "Arial Unicode MS"
   ) +
   guides(
-    fill = guide_legend(title = "Gene", override.aes = list(size = 6))
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 6)
+    )
   )
 
 plotRmarkdown(markdown)
@@ -319,14 +322,14 @@ pdf <- p +
 figure <- plotPDF(pdf)
 path <- "~/GitHub/miR34a_asRNA_project/inst/figure2e_P1shRNAdox/figure2e_P1shRNAdox.pdf"
 
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 83,
-#    units = "mm"
-# )
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 83,
+   units = "mm"
+)
 ```
 
 <div class="caption">
