@@ -1,11 +1,11 @@
 
-##Installation
+## Installation
 
 1. Install [docker](https://www.docker.com) on your local computer.
 2. Open R and install the R [devtools](https://github.com/hadley/devtools) package (if it is not already installed) with `install.packages('devtools')`.
 3. Download and install the miR34AasRNAproject package by entering `install_github('GranderLab/miR34a_asRNA_project')`.
 
-##Usage
+## Usage
 
 1. Load the package with `library(miR34AasRNAproject)`.
 2. There is only one function that you need in the package which is called `plotFigure`. The command does three things:
@@ -14,10 +14,10 @@
   - Opens the resulting .html document in your web browser, allowing you to see the supplementary methods, code used to perform the analysis, and the resulting figure.
 3. The `plotFigure` function only takes one argument which is a character vector of length one specifying which figure to recreate. For example, to recreate figure 1a, in R we would type `plotFigure('figure1a')`. Supplementary figures are abbreviated with the following syntax `plotFigure('suppFigure1a')`.
 
-##Comments, Bugs, Suggestions
+## Comments, Bugs, Suggestions
 We are more than happy to help you with any questions you might have or hear your suggestions. Please submit these via the repositories *issues* section. 
 
-##Advanced usage
+## Advanced usage
 For more advanced examination of the code, a brief description of the package's structure follows and serves as a roadmap which, hopefully, will aid in navigation of the package contents:
 
 1. Raw data is included in the "data-raw" directory. For each .txt file, containing the raw data, there is a corresponding section in the saveRDA.R file. The saveRDA.R file loads and performs any preprocessing of the raw data and subsequently saves the processed data in the "data" directory as a .rds file, with name corresponding to the name of the .txt file. 
