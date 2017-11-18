@@ -359,19 +359,20 @@ plotRmarkdown(markdown)</code></pre>
     label.padding = unit(0.01, &quot;lines&quot;),
     show.legend = FALSE,
     fill = &quot;white&quot;,
-    size = 2,
+    size = 1.5,
     family = &quot;Arial Unicode MS&quot;
   )
 
 figure &lt;- plotPDF(pdf)
 path &lt;- &quot;~/GitHub/miR34a_asRNA_project/inst/suppFigure2b_stableLineCCND1exp/suppFigure2b_stableLineCCND1exp.pdf&quot;
+
 ggsave(
-  plot = figure, 
-  filename = path, 
-  device = cairo_pdf, 
-  height = 60,
-  width = 83,
-  units = &quot;mm&quot;
+ plot = figure,
+ filename = path,
+ device = cairo_pdf,
+ height = 60,
+ width = 43,
+ units = &quot;mm&quot;
 )</code></pre>
 <div class="caption">
 <p>Q-PCR showing cyclin D1 levels in PC3 miR34a asRNA over-expressing stable lines. The points represent the values obtained from each independant experiment (n = 6) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.</p>

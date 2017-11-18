@@ -270,7 +270,7 @@ pdf <- p +
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 2,
+    size = 1.5,
     family = "Arial Unicode MS"
   ) +
   guides(

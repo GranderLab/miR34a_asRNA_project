@@ -142,6 +142,18 @@ stats <- data %>%
     TRUE ~ pFormat
   ))
 
+#prepare for plotting
+data <- data %>%
+  mutate(
+    condition = gsub("PC3 miR34a asRNA", "PC3 miR34a\nasRNA", condition),
+    condition = parse_factor(condition, levels = c("PC3 mock", "PC3 miR34a\nasRNA"))
+  )
+
+stats <- stats %>%
+  mutate(
+    condition = gsub("PC3 miR34a asRNA", "PC3 miR34a\nasRNA", condition),
+    condition = parse_factor(condition, levels = c("PC3 mock", "PC3 miR34a\nasRNA"))
+  )
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
@@ -200,7 +212,7 @@ markdown <- p +
     show.legend = FALSE
   ) +
   geom_segment(
-    data = filter(stats, condition == "PC3 miR34a asRNA"),
+    data = filter(stats, condition == "PC3 miR34a\nasRNA"),
     aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
     colour = "grey43"
   ) +
@@ -233,7 +245,7 @@ pdf <- p +
     show.legend = FALSE
   ) +
   geom_segment(
-    data = filter(stats, condition == "PC3 miR34a asRNA"),
+    data = filter(stats, condition == "PC3 miR34a\nasRNA"),
     aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
     colour = "grey43",
     size = 0.1
@@ -245,7 +257,7 @@ pdf <- p +
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 2,
+    size = 1.5,
     family = "Arial Unicode MS"
   )
 
@@ -257,7 +269,7 @@ ggsave(
   filename = path,
   device = cairo_pdf,
   height = 60,
-  width = 83,
+  width = 43,
   units = "mm",
   dpi = 10000000
 )

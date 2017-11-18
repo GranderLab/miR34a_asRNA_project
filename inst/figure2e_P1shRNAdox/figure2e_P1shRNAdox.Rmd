@@ -311,7 +311,7 @@ pdf <- p +
     show.legend = FALSE,
     position = position_dodge(width = 0.9),
     fill = "white",
-    size = 1,
+    size = 1.5,
     family = "Arial Unicode MS"
   ) +
   guides(fill = guide_legend(

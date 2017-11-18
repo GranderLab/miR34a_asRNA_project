@@ -257,7 +257,12 @@ stats &lt;- data %&gt;%
     x = &quot;Treatment (hours)&quot;,
     title = &quot;miR34a asRNA and HG stability&quot;
   ) +
-  guides(color = guide_legend(title = &quot;Gene&quot;, override.aes = list(size = 3)))
+  guides(
+    color = guide_legend(
+      title = &quot;Gene&quot;, 
+      override.aes = list(size = 3)
+    )
+  )
 
 markdown &lt;- p +
   geom_point(
@@ -343,12 +348,12 @@ figure &lt;- plotPDF(pdf)
 path &lt;- &quot;~/GitHub/miR34a_asRNA_project/inst/suppFigure1f_transcriptStability/suppFigure1f_transcriptStability.pdf&quot;
 
 ggsave(
-  plot = figure, 
-  filename = path, 
-  device = cairo_pdf, 
-  height = 60,
-  width = 83,
-  units = &quot;mm&quot;
+ plot = figure,
+ filename = path,
+ device = cairo_pdf,
+ height = 60,
+ width = 83,
+ units = &quot;mm&quot;
 )</code></pre>
 <div class="caption">
 <p>Q-PCR showing miR34a asRNA and miR34a HG levels in U2OS cells after treatment with 10nM actinomycin D. The points represent the values obtained from each independant experiment (n = 2). 95% confidence interval (vertical black lines) and mean (horizontal black lines) are also shown.</p>

@@ -304,5 +304,28 @@ read_tsv('./data-raw/suppFigure2e_lnc34aSplJnc.txt') %>%
   ) %>%
   write_rds(., path = './data/suppFigure2e_lnc34aSplJnc.rds')
 
+#HEK293t P1
+read_tsv('./data-raw/suppFigure2a_HEK293tP1.txt') %>%
+  rename(`Biological Replicate` = experiment) %>%
+  mutate(
+    shRNA = gsub("shCrtl", "shCtrl", shRNA),
+    shRNA = gsub("shRenilla1.1", "shRenilla 1.1", shRNA),
+    shRNA = gsub("shRenilla2.1", "shRenilla 2.1", shRNA),
+    shRNA = gsub("shRenillaPool", "shRenilla pool", shRNA),
+    gene = gsub("B-actin", "Actin", gene)
+  ) %>%
+  mutate(
+    shRNA = parse_factor(
+      shRNA,
+      levels = c("shCtrl", "shRenilla 1.1", "shRenilla 2.1", "shRenilla pool")
+    ),
+    gene = parse_factor(
+      gene,
+      levels = c("Renilla", "Luciferase", "Actin")
+    )
+  ) %>%
+  write_rds(., path = './data/suppFigure2a_HEK293tP1.rds')
+
+
 
 #source('./data-raw/saveRDA.R')
