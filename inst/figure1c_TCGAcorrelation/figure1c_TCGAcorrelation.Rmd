@@ -64,7 +64,7 @@ Insert code here from Erik and write Intro Methods etc
 
 ```{r, out.width = "1000px"}
 
-url <- "figure1c_TCGAcorrelation/miR34a_RP3-510D11.2_diploid_only_edited.png"
+url <- "figure1c_TCGAcorrelation/figure1c_TCGAcorrelation.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
