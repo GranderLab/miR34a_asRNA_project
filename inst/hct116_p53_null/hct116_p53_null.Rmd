@@ -170,7 +170,7 @@ p <- ggplot(data = NULL) +
     aes(x = Treatment, y = log2fold, fill = Condition),
     colour = NA,
     binwidth = 1/10,
-    alpha = 0.5,
+    #alpha = 0.5,
     position = position_dodge(width = 0.9), 
     binaxis='y', 
     stackdir='center',

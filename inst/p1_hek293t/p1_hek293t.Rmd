@@ -179,7 +179,7 @@ p <- ggplot(data = NULL) +
   ) +
   facet_grid(. ~ belongsTo) +
   scale_y_continuous("\u0394\u0394Ct")+
-  labs(x = "Cell line")
+  labs(x = "shRNA")
 
 plotRmarkdown(p) +
   theme(
