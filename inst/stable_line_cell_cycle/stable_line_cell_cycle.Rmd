@@ -61,9 +61,7 @@ All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RP
 <br></br>
 
 _Analysis_
-Write the software used to quantify the cell cycle phases.
-
-Percentages were converted to log2 fractions for each sample. Student's t-test was used for statistical analysis comparing the mock vs miR34a asRNA overespression conditions using five (PC3) or three (Skov3) independant experiments. 
+The cell cycle phases ModFit software (Verity Software House) was used to quantify the percentage of cells in each cell cycle phase. Percentages were converted to log2 fractions for each sample. Student's t-test was used for statistical analysis comparing the mock vs miR34a asRNA overespression conditions using five (PC3) or three (Skov3) independant experiments. 
 
 ####_Results_
 
