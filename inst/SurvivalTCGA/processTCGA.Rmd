@@ -36,9 +36,11 @@ inCommon <- Reduce(intersect, genes)
   
 #subset expression list to only include in common genes
 cpmFiltered <- lapply(cpm, function(x) as.data.frame(x[rownames(x) %in% inCommon, ]))
+rm(cpm)
 
 #bind list
-cpmMat <- as.matrix(bind_cols(cpmFiltered))
+cpmMat <- as.matrix(dplyr::bind_cols(cpmFiltered))
+rm(cpmFiltered)
 
 #select highly variable genes
 RowVar <- function(x) {
