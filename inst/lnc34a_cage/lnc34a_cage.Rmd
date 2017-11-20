@@ -281,16 +281,15 @@ g <- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = "last")
 g <- resize_heights(g, unit(c(6, 1, 1), "null"))
 #grid.draw(g)
 
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2d"][[1]])
-
-ggsave(
-  plot = g, 
-  filename = path, 
-  device = cairo_pdf, 
-  height = 60,
-  width = 83,
-  units = "mm"
-)
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2d"][[1]])
+# ggsave(
+#   plot = g, 
+#   filename = path, 
+#   device = cairo_pdf, 
+#   height = 60,
+#   width = 83,
+#   units = "mm"
+# )
 ```
 
 <div class="caption">

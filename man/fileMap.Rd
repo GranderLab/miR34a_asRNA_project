@@ -9,7 +9,7 @@ fileMap(type)
 }
 \arguments{
 \item{type, }{character; The type of source file to map. Can be Rmd, pdf, or
-rds.}
+rds, txt, or png.}
 }
 \value{
 list.

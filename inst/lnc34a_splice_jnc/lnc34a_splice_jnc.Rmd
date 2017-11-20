@@ -246,17 +246,15 @@ grobz <- lapply(list(p1, p2), ggplotGrob)
 g <- rbind(grobz[[2]], grobz[[1]], size = "last")
 g <- resize_heights(g, unit(c(6, 1), "null"))
 
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2e"][[1]])
-
-ggsave(
-  plot = g, 
-  filename = path, 
-  device = cairo_pdf, 
-  height = 60,
-  width = 83,
-  units = "mm"
-)
-
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2e"][[1]])
+# ggsave(
+#   plot = g, 
+#   filename = path, 
+#   device = cairo_pdf, 
+#   height = 60,
+#   width = 83,
+#   units = "mm"
+# )
 ```
 
 <div class="caption">

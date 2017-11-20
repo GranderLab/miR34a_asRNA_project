@@ -262,17 +262,17 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3d"][[1]])
 
-ggsave(
-  plot = figure,
-  filename = path,
-  device = cairo_pdf,
-  height = 60,
-  width = 43,
-  units = "mm",
-  dpi = 10000000
-)
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3d"][[1]])
+# ggsave(
+#   plot = figure,
+#   filename = path,
+#   device = cairo_pdf,
+#   height = 60,
+#   width = 43,
+#   units = "mm",
+#   dpi = 10000000
+# )
 ```
 
 <div class="caption">
