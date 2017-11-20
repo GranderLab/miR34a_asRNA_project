@@ -352,6 +352,28 @@ read_tsv('./data-raw/coding_potential_cpc.txt') %>%
 
 #tcga_correlation_table
 read_tsv('./data-raw/tcga_correlation_table.txt') %>%
+  rename(
+    r_total = r,
+    p_value_total = p,
+    p_value_mutated = p_mutated,
+    p_value_nonmut = p_nonmut
+  ) %>%
+  mutate(
+    r_total = gsub(",", ".", r_total),
+    p_value_total = gsub(",", ".", p_value_total),
+    r_mutated = gsub(",", ".", r_mutated),
+    p_value_mutated = gsub(",", ".", p_value_mutated),
+    r_nonmut = gsub(",", ".", r_nonmut),
+    p_value_nonmut = gsub(",", ".", p_value_nonmut)
+  ) %>%
+  mutate(
+    r_total = as.numeric(r_total),
+    p_value_total = as.numeric(p_value_total),
+    r_mutated = as.numeric(r_mutated),
+    p_value_mutated = as.numeric(p_value_mutated),
+    r_nonmut = as.numeric(r_nonmut),
+    p_value_nonmut = as.numeric(p_value_nonmut)
+  ) %>%
   write_rds(., path = './data/tcga_correlation_table.rds')
 
 
