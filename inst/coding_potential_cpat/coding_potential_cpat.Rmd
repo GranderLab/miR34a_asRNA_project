@@ -39,7 +39,7 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
 dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
 
 ```
@@ -62,7 +62,9 @@ _Coding Potential Assesment Tool_
 
 ```{r}
 
-url <- "figure1f_codingPotentialCPAT/results.txt"
+#url <- "figure1f_codingPotentialCPAT/results.txt"
+url <- fileMap(type = "png")["figure1f"][[1]]
+
 cpat <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
 cpat
 

@@ -24,13 +24,14 @@ vignette: >
 ```{r, echo = FALSE, message = FALSE}
 
 packages <- c(
-    "tidyverse",
-    "printr",
-    "ggthemes",
-    "readr",
-    "miR34AasRNAproject",
-    "grid",
-    "gtable"
+  "tidyverse",
+  "printr",
+  "ggthemes",
+  "readr",
+  "miR34AasRNAproject",
+  "grid",
+  "gtable",
+  "grDevices"
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
@@ -39,7 +40,7 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
 dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
@@ -147,7 +148,7 @@ p <- ggplot(data = NULL) +
 plotRmarkdown(p)
 
 figure <- plotPDF(p)
-path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure1e_cellularLocalization/suppFigure1e_cellularLocalization.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure1e"][[1]])
 
 ggsave(
  plot = figure,
