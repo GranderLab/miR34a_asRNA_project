@@ -60,7 +60,7 @@ The USCS genome browser was utilized for the bioinformatic evaluation of antisen
 
 ```{r, out.width = "850px"}
 
-url <- "mir34a_locus/mir34a_locus_hg38.png"
+url <- fileMap(type = "png")["figure1a"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

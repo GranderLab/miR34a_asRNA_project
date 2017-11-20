@@ -39,7 +39,7 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
 dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
 
 ```
