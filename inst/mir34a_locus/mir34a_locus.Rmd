@@ -39,7 +39,7 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
 dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
 
 ```
@@ -60,7 +60,7 @@ The USCS genome browser was utilized for the bioinformatic evaluation of antisen
 
 ```{r, out.width = "850px"}
 
-url <- "figure1a_miR34aLocus/miR34aLocus_hg38.png"
+url <- "mir34a_locus/mir34a_locus_hg38.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

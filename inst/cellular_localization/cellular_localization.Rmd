@@ -40,7 +40,7 @@ rm(packages)
 ```{r}
 
 projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -104,7 +104,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "suppFigure1e_cellularLocalization.rds"
+url <- fileMap(type = "rds")["suppFigure1e"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct

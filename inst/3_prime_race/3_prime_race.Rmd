@@ -83,7 +83,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "figure1d_3primeRACE/results_hg38.png"
+url <- fileMap(type = "png")["figure1d"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
