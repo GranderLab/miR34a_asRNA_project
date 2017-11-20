@@ -7,7 +7,7 @@
 #' @rdname fileMap
 #' @aliases fileMap
 #' @param type, character; The type of source file to map. Can be Rmd, pdf, or
-#'    rds, or png.
+#'    rds, txt, or png.
 #' @return list.
 #' @author Jason T. Serviss
 #' @examples
@@ -57,6 +57,11 @@ fileMap <- function(type) {
     base <- lapply(pList, basename)
     dir <- lapply(base, function(x) file.path("data", x))
     ext <- lapply(dir, function(x) gsub("\\.Rmd$", "\\.rds", x))
+    return(ext)
+  } else if(type == "txt") {
+    base <- lapply(pList, basename)
+    dir <- lapply(base, function(x) file.path("data-raw", x))
+    ext <- lapply(dir, function(x) gsub("\\.Rmd$", "\\.txt", x))
     return(ext)
   } else if(type == "pdf") {
     ext <- lapply(pList, function(x) gsub("\\.Rmd$", "\\.pdf", x))

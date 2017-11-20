@@ -342,6 +342,9 @@ read_tsv('./data-raw/p1_hek293t.txt') %>%
   ) %>%
   write_rds(., path = './data/p1_hek293t.rds')
 
+#coding_potential_cpat
+read_tsv('./data-raw/coding_potential_cpat.txt') %>%
+  write_rds(., path = './data/coding_potential_cpat.rds')
 
 
 #source('./data-raw/saveRDS.R')
