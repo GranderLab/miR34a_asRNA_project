@@ -50,6 +50,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 url <- fileMap(type = "rds")["suppFigure1a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+data
 
 ```
 
