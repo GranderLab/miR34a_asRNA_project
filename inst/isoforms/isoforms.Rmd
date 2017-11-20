@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -90,7 +90,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "suppFigure1d_isoforms/isoforms.png"
+url <- fileMap(type = "png")["suppFigure1d"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

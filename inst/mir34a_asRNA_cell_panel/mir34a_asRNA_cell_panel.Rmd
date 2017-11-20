@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -92,7 +92,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "figure1b_miR34aASExpressionCellPanel/cellPanelLarge.png"
+url <- fileMap(type = "png")["figure1b"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

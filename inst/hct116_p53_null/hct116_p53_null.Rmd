@@ -41,8 +41,8 @@ library(grDevices)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -102,7 +102,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "figure2a_HCT116p53null.rds"
+url <- fileMap(type = "rds")["figure2a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -265,7 +265,7 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/figure2a_HCT116p53null/figure2a_HCT116p53null.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2a"][[1]])
 
 ggsave(
  plot = figure,

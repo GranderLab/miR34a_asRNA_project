@@ -39,15 +39,15 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
 ```{r}
 
-url <- "suppFigure1g_codingPotentialCPC/results.txt"
-cpat <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
+url <- fileMap(type = "rds")["suppFigure1g"][[1]]
+cpat <- read_rds(url(file.path(dataUrl, url)))
 cpat
 
 ```

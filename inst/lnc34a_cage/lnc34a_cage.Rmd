@@ -21,6 +21,7 @@ vignette: >
 </style>
 
 ```{r, message = FALSE}
+
 packages <- c(
     "tidyverse",
     "grid",
@@ -30,6 +31,14 @@ packages <- c(
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
 ```
 
 ####Introduction
@@ -41,8 +50,9 @@ rm(packages)
 
 ```{r}
 nrCellLinesDown <- function() {
-  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data-raw"
-  url <- "suppFigure2d_lnc34aCage.txt"
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "txt")["suppFigure2d"][[1]]
+
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(14) %>% 
     gsub(
@@ -55,8 +65,9 @@ nrCellLinesDown <- function() {
 }
 
 cellLinesInFinal <- function() {
-  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
-  url <- "suppFigure2d_lnc34aCage.rds"
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "rds")["suppFigure2d"][[1]]
+
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(filename) %>%
     gsub(
@@ -68,7 +79,7 @@ cellLinesInFinal <- function() {
 }
 ```
 
-All available CAGE data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a CAGE" in the data-raw/saveRDA.R file. Of these `r cellLinesInFinal() %>% length()` cell lines had CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200). These cell lines included: `r cellLinesInFinal()`. All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads at in the specified interval.
+All available CAGE data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a CAGE" in the data-raw/saveRDS.R file. Of these `r cellLinesInFinal() %>% length()` cell lines had CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200). These cell lines included: `r cellLinesInFinal()`. All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads at in the specified interval.
 
 <br></br>
 
@@ -100,8 +111,7 @@ pw <- tibble(
   stop = c(9242303, 9242192, 9242058, 9241967, 9241861, 9241757)
 )
 
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
-url <- "suppFigure2d_lnc34aCage.rds"
+url <- fileMap(type = "rds")["suppFigure2d"][[1]]
 cage <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     arrange(desc(level)) %>%
     mutate(
@@ -271,7 +281,8 @@ g <- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = "last")
 g <- resize_heights(g, unit(c(6, 1, 1), "null"))
 #grid.draw(g)
 
-path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2d_lnc34aCage/suppFigure2d_lnc34aCage.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2d"][[1]])
+
 ggsave(
   plot = g, 
   filename = path, 

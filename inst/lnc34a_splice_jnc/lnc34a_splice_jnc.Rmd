@@ -21,6 +21,7 @@ vignette: >
 </style>
 
 ```{r, echo = FALSE, message = FALSE}
+
 packages <- c(
     "tidyverse",
     "grid",
@@ -29,6 +30,14 @@ packages <- c(
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
 ```
 
 ####Introduction
@@ -41,8 +50,9 @@ rm(packages)
 
 ```{r}
 nrCellLinesDown <- function() {
-  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data-raw"
-  url <- "suppFigure2e_lnc34aSplJnc.txt"
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "txt")["suppFigure2e"][[1]]
+
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(16) %>% 
     gsub(
@@ -55,8 +65,9 @@ nrCellLinesDown <- function() {
 }
 
 cellLinesInFinal <- function() {
-  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
-  url <- "suppFigure2e_lnc34aSplJnc.rds"
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "rds")["suppFigure2e"][[1]]
+
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(filename) %>%
     gsub(
@@ -68,7 +79,7 @@ cellLinesInFinal <- function() {
 }
 ```
 
-All available splice junction data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDA.R file. Of these cell lines `r cellLinesInFinal() %>% length()` cell lines had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each.
+All available splice junction data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines `r cellLinesInFinal() %>% length()` cell lines had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each.
 
 <br></br>
 
@@ -95,8 +106,7 @@ data <- tibble(
 )
 
 #splice junctions
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
-url <- "suppFigure2e_lnc34aSplJnc.rds"
+url <- fileMap(type = "rds")["suppFigure2e"][[1]]
 splJnc <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 splJnc <- splJnc %>%
@@ -236,7 +246,8 @@ grobz <- lapply(list(p1, p2), ggplotGrob)
 g <- rbind(grobz[[2]], grobz[[1]], size = "last")
 g <- resize_heights(g, unit(c(6, 1), "null"))
 
-path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2e_lnc34aSplJnc/suppFigure2e_lnc34aSplJnc.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2e"][[1]])
+
 ggsave(
   plot = g, 
   filename = path, 
