@@ -55,7 +55,7 @@ We utilized the P1 construct where the overlapping region of miR34a HG and miR34
 
 <br></br>
 
-#####_Constructs_
+_Constructs_
 ```{r}
 p1 <- data.frame(
     name="p1",
@@ -71,7 +71,7 @@ p1
 
 <br></br>
 
-#####_shRNAs_
+_shRNAs_
 
 ```{r}
 shRNAs <- data.frame(
@@ -89,7 +89,7 @@ shRNAs
 
 <br></br>
 
-#####_Primers_
+_Primers_
 
 ```{r}
 primers <- data.frame(

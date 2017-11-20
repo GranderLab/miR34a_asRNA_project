@@ -226,10 +226,7 @@ primers</code></pre>
 </div>
 <div id="results" class="section level4">
 <h4><em>Results</em></h4>
-<pre class="r"><code>#url &lt;- &quot;suppFigure1f_transcriptStability.rds&quot;
-#data &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
-
-url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure1f&quot;][[1]]
+<pre class="r"><code>url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure1f&quot;][[1]]
 data &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -348,9 +345,8 @@ plotRmarkdown(markdown)</code></pre>
   )
 
 figure &lt;- plotPDF(pdf)
-#path &lt;- &quot;~/GitHub/miR34a_asRNA_project/inst/suppFigure1f_transcriptStability/suppFigure1f_transcriptStability.pdf&quot;
-path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure1f&quot;][[1]])
 
+path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure1f&quot;][[1]])
 ggsave(
  plot = figure,
  filename = path,
