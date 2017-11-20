@@ -312,10 +312,7 @@ primers</code></pre>
 </div>
 <div id="results" class="section level4">
 <h4><em>Results</em></h4>
-<pre class="r"><code>#url &lt;- &quot;suppFigure2a_stableLineExpressionHEK.rds&quot;
-#data &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
-
-url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure2a&quot;][[1]]
+<pre class="r"><code>url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3a&quot;][[1]]
 data &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove PC3 experiment 6, B-act mean Ct &gt; 30, too high.
@@ -435,9 +432,8 @@ plotRmarkdown(p)</code></pre>
   )
 
 figure &lt;- plotPDF(pdf)
-#path &lt;- &quot;~/GitHub/miR34a_asRNA_project/inst/suppFigure2a_stableLineExpressionHEK/suppFigure2a_stableLineExpressionHEK.pdf&quot;
-path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure2a&quot;][[1]])
 
+path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure3a&quot;][[1]])
 ggsave(
  plot = figure,
  filename = path,

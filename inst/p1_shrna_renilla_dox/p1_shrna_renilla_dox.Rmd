@@ -137,7 +137,7 @@ See Figure 2c for a schematic representation of the P1 construct.
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure2e"][[1]]
+url <- fileMap(type = "rds")["figure2d"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #Luciferase = miR34a HG
@@ -321,7 +321,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2e"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2d"][[1]])
 # ggsave(
 #    plot = figure,
 #    filename = path,

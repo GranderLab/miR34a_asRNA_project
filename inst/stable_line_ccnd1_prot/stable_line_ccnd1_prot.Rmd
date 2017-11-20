@@ -84,7 +84,7 @@ A resulting western blot representative of the results from the three independan
 _Quantification_
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["suppFigure2c"][[1]]
+url <- fileMap(type = "rds")["suppFigure3c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to house keeping gene
@@ -249,11 +249,11 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2c"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure3c"][[1]])
 # ggsave(
-#   plot = figure, 
-#   filename = path, 
-#   device = cairo_pdf, 
+#   plot = figure,
+#   filename = path,
+#   device = cairo_pdf,
 #   height = 60,
 #   width = 43,
 #   units = "mm"

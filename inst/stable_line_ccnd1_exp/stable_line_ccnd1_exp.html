@@ -212,10 +212,7 @@ primers</code></pre>
 </div>
 <div id="results" class="section level4">
 <h4><em>Results</em></h4>
-<pre class="r"><code>#url &lt;- &quot;suppFigure2b_stableLineCCND1exp.rds&quot;
-#data &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
-
-url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure2b&quot;][[1]]
+<pre class="r"><code>url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3b&quot;][[1]]
 data &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -367,17 +364,15 @@ plotRmarkdown(markdown)</code></pre>
   )
 
 figure &lt;- plotPDF(pdf)
-#path &lt;- &quot;~/GitHub/miR34a_asRNA_project/inst/suppFigure2b_stableLineCCND1exp/suppFigure2b_stableLineCCND1exp.pdf&quot;
-path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure2b&quot;][[1]])
 
-
+path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure3b&quot;][[1]])
 ggsave(
- plot = figure,
- filename = path,
- device = cairo_pdf,
- height = 60,
- width = 43,
- units = &quot;mm&quot;
+  plot = figure,
+  filename = path,
+   device = cairo_pdf,
+  height = 60,
+   width = 43,
+  units = &quot;mm&quot;
 )</code></pre>
 <div class="caption">
 <p>Q-PCR showing cyclin D1 levels in PC3 miR34a asRNA over-expressing stable lines. The points represent the values obtained from each independant experiment (n = 6) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.</p>

@@ -120,7 +120,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure2d"][[1]]
+url <- fileMap(type = "rds")["figure2c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 .calcP <- function(`Cell line`, gene, logValue, data) {
@@ -359,7 +359,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2d"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2c"][[1]])
 # ggsave(
 #    plot = figure,
 #    filename = path,

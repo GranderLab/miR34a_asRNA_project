@@ -161,8 +161,7 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 <h4>Methods</h4>
 <pre class="r"><code>nrCellLinesDown &lt;- function() {
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  #url &lt;- &quot;suppFigure2e_lnc34aSplJnc.txt&quot;
-  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure2e&quot;][[1]]
+  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure3e&quot;][[1]]
 
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     pull(16) %&gt;% 
@@ -177,8 +176,7 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 
 cellLinesInFinal &lt;- function() {
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  #url &lt;- &quot;suppFigure2e_lnc34aSplJnc.rds&quot;
-  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure2e&quot;][[1]]
+  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3e&quot;][[1]]
 
   read_rds(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     pull(filename) %&gt;%
@@ -214,8 +212,7 @@ data &lt;- tibble(
 )
 
 #splice junctions
-#url &lt;- &quot;suppFigure2e_lnc34aSplJnc.rds&quot;
-url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure2e&quot;][[1]]
+url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3e&quot;][[1]]
 splJnc &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 splJnc &lt;- splJnc %&gt;%
@@ -352,13 +349,11 @@ grobz &lt;- lapply(list(p1, p2), ggplotGrob)
 g &lt;- rbind(grobz[[2]], grobz[[1]], size = &quot;last&quot;)
 g &lt;- resize_heights(g, unit(c(6, 1), &quot;null&quot;))
 
-#path &lt;- &quot;~/GitHub/miR34a_asRNA_project/inst/suppFigure2e_lnc34aSplJnc/suppFigure2e_lnc34aSplJnc.pdf&quot;
-path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure2e&quot;][[1]])
-
+path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure3e&quot;][[1]])
 ggsave(
-  plot = g, 
-  filename = path, 
-  device = cairo_pdf, 
+  plot = g,
+  filename = path,
+  device = cairo_pdf,
   height = 60,
   width = 83,
   units = &quot;mm&quot;

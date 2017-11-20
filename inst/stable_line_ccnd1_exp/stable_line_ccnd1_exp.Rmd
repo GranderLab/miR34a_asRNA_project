@@ -94,7 +94,7 @@ primers
 
 ```{r, warning=FALSE, message=FALSE}
 
-url <- fileMap(type = "rds")["suppFigure2b"][[1]]
+url <- fileMap(type = "rds")["suppFigure3b"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -252,14 +252,14 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2b"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure3b"][[1]])
 # ggsave(
-#  plot = figure,
-#  filename = path,
-#  device = cairo_pdf,
-#  height = 60,
-#  width = 43,
-#  units = "mm"
+#   plot = figure,
+#   filename = path,
+#    device = cairo_pdf,
+#   height = 60,
+#    width = 43,
+#   units = "mm"
 # )
 ```
 

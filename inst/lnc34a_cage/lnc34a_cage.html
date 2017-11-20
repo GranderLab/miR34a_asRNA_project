@@ -169,7 +169,7 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 <h4>Methods</h4>
 <pre class="r"><code>nrCellLinesDown &lt;- function() {
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure2d&quot;][[1]]
+  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure3d&quot;][[1]]
 
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     pull(14) %&gt;% 
@@ -184,7 +184,7 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 
 cellLinesInFinal &lt;- function() {
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure2d&quot;][[1]]
+  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3d&quot;][[1]]
 
   read_rds(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     pull(filename) %&gt;%
@@ -195,7 +195,7 @@ cellLinesInFinal &lt;- function() {
     ) %&gt;%
     unique()
 }</code></pre>
-<p>All available CAGE data from 35 cell lines was downloaded from UCSC with the script entitled “lnc34a CAGE” in the data-raw/saveRDA.R file. Of these 28 cell lines had CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200). These cell lines included: Ag04450, Bj, Gm12878, H1hesc, Haoaf, Haoec, Hch, Hfdpc, Hmepc, Hob, Hpcpl, Hpiepc, Hsavec, Huvec, Hvmf, Hwp, Hepg2, Imr90, Mcf7, Nhdf, Nhek, Nhemfm2, Nhemm2, Sknshra, Skmc, Hmscat, Hmscbm, Hmscuc. All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads at in the specified interval.</p>
+<p>All available CAGE data from 35 cell lines was downloaded from UCSC with the script entitled “lnc34a CAGE” in the data-raw/saveRDS.R file. Of these 28 cell lines had CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200). These cell lines included: Ag04450, Bj, Gm12878, H1hesc, Haoaf, Haoec, Hch, Hfdpc, Hmepc, Hob, Hpcpl, Hpiepc, Hsavec, Huvec, Hvmf, Hwp, Hepg2, Imr90, Mcf7, Nhdf, Nhek, Nhemfm2, Nhemm2, Sknshra, Skmc, Hmscat, Hmscbm, Hmscuc. All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads at in the specified interval.</p>
 <p><br /></p>
 </div>
 <div id="results" class="section level4">
@@ -225,7 +225,7 @@ pw &lt;- tibble(
   stop = c(9242303, 9242192, 9242058, 9241967, 9241861, 9241757)
 )
 
-url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure2d&quot;][[1]]
+url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3d&quot;][[1]]
 cage &lt;- read_rds(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     arrange(desc(level)) %&gt;%
     mutate(
@@ -391,12 +391,11 @@ g &lt;- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = &quot;last&quot;)
 g &lt;- resize_heights(g, unit(c(6, 1, 1), &quot;null&quot;))
 #grid.draw(g)
 
-path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure2d&quot;][[1]])
-
+path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure3d&quot;][[1]])
 ggsave(
-  plot = g, 
-  filename = path, 
-  device = cairo_pdf, 
+  plot = g,
+  filename = path,
+  device = cairo_pdf,
   height = 60,
   width = 83,
   units = &quot;mm&quot;
