@@ -27,8 +27,6 @@ plotFigure <- function(figure, ...) {
   runDockerAndView(path)
 }
 
-####Helpers
-
 #returns the path to the figure's .rmd file
 getPath <- function(figure) {
   map <- fileMap(type = "Rmd")
