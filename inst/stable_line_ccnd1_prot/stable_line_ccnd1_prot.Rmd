@@ -76,7 +76,7 @@ knitr::include_graphics(file.path(projectUrl, url))
 ```
 
 <div class="caption">
-The resulting western blot showing the results from the three independant experiments.
+The resulting western blot showing results from the three independant experiments.
 </div>
 
 <br></br><br></br>
