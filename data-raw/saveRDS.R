@@ -350,5 +350,10 @@ read_tsv('./data-raw/coding_potential_cpat.txt') %>%
 read_tsv('./data-raw/coding_potential_cpc.txt') %>%
   write_rds(., path = './data/coding_potential_cpc.rds')
 
+#tcga_correlation_table
+read_tsv('./data-raw/tcga_correlation_table.txt') %>%
+  write_rds(., path = './data/tcga_correlation_table.rds')
+
+
 
 #source('./data-raw/saveRDS.R')
