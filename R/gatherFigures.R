@@ -1,13 +1,12 @@
 
 gatherFigures <- function() {
   bp <- "~/Github/miR34a_asRNA_project/inst"
-  rmds <- fileMap()
-  exts <- lapply(rmds, function(x) gsub("\\.Rmd$", "\\.pdf", x))
-  cmds <- lapply(1:length(exts), function(x)
+  pdfs <- fileMap(type = "pdf")
+  cmds <- lapply(1:length(pdfs), function(x)
     paste(
       "cp",
-      file.path(bp, exts[[x]]),
-      file.path(bp, "allFigures", substr(names(exts)[[x]], 1, nchar(names(exts)[[x]])-1)),
+      file.path(bp, pdfs[[x]]),
+      file.path(bp, "allFigures", substr(names(pdfs)[[x]], 1, nchar(names(pdfs)[[x]])-1)),
       sep = " "
     )
   )
