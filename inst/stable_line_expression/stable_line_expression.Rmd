@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -170,7 +170,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "figure3a_stableLineExpression.rds"
+url <- fileMap(type = "rds")["figure3a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove Skov exp 1 due to variability in technical replicates
@@ -421,7 +421,7 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/figure3a_stableLineExpression/figure3a_stableLineExpression.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3a"][[1]])
 
 ggsave(
    plot = figure,

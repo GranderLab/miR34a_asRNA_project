@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -90,7 +90,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "figure3d_stableLinePolIIChIP.rds"
+url <- fileMap(type = "rds")["figure3d"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate means of technical replicates
@@ -262,7 +262,7 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/figure3d_stableLinePolIIChIP/figure3d_stableLinePolIIChIP.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3d"][[1]])
 
 ggsave(
   plot = figure,

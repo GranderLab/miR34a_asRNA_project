@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -150,7 +150,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "suppFigure2a_stableLineExpressionHEK.rds"
+url <- fileMap(type = "rds")["suppFigure2a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove PC3 experiment 6, B-act mean Ct > 30, too high.
@@ -275,7 +275,7 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2a_stableLineExpressionHEK/suppFigure2a_stableLineExpressionHEK.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2a"][[1]])
 
 ggsave(
  plot = figure,

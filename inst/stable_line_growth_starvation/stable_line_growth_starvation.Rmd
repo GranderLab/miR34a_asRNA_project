@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -70,7 +70,7 @@ Three technical triplicates were included in each experiment and these were inde
 
 ```{r, message = FALSE}
 
-url <- "figure3c_stableLineGrowthStarvation.rds"
+url <- fileMap(type = "rds")["figure3c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to first time point for control (Mock)
@@ -219,7 +219,7 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/figure3c_stableLineGrowthStarvation/figure3c_stableLineGrowthStarvation.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3c"][[1]])
 
 ggsave(
   plot = figure,

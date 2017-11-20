@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -48,7 +48,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
 
 ```{r, out.width = "850px"}
 
-url <- "suppFigure1a_TCGAcorrelationTable/table.png"
+url <- fileMap(type = "png")["suppFigure1a"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

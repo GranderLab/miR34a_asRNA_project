@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -94,7 +94,7 @@ primers
 
 ```{r, warning=FALSE, message=FALSE}
 
-url <- "suppFigure2b_stableLineCCND1exp.rds"
+url <- fileMap(type = "rds")["suppFigure2b"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -251,7 +251,8 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2b_stableLineCCND1exp/suppFigure2b_stableLineCCND1exp.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2b"][[1]])
+
 
 ggsave(
  plot = figure,

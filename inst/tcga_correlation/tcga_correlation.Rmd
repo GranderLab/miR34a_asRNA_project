@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -64,7 +64,7 @@ Insert code here from Erik and write Intro Methods etc
 
 ```{r, out.width = "1000px"}
 
-url <- "figure1c_TCGAcorrelation/figure1c_TCGAcorrelation.png"
+url <- fileMap(type = "png")["figure1c"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

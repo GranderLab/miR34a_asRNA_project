@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -69,7 +69,10 @@ Percentages were converted to log2 fractions for each sample. Student's t-test w
 
 ```{r, message = FALSE}
 
-url <- "figure3b_stableLineCellCycle.rds"
+#url <- "figure3b_stableLineCellCycle.rds"
+#data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+url <- fileMap(type = "rds")["figure3b"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #convert the value (precent) to log2(fraction)
@@ -281,7 +284,8 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/figure3b_stableLineCellCycle/figure3b_stableLineCellCycle.pdf"
+#path <- "~/GitHub/miR34a_asRNA_project/inst/figure3b_stableLineCellCycle/figure3b_stableLineCellCycle.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3b"][[1]])
 
 ggsave(
    plot = figure,

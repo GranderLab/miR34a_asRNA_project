@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -70,7 +70,7 @@ Resulting bands on the western blots were quantified using the ImageJ software w
 _Representative experiment_
 ```{r, out.width = "500px"}
 
-url <- "suppFigure2c_stableLineCCND1prot/singleExp.png"
+url <- "stable_line_ccnd1_prot/stable_line_ccnd1_prot_singleExp.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -84,7 +84,7 @@ A resulting western blot representative of the results from the three independan
 _Quantification_
 ```{r, message = FALSE}
 
-url <- "suppFigure2c_stableLineCCND1prot.rds"
+url <- fileMap(type = "rds")["suppFigure2c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to house keeping gene
@@ -248,7 +248,8 @@ pdf <- p +
   )
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2c_stableLineCCND1prot/suppFigure2c_stableLineCCND1prot.pdf"
+
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2c"][[1]])
 ggsave(
   plot = figure, 
   filename = path, 
