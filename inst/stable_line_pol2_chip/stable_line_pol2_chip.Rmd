@@ -1,0 +1,288 @@
+---
+title: "Figure 3d"
+subtitle: "PC3 stable line pollII ChIP"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+miR34a asRNA over-expression was shown to increase the expression levels of miR34a. We investigated if this increase of miR34a was due to increased levels of transcription at the miR34a promoter.
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture, QPCR, and ChIP_
+
+All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine and Saos2 cells cultured in DMEM high modified (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 2-3x10^6 cells in a 15cm dish and incubated overnight. Cells were cross-linked in 1% formaldehyde, quenched in glycine (0.125M), resuspended in cell lysis buffer (5mM PIPES, 85mM KCL, 0.5% NP40, protease inhibitor), and sonicated (Bioruptor Sonicator Diagenode) in nucleus lysis buffer (50mM TRIS-HCL pH 8.0, 10mM EDTA, 1% SDS, protease inhibitor). The samples were incubated overnight at 4 °C with the appropriate antibody. Salmon sperm DNA/Protein A–agarose (Upstate/Millipore) was used to pull down the antibody. DNA was eluted in elution buffer (1% SDS, 100 mM NaHCO3), followed by reverse cross-linking, RNase-A and protease-K treatment. The DNA was eluted by using a Qiagen PCR purification kit. The following antibodies were used (4 μg/sample): phospho-polymerase II (abcam: ab5095). QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
+
+<br></br>
+
+_Analysis_
+
+QPCR was performed in technical replicate for each sample and the mean of the technical replicates was subsequently used to calculate the fraction of input. The fold change of the miR34a asRNA overexpression samples was then calculated by dividing the values by the values for the corresponding mock samples. The fold values were then log2 transformed and the Student's t-test was used to test for significant differences under the null hypothesis that the true mean value of log2 transformed fold changes were equal to 0.
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "miR34aChIP F1",
+        "miR34aChIP R1"
+    ),
+    sequence=c(
+       "AAA GTT TGC AAA GAA GGA GGC GGG",
+       "AGG GAA GAA AGA ACT AGC CGA GCA"
+    )
+)
+primers
+
+```
+
+<br></br>
+
+####_Results_
+
+```{r, message = FALSE}
+
+url <- "figure3d_stableLinePolIIChIP.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+#calculate means of technical replicates
+data <- mutate(data, techMean = rowMeans(select(data, Quantity1, Quantity2)))
+
+#calculate fraction of input
+.fractionOfInput <- function(data, techMean, Biological.Replicate, condition) {
+  bool1 <- data$`Biological Replicate` == Biological.Replicate
+  bool2 <- data$condition == condition
+  bool3 <- data$sample == "input"
+  bool <- bool1 & bool2 & bool3
+  techMean / pull(data, techMean)[bool]
+}
+
+data <- data %>%
+  group_by(`Biological Replicate`, condition, sample) %>%
+  mutate(fractionInput = .fractionOfInput(data, techMean, `Biological Replicate`, condition)) %>%
+  ungroup() %>%
+  filter(sample != "input")
+
+#calculate fold over mock
+.foldOverControl <- function(data, fractionInput, Biological.Replicate) {
+  bool1 <- data$`Biological Replicate` == 3
+  bool2 <- data$condition == "PC3 mock"
+  bool <- bool1 & bool2
+  fractionInput / pull(data, fractionInput)[bool]
+}
+
+data <- data %>%
+  mutate(
+    foldOverControl = .foldOverControl(data, fractionInput, `Biological Replicate`),
+    logfoldOverControl= log2(foldOverControl)
+  ) %>%
+  ungroup()
+
+#calculate stats 
+stats <- data %>%
+  group_by(condition) %>%
+  summarize(
+    n = n(),
+    mean = mean(logfoldOverControl),
+    CI95l =t.test(logfoldOverControl)$conf.int[1],
+    CI95h =t.test(logfoldOverControl)$conf.int[2],
+    pValue = t.test(logfoldOverControl, mu = 0)$p.value
+  ) %>%
+  pFormat(.) %>%
+  mutate(pFormat = case_when(
+    condition == "PC3 mock" ~ "", 
+    TRUE ~ pFormat
+  ))
+
+#prepare for plotting
+data <- data %>%
+  mutate(
+    condition = gsub("PC3 miR34a asRNA", "PC3 miR34a\nasRNA", condition),
+    condition = parse_factor(condition, levels = c("PC3 mock", "PC3 miR34a\nasRNA"))
+  )
+
+stats <- stats %>%
+  mutate(
+    condition = gsub("PC3 miR34a asRNA", "PC3 miR34a\nasRNA", condition),
+    condition = parse_factor(condition, levels = c("PC3 mock", "PC3 miR34a\nasRNA"))
+  )
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL)+
+  geom_violin(
+    data = data,
+    aes(
+      x = condition,
+      y = logfoldOverControl,
+      group = condition
+    ),
+    trim = TRUE,
+    alpha = 0.3,
+    colour = NA,
+    fill = "gray",
+    show.legend = FALSE
+  ) +
+  geom_dotplot(
+    data = data, 
+    aes(
+      x = condition, 
+      y = logfoldOverControl, 
+      fill = condition
+    ),
+    binwidth = 1/10,
+    alpha = 0.5,
+    colour = NA,
+    position = position_dodge(width = 0.9), 
+    binaxis='y', 
+    stackdir='center',
+    dotsize = 2,
+    show.legend = TRUE
+  ) +
+  scale_y_continuous("log2(Fold)") +
+  labs(
+    x = "Cell line",
+    y = "log2(Fold polII enrichment)",
+    title = "Phosphorylated Poll II ChIP"
+  ) +
+  guides(fill = FALSE)
+
+markdown <- p +
+    geom_linerange(
+    data = stats,
+    aes(x = condition, ymin = CI95l, ymax = CI95h),
+    colour = "gray20",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(x = condition, y = mean),
+    colour = "gray20",
+    shape = 95,
+    size = 6,
+    show.legend = FALSE
+  ) +
+  geom_segment(
+    data = filter(stats, condition == "PC3 miR34a\nasRNA"),
+    aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
+    colour = "grey43"
+  ) +
+  geom_label(
+    data = stats,
+    aes(x = 1.5, y = CI95h + 0.45, label = pFormat),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 5,
+    family = "Arial Unicode MS"
+  )
+
+plotRmarkdown(markdown)
+
+pdf <- p +
+    geom_linerange(
+    data = stats,
+    aes(x = condition, ymin = CI95l, ymax = CI95h),
+    colour = "gray20",
+    size = 0.1,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(x = condition, y = mean),
+    colour = "gray20",
+    shape = 95,
+    show.legend = FALSE
+  ) +
+  geom_segment(
+    data = filter(stats, condition == "PC3 miR34a\nasRNA"),
+    aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
+    colour = "grey43",
+    size = 0.1
+  ) +
+  geom_label(
+    data = stats,
+    aes(x = 1.5, y = CI95h + 0.45, label = pFormat),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 1.5,
+    family = "Arial Unicode MS"
+  )
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/figure3d_stableLinePolIIChIP/figure3d_stableLinePolIIChIP.pdf"
+
+ggsave(
+  plot = figure,
+  filename = path,
+  device = cairo_pdf,
+  height = 60,
+  width = 43,
+  units = "mm",
+  dpi = 10000000
+)
+```
+
+<div class="caption">
+Phosphorylated Poll II ChIP in miR34a asRNA over-expressing PC3 stable cell lines compared to their respective mock control. The points represent the values obtained from each independant experiment (n = 4) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
+
+<br></br>
+
+####_Conclusion_
+
+Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-expressing cell lines indicating that the regulation of miR34a by miR34a asRNA is transcriptional.
+
+<br></br><br></br>

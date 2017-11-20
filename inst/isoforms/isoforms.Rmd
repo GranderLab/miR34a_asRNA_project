@@ -1,0 +1,108 @@
+---
+title: "Supplementary figure 1d"
+subtitle: "miR34a asRNA isoform cloning"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+We investigated the propensity of miR34a asRNA to be alternatively spliced, using PCR cloning and sequencing.
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and cloning_
+
+All cell lines were cultured at 5% CO2 and 37° C with U2OS cells cultured in McCoy’s 5a (Life Technologies), . All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was performed with the specified primer sets with annealing temperature 60˚C unless otherwise indicated. PCR was run for 35 cycles for those primer sets with annealing temperature 60˚C and 40 cycles in other cases. Resulting PCR products were run on a agarose gel, gel extracted with the QIAquick gel extraction kit (Qiagen), cloned using the Strata Cloning kit (Agilent), and sequenced. The sequencing results were visualized in the UCSC genome browser.
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "F12",
+        "R1",
+        "R2",
+        "R3",
+        "Ex3R1"
+    ),
+    sequence=c(
+        "AAACACAAGCGTTTACCTGGGTGC",
+        "TTGCCTCGTGAGTCCAAGGAGAAT",
+        "ATAGGTTCATTTGCCCGATGTGCC",
+        "CCACAGCTGTTGCTTCTGAATGCT",
+        "TCAGATAGGTACCAAAAATGATGGCCGCAACTAATGACGGAT"
+    )
+)
+primers
+
+```
+
+<br></br>
+
+####_Results_
+
+```{r, out.width = "850px"}
+
+url <- "suppFigure1d_isoforms/isoforms.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+Sequencing results from the analysis of miR34a asRNA isoforms in U2OS cells. miR34a AS ref. refers to the full length transcript as defined by the 3’-RACE and primer walk assay.
+</div>
+
+<br></br>
+
+####_Conclusions_
+
+Results indicate that the miR34a asRNA transcript is post-transcriptionally spliced to form several different isoforms.
+
+<br></br><br></br>

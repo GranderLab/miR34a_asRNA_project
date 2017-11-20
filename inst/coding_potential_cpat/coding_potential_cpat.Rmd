@@ -1,0 +1,83 @@
+---
+title: "Figure 1f"
+subtitle: "miR34a asRNA coding potential via CPAT"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+We utilized a bioinformatic approach to evaluate the coding potential of the miR34a asRNA transcript. The Coding-potential assessment tool uses a linear regression model to evaluate coding-potential by examining ORF length, ORF coverage, Fickett score and hexamer score. We further confirmed these results using the Coding-potential Calculator which utilizes a support based machine-based classifier and accesses an alternate set of discriminatory features.
+
+<br></br>
+
+####_Methods_
+
+Protein-coding capacity was evaluated using the [Coding-potential Assessment Tool](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3616698/) and [Coding-potential Calculator](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1933232/) with default settings. Transcript sequences for use with Coding-potential Assessment Tool were downloaded from the UCSC genome browser using the following IDs: HOTAIR (ENST00000455246.1), XIST (ENST00000429829.1), β-actin (ENST00000331789.5), Tubulin (ENST00000427480.1), and MYC (ENST00000377970). Transcript sequences for use with Coding-potential Calculator were downloaded from the UCSC genome browser using the following IDs: HOTAIR (uc031qho.1), β-actin (uc003soq.4).
+
+<br></br>
+
+####_Results_
+
+_Coding Potential Assesment Tool_
+
+```{r}
+
+url <- "figure1f_codingPotentialCPAT/results.txt"
+cpat <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
+cpat
+
+```
+
+<div class = "caption">
+Coding potential analysis results from the Coding-potential Assessment Tool including miR34a asRNA and two characterized non-coding transcripts (HOTAIR and XIST) and 3 known coding transcripts (β-actin, tubulin, and MYC). 
+</div>
+
+*Results for Coding-potential Calculator are located in Supplementary figure 1g.
+
+<br></br>
+
+####_Conclusions_
+
+Results indicated that miR34a asRNA has a similar lack of coding capacity to the known non-coding transcripts HOTAIR and XIST and differs greatly when examining these parameters to the known coding transcripts beta-actin, tubulin, and MYC. However, to fully evaluate coding potential methods such as mass spectrometry or ribosome profiling must be used. 
+
+<br></br><br></br>

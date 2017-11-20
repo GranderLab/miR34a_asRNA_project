@@ -1,1 +1,0 @@
-Transcript name	Coding	Coding Potential Score	Hit number	Hit score	Frame score	Length	Coverage (%)	Log-Odds score	TypeHOTAIR	noncoding	-1.18735	0	0	0	319	13.43	32.91	fullmiR34a asRNA	noncoding (weak)	-0.883468	0	0	0	175	21.89	42.47	fullβ-actin	coding	13.662	250	181.3849493	34.26888959	1167	62.82	229.54	full

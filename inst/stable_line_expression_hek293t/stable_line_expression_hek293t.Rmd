@@ -1,0 +1,300 @@
+---
+title: "Supplementary Figure 2a"
+subtitle: "miR34a asRNA stable over-expression cell lines compared to HEK293t"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+miR34a asRNA over-expressing cell lines, previously generated, showed a high overexpression level of miR34a asRNA despite a low multiplicity of infection. This is most likley due to the fact that all infected cell lines have practically no endogenous miR34a asRNA expression. To investigate the physiological relevance of the over-expression the miR34a asRNA levels were compared to the expression levels in HEK293t cells, which have a high endogenous miR34a expression level.
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_miR34a asRNA cloning_
+
+RNA was harvested from U2OS cells using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was run using the miR34aAS_cloning_F4 and miR34aAS_cloning_Ex3_1 primers for 40 cycles at annealing temperature 58˚C and run on an agarose gel. Bands were excised and extracted using the QIAquick gel extraction kit (Qiagen). PCR products were cloned using the Strata Clone kit (Aligent) and sequenced (results below). The insert for the lentiviral construct (p-HIV-I2AG-U6) was subsequently sub-cloned from the sequenced plasmid using primers with PacI and NheI cleavage sites. The cloned transcript largley mirrors the GENCODE annotated transcript.
+
+<br></br>
+
+_Cloning primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "miR34aAS_cloning_F4",
+        "miR34aAS_cloning_Ex3_1"
+    ),
+    sequence=c(
+        "ACGCGTCTCTCCAGCCCGGGAT",
+        "AATGATGGCCGCAACTAATGACGG"
+    )
+)
+primers
+
+```
+
+<br></br>
+
+_Sequencing results_
+
+```{r}
+
+construct <- data.frame(
+    name="miR34a_asRNA",
+    sequence="ACG CGT CTC TCC AGC CCG GGA TCC GGG GAG CTG GGC TGT CCC CAG ACC GAC GGG ACA GCG GCA
+                TCT CCT CCA CCT GAA AAG GAA AGA GGA CCA GTT TGC AGG ACT CCG AAC TGG GCC CGC GAG ATC 
+                TCC ACC TGC GCA AAA CGA AAG GGC GGA TTC TCC TTG GAC TCA CGA GGC AAC CGC TCC CCG GGG 
+                TGA GAA CGG GGG ACT CAT TCC TCC GGC ACT GGG AGA AGA CGA TTC TTC AGG AGG AGG ACA GGG 
+                AAG CGA ATG CTA CCC AGA TGT CTC AGT ATA CTG GCT CGC GGC ACA TCG GGC AAA TGA ACC TAT 
+                CAG ATA ACA ACG GCA GAT CAG ATG CCT GAG CAT TCA GAA GCA ACA GCT GTG GAG CCC CCG TGG 
+                GTT CAG AAG GCC TGG TTC CCG TCT CCA GAA GCC TGG CTC TCC TCC CTC CTG GGC CCA CTA CTT 
+                TGG CTT CTT GTT CCT ACG TAC AAG GAG TTG CGA AGA AGG CAA CTC TTC CCC TCC CTG AAG CCA
+                AAG GAA TGA AAC AGA CTA GGG CGG GAG AGG TGG CCA TCC GTC ATT AGT TGC GGC CAT CA"
+)
+construct
+
+```
+
+<br></br>
+
+_Lentivirus production and infection_
+
+HEK293T cells were transfected with viral and expression constructs using Lipofectamine 2000 (Life Technologies), after which viral supernatants were harvested 48 and 72 hours post-transfection. Viral particles were concentrated using PEG-IT solution (Systems Biosciences) according to the manufacturer’s recommendations. HEK293T cells were used for virus titration and GFP expression was evaluated 72hrs post-infection via flow cytometry after which TU/ml was calculated. Cell lines were subsequently infected with the lentiviral particals using a multuplicity of infection = 1. After 48 hours, cells were placed under mycophenolic acid selection and the selection process was monitored using GFP expression via flow cytometry. When GFP expression was present in >90% of the cells, cells were frozen for downstream analysis.
+
+<br></br>
+
+_QPCR_
+
+RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. QPCR for miRNA expression analysis was performed according to the protocol for the TaqMan microRNA Assay kit (Life Technologies) with primer/probe sets purchased from the same company (TaqMan® MicroRNA Assay, hsa-miR-34a, human and Control miRNA Assay, RNU48, human) and the same cycling scheme as above.
+
+<br></br>
+
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. Delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding untreated samples. Five independant experiments were performed in total for all cell lines with the exception of PC3. Six independant experiments were preformed for the PC3 cell lines although, one experiment was removed due to excessivley high ct values (>30) in the house keeping gene, indicating an insufficient amount of RNA to sucessfully detect the genes of interest.   
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a_asF1",
+        "miR34a_asR1"
+        
+    ),
+    sequence=c(
+        "AGGTCATCACCATTGGCAATGAG",
+        "CTTTCGGGATGTCCACGTCA",
+        "AGCGGCATCTCCTCCACCTGAAA",
+        "TTGCCTCGTGAGTCCAAGGAGAAT"
+        
+    )
+)
+primers
+
+```
+
+<br></br>
+
+####_Results_
+
+```{r, message = FALSE}
+
+url <- "suppFigure2a_stableLineExpressionHEK.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+#remove PC3 experiment 6, B-act mean Ct > 30, too high.
+data <- filter(data, `Biological Replicate` != 6 | `Cell line` != "PC3")
+
+#calculate dct
+groups <- c("Condition", "Biological Replicate", "Cell line", "gene")
+gois <- c("miR34a asRNA")
+
+data <- technicalMeans(data, groups) %>%
+  dct(., gois, Actin, groups)
+
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  `Cell line` = data$`Cell line` == "HEK293t",
+  Condition = data$Condition == "wt"
+)
+
+data <- data %>%
+  ddct(., logical, groups) %>%
+  folds(.)
+
+#calculate stats
+stats <- data %>%
+  group_by(`Cell line`, Condition) %>%
+  summarize(
+    n = n(),
+    mean = mean(log2fold),
+    CI95l = t.test(log2fold)$conf.int[1],
+    CI95h = t.test(log2fold)$conf.int[2]
+  )
+
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL)+
+  geom_violin(
+    data = data,
+    aes(
+      x = Condition,
+      y = log2fold
+    ),
+    scale = "width",
+    trim = TRUE,
+    alpha = 0.3,
+    color = NA,
+    fill = "gray",
+    show.legend = FALSE
+  ) +
+  geom_dotplot(
+    data = data, 
+    aes(
+      x = Condition, 
+      y = log2fold, 
+      fill = Condition
+    ),
+    colour = NA,
+    binwidth = 1/10,
+    alpha = 0.5,
+    position = position_dodge(width = 0.9), 
+    binaxis='y', 
+    stackdir='center',
+    dotsize = 4,
+    show.legend = TRUE
+  ) +
+  facet_grid(. ~ `Cell line`, scales = "free") +
+  labs(
+    x = "Cell line",
+    y = "log2(Fold)",
+    title = "miR34a asRNA"
+  ) +
+  guides(fill = FALSE)
+
+markdown <- p +
+  geom_point(
+    data = stats,
+    aes(
+      x = Condition, 
+      y = mean
+    ),
+    colour = "grey20",
+    show.legend = FALSE,
+    shape = 95,
+    size = 6
+  ) +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = Condition, 
+      ymin = CI95l, 
+      ymax = CI95h
+    ),
+    colour = "gray20",
+    show.legend = FALSE
+  )
+
+plotRmarkdown(p)
+
+pdf <- p +
+  geom_point(
+    data = stats,
+    aes(
+      x = Condition, 
+      y = mean
+    ),
+    colour = "grey20",
+    show.legend = FALSE,
+    shape = 95
+  ) +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = Condition, 
+      ymin = CI95l, 
+      ymax = CI95h
+    ),
+    colour = "gray20",
+    size = 0.1,
+    show.legend = FALSE
+  )
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2a_stableLineExpressionHEK/suppFigure2a_stableLineExpressionHEK.pdf"
+
+ggsave(
+ plot = figure,
+ filename = path,
+ device = cairo_pdf,
+ height = 60,
+ width = 130,
+ units = "mm"
+)
+```
+
+<div class="caption">
+miR34a asRNA over-expression levels in PC3, Skov3, and Saos2 stable cell lines compared to HEK293t cells. The points represent the values obtained from each independant experiment (n = 5) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines) and mean (horizontal black lines) are shown.
+</div>
+
+<br></br>
+
+####_Conclusions_
+
+Results indicate that miR34a asRNA is over-expressed 13-22 fold greater that endogenous HEK293t levels. 
+
+<br></br><br></br>

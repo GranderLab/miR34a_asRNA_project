@@ -1,0 +1,59 @@
+---
+title: "Supplementary Figure 1g"
+subtitle: "miR34a asRNA coding potential via CPC"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+```{r}
+
+url <- "suppFigure1g_codingPotentialCPC/results.txt"
+cpat <-read.table(url(file.path(projectUrl, url)), header = TRUE, sep = "\t")
+cpat
+
+```
+
+<div class = "caption">
+Analysis of coding potential of the miR34a asRNA transcript using the Coding-potential Calculator including miR34a asRNA, the characterized non-coding transcript HOTAIR, and the known coding transcript β-actin. 
+</div>
+
+<br></br>

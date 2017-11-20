@@ -1,0 +1,270 @@
+---
+title: "Supplementary Figure 2c"
+subtitle: "CCND1 protein expression in PC3 stable lines"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+
+```
+
+####_Introduction_
+
+After observing decreased mRNA levels for the miR34a target CCND1, we were interested whether this has also consequences for its protein levels. 
+
+<br></br>
+
+####_Methods_
+
+<br></br>
+
+_Cell culture and western blot_
+All cell lines were cultured at 5% CO2 and 37° C with PC3 cells in RPMI (Hyclone) and 2 mM L-glutamine. All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. We seeded three independent experiments of 150,000 cells/well in a six well plate (PC3 mock vs. PC3 miR34a AS F4) and grew them for 24 hours. Before harvesting cells were controlled for their confluency. Cells with a confluence of 60-75%, were harvested using trypsin. Cell pellets were frozen down at -80°C before lysed for Western Blot analysis. Western Blot analysis was performed following Lottes’ protocol. Cells were lysed in RIPA Buffer and run on a 4-12% Bis-Tris-SDS Gel using MOPS running buffer. Proteins were transferred onto a nitrocellulose membrane using iBlot Turbo Blotting Device. Proteins were transferred for 7 minutes. Membranes were blocked for 1 hour at room temperature in 5% milk. Membranes were incubated with a cyclin D1 antibody (92G2 Rabbit mAb, Cell Signalling) overnight at 4°C. The membrane was incubated using a goat anti-rabbit antibody conjugated to HRP for 1 hour at room temperature. Membranes were washed 3-times for 5min each in TBS-T. Membranes were developed using chemiluminescence. After the picture was taken, the membrane was stripped using 0.4M NaOH solution for 20min. Blocking step was repeated and primary antibody against GAPDH was incubated for overnight at 4°C. Consequently, the membrane was incubated using a goat anti-rabbit antibody conjugated to HRP for 1 hour at room temperature. Membranes were washed 3-times for 5min in TBS-T. Membranes were developed using chemiluminescence.
+
+<br></br>
+
+_Analysis_
+
+Resulting bands on the western blots were quantified using the ImageJ software with three parameters being measured, intensity, background, and pixel. The quantative value was derived for each band by first subtracting the background from the intensity and subsequently multiplying this value by the pixel value. The fraction of CCND1 over the house keeping gene was then calculated using each sample's values and the corresponding house keeping genes values. Fold change was then calculated by dividing the normalized CCND1 values in the miR34a asRNA overexpressing samples by the median of the corresponding mock samples. Fold change values were subsequently log2 transformed and the Student's t-test was utilized to compare mock vs. miR34a asRNA overexpressing samples using three independant experiments with the null hypothesis that the mean values were the same in each group.
+
+<br></br>
+
+####_Results_
+
+_Representative experiment_
+```{r, out.width = "500px"}
+
+url <- "suppFigure2c_stableLineCCND1prot/singleExp.png"
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class="caption">
+A resulting western blot representative of the results from the three independant experiments.
+</div>
+
+<br></br><br></br>
+
+_Quantification_
+```{r, message = FALSE}
+
+url <- "suppFigure2c_stableLineCCND1prot.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+#normalize to house keeping gene
+data <- data %>%
+  mutate(value = (Intensity - background) * pixel) %>%
+  select(-pixel, -Intensity, -background) %>%
+  spread(protein, value) %>%
+  mutate(normHK = CCND1 / GAPDH)
+
+#normalize to mock
+cnt <- filter(data, condition == "PC3 mock") %>% 
+  pull(normHK) %>% 
+  median
+
+data <- mutate(data, log2fold = log2(normHK / cnt))
+  
+#calculate stats
+stats <- data %>%
+  group_by(condition) %>%
+  summarize(
+    n = n(),
+    mean = mean(log2fold),
+    CI95l = t.test(log2fold)$conf.int[1],
+    CI95h = t.test(log2fold)$conf.int[2],
+    pValue = t.test(log2fold, pull(filter(data, condition == "PC3 mock"), log2fold))$p.value
+  ) %>%
+  pFormat(.)
+
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+
+p <- ggplot(data = NULL) +
+  geom_violin(
+    data = data,
+    aes(
+      x = condition,
+      y = log2fold
+    ),
+    trim = TRUE,
+    alpha = 0.3,
+    color = NA,
+    fill = "gray",
+    scale = "width",
+    show.legend = FALSE
+  ) +
+  geom_dotplot(
+    data = data, 
+    aes(
+      x = condition,
+      y = log2fold,
+      fill = condition
+    ),
+    binwidth = 1/30,
+    colour = NA,
+    alpha = 0.5,
+    position = position_dodge(width = 0.9), 
+    binaxis = 'y', 
+    stackdir = 'center',
+    dotsize = 4,
+    show.legend = TRUE
+  ) +
+  scale_y_continuous("log2(Fold)") +
+  labs(
+    x = "Cell line",
+    title = "CCND1 protein"
+  ) +
+  guides(fill = FALSE)
+
+markdown <- p +
+  geom_point(
+    data = stats,
+    aes(
+      x = condition,
+      y = mean
+    ),
+    colour="gray20",
+    size = 6,
+    shape = 95
+  ) +
+  geom_segment(
+    data = stats,
+    aes(
+      x = 1,
+      y = max(CI95h) + 0.25,
+      xend = 2,
+      yend = max(CI95h) + 0.25
+    ),
+    colour="grey43"
+  ) +
+  geom_label(
+    data = stats,
+    aes(
+      x = 1.5,
+      y = max(CI95h) + 0.4,
+      label = pFormat
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 5,
+    family = "Arial Unicode MS"
+  ) +
+   geom_linerange(
+    data = stats,
+    aes(
+      x = condition,
+      ymin = CI95l,
+      ymax = CI95h
+    ),
+    colour="gray20"
+  )
+
+plotRmarkdown(markdown)
+
+pdf <- p + 
+  geom_point(
+    data = stats,
+    aes(
+      x = condition,
+      y = mean
+    ),
+    colour="gray20",
+    shape = 95
+  ) +
+  geom_segment(
+    data = stats,
+    aes(
+      x = 1,
+      y = max(CI95h) + 0.25,
+      xend = 2,
+      yend = max(CI95h) + 0.25
+    ),
+    colour="grey43",
+    size = 0.1
+  ) +
+  geom_label(
+    data = stats,
+    aes(
+      x = 1.5,
+      y = max(CI95h) + 0.4,
+      label = pFormat
+    ),
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fill = "white",
+    size = 1.5,
+    family = "Arial Unicode MS"
+  ) +
+   geom_linerange(
+    data = stats,
+    aes(
+      x = condition,
+      ymin = CI95l,
+      ymax = CI95h
+    ),
+    colour="gray20",
+    size = 0.1
+  )
+
+figure <- plotPDF(pdf)
+path <- "~/GitHub/miR34a_asRNA_project/inst/suppFigure2c_stableLineCCND1prot/suppFigure2c_stableLineCCND1prot.pdf"
+ggsave(
+  plot = figure, 
+  filename = path, 
+  device = cairo_pdf, 
+  height = 60,
+  width = 43,
+  units = "mm"
+)
+```
+
+<div class="caption">
+Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA over-expressing stable lines compared to mock. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
+
+<br></br>
+
+####_Conclusions_
+
+Cyclin D1 protein levels are significantly reduced in PC3 cells overexpressing miR34a asRNA, consistent with increased miR34a expression levels and the reduced G1 cell cycle phase observed in PC3 cells.

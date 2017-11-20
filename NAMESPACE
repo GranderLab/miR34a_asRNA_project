@@ -3,6 +3,7 @@
 export(calcStats)
 export(dct)
 export(ddct)
+export(fileMap)
 export(folds)
 export(pFormat)
 export(plotFigure)
