@@ -75,7 +75,8 @@ cellLinesInFinal <- function() {
       "\\1",
       .
     ) %>%
-    unique()
+    unique() %>%
+    sort()
 }
 ```
 
