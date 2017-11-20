@@ -79,6 +79,63 @@ primers
 
 <br></br>
 
+```{r, fig.align='center', fig.height=2, fig.width=12, warning = FALSE, message = FALSE}
+data <- tibble(
+  gene = readr::parse_factor(
+    c(rep("miR34a asRNA", 5), rep("lnc34a", 3), "miR34a asRNA F1", "miR34a asRNA F10"),
+    levels = c("miR34a asRNA", "lnc34a", "miR34a asRNA F1", "miR34a asRNA F10")
+  ),
+  feature = c(
+    "exon", "intron", "exon", "intron", "exon",
+    "exon", "intron", "exon",
+    "primer", "primer"
+  ),
+  start = c(
+    9181991, 9182316, 9183633, 9183807, 9191393,
+    9181737, 9182295, 9196912,
+    9182279, 9182223
+    ),
+  stop = c(
+    9182316, 9183633, 9183807, 9191393, 9191686,
+    9182295, 9196912, 9197043,
+    9182301, 9182244
+  )
+)
+
+p <- ggplot(data = NULL) +
+  gggenes::geom_gene_arrow(
+    data = filter(data, feature %in% c("exon") & gene == "miR34a asRNA"),
+    aes(xmin = start, xmax = stop, y = gene, fill = gene),
+    arrowhead_width = unit(0, "mm"),
+    arrowhead_height = unit(0, "mm"),
+    colour = "gray"
+  )  +
+  geom_segment(
+    data = filter(data, feature == "intron" & gene == "miR34a asRNA"),
+    aes(x = start, xend = stop, y = gene, yend = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 1
+  ) +
+  geom_segment(
+    data = filter(data, feature == "primer"),
+    aes(x = start, xend = stop, y = 1.1, yend = 1.1, colour = gene),
+    size = 5 
+  ) +
+  labs(x = "Chromosome 1") +
+  guides(fill = FALSE, colour = guide_legend(title = "Primer"))
+
+plotRmarkdown(p) +
+  theme_void() +
+  scale_fill_brewer()
+```
+
+<div class = "caption">
+3’-RACE schematic illustrating primer placement on the miR34a asRNA transcript for 3'-RACE.
+</div>
+
+<br></br>
+
 ####_Results_
 
 ```{r, out.width = "850px"}
