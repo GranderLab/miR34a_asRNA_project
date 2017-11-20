@@ -67,16 +67,16 @@ Resulting bands on the western blots were quantified using the ImageJ software w
 
 ####_Results_
 
-_Representative experiment_
+_Western blot_
 ```{r, out.width = "500px"}
 
-url <- "stable_line_ccnd1_prot/stable_line_ccnd1_prot_singleExp.png"
+url <- "stable_line_ccnd1_prot/stable_line_ccnd1_prot.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
 
 <div class="caption">
-A resulting western blot representative of the results from the three independant experiments.
+The resulting western blot showing the results from the three independant experiments.
 </div>
 
 <br></br><br></br>
