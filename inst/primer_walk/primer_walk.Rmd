@@ -40,8 +40,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -97,7 +97,7 @@ Primer placement at the locus can be viewed in Supplementary Figure 1b.
 
 ```{r, out.width = "500px"}
 
-url <- "figure1e_primerWalk/gel.png"
+url <- fileMap(type = "png")["figure1e"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

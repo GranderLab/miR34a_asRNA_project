@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -95,7 +95,7 @@ primers
 
 ```{r, out.width = "500px"}
 
-url <- "suppFigure1c_polyadenylation/polyadenylation.png"
+url <- fileMap(type = "png")["suppFigure1c"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -48,7 +48,10 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
 
 ```{r, out.width = "850px"}
 
-url <- "suppFigure1b_primerWalkSchematic/schematic_hg38.png"
+#url <- "suppFigure1b_primerWalkSchematic/schematic_hg38.png"
+#knitr::include_graphics(file.path(projectUrl, url))
+
+url <- fileMap(type = "png")["suppFigure1b"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

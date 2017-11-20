@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -120,7 +120,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- "figure2d_P1-HCTandHEK.rds"
+url <- fileMap(type = "rds")["figure2d"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 .calcP <- function(`Cell line`, gene, logValue, data) {
@@ -358,7 +358,8 @@ pdf <- p +
   ))
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/figure2d_P1-HCTandHEK/figure2d_P1-HCTandHEK.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2d"][[1]])
+
 
 ggsave(
    plot = figure,

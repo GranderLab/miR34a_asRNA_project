@@ -39,8 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/data"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -137,7 +137,7 @@ See Figure 2c for a schematic representation of the P1 construct.
 
 ```{r, message = FALSE}
 
-url <- "figure2e_P1shRNAdox.rds"
+url <- fileMap(type = "rds")["figure2e"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #Luciferase = miR34a HG
@@ -320,7 +320,7 @@ pdf <- p +
   ))
 
 figure <- plotPDF(pdf)
-path <- "~/GitHub/miR34a_asRNA_project/inst/figure2e_P1shRNAdox/figure2e_P1shRNAdox.pdf"
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2e"][[1]])
 
 ggsave(
    plot = figure,

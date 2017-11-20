@@ -39,7 +39,8 @@ rm(packages)
 
 ```{r}
 
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst/"
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -117,26 +118,13 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- "figure2c_P1construct/locusSimple.png"
+url <- fileMap(type = "png")["figure2c"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
 
 <div class="caption">
-A schematic representation of the miR34a locus and the region cloned in the P1 construct including the overlapping region between miR34a host gene (purple) and miR34a asRNA (green), the region cloned into the P1 construct (red), and the P53 binding site (light blue).
-</div>
-
-<br></br>
-
-```{r, out.width = "850px"}
-
-url <- "figure2c_P1construct/constructSimple.png"
-knitr::include_graphics(file.path(projectUrl, url))
-
-```
-
-<div class="caption">
-A schematic representation of the fully cloned P1 construct including the overlapping region between miR34a host gene and miR34a asRNA (green), the reported genes, luciferase (purple) and renilla (red), the primer binding sites, and the shRNA binding site (used in Figure 2d).
+Top: A schematic representation of the miR34a locus and the region cloned in the P1 construct including the overlapping region between miR34a host gene (purple) and miR34a asRNA (green), the region cloned into the P1 construct (red), and the P53 binding site (light blue). Bottom: A schematic representation of the fully cloned P1 construct including the overlapping region between miR34a host gene and miR34a asRNA (green), the reported genes, luciferase (purple) and renilla (red), the primer binding sites, and the shRNA binding site (used in Figure 2d).
 </div>
 
 <br></br>
