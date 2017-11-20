@@ -180,7 +180,7 @@ p <- ggplot(data = NULL)+
       fill = condition
     ),
     binwidth = 1/10,
-    alpha = 0.5,
+    #alpha = 0.5,
     colour = NA,
     position = position_dodge(width = 0.9), 
     binaxis='y', 

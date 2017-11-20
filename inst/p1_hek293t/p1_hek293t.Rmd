@@ -170,11 +170,11 @@ p <- ggplot(data = NULL) +
     ),
     binwidth = 1/10,
     colour = NA,
-    alpha = 0.5,
+    #alpha = 0.5,
     position = position_dodge(width = 0.9), 
     binaxis = 'y', 
     stackdir = 'center',
-    dotsize = 4,
+    dotsize = 2,
     show.legend = TRUE
   ) +
   facet_grid(. ~ belongsTo) +
@@ -193,15 +193,15 @@ figure <- plotPDF(p) +
     axis.text.x = element_text(angle = 90)
   )
 
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2b"][[1]])
-ggsave(
-   plot = figure,
-   filename = path,
-   device = cairo_pdf,
-   height = 60,
-   width = 83,
-   units = "mm"
-)
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2b"][[1]])
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
 ```
 
 <br></br>

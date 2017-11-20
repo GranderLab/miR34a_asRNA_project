@@ -280,7 +280,7 @@ p <- ggplot(data = NULL) +
     ),
     binwidth = 1/10,
     colour = NA,
-    alpha = 0.5,
+    #alpha = 0.5,
     position = position_dodge(width = 0.9), 
     binaxis = 'y', 
     stackdir = 'center',

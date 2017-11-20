@@ -153,7 +153,7 @@ markdown <- p +
     ),
     fill = "white",
     size = 4,
-    alpha = 0.6,
+    alpha = 0.9,
     position = position_dodge(width = 0.9)
   ) +
   geom_linerange(
@@ -193,7 +193,7 @@ pdf <- p +
       colour = GOI
     ),
     fill = "white",
-    alpha = 0.6,
+    alpha = 0.9,
     stroke = 0,
     position = position_dodge(width = 0.9)
   ) +
