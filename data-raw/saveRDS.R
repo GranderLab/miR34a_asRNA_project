@@ -376,6 +376,16 @@ read_tsv('./data-raw/tcga_correlation_table.txt') %>%
   ) %>%
   write_rds(., path = './data/tcga_correlation_table.rds')
 
+#tcga_correlation
+read_tsv('./data-raw/tcga_correlation.txt') %>%
+  mutate(
+    TP53 = as.numeric(TP53),
+    RP3 = as.numeric(RP3),
+    RP3_cna = as.numeric(RP3_cna),
+    miR34a = as.numeric(miR34a)
+  ) %>%
+  write_rds(., path = './data/tcga_correlation.rds')
+
 
 
 #source('./data-raw/saveRDS.R')
