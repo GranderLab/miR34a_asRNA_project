@@ -97,14 +97,17 @@ plotTCGAcorrelation <- function(data, type = "diploid only") {
     type = "l",
     col = "red",
     frame.plot = FALSE,
-    ylim = c(-12, 1),
+    ylim = c(-16, 1),
+    yaxt = "n",
     xlab = "Tumors",
     ylab = "Relative expression level (log2)"
   )
+  axis(2, at = seq(0, -12, by = -2), las = 2)
 }
 
 .plotLabelsAndColors <- function(data, colors) {
   idx_start <- which(!duplicated(pull(data, "cancer_PAM50")))
+  names(idx_start) <- pull(data, cancer_PAM50)[idx_start]
   idx_end <- c(idx_start - 1, nrow(data))
   idx_end <- idx_end[-1]
   
@@ -114,14 +117,14 @@ plotTCGAcorrelation <- function(data, type = "diploid only") {
       -12,
       idx_end[i],
       0,
-      col = cancer_colors[correlation_matrix_sel[idx_start[i], "cancer_PAM50"]],
+      col = pull(filter(colors, cancer == names(idx_start[i])), value),
       border = NA
     )
     text(
-      idx_start[i],
-      0,
-      data[idx_start[i], "cancer_PAM50"],
-      adj = c(1, 1),
+      x = median(which(pull(data, cancer_PAM50) == names(idx_start)[[i]])),
+      y = -12.1,
+      labels = pull(data, "cancer_PAM50")[idx_start[i]],
+      adj = c(1, 0.5),
       srt = 90
     )
   }

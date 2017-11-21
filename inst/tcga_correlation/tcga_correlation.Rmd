@@ -1,7 +1,7 @@
 ---
 title: "Figure 1c"
 subtitle: "miR34a asRNA and miR34a TCGA correlation"
-author: "Jason T. Serviss"
+author: "Jimmy Van den Eynden and Jason T. Serviss"
 date: "31/01/2017"
 output:
   html_document:
@@ -53,6 +53,38 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 <br></br>
 
 ####_Results_
+```{r}
+url <- fileMap(type = "rds")["figure1c"][[1]]
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+#normalize expression values
+data <- mutate(
+    data,
+    RP3 = log2(RP3 / max(RP3)),
+    miR34a = log2(miR34a / max(miR34a))  
+  )
+
+#add BRCA subtypes
+data <- data %>%
+  mutate(PAM50 = if_else(is.na(PAM50), "", PAM50)) %>%
+  mutate(cancer_PAM50 = gsub("BRCA", "BRCA ", paste(cancer, PAM50, sep = "")))
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, message = FALSE}
+#plot
+data %>%
+  arrange(cancer_PAM50, TP53, RP3) %>%
+  plotTCGAcorrelation(type = "diploid only")
+
+#save to pdf
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure1c"][[1]])
+pdf(path, width = 28)
+data %>%
+  arrange(cancer_PAM50, TP53, RP3) %>%
+  plotTCGAcorrelation(type = "diploid only")
+dev.off()
+
+```
 
 <div class="caption">
 A graphical depiction of the TCGA correlation analysis. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
@@ -62,12 +94,6 @@ See Supplementary Figure 1a for R-squared and p-values corersponding with the an
 
 Insert code here from Erik and write Intro Methods etc
 
-```{r, out.width = "1000px"}
-
-url <- fileMap(type = "png")["figure1c"][[1]]
-knitr::include_graphics(file.path(projectUrl, url))
-
-```
 
 <br></br>
 
