@@ -174,7 +174,7 @@ url <- fileMap(type = "rds")["figure3a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove Skov exp 1 due to variability in technical replicates
-data <- filter(data, `Biological Replicate` != 1 | `Cell line` != "Skov3")
+#data <- filter(data, `Biological Replicate` != 1 | `Cell line` != "Skov3")
 
 #Have to divide the analysis due to the presence of several house 
 #keeping genes.
@@ -188,12 +188,12 @@ groups <- c("Genetic mod", "Biological Replicate", "Cell line", "gene")
 
 data1 <- data1 %>%
   technicalMeans(., groups) %>%
-  dct(., gois1, Actin, groups) %>%
+  dct(., gois1, Actin, groups, F) %>%
   mutate(GOI = as.character(GOI))
 
 data2 <- data2 %>%
   technicalMeans(., groups) %>%
-  dct(., gois2, RNU48, groups) %>%
+  dct(., gois2, RNU48, groups, F) %>%
   mutate(GOI = as.character(GOI))
 
 data <- bind_rows(data1, data2) %>%
