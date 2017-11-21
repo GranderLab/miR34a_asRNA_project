@@ -12,7 +12,7 @@ cran:
   - scales/0.5.0
   - gtable/0.2.0
   - liftr/0.7
-  -rlang/0.1.4
+  -rlang/0.1.2
   -magrittr/1.5
 remotes:
   - "GranderLab/miR34a_asRNA_project"

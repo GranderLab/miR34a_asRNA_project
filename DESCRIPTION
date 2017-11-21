@@ -11,7 +11,7 @@ RoxygenNote: 6.0.1
 Imports: 
     liftr (>= 0.7),
     tidyverse (>= 0.2),
-    rlang (>= 0.1.4),
+    rlang (>= 0.1.2),
     magrittr (>= 1.5)
 Suggests:
     knitr (>= 1.17),
