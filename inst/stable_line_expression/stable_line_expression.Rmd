@@ -249,7 +249,7 @@ vl <- stats %>%
   ) %>%
   inner_join(ys) %>%
   mutate(
-    max = max + c(0.25, 1.25, 0.25, 1.25, 0.25, 1.25)
+    max = max + c(0.55, 1.95, 0.25, 1.65, 0.25, 1.65)
   )
 ```
 
@@ -388,7 +388,7 @@ pdf <- p +
     data = vl,
     aes(
       x = 1.5, 
-      y = max + 0.4, 
+      y = max + 0.6, 
       label = pFormat, 
       group = interaction(`Cell line`, GOI)
     ),
@@ -422,15 +422,15 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3a"][[1]])
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 83,
-#    units = "mm"
-# )
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3a"][[1]])
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 83,
+   units = "mm"
+)
 ```
 
 <div class="caption">
