@@ -41,12 +41,12 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####Introduction
+#### _Introduction_
 
 [Wang et al.](https://elifesciences.org/articles/14620) have previously published concerning a antisense transcript arising from the miR34a locus that they named "lnc34a". Wang et al. state find that this transcript is expressed at "significantly higher levels in colon cancer stem cells spheres (CCSCs)" compared to 9 commonly used colorectal cancer cell lines. After obtaining the sequence for lnc34a we could confirm that neither our primer walk analysis or our 3' RACE detected the lnc34a transcripts presence in the cell lines we had utilized. To further investigate the presence of lnc34a in non-CCSC cell lines we interogated CAGE data from RIKEN to investigate the possibility of an alternative transcription start site upstream of the transcription start site we had characterized. 
 <br></br>
 
-####Methods
+#### _Methods_
 
 ```{r}
 nrCellLinesDown <- function() {
@@ -84,7 +84,7 @@ All available CAGE data from `r nrCellLinesDown()` cell lines was downloaded fro
 
 <br></br>
 
-####Results
+#### _Results_
 
 ```{r}
 data <- tibble(
@@ -104,6 +104,10 @@ data <- tibble(
     9252148, 9242354, 9256971, 9257102
   )
 )
+
+#try to cut the data so that the CAGE reads are more visable in the figure.
+data <- filter(data, start < 9245000) %>%
+  mutate(stop = if_else(feature == "intron" & start != 9242375, 9245000, stop))
 
 pw <- tibble(
   gene = paste("F", 10:15, sep = ""),
@@ -127,6 +131,13 @@ cage <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
 
 #genes
 p1 <- ggplot(data = NULL) +
+  geom_segment(
+    data = filter(data, feature == "intron"),
+    aes(x = start, xend = stop, y = gene, yend = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 1
+  ) +
   gggenes::geom_gene_arrow(
     data = filter(data, feature == "exon"),
     aes(xmin = start, xmax = stop, y = gene, fill = gene),
@@ -136,14 +147,7 @@ p1 <- ggplot(data = NULL) +
   ) +
   ggthemes::theme_few() +
   ggthemes::scale_fill_ptol() +
-  geom_segment(
-    data = filter(data, feature == "intron"),
-    aes(x = start, xend = stop, y = gene, yend = gene),
-    linetype = "dotted",
-    colour = "gray",
-    size = 1
-  ) +
-  xlim(9241000, 9257900) +
+  xlim(9241000, 9245000) +
   labs(x = "Chromosome 1", y = "Genes") +
   guides(fill = FALSE)
 
@@ -167,7 +171,7 @@ p2 <- ggplot(data = NULL) +
     axis.ticks = element_blank()
   ) +
   labs(y = "Cage reads") +
-  xlim(9241000, 9257900) +
+  xlim(9241000, 9245000) +
   guides(fill = guide_colourbar(
     title = "RPKM", 
     title.position = "top", 
@@ -178,7 +182,7 @@ p2 <- ggplot(data = NULL) +
 p3 <- ggplot(data = NULL) + 
   geom_line(data = cage, aes(x = start), stat="density") +
   ggthemes::theme_few() +
-  xlim(9241000, 9257900) +
+  xlim(9241000, 9245000) +
   theme(
     axis.text = element_blank(),
     axis.title.x = element_blank(),
@@ -212,13 +216,13 @@ p1 <- ggplot(data = NULL) +
     colour = "gray",
     size = 0.25
   ) +
-  xlim(9241000, 9257900) +
-  labs(x = "Chromosome 1", y = "Genes") +
+  xlim(9241000, 9245000) +
+  labs(x = "Chromosome 1", y = "") +
   guides(fill = FALSE) +
   theme(
-    axis.text = element_text(size = 3),
-    axis.title.x = element_text(size = 4),
-    axis.title.y = element_text(size = 4, margin = margin(r = 8, "cm")),
+    axis.text = element_text(size = 6),
+    axis.title.x = element_text(size = 6),
+    axis.title.y = element_text(size = 6, margin = margin(r = 8, "cm")),
     axis.ticks.length = unit(0.5, "mm"),
     axis.ticks = element_line(size = 0.15),
     panel.border = element_rect(fill = NA, size = 0.1),
@@ -241,10 +245,10 @@ p2 <- ggplot(data = NULL) +
   viridis::scale_fill_viridis() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 4),
+    axis.title.y = element_text(size = 6),
     legend.position = "top",
-    legend.title = element_text(size = 4),
-    legend.text = element_text(size = 4),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 6),
     legend.box.spacing = unit(3, "pt"),
     axis.text = element_blank(),
     axis.ticks = element_blank(),
@@ -253,27 +257,27 @@ p2 <- ggplot(data = NULL) +
     strip.text.y = element_text(angle = 0)
   ) +
   labs(y = "Cage reads") +
-  xlim(9241000, 9257900) +
+  xlim(9241000, 9245000) +
   guides(fill = guide_colourbar(
     title = "RPKM",
     title.position = "top",
     title.hjust = 0.5,
     barheight = unit(4, "pt"),
-    barwidth = unit(40, "pt")
+    barwidth = unit(50, "pt")
   ))
 
 #density
 p3 <- ggplot(data = NULL) + 
   geom_line(data = cage, aes(x = start), stat="density", lwd = 0.1) +
   ggthemes::theme_few() +
-  xlim(9241000, 9257900) +
+  xlim(9241000, 9245000) +
   theme(
     axis.text = element_blank(),
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 4),
+    axis.title.y = element_text(size = 6),
     axis.ticks = element_blank(),
     panel.border = element_rect(fill = NA, size = 0.1),
-    plot.margin = unit(c(0, 1, 0, 1), "mm")
+    plot.margin = unit(c(0, 1, 2, 1), "mm")
   ) +
   labs(y = "Density")
 
@@ -299,7 +303,7 @@ CAGE tags (top), CAGE tag density (middle), and antisense genes (bottom) at the 
 
 <br></br>
 
-####Conclusions
+#### _Conclusions_
 
 The results show a high density of CAGE tags aligning to the region corresponding to the annotated miR34a asRNA start site. An additional peak, albeit with a much lower average expression, aligns slightly upstream of the annotated miR34a asRNA start site and corresponds to the upstream start site detected in our primer walk analysis (figure 1e). Despite this, we find no CAGE tags aligning at the transcription start site or upstream of the transcription start site of the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected. 
 

@@ -40,13 +40,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####Introduction
+#### _Introduction_
 
 [Wang et al.](https://www.ncbi.nlm.nih.gov/pubmed/27077950) have previously published concerning a antisense transcript arising from the miR34a locus that they named "lnc34a". Wang et al. state find that this transcript is expressed at "significantly higher levels in colon cancer stem cells spheres (CCSCs)" compared to 9 commonly used colorectal cancer cell lines. After obtaining the sequence for lnc34a we could confirm that neither our primer walk analysis or our 3' RACE detected the lnc34a transcripts presence in the cell lines we had utilized. To further investigate the presence of lnc34a in non-CCSC cell lines we interogated RNAseq splice junction data generated in conjunction with the ENCODE project to search for introns present at the miR34a locus.
 
 <br></br>
 
-####Methods
+#### _Methods_
 
 ```{r}
 nrCellLinesDown <- function() {
@@ -80,11 +80,11 @@ cellLinesInFinal <- function() {
 }
 ```
 
-All available splice junction data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines `r cellLinesInFinal() %>% length()` cell lines had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each.
+All available splice junction data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines `r cellLinesInFinal() %>% length()` had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each.
 
 <br></br>
 
-####Results
+#### _Results_
 
 ```{r}
 #locus
@@ -194,12 +194,12 @@ p1 <- ggplot(data = NULL) +
     size = 0.25
   ) +
   xlim(9241000, 9257900) +
-  labs(x = "Chromosome 1", y = "Genes") +
+  labs(x = "Chromosome 1", y = "") +
   guides(fill = FALSE) +
   theme(
-    axis.text = element_text(size = 3),
-    axis.title.x = element_text(size = 4),
-    axis.title.y = element_text(size = 4, margin = margin(r = 8, "cm")),
+    axis.text = element_text(size = 6),
+    axis.title.x = element_text(size = 6),
+    axis.title.y = element_text(size = 6, margin = margin(r = 8, "cm")),
     axis.ticks.length = unit(0.5, "mm"),
     axis.ticks = element_line(size = 0.15),
     panel.border = element_rect(fill = NA, size = 0.1),
@@ -222,10 +222,10 @@ p2 <- ggplot(data = NULL) +
   viridis::scale_fill_viridis() +
   theme(
     axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 4),
+    axis.title.y = element_text(size = 6),
     legend.position = "top",
-    legend.title = element_text(size = 4),
-    legend.text = element_text(size = 4),
+    legend.title = element_text(size = 7),
+    legend.text = element_text(size = 6),
     legend.box.spacing = unit(3, "pt"),
     axis.text = element_blank(),
     axis.ticks = element_blank(),
@@ -233,14 +233,14 @@ p2 <- ggplot(data = NULL) +
     plot.margin = unit(c(0.01, 1, 0.01, 1), "mm"),
     strip.text.y = element_text(angle = 0)
   ) +
-  labs(y = "Cage reads") +
+  labs(y = "Spliced reads") +
   xlim(9241000, 9257900) +
   guides(fill = guide_colourbar(
-    title = "Reads",
+    title = "Read count",
     title.position = "top",
     title.hjust = 0.5,
     barheight = unit(4, "pt"),
-    barwidth = unit(40, "pt")
+    barwidth = unit(50, "pt")
   ))
 
 grobz <- lapply(list(p1, p2), ggplotGrob)
@@ -264,7 +264,7 @@ Splice junctions (top) detected in RNAseq data from the ENCODE project and antis
 
 <br></br>
 
-####Conclusions
+#### _Conclusions_
 Multiple splice junctions correspond to the miR34a asRNA transcrips and its isoforms (Supplementary figure XX) with those being the mist highly expressed corresponding to the annotated miR34a asRNA transcript. Despite this, no splice junctions appear to correspond to the intron in the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected.
 
 <br></br><br></br>

@@ -41,13 +41,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 Functional characterization of individual antisense transcripts has previously shown their capability to regulate their sense gene. We therefore investigated the possibility that miR34a asRNA may regulate miR34a HG levels. We hypothesized that the overlapping regions of the sense and antisense transcripts may have a crucial role in miR34a asRNAs ability to regulate miR34a HG via RNA:DNA or RNA:RNA interaction. Accordingly, we first co-transfected the p1 construct, containing the overlapping region of the two transcripts, and an short hairpin (sh) RNA targeting renilla into HEK293T cells .
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 We utilized the P1 construct where the overlapping region of miR34a HG and miR34a AS is cloned with luciferase downstream of miR34a HG and renilla downstream of miR34a AS. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43. All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. 2.5x10^5 293T cells were seeded in a 12-well plate. After 24hrs these were co-transfected with 50 ng of the P1 construct and 250 ng shRenilla using lipo2k standard protocol. After 48 hours, RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s.
 
@@ -111,7 +111,7 @@ primers <- data.frame(
 primers
 ```
 
-####_Results_
+#### _Results_
 
 ```{r}
 
@@ -175,7 +175,7 @@ p <- ggplot(data = NULL) +
     dotsize = 2,
     show.legend = TRUE
   ) +
-  facet_grid(. ~ belongsTo) +
+  facet_grid(. ~ belongsTo, scales = "free") +
   scale_y_continuous("\u0394\u0394Ct")+
   labs(x = "shRNA")
 
@@ -191,20 +191,20 @@ figure <- plotPDF(p) +
     axis.text.x = element_text(angle = 90)
   )
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2b"][[1]])
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 83,
-#    units = "mm"
-# )
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2b"][[1]])
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 83,
+   units = "mm"
+)
 ```
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 Analysis of luciferase and renilla expression revealed that by decreasing levels of the renilla transcript (corresponding to miR34a asRNA) luciferase (corresponding to miR34a HG) levels were concomitantly decreased. These results indicate that miR34a asRNA is capable of regulating the miR34a HG in a concordant manner and that the overlapping region of the miR34a asRNA may be sufficient to mediate this regulation.
 
