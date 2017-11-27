@@ -40,7 +40,7 @@ fileMap <- function(type) {
     suppFigure1b = "primer_walk_schematic/primer_walk_schematic.Rmd",
     suppFigure1c = "polyadenylation/polyadenylation.Rmd",
     suppFigure1d = "isoforms/isoforms.Rmd",
-    suppFigure1e = "cellular_localization/cellular_localization.Rmd",
+    suppFigure1e = "cellular_localization_encode/cellular_localization_encode.Rmd",
     suppFigure1f = "transcript_stability/transcript_stability.Rmd",
     suppFigure1g = "coding_potential_cpc/coding_potential_cpc.Rmd",
     suppFigure2a = "p1_construct/p1_construct.Rmd",

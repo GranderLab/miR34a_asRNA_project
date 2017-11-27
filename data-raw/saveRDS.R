@@ -343,14 +343,17 @@ read_tsv('./data-raw/p1_hek293t.txt') %>%
   write_rds(., path = './data/p1_hek293t.rds')
 
 #coding_potential_cpat
+print("processing coding_potential_cpat")
 read_tsv('./data-raw/coding_potential_cpat.txt') %>%
   write_rds(., path = './data/coding_potential_cpat.rds')
 
 #coding_potential_cpc
+print("processing coding_potential_cpc")
 read_tsv('./data-raw/coding_potential_cpc.txt') %>%
   write_rds(., path = './data/coding_potential_cpc.rds')
 
 #tcga_correlation_table
+print("processing tcga_correlation_table")
 read_tsv('./data-raw/tcga_correlation_table.txt') %>%
   rename(
     r_total = r,
@@ -377,6 +380,7 @@ read_tsv('./data-raw/tcga_correlation_table.txt') %>%
   write_rds(., path = './data/tcga_correlation_table.rds')
 
 #tcga_correlation
+print("processing tcga_correlation")
 read_tsv('./data-raw/tcga_correlation.txt') %>%
   mutate(
     TP53 = as.numeric(TP53),
@@ -386,6 +390,35 @@ read_tsv('./data-raw/tcga_correlation.txt') %>%
   ) %>%
   write_rds(., path = './data/tcga_correlation.rds')
 
-
+#cellular_localization_encode
+read_tsv('https://www.encodeproject.org/metadata/type=Experiment&assay_term_name=RNA-seq&replicates.library.biosample.donor.organism.scientific_name=Homo+sapiens&biosample_type=immortalized+cell+line&files.file_type=tsv&assay_title%21=small+RNA-seq&assembly=GRCh38/metadata.tsv') %>%
+  rename(fraction = `Biosample subcellular fraction term name`) %>%
+  filter(
+    `Output type` == "gene quantifications" &
+    fraction %in% c("nucleus", "cytosol") &
+    Assembly == "GRCh38" &
+    is.na(`Audit WARNING`) &
+    is.na(`Audit INTERNAL_ACTION`) &
+    is.na(`Audit ERROR`) &
+    is.na(`Audit NOT_COMPLIANT`)
+  ) %>%
+    mutate(fileContens =
+      map(
+        `File download URL`,
+        ~ read_tsv(., col_names = TRUE)
+      )
+    ) %>%
+  unnest() %>%
+  filter(gsub("^(.{5}).*", "\\1", gene_id) == "ENSG0") %>%
+  mutate(gene_id = gsub("(.*)\\.[0-9]*$", "\\1", gene_id)) %>%
+  filter(gene_id %in% c("ENSG00000234546", "ENSG00000075624", "ENSG00000111640", "ENSG00000251562")) %>%
+  mutate(gene_name = case_when(
+    gene_id == "ENSG00000234546" ~ "miR34a asRNA",
+    gene_id == "ENSG00000075624" ~ "ACTB",
+    gene_id == "ENSG00000251562" ~ "MALAT1",
+    gene_id == "ENSG00000111640" ~ "GAPDH",
+    TRUE ~ "error"
+  )) %>%
+  write_rds(., path = './data/cellular_localization_encode.rds')
 
 #source('./data-raw/saveRDS.R')

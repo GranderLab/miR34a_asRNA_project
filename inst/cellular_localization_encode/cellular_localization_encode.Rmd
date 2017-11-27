@@ -1,0 +1,124 @@
+---
+title: "miR34a asRNA cellular localization"
+author: "Jason T. Serviss"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "grid",
+    "gtable",
+    "miR34AasRNAproject"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
+```
+
+#### _Introduction_
+
+<br></br>
+
+#### _Methods_
+
+<br></br>
+
+#### _Results_
+
+```{r}
+
+#SK-N-SH has a larger proportion of GAPDH in the nucleus than cytoplasm
+#The variation in miR34a asRNA expression is way too large for SK-MEL-5
+#K562, HT1080, SK-N-DZ, and NCI-H460 have no or low miR34a asRNA expression
+#use GAPDH instead of ACTB for cytoplasmic fraction, seems to be a better representation.
+
+fdata <- data %>% 
+  filter(!`Biosample term name` %in% c("K562", "HT1080", "SK-N-DZ", "NCI-H460", "SK-MEL-5", "SK-N-SH")) %>% 
+  filter(gene_name != "ACTB") %>%
+  select(`Biosample term name`, gene_id, gene_name, fraction, `Library made from`, `Biological replicate(s)`, TPM) %>%
+  group_by(`Biosample term name`, gene_id, gene_name, fraction) %>%
+  mutate(tmp = n() == 2) %>%
+  filter(tmp | `Library made from` == "polyadenylated mRNA") %>%
+  ungroup() %>%
+  select(-tmp) %>%
+  group_by(`Biosample term name`, gene_id, gene_name, `Biological replicate(s)`) %>%
+  mutate(frac = TPM / sum(TPM)) %>%
+  ungroup()
+
+stats <- fdata %>%
+  group_by(`Biosample term name`, gene_id, gene_name, fraction) %>%
+  filter(n() == 2) %>%
+  summarize(
+    n = n(),
+    mean = mean(frac),
+    sd_min = mean(frac) + sd(frac),
+    sd_max = mean(frac) - sd(frac)
+  )  %>%
+  ungroup()
+```
+
+
+```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
+p <- stats %>%
+  ggplot(aes(gene_name, mean, color = fraction)) +
+  geom_point(position = position_dodge(width = 1)) +
+  facet_wrap(~`Biosample term name`, ncol = 1) +
+  geom_errorbar(aes(ymax = sd_max, ymin = sd_min), width = 0, position = position_dodge(width = 1)) +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  labs(
+    y = "Mean %",
+    x = "Gene"
+  ) +
+  guides(colour = guide_legend(title = "Fraction"))
+
+plotRmarkdown(p) +
+  theme(legend.position = "top")
+
+figure <- plotPDF(p)
+
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2a"][[1]])
+# ggsave(
+#  plot = figure,
+#  filename = path,
+#  device = cairo_pdf,
+#  height = 60,
+#  width = 83,
+#  units = "mm"
+# )
+```
+
+<div class="caption">
+Write figure legend.
+</div>
+
+<br></br>
+
+#### _Conclusions_
+
+<br></br><br></br>
