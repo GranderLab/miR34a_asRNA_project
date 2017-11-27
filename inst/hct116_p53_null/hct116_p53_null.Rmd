@@ -46,13 +46,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression upon cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated p53 wild type and p53 null HCT116 cells with increasing concentrations of the DNA damaging agent doxorubicin and monitored miR34a asRNA expression.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -98,7 +98,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, message = FALSE}
 
@@ -145,7 +145,6 @@ stats <- stats %>%
     )
   ) %>%
   ungroup()
-
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
@@ -179,7 +178,7 @@ p <- ggplot(data = NULL) +
   ) +
   facet_grid(. ~ GOI) +
   scale_y_continuous("\u0394\u0394Ct", breaks = c(-1,0,1,2,3,4,5))+
-  labs(x = "Treatment")
+  labs(x = "Doxorubicin (ng/ml)")
 
 markdown <- p + 
   geom_point(
@@ -283,7 +282,7 @@ Monitoring the effects of 24 hours doxorubicin treatment on miR34a asRNA and HG 
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 We observed increasing miR34a HG and asRNA expression with increasing doses of doxorubicin indicating that these two transcripts are co-regulated by p53. Although p53 wild type cells showed a 25-fold increase over untreated cells in miR34a AS expression at the highest tested doxorubicin concentration, this effect was largely abrogated, 11 fold over untreated, in p53 null cells, indicating that p53 is a major regulator of miR34a asRNA expression. 
 

@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 miR34a asRNA over-expressing cell lines, previously generated, showed a high overexpression level of miR34a asRNA despite a low multiplicity of infection. This is most likley due to the fact that all infected cell lines have practically no endogenous miR34a asRNA expression. To investigate the physiological relevance of the over-expression the miR34a asRNA levels were compared to the expression levels in HEK293t cells, which have a high endogenous miR34a expression level.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -146,7 +146,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, message = FALSE}
 
@@ -182,7 +182,8 @@ stats <- data %>%
     mean = mean(log2fold),
     CI95l = t.test(log2fold)$conf.int[1],
     CI95h = t.test(log2fold)$conf.int[2]
-  )
+  ) %>%
+  ungroup()
 
 ```
 
@@ -249,7 +250,7 @@ markdown <- p +
     show.legend = FALSE
   )
 
-plotRmarkdown(p)
+plotRmarkdown(markdown)
 
 pdf <- p +
   geom_point(
@@ -293,7 +294,7 @@ miR34a asRNA over-expression levels in PC3, Skov3, and Saos2 stable cell lines c
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 Results indicate that miR34a asRNA is over-expressed 13-22 fold greater that endogenous HEK293t levels. 
 

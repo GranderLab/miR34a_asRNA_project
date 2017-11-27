@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 miR34a is a known downstream target of p53 and has been previously shown to exhibit increased expression with cellular apoptotic signaling. We hypothesized that miR34a asRNA may be regulated in a similar fashion whereby transcription is stimulated by activation of p53. To test this we treated HCT116 and HEK293t cells with 200 ng/ml of the DNA damaging agent doxorubicin for 24 hours and monitored miR34a asRNA expression. 
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -96,7 +96,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, message = FALSE}
 
@@ -149,6 +149,21 @@ vl <- stats %>%
     labelX = 1.5
   )
 
+data <- data %>%
+  mutate(Treatment = case_when(
+    Treatment == "untreated" ~ 0,
+    Treatment == "doxorubicin" ~ 200,
+    TRUE ~ NaN
+  )) %>%
+  mutate(Treatment = parse_factor(Treatment, levels = c("0", "200")))
+
+stats <- stats %>%
+  mutate(Treatment = case_when(
+    Treatment == "untreated" ~ 0,
+    Treatment == "doxorubicin" ~ 200,
+    TRUE ~ NaN
+  )) %>%
+  mutate(Treatment = parse_factor(Treatment, levels = c("0", "200")))
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
@@ -190,7 +205,7 @@ p <- ggplot(data = NULL) +
     breaks=c(-1,0,1,2,3,4,5)
   ) +
   labs(
-    x = "Treatment",
+    x = "Doxorubicin (ng/ml)",
     title = "miR34a asRNA response to p53 induction"
   ) +
   guides(
@@ -341,7 +356,7 @@ Q-PCR showing miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells afte
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 We observed increases in miR34a HG and asRNA expression upon doxorubicin treatment indicating that these two transcripts are co-regulated. 
 
