@@ -24,9 +24,12 @@ vignette: >
 
 packages <- c(
     "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
     "grid",
-    "gtable",
-    "miR34AasRNAproject"
+    "gtable"
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
@@ -51,6 +54,9 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 #### _Results_
 
 ```{r}
+
+url <- fileMap(type = "rds")["suppFigure1e"][[1]]
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #SK-N-SH has a larger proportion of GAPDH in the nucleus than cytoplasm
 #The variation in miR34a asRNA expression is way too large for SK-MEL-5
@@ -84,33 +90,71 @@ stats <- fdata %>%
 
 
 ```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
-p <- stats %>%
-  ggplot(aes(gene_name, mean, color = fraction)) +
-  geom_point(position = position_dodge(width = 1)) +
+markdown <- ggplot(data = NULL) +
+  geom_point(
+    data = stats,
+    aes(x = gene_name, y = mean, color = fraction),
+    position = position_dodge(width = 1)
+  ) +
   facet_wrap(~`Biosample term name`, ncol = 1) +
-  geom_errorbar(aes(ymax = sd_max, ymin = sd_min), width = 0, position = position_dodge(width = 1)) +
+  geom_errorbar(
+    data = stats, 
+    aes(x = gene_name, ymax = sd_max, ymin = sd_min, colour = fraction), 
+    width = 0,
+    position = position_dodge(width = 1)
+  ) +
   scale_y_continuous(labels = scales::percent) +
   coord_flip() +
   labs(
-    y = "Mean %",
+    y = "% TPM",
     x = "Gene"
   ) +
   guides(colour = guide_legend(title = "Fraction"))
 
-plotRmarkdown(p) +
-  theme(legend.position = "top")
+plotRmarkdown(markdown) +
+  theme(
+    legend.position = "top",
+    axis.title.y = element_text(margin = margin(r = 20, "cm"))
+  )
 
-figure <- plotPDF(p)
+pdf <- ggplot(data = NULL) +
+  geom_point(
+    data = stats,
+    aes(x = gene_name, y = mean, color = fraction),
+    position = position_dodge(width = 1),
+    size = 0.25
+  ) +
+  facet_wrap(~`Biosample term name`, ncol = 1) +
+  geom_errorbar(
+    data = stats, 
+    aes(x = gene_name, ymax = sd_max, ymin = sd_min, colour = fraction), 
+    width = 0,
+    position = position_dodge(width = 1),
+    size = 0.1
+  ) +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  labs(
+    y = "% TPM",
+    x = "Gene"
+  ) +
+  guides(colour = guide_legend(title = "Fraction"))
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2a"][[1]])
-# ggsave(
-#  plot = figure,
-#  filename = path,
-#  device = cairo_pdf,
-#  height = 60,
-#  width = 83,
-#  units = "mm"
-# )
+figure <- plotPDF(pdf) +
+  theme(
+    axis.text.y = element_text(size = 4),
+    strip.text.x = element_text(size = 5)
+  )
+
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure1e"][[1]])
+ggsave(
+ plot = figure,
+ filename = path,
+ device = cairo_pdf,
+ height = 60,
+ width = 83,
+ units = "mm"
+)
 ```
 
 <div class="caption">
