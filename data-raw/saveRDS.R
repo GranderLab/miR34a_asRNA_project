@@ -266,31 +266,23 @@ read_tsv('./data-raw/stable_line_ccnd1_prot.txt', col_names = TRUE) %>%
 #the chromosomal regions correspond to 200 bp upstream of the lnc34a start
 #site and 200 bp downstream of the GENCODE annotated miR34a asRNA start site.
 print("processing lnc34a_cage")
-read_tsv('./data-raw/lnc34a_cage.txt') %>%
-  pull(14) %>%
-  data_frame(filename = .) %>%
-  mutate(file_contents = map(
-    filename,
-    ~ miR34AasRNAproject:::.readAndFilter(
-      .,
-      start = (9241796 - 200),
-      stop = (9242263 + 200),
-      col_types = list(
-        col_character(), col_double(), col_double(), col_character(),
-        col_double(), col_character(), col_double(), col_character(),
-        col_double()
-      )
+read_tsv('./data-raw/lnc34a_cage.txt', col_names = FALSE) %>%
+  pull(X1) %>%
+  read_tsv(.) %>%
+  mutate(fileContens =
+    map(
+      `File download URL`,
+      ~ read_tsv(., col_names = FALSE) %>%
+        filter(X1 == "chr1" & X2 >= (9241796 - 200) & X3 <= (9242263 + 200) & X6 == "+")
     )
-  )) %>%
-  unnest() %>%
-  mutate(
-    X8 = as.numeric(replace(X8, X8 == ".", NA)),
-    filename = basename(filename)
   ) %>%
+  unnest() %>%
   rename(
     chr = X1, start = X2, stop = X3, name = X4, score = X5,
-    strand = X6, level = X7, signif = X8, score2 = X9,
+    strand = X6, level = X7, signif = X8, score2 = X9
   ) %>%
+  arrange(desc(level)) %>%
+  mutate(y = 1:n()) %>%
   write_rds(., path = './data/lnc34a_cage.rds')
 
 #lnc34a_splice_jnc
