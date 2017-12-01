@@ -113,28 +113,28 @@ NULL
 parseUCSCfiles <- function(url) {
   fileName <- "(wgEncode.*)\t[A-Za-z]*=.*"
   objStatus <- ".*\tobjStatus=(.*)\\; p[A-Za-z]*=.*"
-  project <- ".*project=(.*)\\; grant.*"
-  grant <- ".*grant=(.*).\\s+lab=.*"
-  lab <- ".*lab=(.*)\\; composite=.*"
-  composite <- ".*composite=(.*)\\; dataType=.*"
-  dataType <- ".*dataType=(.*)\\; view=.*"
-  view <- ".*view=(.*)\\; cell=.*"
-  cell <- ".*cell=(.*)\\; localization=.*"
-  localization <- ".*localization=(.*)\\; rnaExtract=.*"
-  rnaExtract <- ".*rnaExtract=(.*)\\; replicate=.*"
-  replicate <- ".*replicate=(.*)\\; dataVersion=.*"
-  dataVersion <- ".*dataVersion=(.*)\\; dccAccession=.*"
-  dccAccession <- ".*dccAccession=(.*)\\; dateSubmitted=.*"
-  dateSubmitted <- ".*dateSubmitted=(.*)\\; dateUnrestricted=.*"
-  dateUnrestricted <- ".*dateUnrestricted=(.*)\\; subId=.*"
-  geoSampleAccession <- ".*geoSampleAccession=(.*)\\; [A-Za-z]*=.*"
-  labExpId <- ".*labExpId=(.*)\\; bioRep=.*"
-  bioRep <- ".*bioRep=(.*)\\; seqPlatform=.*"
-  seqPlatform <- ".*seqPlatform=(.*)\\; tableName=.*"
-  tableName <- ".*tableName=(.*)\\; type=.*"
-  type <- ".*type=(.*)\\; md5sum=.*"
-  md5sum <- ".*md5sum=(.*)\\; size=.*"
-  size <- ".*size=(.*)$"
+  project <- ".* project=(.*)\\; grant.*"
+  grant <- ".* grant=(.*).\\s+lab=.*"
+  lab <- ".* lab=(.*)\\; composite=.*"
+  composite <- ".* composite=(.*)\\; dataType=.*"
+  dataType <- ".* dataType=(.*)\\; view=.*"
+  view <- ".* view=(.*)\\; cell=.*"
+  cell <- ".* cell=(.*)\\; localization=.*"
+  localization <- ".* localization=(.*)\\; rnaExtract=.*"
+  rnaExtract <- ".* rnaExtract=([A-Za-z]*). .*"
+  Replicate <- ".* replicate=(.*)\\; dataVersion=.*"
+  dataVersion <- ".* dataVersion=(.*)\\; dccAccession=.*"
+  dccAccession <- ".* dccAccession=(.*)\\; dateSubmitted=.*"
+  dateSubmitted <- ".* dateSubmitted=(.*)\\; dateUnrestricted=.*"
+  dateUnrestricted <- ".* dateUnrestricted=(.*)\\; subId=.*"
+  GeoSampleAccession <- ".* geoSampleAccession=(GSM[0-9]*). .*"
+  labExpId <- ".* labExpId=(.*)\\; bioRep=.*"
+  bioRep <- ".* bioRep=(.*)\\; seqPlatform=.*"
+  seqPlatform <- ".* seqPlatform=(.*)\\; tableName=.*"
+  tableName <- ".* tableName=(.*)\\; type=.*"
+  type <- ".* type=(.*)\\; md5sum=.*"
+  md5sum <- ".* md5sum=(.*)\\; size=.*"
+  size <- ".* size=(.*)$"
   
   read_lines(url) %>%
   tibble(
@@ -150,12 +150,12 @@ parseUCSCfiles <- function(url) {
     cell = str_replace(., cell, "\\1"),
     localization = str_replace(., localization, "\\1"),
     `rna extract` = str_replace(., rnaExtract, "\\1"),
-    replicate = str_replace(., replicate, "\\1"),
+    replicate = if_else(str_detect(., Replicate), str_replace(., Replicate, "\\1"), "NA"),
     `data version` = str_replace(., dataVersion, "\\1"),
     `dcc accession` = str_replace(., dccAccession, "\\1"),
     `date submitted` = str_replace(., dateSubmitted, "\\1"),
     `date unrestricted` = str_replace(., dateUnrestricted, "\\1"),
-    `GEO sample accession` = str_replace(., geoSampleAccession, "\\1"),
+    `GEO sample accession` = if_else(str_detect(., GeoSampleAccession), str_replace(., GeoSampleAccession, "\\1"), "NA"),
     `lab exp ID` = str_replace(., labExpId, "\\1"),
     `bio rep` = str_replace(., bioRep, "\\1"),
     `seq platform` = str_replace(., seqPlatform, "\\1"),
@@ -169,6 +169,6 @@ parseUCSCfiles <- function(url) {
       sep = ""
     )
   ) %>%
-  mutate(`obj status` = replace(`obj status`, which(`obj status` == "NA"), NA)) %>%
+  mutate_all(funs(replace(., . == "NA", NA))) %>%
   select(-1, 1)
 }
