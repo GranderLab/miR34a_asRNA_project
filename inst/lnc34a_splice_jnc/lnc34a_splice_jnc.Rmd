@@ -98,7 +98,7 @@ RNAprepTable <- function() {
 }
 ```
 
-All available whole cell RNAseq splice junction data from the ENCODE project originating from the Cold Spring Harbor Lab from `r nrCellLinesDown()` cell lines was downloaded from the UCSC genome browser with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines `r cellLinesInFinal() %>% length()` had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each. Information regarding the RNA extraction is included below:
+All available whole cell RNAseq splice junction data from the ENCODE project originating from the Cold Spring Harbor Lab from `r nrCellLinesDown()` cell lines was downloaded from the UCSC genome browser with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines, `r cellLinesInFinal() %>% length()` had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each. Information regarding the RNA extraction is included below:
 
 Number of samples from included RNA extraction methods:
 
