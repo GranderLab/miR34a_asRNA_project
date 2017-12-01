@@ -3,13 +3,12 @@ title: "Lnc34a CAGE"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
 output:
+  pdf_document: default
   html_document:
-    theme: flatly
     code_folding: hide
-vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    theme: flatly
+vignette: |
+  %\VignetteIndexEntry{Vignette Title} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
 ---
 
 <style> 
@@ -27,7 +26,8 @@ packages <- c(
     "grid",
     "gtable",
     "miR34AasRNAproject",
-    "ggthemes"
+    "ggthemes",
+    "printr"
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
@@ -37,7 +37,7 @@ rm(packages)
 ```{r}
 
 projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
 
 ```
 
@@ -50,16 +50,10 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```{r}
 nrCellLinesDown <- function() {
-  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
   url <- fileMap(type = "txt")["suppFigure3d"][[1]]
-
-  read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
-    pull(14) %>% 
-    gsub(
-      "^http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeRikenCage/wgEncodeRikenCage(.*)Cell.*", 
-      "\\1",
-      .
-    ) %>%
+  read_tsv(gzcon(url(file.path(dataUrl, url)))) %>% 
+    pull(cell) %>%
     unique() %>%
     length()
 }
@@ -67,22 +61,44 @@ nrCellLinesDown <- function() {
 cellLinesInFinal <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
   url <- fileMap(type = "rds")["suppFigure3d"][[1]]
-
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
-    pull(filename) %>%
-    gsub(
-      "^wgEncodeRikenCage(.*)Cell.*",
-      "\\1",
-      .
-    ) %>%
-    unique() %>%
-    sort()
+    pull(cell) %>%
+    unique()
+}
+
+RNAprepTable <- function() {
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "rds")["suppFigure3d"][[1]]
+  read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+    mutate(`rna extract` = str_replace(`rna extract`, "total", "total RNA")) %>%
+    select(`rna extract`) %>%
+    count(`rna extract`)
+}
+
+localizationTable <- function() {
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "rds")["suppFigure3d"][[1]]
+  read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+    select(localization) %>%
+    count(localization)
 }
 
 #add function to show polyA and total RNA table
 ```
 
-All available CAGE data from r nrCellLinesDown() cell lines was downloaded from UCSC with the script entitled "lnc34a CAGE" in the data-raw/saveRDS.R file. Of these r cellLinesInFinal() %>% length() cell lines had CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200). These cell lines included: r cellLinesInFinal(). All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads at in the specified interval.
+All available CAGE data from `r nrCellLinesDown()` cell lines was downloaded from UCSC with the script entitled "lnc34a CAGE" in the data-raw/saveRDS.R file. Of these `r cellLinesInFinal() %>% length()` cell lines had CAGE tags mapping to the plus strand of chromosome 1 and in regions corresponding to 200 bp upstream of the lnc34a start site (9241796 - 200) and 200 bp upstream of the GENCODE annotated miR34a asRNA start site (9242263 + 200). These cell lines included: `r cellLinesInFinal()`. All CAGE reads were plotted and the RPKM of the individual reads was used to color each read to indicate their relative abundance. In addition, a density plot shows the distribution of the CAGE reads in the specified interval. Further information concerning RNA extraction and localization of the samples included is shown below:
+
+Number of samples from included RNA extraction methods:
+
+```{r}
+RNAprepTable()
+```
+
+Number of samples from included RNA localizations:
+
+```{r}
+localizationTable()
+```
 
 <br></br>
 
@@ -312,56 +328,20 @@ ggsave(
   plot = g,
   filename = path,
   device = cairo_pdf,
-  height = 125,
+  height = 150,
   width = 90,
   units = "mm"
 )
 ```
 
-p2 <- ggplot(data = NULL) +
-  gggenes::geom_gene_arrow(
-    data = cage,
-    aes(xmin = start, xmax = stop, y = y, fill = level),
-    arrowhead_width = unit(0, "mm"),
-    arrowhead_height = unit(0, "mm"),
-    arrow_body_height = unit(2, "pt"),
-    colour = NA,
-    lwd = 0.1,
-    show.legend = TRUE
-  ) +
-  ggthemes::theme_few() +
-  viridis::scale_fill_viridis() +
-  theme(
-    axis.title.x = element_blank(),
-    axis.title.y = element_text(size = 6),
-    legend.position = "top",
-    legend.title = element_text(size = 7),
-    legend.text = element_text(size = 6),
-    legend.box.spacing = unit(3, "pt"),
-    axis.text = element_blank(),
-    axis.ticks = element_blank(),
-    panel.border = element_rect(fill = NA, size = 0.1),
-    plot.margin = unit(c(0.01, 1, 0.01, 1), "mm"),
-    strip.text.y = element_text(angle = 0)
-  ) +
-  labs(y = "Cage reads") +
-  xlim(9241000, 9245000) +
-  guides(fill = guide_colourbar(
-    title = "RPKM",
-    title.position = "top",
-    title.hjust = 0.5,
-    barheight = unit(4, "pt"),
-    barwidth = unit(50, "pt")
-  ))
-
 <div class="caption">
-CAGE tags (top), CAGE tag density (middle), and antisense genes (bottom) at the miR34a locus. CAGE tags are colored according to their corresponding RPKM values.
+CAGE tags (top), CAGE tag density (middle), and antisense genes at the miR34a locus and primers from the primer walk assay (bottom). CAGE tags are colored according to their corresponding RPKM values.
 </div>
 
 <br></br>
 
 #### _Conclusions_
 
-The results show a high density of CAGE tags aligning to the region corresponding to the annotated miR34a asRNA start site. An additional peak, albeit with a much lower average expression, aligns slightly upstream of the annotated miR34a asRNA start site and corresponds to the upstream start site detected in our primer walk analysis (figure 1e). Despite this, we find no CAGE tags aligning at the transcription start site or upstream of the transcription start site of the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected. 
+The results show a high density of CAGE tags aligning to the region corresponding to the annotated miR34a asRNA start site. Several additional peaks, albeit with a much lower average expression, aligns slightly upstream of the annotated miR34a asRNA start site, one of which, corresponds to the upstream start site detected in our primer walk analysis (figure 1e). Despite this, we find no CAGE tags aligning at the transcription start site or upstream of the transcription start site of the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected. Finally, lnc34a may not be 5'-capped precluding its detection by CAGE.
 
 <br></br><br></br>
