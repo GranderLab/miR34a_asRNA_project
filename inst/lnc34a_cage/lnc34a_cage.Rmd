@@ -3,10 +3,10 @@ title: "Lnc34a CAGE"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
 output:
-  pdf_document: default
   html_document:
     code_folding: hide
     theme: flatly
+  pdf_document: default
 vignette: |
   %\VignetteIndexEntry{Vignette Title} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
 ---
@@ -136,11 +136,18 @@ pw <- tibble(
 )
 
 gdata <- bind_rows(gdata, pw) %>%
-  mutate(gene = readr::parse_factor(gene, levels = c("Primers", "lnc34a", "miR34a asRNA")))
+  mutate(gene = readr::parse_factor(gene, levels = c("miR34a asRNA", "lnc34a", "Primers")))
 
 #cage data
 url <- fileMap(type = "rds")["suppFigure4a"][[1]]
-cage <- read_rds(gzcon(url(file.path(dataUrl, url))))
+cage <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+  select(start, stop, level) %>%
+  group_by(start, stop) %>%
+  summarize(level = sum(level)) %>%
+  ungroup() %>%
+  arrange(desc(level)) %>%
+  mutate(y = 1:n())
+  
 
 ```
 
@@ -149,19 +156,19 @@ cage <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #genes
 p1 <- ggplot(data = NULL) +
-  geom_segment(
-    data = filter(gdata, feature == "intron"),
-    aes(x = start, xend = stop, y = gene, yend = gene),
-    linetype = "dotted",
-    colour = "gray",
-    size = 1
-  ) +
   gggenes::geom_gene_arrow(
     data = filter(gdata, feature %in% c("exon", "primer")),
-    aes(xmin = start, xmax = stop, y = gene, fill = fill),
+    aes(xmin = start, xmax = stop, y = gene, fill = fill, group = gene),
     arrowhead_width = unit(0, "mm"),
     arrowhead_height = unit(0, "mm"),
     colour = "gray"
+  ) +
+  geom_segment(
+    data = filter(gdata, feature == "intron"),
+    aes(x = start, xend = stop, y = gene, yend = gene, group = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 1
   ) +
   geom_text(
     data = filter(gdata, feature == "primer"),
@@ -224,13 +231,6 @@ grid.draw(resize_heights(g, unit(c(3,1,1), "null")))
 
 #genes
 p1 <- ggplot(data = NULL) +
-  geom_segment(
-    data = filter(gdata, feature == "intron"),
-    aes(x = start, xend = stop, y = gene, yend = gene),
-    linetype = "dotted",
-    colour = "gray",
-    size = 0.25
-  ) +
   gggenes::geom_gene_arrow(
     data = filter(gdata, feature %in% c("exon", "primer")),
     aes(xmin = start, xmax = stop, y = gene, fill = fill),
@@ -240,9 +240,16 @@ p1 <- ggplot(data = NULL) +
     colour = "gray",
     lwd = 0.1
   ) +
+  geom_segment(
+    data = filter(gdata, feature == "intron"),
+    aes(x = start, xend = stop, y = gene, yend = gene),
+    linetype = "dotted",
+    colour = "gray",
+    size = 0.25
+  ) +
   geom_text(
     data = filter(gdata, feature == "primer"),
-    aes(x = start + 10, y = 2.65, label = fill),
+    aes(x = start + 10, y = 2.55, label = fill),
     size = 1.75,
     angle = 90,
     colour = "grey20"
@@ -320,15 +327,15 @@ p3 <- ggplot(data = NULL) +
 
 grobz <- lapply(list(p1, p2, p3), ggplotGrob)
 g <- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = "last")
-g <- resize_heights(g, unit(c(5, 1, 1.5), "null"))
+g <- resize_heights(g, unit(c(5, 1, 2), "null"))
 #grid.draw(g)
 
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure3d"][[1]])
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure4a"][[1]])
 ggsave(
   plot = g,
   filename = path,
   device = cairo_pdf,
-  height = 150,
+  height = 100,
   width = 90,
   units = "mm"
 )
