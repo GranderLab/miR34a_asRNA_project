@@ -282,8 +282,6 @@ parseUCSCfiles('http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncod
     chr = X1, start = X2, stop = X3, name = X4, score = X5,
     strand = X6, level = X7, signif = X8, score2 = X9
   ) %>%
-  arrange(desc(level)) %>%
-  mutate(y = 1:n()) %>%
   write_rds(., path = './data/lnc34a_cage.rds')
 
 #lnc34a_splice_jnc
