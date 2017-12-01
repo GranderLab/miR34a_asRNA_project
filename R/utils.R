@@ -86,7 +86,30 @@ fileMap <- function(type) {
     filter(X1 == "chr1" & X2 >= start & X3 <= stop & X6 == "+")
 }
 
-#parse ENCODE metadata from UCSC
+#' parseUCSCfiles
+#'
+#' Parse ENCODE metadata from UCSC. Currently only tested for CAGE.
+#'
+#' @name parseUCSCfiles
+#' @rdname parseUCSCfiles
+#' @aliases parseUCSCfiles
+#' @param url character. THe url of the metadata file.
+#' @return tibble.
+#' @author Jason T. Serviss
+#' @examples
+#'
+#' parseUCSCfiles()
+#'
+NULL
+
+#' @rdname parseUCSCfiles
+#' @export
+#' @importFrom readr read_lines
+#' @importFrom magrittr "%>%"
+#' @importFrom tibble tibble
+#' @importFrom stringr str_replace str_detect
+#' @importFrom dplyr if_else mutate select
+
 parseUCSCfiles <- function(url) {
   fileName <- "(wgEncode.*)\t[A-Za-z]*=.*"
   objStatus <- ".*\tobjStatus=(.*)\\; p[A-Za-z]*=.*"
