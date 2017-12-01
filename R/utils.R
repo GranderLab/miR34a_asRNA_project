@@ -85,3 +85,67 @@ fileMap <- function(type) {
   read_tsv(x, col_names = FALSE, col_types = col_types) %>%
     filter(X1 == "chr1" & X2 >= start & X3 <= stop & X6 == "+")
 }
+
+#parse ENCODE metadata from UCSC
+parseUCSCfiles <- function(url) {
+  fileName <- "(wgEncode.*)\t[A-Za-z]*=.*"
+  objStatus <- ".*\tobjStatus=(.*)\\; p[A-Za-z]*=.*"
+  project <- ".*project=(.*)\\; grant.*"
+  grant <- ".*grant=(.*).\\s+lab=.*"
+  lab <- ".*lab=(.*)\\; composite=.*"
+  composite <- ".*composite=(.*)\\; dataType=.*"
+  dataType <- ".*dataType=(.*)\\; view=.*"
+  view <- ".*view=(.*)\\; cell=.*"
+  cell <- ".*cell=(.*)\\; localization=.*"
+  localization <- ".*localization=(.*)\\; rnaExtract=.*"
+  rnaExtract <- ".*rnaExtract=(.*)\\; replicate=.*"
+  replicate <- ".*replicate=(.*)\\; dataVersion=.*"
+  dataVersion <- ".*dataVersion=(.*)\\; dccAccession=.*"
+  dccAccession <- ".*dccAccession=(.*)\\; dateSubmitted=.*"
+  dateSubmitted <- ".*dateSubmitted=(.*)\\; dateUnrestricted=.*"
+  dateUnrestricted <- ".*dateUnrestricted=(.*)\\; subId=.*"
+  geoSampleAccession <- ".*geoSampleAccession=(.*)\\; [A-Za-z]*=.*"
+  labExpId <- ".*labExpId=(.*)\\; bioRep=.*"
+  bioRep <- ".*bioRep=(.*)\\; seqPlatform=.*"
+  seqPlatform <- ".*seqPlatform=(.*)\\; tableName=.*"
+  tableName <- ".*tableName=(.*)\\; type=.*"
+  type <- ".*type=(.*)\\; md5sum=.*"
+  md5sum <- ".*md5sum=(.*)\\; size=.*"
+  size <- ".*size=(.*)$"
+  
+  read_lines(url) %>%
+  tibble(
+    line = .,
+    `file name` = str_replace(., fileName, "\\1"),
+    `obj status` = if_else(str_detect(., objStatus), str_replace(., objStatus, "\\1"), "NA"),
+    project = str_replace(., project, "\\1"),
+    grant = str_replace(., grant, "\\1"),
+    lab = str_replace(., lab, "\\1"),
+    composite = str_replace(., composite, "\\1"),
+    `data type` = str_replace(., dataType, "\\1"),
+    view = str_replace(., view, "\\1"),
+    cell = str_replace(., cell, "\\1"),
+    localization = str_replace(., localization, "\\1"),
+    `rna extract` = str_replace(., rnaExtract, "\\1"),
+    replicate = str_replace(., replicate, "\\1"),
+    `data version` = str_replace(., dataVersion, "\\1"),
+    `dcc accession` = str_replace(., dccAccession, "\\1"),
+    `date submitted` = str_replace(., dateSubmitted, "\\1"),
+    `date unrestricted` = str_replace(., dateUnrestricted, "\\1"),
+    `GEO sample accession` = str_replace(., geoSampleAccession, "\\1"),
+    `lab exp ID` = str_replace(., labExpId, "\\1"),
+    `bio rep` = str_replace(., bioRep, "\\1"),
+    `seq platform` = str_replace(., seqPlatform, "\\1"),
+    `table name` = str_replace(., tableName, "\\1"),
+    type = str_replace(., type, "\\1"),
+    md5sum = str_replace(., md5sum, "\\1"),
+    size = str_replace(., size, "\\1"),
+    url = paste(
+      "http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeRikenCage/",
+      str_replace(., fileName, "\\1"),
+      sep = ""
+    )
+  ) %>%
+  mutate(`obj status` = replace(`obj status`, which(`obj status` == "NA"), NA)) %>%
+  select(-1, 1)
+}
