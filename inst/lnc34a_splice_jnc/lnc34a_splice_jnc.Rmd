@@ -23,10 +23,11 @@ vignette: >
 ```{r, echo = FALSE, message = FALSE}
 
 packages <- c(
-    "tidyverse",
-    "grid",
-    "gtable",
-    "miR34AasRNAproject"
+  "tidyverse",
+  "grid",
+  "gtable",
+  "miR34AasRNAproject",
+  "printr"
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
@@ -78,9 +79,32 @@ cellLinesInFinal <- function() {
     unique() %>%
     sort()
 }
+
+RNAprepTable <- function() {
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "rds")["suppFigure3e"][[1]]
+  final <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+    select(filename) %>%
+    distinct() %>%
+    mutate(filename = str_replace(filename, "^(.*)\\.bedRnaElements.*", "\\1"))
+  
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+  url <- fileMap(type = "txt")["suppFigure3e"][[1]]
+  read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
+    filter(X__15 %in% pull(final, filename)) %>%
+    rename(`rna extract` = X__3) %>%
+    select(`rna extract`) %>%
+    count(`rna extract`)
+}
 ```
 
-All available RNAseq splice junction data from the ENCODE project originating from the Cold Spring Harbor Lab from `r nrCellLinesDown()` cell lines was downloaded from the UCSC genome browser with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines `r cellLinesInFinal() %>% length()` had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each.
+All available whole cell RNAseq splice junction data from the ENCODE project originating from the Cold Spring Harbor Lab from `r nrCellLinesDown()` cell lines was downloaded from the UCSC genome browser with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines `r cellLinesInFinal() %>% length()` had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each. Information regarding the RNA extraction is included below:
+
+Number of samples from included RNA extraction methods:
+
+```{r, message = FALSE}
+RNAprepTable()
+```
 
 <br></br>
 
@@ -259,12 +283,12 @@ g <- resize_heights(g, unit(c(6, 1), "null"))
 ```
 
 <div class="caption">
-Splice junctions (top) detected in RNAseq data from the ENCODE project and antisense genes (bottom) at the miR34a locus. Splice junctions are colored according to the corresponding total read count.
+Splice junctions (top) detected in RNAseq data from the ENCODE project and antisense genes (bottom) at the miR34a locus. Splice junctions are colored according to the corresponding total read count. In cases where the exact same read was detected multiple times the read count was summed.
 </div>
 
 <br></br>
 
 #### _Conclusions_
-Multiple splice junctions correspond to the miR34a asRNA transcrips and its isoforms (Supplementary figure XX) with those being the mist highly expressed corresponding to the annotated miR34a asRNA transcript. Despite this, no splice junctions appear to correspond to the intron in the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected.
+Multiple splice junctions correspond to the miR34a asRNA transcrips and its isoforms (**Supplementary Fig 1d.**) with those being the most highly expressed corresponding to the annotated miR34a asRNA transcript. Despite this, no splice junctions appear to correspond to the intron in the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected. Finally, lnc34a may not be expressed in any of the cell lines examined.
 
 <br></br><br></br>
