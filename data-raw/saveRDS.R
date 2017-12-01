@@ -266,13 +266,15 @@ read_tsv('./data-raw/stable_line_ccnd1_prot.txt', col_names = TRUE) %>%
 #the chromosomal regions correspond to 200 bp upstream of the lnc34a start
 #site and 200 bp downstream of the GENCODE annotated miR34a asRNA start site.
 print("processing lnc34a_cage")
-read_tsv('./data-raw/lnc34a_cage.txt', col_names = FALSE) %>%
-  pull(X1) %>%
-  read_tsv(.) %>%
+parseUCSCfiles('http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeRikenCage/files.txt') %>%
+  filter(type == "bedRnaElements") %>%
+  write_tsv(., path = './data-raw/lnc34a_cage.txt') %>%
+#slice(1:5) %>%
   mutate(fileContens =
     map(
-      `File download URL`,
-      ~ read_tsv(., col_names = FALSE) %>%
+      `url`,
+      ~ print(.) %>%
+        read_tsv(., col_names = FALSE, na = c("", "NA", ".")) %>%
         filter(X1 == "chr1" & X2 >= (9241796 - 200) & X3 <= (9242263 + 200) & X6 == "+")
     )
   ) %>%
