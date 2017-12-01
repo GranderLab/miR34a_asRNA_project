@@ -48,8 +48,8 @@ fileMap <- function(type) {
     suppFigure3a = "stable_line_expression_hek293t/stable_line_expression_hek293t.Rmd",
     suppFigure3b = "stable_line_ccnd1_exp/stable_line_ccnd1_exp.Rmd",
     suppFigure3c = "stable_line_ccnd1_prot/stable_line_ccnd1_prot.Rmd",
-    suppFigure3d = "lnc34a_cage/lnc34a_cage.Rmd",
-    suppFigure3e = "lnc34a_splice_jnc/lnc34a_splice_jnc.Rmd"
+    suppFigure4a = "lnc34a_cage/lnc34a_cage.Rmd",
+    suppFigure4b = "lnc34a_splice_jnc/lnc34a_splice_jnc.Rmd"
   )
   
   if(type == "Rmd") {

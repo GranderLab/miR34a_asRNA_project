@@ -51,7 +51,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
 ```{r}
 nrCellLinesDown <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
-  url <- fileMap(type = "txt")["suppFigure3d"][[1]]
+  url <- fileMap(type = "txt")["suppFigure4a"][[1]]
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %>% 
     pull(cell) %>%
     unique() %>%
@@ -60,7 +60,7 @@ nrCellLinesDown <- function() {
 
 cellLinesInFinal <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "rds")["suppFigure3d"][[1]]
+  url <- fileMap(type = "rds")["suppFigure4a"][[1]]
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(cell) %>%
     unique()
@@ -68,7 +68,7 @@ cellLinesInFinal <- function() {
 
 RNAprepTable <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "rds")["suppFigure3d"][[1]]
+  url <- fileMap(type = "rds")["suppFigure4a"][[1]]
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     mutate(`rna extract` = str_replace(`rna extract`, "total", "total RNA")) %>%
     select(`rna extract`) %>%
@@ -77,7 +77,7 @@ RNAprepTable <- function() {
 
 localizationTable <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "rds")["suppFigure3d"][[1]]
+  url <- fileMap(type = "rds")["suppFigure4a"][[1]]
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     select(localization) %>%
     count(localization)
@@ -139,7 +139,7 @@ gdata <- bind_rows(gdata, pw) %>%
   mutate(gene = readr::parse_factor(gene, levels = c("Primers", "lnc34a", "miR34a asRNA")))
 
 #cage data
-url <- fileMap(type = "rds")["suppFigure3d"][[1]]
+url <- fileMap(type = "rds")["suppFigure4a"][[1]]
 cage <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 ```
