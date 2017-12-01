@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 We hypothesized that miR34a asRNA may function to mediate the levels of its sense gene, miR34a. To this end, we stably over-expressed miR34a asRNA, using lentiviral transduction, in 3 different p53-null cell lines and monitored the effects on miR34a.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -166,7 +166,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, message = FALSE}
 
@@ -422,15 +422,15 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3a"][[1]])
-ggsave(
-   plot = figure,
-   filename = path,
-   device = cairo_pdf,
-   height = 60,
-   width = 83,
-   units = "mm"
-)
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3a"][[1]])
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
 ```
 
 <div class="caption">
@@ -439,7 +439,7 @@ miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-e
 
 <br></br>
 
-####_Conclusion_
+#### _Conclusion_
 
 miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all 3 cell lines. This indicates that miR34a asRNA concordantly regulates miR34a.
 

@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 miR34a asRNA over-expression was shown to increase the expression levels of miR34a. We investigated if this increase of miR34a was due to increased levels of transcription at the miR34a promoter.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -86,7 +86,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, message = FALSE}
 
@@ -281,7 +281,7 @@ Phosphorylated Poll II ChIP in miR34a asRNA over-expressing PC3 stable cell line
 
 <br></br>
 
-####_Conclusion_
+#### _Conclusion_
 
 Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-expressing cell lines indicating that the regulation of miR34a by miR34a asRNA is transcriptional.
 

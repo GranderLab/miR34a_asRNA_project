@@ -44,15 +44,15 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
-####_Results_
+#### _Results_
 ```{r}
 url <- fileMap(type = "rds")["figure1c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
@@ -97,6 +97,6 @@ Insert code here from Erik and write Intro Methods etc
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 <br></br><br></br>

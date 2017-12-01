@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 Our previous results showed that miR34a HG and asRNA are simultaneously up-regulated in response to doxorubicin treatment leading us to consider the possibility that miR34a asRNA may be necessary for an appropriate miR34a response to apoptotic signaling. To explore this possibility we again utilized the p1 construct, co-transfecting it with an shRNA targeting renilla, and treating HCT116 cells with increasing levels of doxorubicin.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -131,7 +131,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 See Figure 2c for a schematic representation of the P1 construct.
 
@@ -338,7 +338,7 @@ HCT116 cells were co-transfected with the p1 construct and shRNA renilla or shRN
 
 <br></br>
 
-####_Conclusion_
+#### _Conclusion_
 
 Levels of luciferase were abrogated in the shRenilla-transfected cells compared to control shRNA-transfected cells. Collectively, these results indicate that miR34a asRNA positively regulates levels of miR34a HG and is crucial for a proper miR34a response to apoptotic stimuli.
 

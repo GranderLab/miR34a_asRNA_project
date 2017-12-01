@@ -44,19 +44,19 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 An antisense transcript to the miR34a HG was detected using the UCSC genome browser.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 The USCS genome browser was utilized for the bioinformatic evaluation of antisense transcription at the miR34a locus.
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, out.width = "850px"}
 
@@ -71,7 +71,7 @@ A schematic picture of the miR34a locus from the UCSC genome browser (hg38) incl
 
 <br></br>
 
-####_Conclusion_
+#### _Conclusion_
 
 GENCODE annotation supports the presence of a transcript orininating in the antisense orientation from the miR34a gene. 
 

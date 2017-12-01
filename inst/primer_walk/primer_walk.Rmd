@@ -45,13 +45,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 We desired to determine the 5'-start site for the miR34a asRNA.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -91,7 +91,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 Primer placement at the locus can be viewed in Supplementary Figure 1b.
 
@@ -108,7 +108,7 @@ The semi-quantitative PCR results from the primer walk assay performed using HEK
 
 <br></br>
 
-####_Conclusion_
+#### _Conclusion_
 
 It appears as though the miR34a asRNA transcript start site is somewhat upstream of the annotated start site. Although there is some product present for the F12 primer, the majority of transcription seems to be originating from the F11 primer. This indicates that the start site is between 71-224bp upstream of the annotated start site.
 

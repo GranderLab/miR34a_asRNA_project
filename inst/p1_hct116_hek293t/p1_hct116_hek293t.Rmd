@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 It is likely, due to the head-to head orientation of miR34a HG and asRNA, that transcription initiation may be activated from a single promoter in a bi-directional manner. To investigate whether miR34a HG and asRNA are transcribed from the same promoter as convergent transcripts, we cloned the miR34a HG promoter, including the p53 binding site, into a luciferase/renilla dual reporter vector which we hereafter refer to as p1. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -114,7 +114,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 *For a schematic representation of the P1 construct please see Figure 2c.
 
@@ -376,7 +376,7 @@ miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection
 
 <br></br>
 
-####_Conclusion_
+#### _Conclusion_
 
 Upon transfection of this construct in two separate cell lines we observed increases in both luciferase and renilla indicating that miR34a HG and asRNA expression is regulated by a single promoter contained within the p1 construct.
 

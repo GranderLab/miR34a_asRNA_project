@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 As p53 is a well-known regulator of senescence, growth, and apoptosis and has been shown to specifically important under conditions of cellular stress, such as starvation. Therefore, we investigated whether overexpression of miR34a AS affects growth rate under normal and starvation conditions by measuring changes in confluency over time.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -66,7 +66,7 @@ Three technical triplicates were included in each experiment and these were inde
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, message = FALSE}
 
@@ -237,7 +237,7 @@ The effects of miR34a asRNA overexpression on growth in normal and starvation co
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 miR34a asRNA overexpression causes a minor decrease in cell growth under normal conditions (RPMI) although under conditions of cellular stress through starvation, this effect is increased dramatically. 
 

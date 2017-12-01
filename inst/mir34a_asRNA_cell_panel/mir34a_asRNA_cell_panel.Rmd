@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 We wished to examine expression of miR34a asRNA in different cancer tissues and, therefore, utilized a panel of common cancer cell lines to detect miR34a asRNA expression, as well as, miR34a HG. We included both p53 wild type, p53 mutated, and p53 null cell lines in the cell line panel due to the fact that miR34a is a known downstream target of p53.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -88,7 +88,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, out.width = "850px"}
 
@@ -104,7 +104,7 @@ Semi-quantitative PCR data from the screening of a panel of cell lines.
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 We were able to detect co-expression of both miR34a HG and miR34a AS in a variety of cell lines, including HCT116 human colon cancer cells and 293T human embryonic kidney cells.
 

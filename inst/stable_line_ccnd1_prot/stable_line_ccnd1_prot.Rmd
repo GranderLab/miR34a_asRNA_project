@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 After observing decreased mRNA levels for the miR34a target CCND1, we were interested whether this has also consequences for its protein levels. 
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -65,7 +65,7 @@ Resulting bands on the western blots were quantified using the ImageJ software w
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 _Western blot_
 ```{r, out.width = "500px"}
@@ -266,6 +266,6 @@ Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 Cyclin D1 protein levels are significantly reduced in PC3 cells overexpressing miR34a asRNA, consistent with increased miR34a expression levels and the reduced G1 cell cycle phase observed in PC3 cells.

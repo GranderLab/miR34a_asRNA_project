@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 To further investigate the characteristics of the miR34a asRNA stable lines, we measured the expression level of known miR34a target cyclin D1. miR34a has been previously shown to inhibit cell cycle progression, partially via its regulation of cyclin D1.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -90,7 +90,7 @@ primers
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -269,6 +269,6 @@ Q-PCR showing cyclin D1 levels in PC3 miR34a asRNA over-expressing stable lines.
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 CCND1 expression levels are decreased in PC3 cell lines stably over-expressing miR34a asRNA.
