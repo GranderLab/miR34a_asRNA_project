@@ -269,7 +269,6 @@ print("processing lnc34a_cage")
 parseUCSCfiles('http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeRikenCage/files.txt') %>%
   filter(type == "bedRnaElements") %>%
   write_tsv(., path = './data-raw/lnc34a_cage.txt') %>%
-#slice(1:5) %>%
   mutate(fileContens =
     map(
       `url`,
