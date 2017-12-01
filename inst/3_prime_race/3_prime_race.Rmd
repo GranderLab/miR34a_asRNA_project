@@ -44,13 +44,13 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
-####_Introduction_
+#### _Introduction_
 
 In order to define the 3' transcription termination site for the miR34a asRNA, 3'-RACE was performed.
 
 <br></br>
 
-####_Methods_
+#### _Methods_
 
 <br></br>
 
@@ -136,7 +136,7 @@ plotRmarkdown(p) +
 
 <br></br>
 
-####_Results_
+#### _Results_
 
 ```{r, out.width = "850px"}
 
@@ -151,7 +151,7 @@ knitr::include_graphics(file.path(projectUrl, url))
 
 <br></br>
 
-####_Conclusions_
+#### _Conclusions_
 
 Sequencing of the resulting cloned cDNA indicated the transcripts 3’ transcription termination site to be 125bp upstream of the RP3-510D11.2 transcript’s annotated termination site.
 
