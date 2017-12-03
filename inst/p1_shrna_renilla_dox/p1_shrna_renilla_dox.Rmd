@@ -343,3 +343,7 @@ HCT116 cells were co-transfected with the p1 construct and shRNA renilla or shRN
 Levels of luciferase were abrogated in the shRenilla-transfected cells compared to control shRNA-transfected cells. Collectively, these results indicate that miR34a asRNA positively regulates levels of miR34a HG and is crucial for a proper miR34a response to apoptotic stimuli.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

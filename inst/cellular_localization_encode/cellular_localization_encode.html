@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason T. Serviss" />
 
-<meta name="date" content="2017-11-27" />
+<meta name="date" content="2017-12-03" />
 
 <title>miR34a asRNA cellular localization</title>
 
@@ -400,7 +400,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">miR34a asRNA cellular localization</h1>
 <h4 class="author"><em>Jason T. Serviss</em></h4>
-<h4 class="date"><em>2017-11-27</em></h4>
+<h4 class="date"><em>2017-12-03</em></h4>
 
 </div>
 
@@ -416,10 +416,12 @@ $(document).ready(function () {
 dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;</code></pre>
 <section id="introduction" class="level4">
 <h4><em>Introduction</em></h4>
+<p>asRNAs are known to be capable of exerting regulatory functions on both a transcriptional and post-transcriptional level and therefore, the cellular localization of the asRNA can be informative concerning the method of regulation.</p>
 <p><br /></p>
 </section>
 <section id="methods" class="level4">
 <h4><em>Methods</em></h4>
+<p>Quantified RNAseq data from 11 cell lines from the GRCh38 assembly was downloaded from ENCODE and quantifications for miR34a asRNA (ENSG00000234546), ACTB (ENSG00000075624), GAPDH (ENSG00000111640), and MALAT1 (ENSG00000251562) were extracted. Cell lines for which data was downloaded include: A549, GM12878, HeLa-S3, HepG2, HT1080, K562 MCF-7, NCI-H460, SK-MEL-5, SK-N-DZ, SK-N-SH. Initial exploratory analysis revealed that several cell lines should not be included in the final figure for the following reasons: The SK-N-SH has a larger proportion of GAPDH in the nucleus than cytoplasm. The variation of miR34a asRNA expression is too large for SK-MEL-5. K562, HT1080, SK-N-DZ, and NCI-H460 have no or low miR34a asRNA expression. In addition, both the cytoplasmic markers ACTB and GAPDH were analyzed for their ability to differentiate between the nuclear and cytoplasmic fractions, and GAPDH was choosed for the final analysis due its superior performance. Furthermore, only polyadenylated libraries were used in the final analysis and only samples with 2 biological replicates were retained. For each cell type, gene, and biological replicate the fraction of transcripts per million (TPM) in each cellular compartment was calculate as the fraction of TPM in the specific compartment by the total TPM. The mean and standard deviation for the fraction was subsequently calculated for each cell type and cellular compartment and this information was represented in the final figure.</p>
 <p><br /></p>
 </section>
 <section id="results" class="level4">
@@ -521,13 +523,53 @@ ggsave(
  units = &quot;mm&quot;
 )</code></pre>
 <div class="caption">
-<p>Write figure legend.</p>
+<p>RNAseq data from five fractionated cell lines in the ENCODE project showing the percentage of transcripts per million (TPM) for miR34a asRNA. MALAT1 (nuclear localization) and GAPDH (cytoplasmic localization) are included as fractionation controls. Points represent the mean and horizontal lines represent the standard deviation from two biological replicates.</p>
 </div>
 <p><br /></p>
 </section>
 <section id="conclusions" class="level4">
 <h4><em>Conclusions</em></h4>
+<p>The analysis revealed that the miR34a asRNA transcript localizes to both the nucleus and cytoplasm but primarily resides in the nucleus.</p>
 <p><br /><br /></p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.4.2 (2017-09-28)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS High Sierra 10.13.1
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
+## 
+## other attached packages:
+##  [1] bindrcpp_0.2                  gtable_0.2.0                 
+##  [3] miR34AasRNAproject_0.0.0.0001 ggthemes_3.4.0               
+##  [5] printr_0.1                    forcats_0.2.0                
+##  [7] stringr_1.2.0                 dplyr_0.7.4                  
+##  [9] purrr_0.2.4                   readr_1.1.1.9000             
+## [11] tidyr_0.7.2                   tibble_1.3.4                 
+## [13] ggplot2_2.2.1                 tidyverse_1.2.1              
+## 
+## loaded via a namespace (and not attached):
+##  [1] reshape2_1.4.2   haven_1.1.0      lattice_0.20-35  colorspace_1.3-2
+##  [5] htmltools_0.3.6  yaml_2.1.14      rlang_0.1.4      foreign_0.8-69  
+##  [9] glue_1.2.0       modelr_0.1.1     readxl_1.0.0     bindr_0.1       
+## [13] plyr_1.8.4       munsell_0.4.3    cellranger_1.1.0 rvest_0.3.2     
+## [17] liftr_0.7        psych_1.7.8      evaluate_0.10.1  labeling_0.3    
+## [21] knitr_1.17       parallel_3.4.2   curl_3.0         broom_0.4.3     
+## [25] Rcpp_0.12.13     rgeolocate_1.0.1 backports_1.1.1  scales_0.5.0    
+## [29] jsonlite_1.5     mnormt_1.5-5     hms_0.4.0        digest_0.6.12   
+## [33] stringi_1.1.6    rprojroot_1.2    cli_1.0.0        tools_3.4.2     
+## [37] magrittr_1.5     lazyeval_0.2.1   crayon_1.3.4     pkgconfig_2.0.1 
+## [41] xml2_1.1.1       lubridate_1.7.1  assertthat_0.2.0 rmarkdown_1.8   
+## [45] httr_1.3.1       rstudioapi_0.7   R6_2.2.2         nlme_3.1-131    
+## [49] compiler_3.4.2</code></pre>
 </section>
 
 

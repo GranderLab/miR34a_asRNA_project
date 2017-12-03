@@ -156,3 +156,7 @@ knitr::include_graphics(file.path(projectUrl, url))
 Sequencing of the resulting cloned cDNA indicated the transcripts 3’ transcription termination site to be 125bp upstream of the RP3-510D11.2 transcript’s annotated termination site.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

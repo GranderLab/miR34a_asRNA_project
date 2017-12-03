@@ -45,9 +45,12 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 #### _Introduction_
 
+asRNAs are known to be capable of exerting regulatory functions on both a transcriptional and post-transcriptional level and therefore, the cellular localization of the asRNA can be informative concerning the method of regulation. 
+
 <br></br>
 
 #### _Methods_
+Quantified RNAseq data from 11 cell lines from the GRCh38 assembly was downloaded from ENCODE and quantifications for miR34a asRNA (ENSG00000234546), ACTB (ENSG00000075624), GAPDH (ENSG00000111640), and MALAT1 (ENSG00000251562) were extracted. Cell lines for which data was downloaded include: A549, GM12878, HeLa-S3, HepG2, HT1080, K562    MCF-7, NCI-H460, SK-MEL-5, SK-N-DZ, SK-N-SH. Initial exploratory analysis revealed that several cell lines should not be included in the final figure for the following reasons: The SK-N-SH has a larger proportion of GAPDH in the nucleus than cytoplasm. The variation of miR34a asRNA expression is too large for SK-MEL-5. K562, HT1080, SK-N-DZ, and NCI-H460 have no or low miR34a asRNA expression. In addition, both the cytoplasmic markers ACTB and GAPDH were analyzed for their ability to differentiate between the nuclear and cytoplasmic fractions, and GAPDH was choosed for the final analysis due its superior performance. Furthermore, only polyadenylated libraries were used in the final analysis and only samples with 2 biological replicates were retained. For each cell type, gene, and biological replicate the fraction of transcripts per million (TPM) in each cellular compartment was calculate as the fraction of TPM in the specific compartment by the total TPM. The mean and standard deviation for the fraction was subsequently calculated for each cell type and cellular compartment and this information was represented in the final figure.
 
 <br></br>
 
@@ -158,11 +161,16 @@ ggsave(
 ```
 
 <div class="caption">
-Write figure legend.
+RNAseq data from five fractionated cell lines in the ENCODE project showing the percentage of transcripts per million (TPM) for miR34a asRNA. MALAT1 (nuclear localization) and GAPDH (cytoplasmic localization) are included as fractionation controls. Points represent the mean and horizontal lines represent the standard deviation from two biological replicates.
 </div>
 
 <br></br>
 
 #### _Conclusions_
+The analysis revealed that the miR34a asRNA transcript localizes to both the nucleus and cytoplasm but primarily resides in the nucleus.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```
