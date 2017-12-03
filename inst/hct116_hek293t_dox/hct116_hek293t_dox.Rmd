@@ -100,7 +100,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure2b"][[1]]
+url <- fileMap(type = "rds")["figure2a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -339,7 +339,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2b"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2a"][[1]])
 # ggsave(
 #    plot = figure,
 #    filename = path,
@@ -361,3 +361,7 @@ Q-PCR showing miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells afte
 We observed increases in miR34a HG and asRNA expression upon doxorubicin treatment indicating that these two transcripts are co-regulated. 
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

@@ -58,3 +58,7 @@ A schematic picture of the miR34a asRNA locus including the location of the prim
 </div>
 
 <br></br>
+
+```{r}
+sessionInfo()
+```

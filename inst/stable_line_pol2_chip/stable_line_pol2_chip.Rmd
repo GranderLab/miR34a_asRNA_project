@@ -286,3 +286,7 @@ Phosphorylated Poll II ChIP in miR34a asRNA over-expressing PC3 stable cell line
 Phosphorylated pol-II was increased at the miR34a promoter in miR34a asRNA over-expressing cell lines indicating that the regulation of miR34a by miR34a asRNA is transcriptional.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

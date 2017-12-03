@@ -352,3 +352,7 @@ CAGE tags (top), CAGE tag density (middle), and antisense genes at the miR34a lo
 The results show a high density of CAGE tags aligning to the region corresponding to the annotated miR34a asRNA start site. Several additional peaks, albeit with a much lower average expression, aligns slightly upstream of the annotated miR34a asRNA start site, one of which, corresponds to the upstream start site detected in our primer walk analysis (**Figure 1e**). Despite this, we find no CAGE tags aligning at the transcription start site or upstream of the transcription start site of the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected. Finally, lnc34a may not be 5'-capped precluding its detection by CAGE.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

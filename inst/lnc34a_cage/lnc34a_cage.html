@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason T. Serviss" />
 
-<meta name="date" content="2017-12-01" />
+<meta name="date" content="2017-12-03" />
 
 <title>Lnc34a CAGE</title>
 
@@ -400,7 +400,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Lnc34a CAGE</h1>
 <h4 class="author"><em>Jason T. Serviss</em></h4>
-<h4 class="date"><em>2017-12-01</em></h4>
+<h4 class="date"><em>2017-12-03</em></h4>
 
 </div>
 
@@ -742,15 +742,15 @@ g &lt;- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = &quot;last&quot;)
 g &lt;- resize_heights(g, unit(c(5, 1, 2), &quot;null&quot;))
 #grid.draw(g)
 
-path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure4a&quot;][[1]])
-ggsave(
-  plot = g,
-  filename = path,
-  device = cairo_pdf,
-  height = 100,
-  width = 90,
-  units = &quot;mm&quot;
-)</code></pre>
+# path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure4a&quot;][[1]])
+# ggsave(
+#   plot = g,
+#   filename = path,
+#   device = cairo_pdf,
+#   height = 100,
+#   width = 90,
+#   units = &quot;mm&quot;
+# )</code></pre>
 <div class="caption">
 <p>CAGE tags (top), CAGE tag density (middle), and antisense genes at the miR34a locus and primers from the primer walk assay (bottom). CAGE tags are colored according to their corresponding RPKM values.</p>
 </div>
@@ -760,6 +760,51 @@ ggsave(
 <h4><em>Conclusions</em></h4>
 <p>The results show a high density of CAGE tags aligning to the region corresponding to the annotated miR34a asRNA start site. Several additional peaks, albeit with a much lower average expression, aligns slightly upstream of the annotated miR34a asRNA start site, one of which, corresponds to the upstream start site detected in our primer walk analysis (<strong>Figure 1e</strong>). Despite this, we find no CAGE tags aligning at the transcription start site or upstream of the transcription start site of the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected. Finally, lnc34a may not be 5’-capped precluding its detection by CAGE.</p>
 <p><br /><br /></p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.4.2 (2017-09-28)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS High Sierra 10.13.1
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
+## 
+## other attached packages:
+##  [1] bindrcpp_0.2                  printr_0.1                   
+##  [3] ggthemes_3.4.0                miR34AasRNAproject_0.0.0.0001
+##  [5] gtable_0.2.0                  forcats_0.2.0                
+##  [7] stringr_1.2.0                 dplyr_0.7.4                  
+##  [9] purrr_0.2.4                   readr_1.1.1.9000             
+## [11] tidyr_0.7.2                   tibble_1.3.4                 
+## [13] ggplot2_2.2.1                 tidyverse_1.2.1              
+## 
+## loaded via a namespace (and not attached):
+##  [1] reshape2_1.4.2     haven_1.1.0        lattice_0.20-35   
+##  [4] colorspace_1.3-2   viridisLite_0.2.0  htmltools_0.3.6   
+##  [7] yaml_2.1.14        rlang_0.1.4        foreign_0.8-69    
+## [10] glue_1.2.0         modelr_0.1.1       readxl_1.0.0      
+## [13] bindr_0.1          plyr_1.8.4         ggfittext_0.5.0   
+## [16] munsell_0.4.3      cellranger_1.1.0   rvest_0.3.2       
+## [19] liftr_0.7          psych_1.7.8        evaluate_0.10.1   
+## [22] labeling_0.3       knitr_1.17         gggenes_0.2.0.9003
+## [25] parallel_3.4.2     curl_3.0           highr_0.6         
+## [28] broom_0.4.3        Rcpp_0.12.13       rgeolocate_1.0.1  
+## [31] backports_1.1.1    scales_0.5.0       jsonlite_1.5      
+## [34] gridExtra_2.3      mnormt_1.5-5       hms_0.4.0         
+## [37] digest_0.6.12      stringi_1.1.6      rprojroot_1.2     
+## [40] cli_1.0.0          tools_3.4.2        magrittr_1.5      
+## [43] lazyeval_0.2.1     crayon_1.3.4       pkgconfig_2.0.1   
+## [46] xml2_1.1.1         lubridate_1.7.1    viridis_0.4.0     
+## [49] assertthat_0.2.0   rmarkdown_1.8      httr_1.3.1        
+## [52] rstudioapi_0.7     R6_2.2.2           nlme_3.1-131      
+## [55] compiler_3.4.2</code></pre>
 </section>
 
 

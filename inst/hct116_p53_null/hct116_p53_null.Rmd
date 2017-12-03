@@ -102,7 +102,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure2a"][[1]]
+url <- fileMap(type = "rds")["figure2b"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -265,7 +265,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2a"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2b"][[1]])
 # ggsave(
 #  plot = figure,
 #  filename = path,
@@ -287,3 +287,7 @@ Monitoring the effects of 24 hours doxorubicin treatment on miR34a asRNA and HG 
 We observed increasing miR34a HG and asRNA expression with increasing doses of doxorubicin indicating that these two transcripts are co-regulated by p53. Although p53 wild type cells showed a 25-fold increase over untreated cells in miR34a AS expression at the highest tested doxorubicin concentration, this effect was largely abrogated, 11 fold over untreated, in p53 null cells, indicating that p53 is a major regulator of miR34a asRNA expression. 
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

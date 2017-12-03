@@ -209,3 +209,7 @@ ggsave(
 Analysis of luciferase and renilla expression revealed that by decreasing levels of the renilla transcript (corresponding to miR34a asRNA) luciferase (corresponding to miR34a HG) levels were concomitantly decreased. These results indicate that miR34a asRNA is capable of regulating the miR34a HG in a concordant manner and that the overlapping region of the miR34a asRNA may be sufficient to mediate this regulation.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

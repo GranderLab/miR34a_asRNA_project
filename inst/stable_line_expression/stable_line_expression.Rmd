@@ -444,3 +444,7 @@ miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-e
 miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all 3 cell lines. This indicates that miR34a asRNA concordantly regulates miR34a.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

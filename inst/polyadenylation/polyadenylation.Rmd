@@ -111,3 +111,7 @@ Polyadenylation status of spliced and unspliced miR34a asRNA in HEK293T cells.
 Results indicate that miR34a asRNA is polyadenylated.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

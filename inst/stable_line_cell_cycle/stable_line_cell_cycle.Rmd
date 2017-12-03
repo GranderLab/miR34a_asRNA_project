@@ -302,3 +302,7 @@ Cell cycle analysis in miR34a asRNA over-expressing PC3, Skov3, and Saos2 stable
 An increase in the percentage of cells in G1-phase can be seen in cell lines overexpressing miR34a asRNA. In addition, a concominant decrease of cells in G2-phase can be observed.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

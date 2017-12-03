@@ -272,3 +272,9 @@ Q-PCR showing cyclin D1 levels in PC3 miR34a asRNA over-expressing stable lines.
 #### _Conclusions_
 
 CCND1 expression levels are decreased in PC3 cell lines stably over-expressing miR34a asRNA.
+
+<br></br><br></br>
+
+```{r}
+sessionInfo()
+```

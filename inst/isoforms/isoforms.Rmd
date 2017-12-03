@@ -106,3 +106,7 @@ Sequencing results from the analysis of miR34a asRNA isoforms in U2OS cells. miR
 Results indicate that the miR34a asRNA transcript is post-transcriptionally spliced to form several different isoforms.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

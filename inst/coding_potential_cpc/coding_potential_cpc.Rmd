@@ -57,3 +57,7 @@ Analysis of coding potential of the miR34a asRNA transcript using the Coding-pot
 </div>
 
 <br></br>
+
+```{r}
+sessionInfo()
+```

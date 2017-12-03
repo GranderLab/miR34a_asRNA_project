@@ -269,3 +269,9 @@ Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA
 #### _Conclusions_
 
 Cyclin D1 protein levels are significantly reduced in PC3 cells overexpressing miR34a asRNA, consistent with increased miR34a expression levels and the reduced G1 cell cycle phase observed in PC3 cells.
+
+<br></br><br></br>
+
+```{r}
+sessionInfo()
+```

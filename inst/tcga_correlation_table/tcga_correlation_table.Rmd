@@ -59,3 +59,7 @@ R-squared and p-values from the correlation analysis investigating the correlati
 </div>
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

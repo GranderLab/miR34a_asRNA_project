@@ -118,7 +118,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- fileMap(type = "png")["figure2c"][[1]]
+url <- fileMap(type = "png")["suppFigure2a"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -130,3 +130,7 @@ Top: A schematic representation of the miR34a locus and the region cloned in the
 <br></br>
 
 *For all results and conclusions please see Figure 2d.
+
+```{r}
+sessionInfo()
+```

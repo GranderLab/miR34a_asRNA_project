@@ -11,7 +11,7 @@
 
 <meta name="author" content="Jason T. Serviss" />
 
-<meta name="date" content="2017-12-01" />
+<meta name="date" content="2017-12-03" />
 
 <title>lnc34a splice junctions</title>
 
@@ -400,7 +400,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">lnc34a splice junctions</h1>
 <h4 class="author"><em>Jason T. Serviss</em></h4>
-<h4 class="date"><em>2017-12-01</em></h4>
+<h4 class="date"><em>2017-12-03</em></h4>
 
 </div>
 
@@ -423,7 +423,7 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 <h4><em>Methods</em></h4>
 <pre class="r"><code>nrCellLinesDown &lt;- function() {
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure3e&quot;][[1]]
+  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure4b&quot;][[1]]
 
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     pull(16) %&gt;% 
@@ -438,7 +438,7 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 
 cellLinesInFinal &lt;- function() {
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3e&quot;][[1]]
+  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure4b&quot;][[1]]
 
   read_rds(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     pull(filename) %&gt;%
@@ -453,21 +453,21 @@ cellLinesInFinal &lt;- function() {
 
 RNAprepTable &lt;- function() {
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3e&quot;][[1]]
+  url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure4b&quot;][[1]]
   final &lt;- read_rds(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     select(filename) %&gt;%
     distinct() %&gt;%
     mutate(filename = str_replace(filename, &quot;^(.*)\\.bedRnaElements.*&quot;, &quot;\\1&quot;))
   
   dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;
-  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure3e&quot;][[1]]
+  url &lt;- fileMap(type = &quot;txt&quot;)[&quot;suppFigure4b&quot;][[1]]
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %&gt;%
     filter(X__15 %in% pull(final, filename)) %&gt;%
     rename(`rna extract` = X__3) %&gt;%
     select(`rna extract`) %&gt;%
     count(`rna extract`)
 }</code></pre>
-<p>All available whole cell RNAseq splice junction data from the ENCODE project originating from the Cold Spring Harbor Lab from 38 cell lines was downloaded from the UCSC genome browser with the script entitled “lnc34a splice junctions” in the data-raw/saveRDS.R file. Of these cell lines 36 had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: A549, Ag04450, Bj, Cd20, Cd34mobilized, Gm12878, H1hesc, Haoaf, Haoec, Hch, Helas3, Hepg2, Hfdpc, Hmec, Hmepc, Hmscat, Hmscbm, Hmscuc, Hob, Hpcpl, Hpiepc, Hsavec, Hsmm, Huvec, Hvmf, Hwp, Imr90, Mcf7, Monocd14, Nhdf, Nhek, Nhemfm2, Nhemm2, Nhlf, Skmc, Sknsh. All splice junctions were plotted and colored according to the number of reads corresponding to each. Information regarding the RNA extraction is included below:</p>
+<p>All available whole cell RNAseq splice junction data from the ENCODE project originating from the Cold Spring Harbor Lab from 38 cell lines was downloaded from the UCSC genome browser with the script entitled “lnc34a splice junctions” in the data-raw/saveRDS.R file. Of these cell lines, 36 had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: A549, Ag04450, Bj, Cd20, Cd34mobilized, Gm12878, H1hesc, Haoaf, Haoec, Hch, Helas3, Hepg2, Hfdpc, Hmec, Hmepc, Hmscat, Hmscbm, Hmscuc, Hob, Hpcpl, Hpiepc, Hsavec, Hsmm, Huvec, Hvmf, Hwp, Imr90, Mcf7, Monocd14, Nhdf, Nhek, Nhemfm2, Nhemm2, Nhlf, Skmc, Sknsh. All splice junctions were plotted and colored according to the number of reads corresponding to each. Information regarding the RNA extraction is included below:</p>
 <p>Number of samples from included RNA extraction methods:</p>
 <pre class="r"><code>RNAprepTable()</code></pre>
 <table>
@@ -516,7 +516,7 @@ data &lt;- tibble(
 )
 
 #splice junctions
-url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure3e&quot;][[1]]
+url &lt;- fileMap(type = &quot;rds&quot;)[&quot;suppFigure4b&quot;][[1]]
 splJnc &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 splJnc &lt;- splJnc %&gt;%
@@ -671,6 +671,51 @@ g &lt;- resize_heights(g, unit(c(6, 1), &quot;null&quot;))
 <h4><em>Conclusions</em></h4>
 <p>Multiple splice junctions correspond to the miR34a asRNA transcrips and its isoforms (<strong>Supplementary Fig 1d.</strong>) with those being the most highly expressed corresponding to the annotated miR34a asRNA transcript. Despite this, no splice junctions appear to correspond to the intron in the lnc34a transcript. This potentially indicates that lnc34a is tightly regulated and specifically expressed in the CCSC context, as claimed by the authors. An alternative intrepretation could be that lnc34a expression is present in a subset of the examined cell lines although at too low levels to be detected. Finally, lnc34a may not be expressed in any of the cell lines examined.</p>
 <p><br /><br /></p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 3.4.2 (2017-09-28)
+## Platform: x86_64-apple-darwin15.6.0 (64-bit)
+## Running under: macOS High Sierra 10.13.1
+## 
+## Matrix products: default
+## BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] grid      stats     graphics  grDevices utils     datasets  methods  
+## [8] base     
+## 
+## other attached packages:
+##  [1] bindrcpp_0.2                  printr_0.1                   
+##  [3] miR34AasRNAproject_0.0.0.0001 gtable_0.2.0                 
+##  [5] forcats_0.2.0                 stringr_1.2.0                
+##  [7] dplyr_0.7.4                   purrr_0.2.4                  
+##  [9] readr_1.1.1.9000              tidyr_0.7.2                  
+## [11] tibble_1.3.4                  ggplot2_2.2.1                
+## [13] tidyverse_1.2.1              
+## 
+## loaded via a namespace (and not attached):
+##  [1] reshape2_1.4.2     ggthemes_3.4.0     haven_1.1.0       
+##  [4] lattice_0.20-35    colorspace_1.3-2   viridisLite_0.2.0 
+##  [7] htmltools_0.3.6    yaml_2.1.14        rlang_0.1.4       
+## [10] foreign_0.8-69     glue_1.2.0         modelr_0.1.1      
+## [13] readxl_1.0.0       bindr_0.1          plyr_1.8.4        
+## [16] ggfittext_0.5.0    munsell_0.4.3      cellranger_1.1.0  
+## [19] rvest_0.3.2        liftr_0.7          psych_1.7.8       
+## [22] evaluate_0.10.1    labeling_0.3       knitr_1.17        
+## [25] gggenes_0.2.0.9003 parallel_3.4.2     curl_3.0          
+## [28] highr_0.6          broom_0.4.3        Rcpp_0.12.13      
+## [31] rgeolocate_1.0.1   backports_1.1.1    scales_0.5.0      
+## [34] jsonlite_1.5       gridExtra_2.3      mnormt_1.5-5      
+## [37] hms_0.4.0          digest_0.6.12      stringi_1.1.6     
+## [40] rprojroot_1.2      cli_1.0.0          tools_3.4.2       
+## [43] magrittr_1.5       lazyeval_0.2.1     crayon_1.3.4      
+## [46] pkgconfig_2.0.1    xml2_1.1.1         lubridate_1.7.1   
+## [49] viridis_0.4.0      assertthat_0.2.0   rmarkdown_1.8     
+## [52] httr_1.3.1         rstudioapi_0.7     R6_2.2.2          
+## [55] nlme_3.1-131       compiler_3.4.2</code></pre>
 </section>
 
 

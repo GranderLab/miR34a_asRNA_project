@@ -247,3 +247,7 @@ Q-PCR showing miR34a asRNA and miR34a HG levels in U2OS cells after treatment wi
 While the levels of miR34a HG fall quickly over the 4 hour treatment period, levels of miR34a asRNA remain relativley stable.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

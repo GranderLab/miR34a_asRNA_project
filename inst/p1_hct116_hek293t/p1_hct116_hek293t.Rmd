@@ -381,3 +381,7 @@ miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection
 Upon transfection of this construct in two separate cell lines we observed increases in both luciferase and renilla indicating that miR34a HG and asRNA expression is regulated by a single promoter contained within the p1 construct.
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

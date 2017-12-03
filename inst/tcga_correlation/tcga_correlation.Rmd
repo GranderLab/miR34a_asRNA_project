@@ -92,11 +92,12 @@ A graphical depiction of the TCGA correlation analysis. Bladder Urothelial Carci
 
 See Supplementary Figure 1a for R-squared and p-values corersponding with the analysis.
 
-Insert code here from Erik and write Intro Methods etc
-
-
 <br></br>
 
 #### _Conclusions_
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```

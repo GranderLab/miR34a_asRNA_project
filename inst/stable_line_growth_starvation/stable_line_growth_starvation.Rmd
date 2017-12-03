@@ -242,3 +242,7 @@ The effects of miR34a asRNA overexpression on growth in normal and starvation co
 miR34a asRNA overexpression causes a minor decrease in cell growth under normal conditions (RPMI) although under conditions of cellular stress through starvation, this effect is increased dramatically. 
 
 <br></br><br></br>
+
+```{r}
+sessionInfo()
+```
