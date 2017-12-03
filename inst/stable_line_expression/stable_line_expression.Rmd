@@ -132,7 +132,7 @@ n <- data.frame(
     "Saos2 mock",
     "Saos2 miR34a asRNA"
   ),
-  n = c(3, 5, 4, 4, 5, 5)
+  n = c(5, 5, 4, 4, 5, 5)
 )
 n
 

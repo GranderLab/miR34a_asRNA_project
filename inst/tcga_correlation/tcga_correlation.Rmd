@@ -45,6 +45,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 ```
 
 #### _Introduction_
+We interogated RNA sequencing data from TCGA to determine in miR34a and miR34a asRNA expression was correlated in both TP53 wild type and mutated samples.
 
 <br></br>
 
@@ -68,13 +69,20 @@ data <- mutate(
 data <- data %>%
   mutate(PAM50 = if_else(is.na(PAM50), "", PAM50)) %>%
   mutate(cancer_PAM50 = gsub("BRCA", "BRCA ", paste(cancer, PAM50, sep = "")))
+
+#sort 
+data <- arrange(data, cancer_PAM50, TP53, RP3)
+
+#remove infinite data
+data <- filter(data, !is.infinite(RP3) & !is.infinite(miR34a))
+
+#diploid only
+data <- filter(data, abs(RP3_cna) < 0.1)
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12, message = FALSE}
 #plot
-data %>%
-  arrange(cancer_PAM50, TP53, RP3) %>%
-  plotTCGAcorrelation(type = "diploid only")
+plotTCGAcorrelation(data, type = "diploid only")
 
 #save to pdf
 # path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure1c"][[1]])
@@ -82,8 +90,7 @@ data %>%
 # data %>%
 #   arrange(cancer_PAM50, TP53, RP3) %>%
 #   plotTCGAcorrelation(type = "diploid only")
-# dev.off()
-
+# invisible(dev.off())
 ```
 
 <div class="caption">
@@ -95,6 +102,7 @@ See Supplementary Figure 1a for R-squared and p-values corersponding with the an
 <br></br>
 
 #### _Conclusions_
+miR34a asRNA and miR34a tend to be highly correlated in the cancer types examined in both TP53 wild type and mutated samples. In addition, the results indicate that both miR34a asRNA and miR34a expression levels are decreased in the presence of TP53 mutations.
 
 <br></br><br></br>
 
