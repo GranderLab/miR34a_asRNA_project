@@ -46,6 +46,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 <br></br>
 
+Note: in cases where less than 3 samples are in any group, r-estimates and p-values are not reported.
 ```{r, warning = FALSE}
 url <- fileMap(type = "rds")["figure1c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
@@ -78,7 +79,7 @@ data <- mutate(data, TP53 = if_else(TP53 == 1, "TP53mut", "TP53wt"))
 #calculate correlation for all samples per cancer type
 all <- data %>% 
   filter(RP3_cna < 0.1) %>%
-  group_by(cancer) %>%
+  group_by(cancer_PAM50) %>%
   summarize(
     n = n(),
     all_pvalue = signif(cor.test(RP3, miR34a, method = "spearman")$p.value, 3),
@@ -87,7 +88,7 @@ all <- data %>%
 
 #calculate correlation for p53 wt and mut samples per cancer type
 p53 <- data %>%
-  group_by(cancer, TP53) %>%
+  group_by(cancer_PAM50, TP53) %>%
   filter(n() > 3) %>%
   summarize(
     n = n(),
@@ -95,11 +96,11 @@ p53 <- data %>%
     R_estimate = signif(cor.test(RP3, miR34a, method = "spearman")$estimate, 3)
   ) %>%
   ungroup() %>%
-  gather(metric, value, -(cancer:TP53)) %>%
+  gather(metric, value, -(cancer_PAM50:TP53)) %>%
   unite(temp, TP53, metric) %>%
   spread(temp, value)
 
-full_join(all, p53, by = "cancer")
+full_join(all, p53, by = "cancer_PAM50")
 ```
 
 <div class = "caption">
