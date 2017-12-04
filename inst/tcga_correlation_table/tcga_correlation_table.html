@@ -450,12 +450,12 @@ all &lt;- data %&gt;%
   group_by(cancer_PAM50) %&gt;%
   summarize(
     n = n(),
-    all_pvalue = cor.test(RP3, miR34a, method = &quot;spearman&quot;)$p.value,
-    all_R_estimate = cor.test(RP3, miR34a, method = &quot;spearman&quot;)$estimate
+    `all pvalue` = cor.test(RP3, miR34a, method = &quot;spearman&quot;)$p.value,
+    `all rho` = cor.test(RP3, miR34a, method = &quot;spearman&quot;)$estimate
   ) %&gt;%
   mutate(
-    all_pvalue = format(all_pvalue, scientific = TRUE, digits = 3),
-    all_R_estimate = format(all_R_estimate, scientific = TRUE, digits = 3)
+    `all pvalue` = format(`all pvalue`, scientific = TRUE, digits = 3),
+    `all rho` = format(`all rho`, scientific = TRUE, digits = 3)
   )
 
 #calculate correlation for p53 wt and mut samples per cancer type
@@ -465,36 +465,38 @@ p53 &lt;- data %&gt;%
   summarize(
     n = n(),
     pvalue = cor.test(RP3, miR34a, method = &quot;spearman&quot;)$p.value,
-    R_estimate = cor.test(RP3, miR34a, method = &quot;spearman&quot;)$estimate
+    rho = cor.test(RP3, miR34a, method = &quot;spearman&quot;)$estimate
   ) %&gt;%
   ungroup() %&gt;%
   mutate(
     pvalue = format(pvalue, scientific = TRUE, digits = 3),
-    R_estimate = format(R_estimate, scientific = TRUE, digits = 3)
+    rho = format(rho, scientific = TRUE, digits = 3)
   ) %&gt;%
   gather(metric, value, -(cancer_PAM50:TP53)) %&gt;%
-  unite(temp, TP53, metric) %&gt;%
+  unite(temp, TP53, metric, sep = &quot; &quot;) %&gt;%
   spread(temp, value)
 
-full_join(all, p53, by = &quot;cancer_PAM50&quot;) %&gt;%
-  rename(cancer = cancer_PAM50) %&gt;%
+table &lt;- full_join(all, p53, by = &quot;cancer_PAM50&quot;) %&gt;%
+  rename(cancer = cancer_PAM50, `all n` = n) %&gt;%
   select(
-    cancer, n, all_R_estimate, all_pvalue, TP53wt_n, 
-    TP53wt_R_estimate, TP53wt_pvalue, TP53mut_n, TP53mut_R_estimate, TP53mut_pvalue
-  )</code></pre>
+    cancer, `all n`, `all rho`, `all pvalue`, `TP53wt n`, 
+    `TP53wt rho`, `TP53wt pvalue`, `TP53mut n`, `TP53mut rho`, `TP53mut pvalue`
+  )
+
+table</code></pre>
 <table>
 <thead>
 <tr class="header">
 <th style="text-align: left;">cancer</th>
-<th style="text-align: right;">n</th>
-<th style="text-align: left;">all_R_estimate</th>
-<th style="text-align: left;">all_pvalue</th>
-<th style="text-align: left;">TP53wt_n</th>
-<th style="text-align: left;">TP53wt_R_estimate</th>
-<th style="text-align: left;">TP53wt_pvalue</th>
-<th style="text-align: left;">TP53mut_n</th>
-<th style="text-align: left;">TP53mut_R_estimate</th>
-<th style="text-align: left;">TP53mut_pvalue</th>
+<th style="text-align: right;">all n</th>
+<th style="text-align: left;">all rho</th>
+<th style="text-align: left;">all pvalue</th>
+<th style="text-align: left;">TP53wt n</th>
+<th style="text-align: left;">TP53wt rho</th>
+<th style="text-align: left;">TP53wt pvalue</th>
+<th style="text-align: left;">TP53mut n</th>
+<th style="text-align: left;">TP53mut rho</th>
+<th style="text-align: left;">TP53mut pvalue</th>
 </tr>
 </thead>
 <tbody>
@@ -740,6 +742,10 @@ full_join(all, p53, by = &quot;cancer_PAM50&quot;) %&gt;%
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;suppFigure1a&quot;][[1]])
+pdf(file = path, width = 14)
+gridExtra::grid.table(table, rows = NULL)
+invisible(dev.off())</code></pre>
 <div class="caption">
 <p>R-squared and p-values from the correlation analysis investigating the correlation between miR34a and miR34a asRNA expression in p53 wild type (wt) and mutated (mut) samples within TCGA cancer types. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).</p>
 </div>
@@ -777,12 +783,12 @@ full_join(all, p53, by = &quot;cancer_PAM50&quot;) %&gt;%
 ## [17] rvest_0.3.2      liftr_0.7        psych_1.7.8      evaluate_0.10.1 
 ## [21] knitr_1.17       parallel_3.4.2   curl_3.0         highr_0.6       
 ## [25] broom_0.4.3      Rcpp_0.12.13     rgeolocate_1.0.1 backports_1.1.1 
-## [29] scales_0.5.0     jsonlite_1.5     mnormt_1.5-5     hms_0.4.0       
-## [33] digest_0.6.12    stringi_1.1.6    rprojroot_1.2    cli_1.0.0       
-## [37] tools_3.4.2      magrittr_1.5     lazyeval_0.2.1   crayon_1.3.4    
-## [41] pkgconfig_2.0.1  xml2_1.1.1       lubridate_1.7.1  assertthat_0.2.0
-## [45] rmarkdown_1.8    httr_1.3.1       rstudioapi_0.7   R6_2.2.2        
-## [49] nlme_3.1-131     compiler_3.4.2</code></pre>
+## [29] scales_0.5.0     jsonlite_1.5     gridExtra_2.3    mnormt_1.5-5    
+## [33] hms_0.4.0        digest_0.6.12    stringi_1.1.6    rprojroot_1.2   
+## [37] cli_1.0.0        tools_3.4.2      magrittr_1.5     lazyeval_0.2.1  
+## [41] crayon_1.3.4     pkgconfig_2.0.1  xml2_1.1.1       lubridate_1.7.1 
+## [45] assertthat_0.2.0 rmarkdown_1.8    httr_1.3.1       rstudioapi_0.7  
+## [49] R6_2.2.2         nlme_3.1-131     compiler_3.4.2</code></pre>
 
 
 

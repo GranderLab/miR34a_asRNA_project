@@ -211,7 +211,7 @@ pdf <- p +
       ymax = max
     ), 
     position = position_dodge(width = 1),
-    lwd = 0.1,
+    lwd = 0.2,
     show.legend = FALSE
   ) + 
   geom_point(

@@ -84,12 +84,10 @@ data <- filter(data, abs(RP3_cna) < 0.1)
 #plot
 plotTCGAcorrelation(data, type = "diploid only")
 
-#save to pdf
+##save to pdf
 # path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure1c"][[1]])
-# pdf(path, width = 28)
-# data %>%
-#   arrange(cancer_PAM50, TP53, RP3) %>%
-#   plotTCGAcorrelation(type = "diploid only")
+# pdf(path, width = 7.7, height = 4)
+# plotTCGAcorrelation(data, type = "diploid only")
 # invisible(dev.off())
 ```
 

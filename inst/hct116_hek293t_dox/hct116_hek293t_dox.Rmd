@@ -135,6 +135,7 @@ vl <- stats %>%
     pValue = as.numeric(min(pValue))
   ) %>%
   ungroup() %>%
+  mutate(max = max + c(0, 0.2, 0, 0)) %>%
   pFormat(.) %>%
   mutate(
     x = case_when(
@@ -277,7 +278,7 @@ markdown <- p +
 plotRmarkdown(markdown)
 
 pdf <- p + 
-    geom_point(
+  geom_point(
     data = stats,
     aes(
       x = Treatment,
@@ -287,6 +288,7 @@ pdf <- p +
     position = position_dodge(width = 0.9),
     show.legend = FALSE,
     shape = 95,
+    size = 4,
     colour = "gray20"
   ) +
   geom_linerange(
@@ -298,7 +300,7 @@ pdf <- p +
       group = GOI
     ),
     colour = "gray20",
-    size = 0.1,
+    size = 0.3,
     position = position_dodge(width = 0.9),
     show.legend = FALSE
   ) +
@@ -306,7 +308,7 @@ pdf <- p +
     data = vl,
     aes(
       x = labelX,
-      y = max + 0.3,
+      y = max + 0.4,
       label = pFormat,
       group = GOI
     ),
@@ -314,7 +316,7 @@ pdf <- p +
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 1.5,
+    size = 2,
     family = "Arial Unicode MS",
     position = position_dodge(width = 0.9)
   ) +
@@ -328,7 +330,7 @@ pdf <- p +
       group = GOI
     ),
     colour="grey43",
-    size = 0.1,
+    size = 0.3,
     show.legend = FALSE
   ) +
   guides(

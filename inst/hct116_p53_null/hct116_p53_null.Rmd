@@ -228,24 +228,25 @@ pdf <- p +
     aes(x = Treatment, y = mean, group = Condition), 
     position = position_dodge(width = 0.9),
     colour = "gray20",
-    shape = 95
+    shape = 95,
+    size = 4
   ) +
   geom_linerange(
     data = stats,
     aes(x = Treatment, ymin = CI95l, ymax = CI95h, group = Condition),
     colour = "gray20",
     position = position_dodge(width = 0.9),
-    size = 0.1,
+    size = 0.3,
     show.legend = FALSE
   ) +
   geom_label(
     data = stats,
-    aes(x = Treatment, y = max + 0.28, label = pFormat),
+    aes(x = Treatment, y = max + 0.4, label = pFormat),
     label.size = 0,
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 1.5,
+    size = 2,
     family = "Arial Unicode MS",
     position = position_dodge(width = 0.9)
   ) +
@@ -253,7 +254,7 @@ pdf <- p +
     data = stats,
     aes(x = x, y = max + 0.1, xend = xend, yend = max + 0.1),
     colour="grey43",
-    size = 0.1,
+    size = 0.3,
     show.legend = FALSE
   )   +
   guides(
@@ -267,12 +268,12 @@ figure <- plotPDF(pdf)
 
 # path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2b"][[1]])
 # ggsave(
-#  plot = figure,
-#  filename = path,
-#  device = cairo_pdf,
-#  height = 60,
-#  width = 83,
-#  units = "mm"
+#   plot = figure,
+#    filename = path,
+#   device = cairo_pdf,
+#   height = 60,
+#   width = 83,
+#   units = "mm"
 # )
 ```
 

@@ -234,7 +234,7 @@ pdf <- p +
     data = stats,
     aes(x = condition, ymin = CI95l, ymax = CI95h),
     colour = "gray20",
-    size = 0.1,
+    size = 0.3,
     show.legend = FALSE
   ) +
   geom_point(
@@ -242,13 +242,14 @@ pdf <- p +
     aes(x = condition, y = mean),
     colour = "gray20",
     shape = 95,
+    size = 4,
     show.legend = FALSE
   ) +
   geom_segment(
     data = filter(stats, condition == "PC3 miR34a\nasRNA"),
     aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
     colour = "grey43",
-    size = 0.1
+    size = 0.3
   ) +
   geom_label(
     data = stats,
@@ -257,7 +258,7 @@ pdf <- p +
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 1.5,
+    size = 2,
     family = "Arial Unicode MS"
   )
 

@@ -247,8 +247,14 @@ pFormat <- function(
     stats
 ){
     idx <- which(colnames(stats) == "pValue")
-    mutate(stats, pFormat = case_when(
+    mutate(stats,
+      pFormat = case_when(
         is.nan(pValue) | pValue == 1 ~ "",
-        TRUE ~ format(stats[[idx]], scientific = TRUE, digits = 2))
+        TRUE ~ gsub(
+          "([0-9]*e.)0(.*)",
+          "\\1\\2",
+          format(stats[[idx]], scientific = TRUE, digits = 2)
+        )
+      )
     )
 }
