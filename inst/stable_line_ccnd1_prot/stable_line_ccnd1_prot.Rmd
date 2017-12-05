@@ -208,7 +208,7 @@ pdf <- p +
       x = condition,
       y = mean
     ),
-    colour="gray20",
+    colour="gray30",
     shape = 95,
     size = 4
   ) +
@@ -220,7 +220,7 @@ pdf <- p +
       xend = 2,
       yend = max(CI95h) + 0.25
     ),
-    colour="grey43",
+    colour="gray30",
     size = 0.3
   ) +
   geom_label(
@@ -234,7 +234,8 @@ pdf <- p +
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 2,
+    colour = "gray30",
+    size = 2.5,
     family = "Arial Unicode MS"
   ) +
    geom_linerange(
@@ -244,7 +245,7 @@ pdf <- p +
       ymin = CI95l,
       ymax = CI95h
     ),
-    colour="gray20",
+    colour="gray30",
     size = 0.3
   )
 

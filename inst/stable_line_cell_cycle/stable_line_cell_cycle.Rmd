@@ -229,7 +229,7 @@ pdf <- p +
       group = interaction(phase, condition)
     ),
     position = position_dodge(width = 0.9),
-    colour = "grey25",
+    colour = "grey30",
     size = 0.3,
     show.legend = FALSE
   ) +
@@ -240,7 +240,7 @@ pdf <- p +
       y = mean, 
       group = condition
     ), 
-    colour = "black",
+    colour = "grey30",
     position = position_dodge(width = 0.9),
     shape = 95,
     size = 4,
@@ -250,11 +250,11 @@ pdf <- p +
     data = stats,
     aes(
       x = x,
-      y = y + 0.01, 
+      y = y + 0.02, 
       xend = xend, 
-      yend = y + 0.01
+      yend = y + 0.02
     ),
-    colour = "grey43",
+    colour = "grey30",
     size = 0.3,
     show.legend = FALSE
   ) +
@@ -262,14 +262,15 @@ pdf <- p +
     data = stats,
     aes(
       x = phase, 
-      y = y + 0.025, 
+      y = y + 0.038, 
       label = pFormat
     ),
+    colour = "grey30",
     label.size = 0,
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 2,
+    size = 2.5,
     family = "Arial Unicode MS"
   ) +
   guides(
@@ -287,7 +288,7 @@ figure <- plotPDF(pdf)
 #    filename = path,
 #    device = cairo_pdf,
 #    height = 60,
-#    width = 83,
+#    width = 93,
 #    units = "mm"
 # )
 ```

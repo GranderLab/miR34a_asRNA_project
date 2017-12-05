@@ -249,7 +249,7 @@ vl <- stats %>%
   ) %>%
   inner_join(ys) %>%
   mutate(
-    max = max + c(0.75, 2.65, 0.45, 2.35, 0.45, 2.35)
+    max = max + c(0.95, 3.35, 0.65, 3.15, 0.65, 3.15)
   )
 ```
 
@@ -368,7 +368,7 @@ pdf <- p +
       group = interaction(`Genetic mod`, GOI)
     ),
     position = position_dodge(width = 0.9),
-    colour = "gray20",
+    colour = "grey30",
     size = 0.3,
     show.legend = FALSE
   ) +
@@ -379,7 +379,7 @@ pdf <- p +
       y = mean,
       group = interaction(`Genetic mod`, GOI)
     ),
-    colour = "gray20",
+    colour = "grey30",
     shape = 95,
     size = 4,
     position = position_dodge(width = 0.9),
@@ -389,18 +389,19 @@ pdf <- p +
     data = vl,
     aes(
       x = 1.5, 
-      y = max + 0.85, 
+      y = max + 1, 
       label = pFormat, 
       group = interaction(`Cell line`, GOI)
     ),
     fill = "white",
+    colour = "grey30",
     label.size = 0,
     label.padding = unit(0.01, "lines"),
     position = position_dodge(width = 0.9),
     show.legend = FALSE,
     fontface = "bold",
     family = "Arial Unicode MS",
-    size = 2
+    size = 2.5
   ) +
   geom_segment(
     data = vl,
@@ -410,7 +411,7 @@ pdf <- p +
       xend = xend,
       yend = max
     ),
-    colour = "grey43",
+    colour = "grey30",
     size = 0.3,
     show.legend = FALSE
   ) +

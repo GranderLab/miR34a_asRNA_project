@@ -586,7 +586,7 @@ plotRmarkdown(markdown)</code></pre>
       group = interaction(phase, condition)
     ),
     position = position_dodge(width = 0.9),
-    colour = &quot;grey25&quot;,
+    colour = &quot;grey30&quot;,
     size = 0.3,
     show.legend = FALSE
   ) +
@@ -597,7 +597,7 @@ plotRmarkdown(markdown)</code></pre>
       y = mean, 
       group = condition
     ), 
-    colour = &quot;black&quot;,
+    colour = &quot;grey30&quot;,
     position = position_dodge(width = 0.9),
     shape = 95,
     size = 4,
@@ -607,11 +607,11 @@ plotRmarkdown(markdown)</code></pre>
     data = stats,
     aes(
       x = x,
-      y = y + 0.01, 
+      y = y + 0.02, 
       xend = xend, 
-      yend = y + 0.01
+      yend = y + 0.02
     ),
-    colour = &quot;grey43&quot;,
+    colour = &quot;grey30&quot;,
     size = 0.3,
     show.legend = FALSE
   ) +
@@ -619,14 +619,15 @@ plotRmarkdown(markdown)</code></pre>
     data = stats,
     aes(
       x = phase, 
-      y = y + 0.025, 
+      y = y + 0.038, 
       label = pFormat
     ),
+    colour = &quot;grey30&quot;,
     label.size = 0,
     label.padding = unit(0.01, &quot;lines&quot;),
     show.legend = FALSE,
     fill = &quot;white&quot;,
-    size = 2,
+    size = 2.5,
     family = &quot;Arial Unicode MS&quot;
   ) +
   guides(
@@ -644,7 +645,7 @@ ggsave(
    filename = path,
    device = cairo_pdf,
    height = 60,
-   width = 83,
+   width = 93,
    units = &quot;mm&quot;
 )</code></pre>
 <div class="caption">

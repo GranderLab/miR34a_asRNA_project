@@ -259,7 +259,7 @@ pdf <- p +
       x = Condition, 
       y = mean
     ),
-    colour = "grey20",
+    colour = "gray30",
     show.legend = FALSE,
     size = 4,
     shape = 95
@@ -271,7 +271,7 @@ pdf <- p +
       ymin = CI95l, 
       ymax = CI95h
     ),
-    colour = "gray20",
+    colour = "gray30",
     size = 0.3,
     show.legend = FALSE
   )

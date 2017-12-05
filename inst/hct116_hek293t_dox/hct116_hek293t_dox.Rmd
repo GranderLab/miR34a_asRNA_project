@@ -135,7 +135,7 @@ vl <- stats %>%
     pValue = as.numeric(min(pValue))
   ) %>%
   ungroup() %>%
-  mutate(max = max + c(0, 0.2, 0, 0)) %>%
+  mutate(max = max + c(0, 0.4, 0, 0)) %>%
   pFormat(.) %>%
   mutate(
     x = case_when(
@@ -197,7 +197,7 @@ p <- ggplot(data = NULL) +
     position = position_dodge(width = 0.9), 
     binaxis='y', 
     stackdir='center',
-    dotsize = 2,
+    dotsize = 3,
     show.legend = TRUE
   ) +
   facet_grid(. ~ `Cell line`) +
@@ -289,7 +289,7 @@ pdf <- p +
     show.legend = FALSE,
     shape = 95,
     size = 4,
-    colour = "gray20"
+    colour = "grey30"
   ) +
   geom_linerange(
     data = stats,
@@ -299,7 +299,7 @@ pdf <- p +
       ymax = CI95h,
       group = GOI
     ),
-    colour = "gray20",
+    colour = "grey30",
     size = 0.3,
     position = position_dodge(width = 0.9),
     show.legend = FALSE
@@ -308,7 +308,7 @@ pdf <- p +
     data = vl,
     aes(
       x = labelX,
-      y = max + 0.4,
+      y = max + 0.5,
       label = pFormat,
       group = GOI
     ),
@@ -316,7 +316,8 @@ pdf <- p +
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 2,
+    colour = "grey30",
+    size = 2.5,
     family = "Arial Unicode MS",
     position = position_dodge(width = 0.9)
   ) +
@@ -329,14 +330,15 @@ pdf <- p +
       yend = max + 0.1,
       group = GOI
     ),
-    colour="grey43",
+    colour="grey30",
     size = 0.3,
     show.legend = FALSE
   ) +
   guides(
     fill = guide_legend(
       title = "Gene", 
-      override.aes = list(size = 4)
+      override.aes = list(size = 4),
+      ncol = 1
   ))
 
 figure <- plotPDF(pdf)
@@ -347,7 +349,7 @@ figure <- plotPDF(pdf)
 #    filename = path,
 #    device = cairo_pdf,
 #    height = 60,
-#    width = 83,
+#    width = 53,
 #    units = "mm"
 # )
 ```

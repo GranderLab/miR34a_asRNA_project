@@ -558,7 +558,7 @@ plotRmarkdown(markdown)</code></pre>
       x = condition,
       y = mean
     ),
-    colour=&quot;gray20&quot;,
+    colour=&quot;gray30&quot;,
     shape = 95,
     size = 4
   ) +
@@ -570,7 +570,7 @@ plotRmarkdown(markdown)</code></pre>
       xend = 2,
       yend = max(CI95h) + 0.25
     ),
-    colour=&quot;grey43&quot;,
+    colour=&quot;gray30&quot;,
     size = 0.3
   ) +
   geom_label(
@@ -584,7 +584,8 @@ plotRmarkdown(markdown)</code></pre>
     label.padding = unit(0.01, &quot;lines&quot;),
     show.legend = FALSE,
     fill = &quot;white&quot;,
-    size = 2,
+    colour = &quot;gray30&quot;,
+    size = 2.5,
     family = &quot;Arial Unicode MS&quot;
   ) +
    geom_linerange(
@@ -594,7 +595,7 @@ plotRmarkdown(markdown)</code></pre>
       ymin = CI95l,
       ymax = CI95h
     ),
-    colour=&quot;gray20&quot;,
+    colour=&quot;gray30&quot;,
     size = 0.3
   )
 

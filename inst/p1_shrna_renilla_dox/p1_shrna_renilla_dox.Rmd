@@ -180,7 +180,7 @@ stats <- stats %>%
   )) %>%
   group_by(GOI, treatment) %>%
   mutate(
-    height = if_else(treatment == 0, 0, max(CI95h, na.rm = TRUE)),
+    height = if_else(treatment == 0, 0.15, max(CI95h, na.rm = TRUE)),
     x = case_when(
       treatment ==   0 ~ 1 + 0.25,
       treatment == 300 ~ 2 + 0.25,
@@ -196,94 +196,6 @@ stats <- stats %>%
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
-
-
-# p <- ggplot(data = NULL) +
-#   geom_violin(
-#     data = data,
-#     aes(
-#       x = treatment, 
-#       y = log2fold, 
-#       group = interaction(plotGOI, treatment)
-#     ),
-#     trim = TRUE,
-#     scale = "width",
-#     alpha = 0.3,
-#     colour = NA,
-#     fill = "gray",
-#     show.legend = FALSE
-#   ) +
-#   geom_dotplot(
-#     data = data, 
-#     aes(
-#       x = treatment,
-#       y = log2fold,
-#       fill = plotGOI
-#     ),
-#     binwidth = 1/10,
-#     #alpha = 0.5,
-#     colour = NA,
-#     position = position_dodge(width = 0.9), 
-#     binaxis = 'y', 
-#     stackdir = 'center',
-#     dotsize = 2,
-#     show.legend = TRUE
-#   ) +
-#   facet_grid(. ~ shRNA, scale = "free") +
-#   scale_y_continuous("\u0394\u0394Ct") +
-#   labs(
-#     x = "Doxorubicin (ng/ml)",
-#     title = "HCT116"
-#   )
-
-# markdown <- p + 
-#   geom_linerange(
-#     data = stats,
-#     aes(
-#       x = treatment, 
-#       ymin = CI95l, 
-#       ymax = CI95h, 
-#       group = plotGOI
-#     ),
-#     colour = "gray20",
-#     position = position_dodge(width = 0.9),
-#     show.legend = FALSE
-#   ) +
-#   geom_point(
-#     data = stats,
-#     aes(
-#       x = treatment, 
-#       y = mean, 
-#       group = plotGOI
-#     ),
-#     colour = "gray20",
-#     position = position_dodge(width = 0.9),
-#     shape = 95,
-#     size = 6,
-#     show.legend = FALSE
-#   ) +
-#   geom_label(
-#     data = stats,
-#     aes(
-#       x = treatment, 
-#       y = CI95h + 0.2,
-#       label = pFormat,
-#       group = plotGOI
-#     ),
-#     label.size = 0,
-#     label.padding = unit(0.01, "lines"),
-#     show.legend = FALSE,
-#     position = position_dodge(width = 0.9),
-#     fill = "white",
-#     size = 5,
-#     family = "Arial Unicode MS"
-#   ) +
-#   guides(
-#     fill = guide_legend(
-#       title = "Gene", 
-#       override.aes = list(size = 6)
-#     )
-#   )
 
 p <- ggplot(data = NULL) +
   geom_violin(
@@ -313,7 +225,7 @@ p <- ggplot(data = NULL) +
     position = position_dodge(width = 0.9), 
     binaxis = 'y', 
     stackdir = 'center',
-    dotsize = 2,
+    dotsize = 3,
     show.legend = TRUE
   ) +
   facet_grid(. ~ plotGOI, scale = "free") +
@@ -386,7 +298,7 @@ pdf <- p +
       ymax = CI95h, 
       group = shRNA
     ),
-    colour = "gray20",
+    colour = "grey30",
     position = position_dodge(width = 0.9),
     size = 0.3,
     show.legend = FALSE
@@ -398,7 +310,7 @@ pdf <- p +
       y = mean, 
       group = shRNA
     ),
-    colour = "gray20",
+    colour = "grey30",
     position = position_dodge(width = 0.9),
     shape = 95,
     size = 4,
@@ -408,20 +320,21 @@ pdf <- p +
     data = stats,
     aes(
       x = treatment, 
-      y = height + 0.5,
+      y = height + 0.6,
       label = pFormat
     ),
     label.size = 0,
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
     fill = "white",
-    size = 2,
+    colour = "grey30",
+    size = 2.5,
     family = "Arial Unicode MS"
   ) +
   geom_segment(
     data = stats,
     aes(x = x, y = height + 0.25, xend = xend, yend = height + 0.25),
-    colour="grey43",
+    colour="grey30",
     size = 0.3,
     show.legend = FALSE
   )  +
@@ -438,7 +351,7 @@ figure <- plotPDF(pdf)
 #    filename = path,
 #    device = cairo_pdf,
 #    height = 60,
-#    width = 83,
+#    width = 100,
 #    units = "mm"
 # )
 ```
