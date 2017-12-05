@@ -212,11 +212,11 @@ p <- ggplot(data = NULL)+
     ),
     colour = NA,
     binwidth = 1/10,
-    #alpha = 0.5,
+    alpha = 0.75,
     position = position_dodge(width = 0.9), 
     binaxis='y', 
     stackdir='center',
-    dotsize = 4,
+    dotsize = 6,
     show.legend = TRUE
   ) +
   facet_grid(. ~ `Cell line`, scales = "free") +
@@ -261,6 +261,7 @@ pdf <- p +
     ),
     colour = "grey20",
     show.legend = FALSE,
+    size = 4,
     shape = 95
   ) +
   geom_linerange(
@@ -271,7 +272,7 @@ pdf <- p +
       ymax = CI95h
     ),
     colour = "gray20",
-    size = 0.1,
+    size = 0.3,
     show.legend = FALSE
   )
 

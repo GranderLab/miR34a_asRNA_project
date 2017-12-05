@@ -72,7 +72,7 @@ RNAprepTable <- function() {
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     mutate(`rna extract` = str_replace(`rna extract`, "total", "total RNA")) %>%
     select(`rna extract`) %>%
-    count(`rna extract`)
+    dplyr::count(`rna extract`)
 }
 
 localizationTable <- function() {
@@ -80,7 +80,7 @@ localizationTable <- function() {
   url <- fileMap(type = "rds")["suppFigure4a"][[1]]
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     select(localization) %>%
-    count(localization)
+    dplyr::count(localization)
 }
 
 #add function to show polyA and total RNA table
@@ -123,8 +123,8 @@ gdata <- tibble(
 )
 
 #try to cut the data so that the CAGE reads are more visable in the figure.
-gdata <- filter(gdata, start < 9245000) %>%
-  mutate(stop = if_else(feature == "intron" & start != 9242375, 9245000, stop))
+gdata <- filter(gdata, start < 9243000) %>%
+  mutate(stop = if_else(feature == "intron", 9243000, stop))
 
 #add primer walk primers
 pw <- tibble(
@@ -179,7 +179,7 @@ p1 <- ggplot(data = NULL) +
   ) +
   ggthemes::theme_few() +
   ggthemes::scale_fill_ptol() +
-  xlim(9241000, 9245000) +
+  xlim(9241596, 9243000) +
   labs(x = "Chromosome 1", y = "Genes") +
   guides(fill = FALSE)
 
@@ -203,7 +203,7 @@ p2 <- ggplot(data = NULL) +
     axis.ticks = element_blank()
   ) +
   labs(y = "Cage reads") +
-  xlim(9241000, 9245000) +
+  xlim(9241596, 9243000) +
   guides(fill = guide_colourbar(
     title = "RPKM", 
     title.position = "top", 
@@ -214,7 +214,7 @@ p2 <- ggplot(data = NULL) +
 p3 <- ggplot(data = NULL) + 
   geom_line(data = cage, aes(x = start), stat = "density") +
   ggthemes::theme_few() +
-  xlim(9241000, 9245000) +
+  xlim(9241596, 9243000) +
   theme(
     axis.text = element_blank(),
     axis.title.x = element_blank(),
@@ -245,7 +245,7 @@ p1 <- ggplot(data = NULL) +
     aes(x = start, xend = stop, y = gene, yend = gene),
     linetype = "dotted",
     colour = "gray",
-    size = 0.25
+    size = 0.55
   ) +
   geom_text(
     data = filter(gdata, feature == "primer"),
@@ -256,7 +256,7 @@ p1 <- ggplot(data = NULL) +
   ) +
   ggthemes::theme_few() +
   ggthemes::scale_fill_ptol() +
-  xlim(9241000, 9245000) +
+  xlim(9241596, 9243000) +
   labs(x = "Chromosome 1", y = "Genes") +
   guides(fill = FALSE) +
   theme(
@@ -297,7 +297,7 @@ p2 <- ggplot(data = NULL) +
     strip.text.y = element_text(angle = 0)
   ) +
   labs(y = "Cage reads") +
-  xlim(9241000, 9245000) +
+  xlim(9241596, 9243000) +
   guides(fill = guide_colourbar(
     title = "RPKM", 
     title.position = "top", 
@@ -314,7 +314,7 @@ p3 <- ggplot(data = NULL) +
     lwd = 0.1
   ) +
   ggthemes::theme_few() +
-  xlim(9241000, 9245000) +
+  xlim(9241596, 9243000) +
   theme(
     axis.text = element_blank(),
     axis.title.x = element_blank(),
