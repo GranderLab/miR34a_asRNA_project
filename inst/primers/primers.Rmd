@@ -1,315 +1,401 @@
 ---
-title: "Primers used in the miR34a asRNA study"
+title: "Primers"
+author: "Jason T. Serviss"
+date: "`r Sys.Date()`"
 output:
-  pdf_document:
   html_document:
     theme: flatly
-    toc: no
     code_folding: hide
+    keep_md: true
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-```{r global_options, include = FALSE}
-knitr::opts_chunk$set(message=FALSE, 
-tidy.opts=list(width.cutoff=60))
-library(pander)
+```{r, echo = FALSE, message = FALSE}
+
+library(printr)
+library(tibble)
+
 ```
 
-```{r, echo=FALSE}
-d1 <- data.frame(
-    name="miR155_asF",
-    sequence="AAG CTG GTC CAG\nGGC CAT TAT ACA",
-    figures="Supplementary Fig. 1A"
+## Figure 1b
+
+```{r}
+
+tibble(
+    name=c(
+        "miR34a asRNA F1",
+        "miR34a asRNA R1",
+        "miR34a HG F",
+        "miR34a HG R",
+        "ß-actin Fwd",
+        "ß-actin Rev"
+    ),
+    sequence=c(
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
 )
 
-d2 <- data.frame(
-    name="miR155_asR",
-    sequence="TGA CCT CAT GAT CCA GTC ACC TCA",
-    figures="Supplementary Fig. 1A"
-)
-
-d3 <- data.frame(
-    name="miR301a_asF2",
-    sequence="CAA CGG CAG AAG CTT CAC CAC AAA",
-    figures="Supplementary Fig. 1A"
-)
-
-d4 <- data.frame(
-    name="miR301a_asR2",
-    sequence="CGC TGC TGG ATT CGT TTG GCA TAA",
-    figures="Supplementary Fig. 1A"
-)
-
-d5 <- data.frame(
-    name="miR34bc_asF2",
-    sequence="ACA GAA GTC ACT GGC ACT CTG A",
-    figures="Supplementary Fig. 1A"
-)
-
-d6 <- data.frame(
-    name="miR34bc_asR2",
-    sequence="ACC CAT ATG GTC ATC TCC TTC GGA",
-    figures="Supplementary Fig. 1A"
-)
-
-d7 <- data.frame(
-    name="miR21_asF",
-    sequence="AGT CTT ACC TGT GGT GTG CCC ATT",
-    figures="Supplementary Fig. 1A"
-)
-
-d8 <- data.frame(
-    name="miR21_asR",
-    sequence="AGG TCC ATC TCT GCA GAA GCC ATT",
-    figures="Supplementary Fig. 1A"
-)
-
-d9 <- data.frame(
-    name="miR29b_asF",
-    sequence="TGT AAT AAG AAG GGC GGT GCT CGT",
-    figures="Supplementary Fig. 1A"
-)
-
-d10 <- data.frame(
-    name="miR29b_asR",
-    sequence="AAC CTG TCT TTG TCG CAG GTC TCA",
-    figures="Supplementary Fig. 1A"
-)
-
-d11 <- data.frame(
-    name="miR142_asRNA_F",
-    sequence="TTG ATC GTC ATG CTG ACC CAG TGA",
-    figures="Supplementary Fig. 1A"
-)
-
-d12 <- data.frame(
-    name="miR142_asRNA_R",
-    sequence="GGG CGG TCT TAC ATG CCT TTG AAT",
-    figures="Supplementary Fig. 1A"
-)
-
-d13 <- data.frame(
-    name="miR34a_asF10",
-    sequence="ACG CGT CTC TCC AGC CCG GGA T",
-    figures="Fig. 1C, Fig. 1E"
-)
-
-d14 <- data.frame(
-    name="miR34a_asF11",
-    sequence="ATC TGC GTG GTC ACC GAG AAG CA",
-    figures="Fig. 1E"
-)
-
-d15 <- data.frame(
-    name="miR34a_asF12",
-    sequence="AAA CAC AAG CGT TTA CCT GGG TGC",
-    figures="Fig. 1E, Supplementary Fig. 1C"
-)
-
-d16 <- data.frame(
-    name="miR34a_asF13",
-    sequence="ACG GAG GCT ACA CAA TTG AAC AGG",
-    figures="Fig. 1E"
-)
-
-d17 <- data.frame(
-    name="miR34a_asF14",
-    sequence="AGG GAA GAA AGA ACT AGC CGA GCA",
-    figures="Fig. 1E"
-)
-
-d18 <- data.frame(
-    name="miR34a_asF15",
-    sequence="CAT TTG CTG CAA TAT CAC CGT GGC",
-    figures="Fig. 1E"
-)
-
-d19 <- data.frame(
-    name="miR34a_as_int1R1",
-    sequence="TGC GCA AAC TAC GCG CTC T",
-    figures="Fig. 1F"
-)
-
-d20 <- data.frame(
-    name="miR34a_asR2",
-    sequence="ATA GGT TCA TTT GCC CGA TGT GCC",
-    figures="Supplementary Fig. 1C"
-)
-
-d21 <- data.frame(
-    name="miR34a_asR3",
-    sequence="CCA CAG CTG TTG CTT CTG AAT GCT",
-    figures="Supplementary Fig. 1C"
-)
-
-d22 <- data.frame(
-    name="miR34a_asEx3_R1",
-    sequence="GTT GCC TTC TTC GCA ACT CCT TGT",
-    figures="Supplementary Fig. 1C"
-)
-
-d23 <- data.frame(
-    name="miR34a_asF1",
-    sequence="AGC GGC ATC TCC TCC ACC TGA AA",
-    figures="Fig. 1B, Fig. 1C, Fig. 1F, Fig. 1G, Fig. 1H, Fig. 2A, Fig. 2B, Fig. 3B, Supplementary Fig. 1B, Supplementary Fig. 1E"
-)
-
-d24 <- data.frame(
-    name="miR34a_asR1",
-    sequence="TTG CCT CGT GAG TCC AAG GAG AAT",
-    figures="Fig. 1B, Fig. 1E, Fig. 1F, Fig. 1G, Fig. 1H, Fig. 2A, Fig. 2B, Fig. 3B, Supplementary Fig. 1B, Supplementary Fig. 1C, Supplementary Fig. 1E"
-)
-
-d25 <- data.frame(
-    name="miR34a_HG_F",
-    sequence="TCT GCT CCA GTG GCT GAT GAG AAA",
-    figures="Fig. 1B, Fig. 1F, Fig. 1G, Fig. 1H, Fig. 2A, Fig. 2B"
-)
-
-d26 <- data.frame(
-    name="miR34a_HG_R",
-    sequence="GTT CAC TGG CCT CAA AGT TGG CAT",
-    figures="Fig. 1B, Fig. 1F, Fig. 1G, Fig. 1H, Fig. 2A, Fig. 2B"
-)
-
-d27 <- data.frame(
-    name="miR34a_mature_F",
-    sequence="TaqMan® MicroRNA Assay, hsa-miR-34a, human",
-    figures="Fig. 3B"
-)
-
-d28 <- data.frame(
-    name="miR34a_mature_R",
-    sequence="TaqMan® MicroRNA Assay, hsa-miR-34a, human",
-    figures="Fig. 3B"
-)
-
-d29 <- data.frame(
-    name="B-actin_F",
-    sequence="AGG TCA TCA CCA TTG GCA ATG AG",
-    figures="Fig. 1B, Fig. 1F, Fig. 1G, Fig. 1H, Fig. 2A, Fig. 2B, Fig. 3A, Fig. 3B, Fig. 3D, Supplementary Fig. 1B, Supplementary Fig. 1E"
-)
-
-d30 <- data.frame(
-    name="B-actin_R",
-    sequence="CTT TGC GGA TGT CCA CGT CA",
-    figures="Fig. 1B, Fig. 1F, Fig. 1G, Fig. 1H, Fig. 2A, Fig. 2B, Fig. 3A, Fig. 3B, Fig. 3D, Supplementary Fig. 1B, Supplementary Fig. 1E"
-)
-
-d31 <- data.frame(
-    name="T7_long_reverse",
-    sequence="CAG TGA ATT GTA ATA CGA CTC ACT ATA GGG ACA TCC GTA GCT CGT CCA GGA CCC TTT TTT TTT TTT TTT TTT VN",
-    figures="Fig. 1C"
-)
-
-d32 <- data.frame(
-    name="FAM_primer",
-    sequence="CCG TAG CTC GTC CAG GAC CC",
-    figures="Fig. 1C"
-)
-
-d33 <- data.frame(
-    name="U48_F (sybr)",
-    sequence="AGT GAT GAT GAC CCC AGG TA",
-    figures="Fig. 1F, Fig. 1G"
-)
-
-d34 <- data.frame(
-    name="U48_R (sybr)",
-    sequence="GGT CAG AGC GCT GCG GTG AT",
-    figures="Fig. 1F, Fig. 1G"
-)
-
-d35 <- data.frame(
-    name="U48_F (taqman)",
-    sequence="Control miRNA Assay, RNU48, human",
-    figures="Fig. 3B"
-)
-
-d36 <- data.frame(
-    name="U48_R (taqman)",
-    sequence="Control miRNA Assay, RNU48, human",
-    figures="Fig. 3B"
-)
-
-d37 <- data.frame(
-    name="Renilla_pBiDir_F1",
-    sequence="TAA CGC GGC CTC TTC TTA TTT",
-    figures="Fig. 3A"
-)
-
-d38 <- data.frame(
-    name="Renilla_pBiDir_R1",
-    sequence="GAT TTG CCT GAT TTG CCC ATA",
-    figures="Fig. 3A"
-)
-
-d39 <- data.frame(
-    name="Luc_set_II_F",
-    sequence="AAG ATT CAA AGT GCG CTG CTG",
-    figures="Fig. 3A"
-)
-
-d40 <- data.frame(
-    name="Luc_set_II_R",
-    sequence="TTG CCT GAT ACC TGG CAG ATG",
-    figures="Fig. 3A"
-)
-
-d41 <- data.frame(
-    name="CCND1 Fwd",
-    sequence="CGT GGC CTC TAA GAT GAA GG",
-    figures="Fig. 3D"
-)
-
-d42 <- data.frame(
-    name="CCND1 Rev",
-    sequence="CTG GCA TTT TGG AGA GGA AG",
-    figures="Fig. 3D"
-)
-
-d43 <- data.frame(
-    name="miR34a ChIP_F1",
-    sequence="AAA GTT TGC AAA GAA GGA GGC GGG",
-    figures="Fig. 3F"
-)
-
-d44 <- data.frame(
-    name="miR34aChIP_R1",
-    sequence="AGG GAA GAA AGA ACT AGC CGA GCA",
-    figures="Fig. 3F"
-)
-
-
-primers <- rbind(
-    d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20,
-    d21, d22, d23, d24, d25, d26, d27, d28, d29, d30, d31, d32, d33, d34, d35, d36, d37, d38, d39, d40,
-    d41, d42, d43, d44
-)
-
-primers$primerType <- c(
-    rep("Other asRNA", 12),
-    rep("miR34a asRNA", 12),
-    rep("miR34a HG", 2),
-    rep("miR34a mature", 2),
-    rep("Other primers", 14),
-    rep("miR34a asRNA", 2)
-)
-primers <- primers[order(as.character(primers$primerType)),]
-
-primers$primerType <- c(
-    "miR34a asRNA", rep("", 13),
-    "miR34a HG", "",
-    "miR34a mature", "",
-    "Other asRNA", rep("", 11),
-    "Other primers", rep("", 13)
-)
-
-colnames(primers) <- c("Name", "Sequence", "Figure", "Primer type")
-rownames(primers) <- 1:nrow(primers)
-primers <- primers[,c("Primer type", "Name", "Sequence", "Figure")]
 ```
 
-```{r, results='asis', echo=FALSE}
-panderOptions('table.split.table', Inf)
-pandoc.table(primers, keep.line.breaks = TRUE)
+## Figure 1d 
+
+```{r}
+
+tibble(
+  name = c(
+    "miR34a asRNA F10",
+    "polyT T7 FAM",
+    "miR34a asRNA F1",
+    "FAM primer"),
+  sequence = c(
+    "ACG CGT CTC TCC AGC CCG GGA T",
+    "CAG TGA ATT GTA ATA CGA CTC ACT ATA GGG ACA TCC GTA GCT CGT CCA GGA CCC TTT TTT TTT TTT TTT TTT VN",
+    "AGC GGC ATC TCC TCC ACC TGA AA",
+    "CCG TAG CTC GTC CAG GAC CC"
+  )
+)
+
+```
+
+## Figure 2a
+
+```{r}
+
+tibble(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a HG F",
+        "miR34a HG R",
+        "miR34a AS F1",
+        "miR34a AS R1"
+        
+    ),
+    sequence=c(
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TCG GGA TGT CCA CGT CA",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT"
+        
+    )
+)
+
+```
+
+## Figure 2b
+
+```{r}
+
+tibble(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a HG F",
+        "miR34a HG R",
+        "miR34a as F1",
+        "miR34a as R1"
+        
+    ),
+    sequence=c(
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TCG GGA TGT CCA CGT CA",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT"
+        
+    )
+)
+
+```
+
+## Figure 2c
+
+```{r}
+
+tibble(
+    name=c(
+        "Luc setII F",
+        "Luc setII R",
+        "Renilla pBiDir F1",
+        "Renilla pBiDir R1",
+        "ß-actin Fwd",
+        "ß-actin Rev"
+    ),
+    sequence=c(
+        "AAG ATT CAA AGT GCG CTG CTG",
+        "TTG CCT GAT ACC TGG CAG ATG",
+        "TAA CGC GGC CTC TTC TTA TTT",
+        "GAT TTG CCT GAT TTG CCC ATA",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
+)
+
+```
+
+## Figure 2d
+
+```{r}
+
+tibble(
+    name=c(
+        "Luc set II F",
+        "Luc set II R",
+        "Renilla pBiDir F1",
+        "Renilla pBiDir R1",
+        "ß-actin Fwd",
+        "ß-actin Rev"
+    ),
+    sequence=c(
+        "AAG ATT CAA AGT GCG CTG CTG",
+        "TTG CCT GAT ACC TGG CAG ATG",
+        "TAA CGC GGC CTC TTC TTA TTT",
+        "GAT TTG CCT GAT TTG CCC ATA",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
+)
+
+```
+
+## Figure 3a
+
+Cloning primers
+
+```{r}
+
+tibble(
+    name=c(
+        "miR34aAS cloning F4",
+        "miR34aAS cloning Ex3_1"
+    ),
+    sequence=c(
+        "ACG CGT CTC TCC AGC CCG GGA T",
+        "AAT GAT GGC CGC AAC TAA TGA CGG"
+    )
+)
+
+```
+
+QPCR primers
+
+```{r}
+
+tibble(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a AS F1",
+        "miR34a AS R1"
+        
+    ),
+    sequence=c(
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TCG GGA TGT CCA CGT CA",
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT"
+        
+    )
+)
+
+```
+
+## Figure 3d
+
+```{r}
+
+tibble(
+    name=c(
+        "miR34a ChIP F1",
+        "miR34a ChIP R1"
+    ),
+    sequence=c(
+       "AAA GTT TGC AAA GAA GGA GGC GGG",
+       "AGG GAA GAA AGA ACT AGC CGA GCA"
+    )
+)
+
+```
+
+## Figure 1 Supplement 2a
+
+```{r}
+
+tibble(
+    name=c(
+        "miR34a AS F10",
+        "miR34a AS F11",
+        "miR34a AS F12",
+        "miR34a AS F13",
+        "miR34a AS F14",
+        "miR34a AS F15",
+        "miR34a AS R1"
+    ),
+    sequence=c(
+        "ACG CGT CTC TCC AGC CCG GGA T",
+        "ATC TGC GTG GTC ACC GAG AAG CA",
+        "CGC ACG GAC TGA GAA ACA CAA G",
+        "ACG GAG GCT ACA CAA TTG AAC AGG",
+        "AGG GAA GAA AGA ACT AGC CGA GCA",
+        "CAT TTG CTG CAA TAT CAC CGT GGC",
+        "TTG CCT CGT GAG TCC AAG GAG AAT"
+    )
+)
+
+```
+
+## Figure 1 Supplement 2b
+
+```{r}
+
+tibble(
+    name=c(
+        "miR34a AS F1",
+        "miR34a AS R1",
+        "miR34a AS int1 R1",
+        "miR34a HG F",
+        "miR34a HG R",
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "U48 F",
+        "U48 R"
+    ),
+    sequence=c(
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "TGC GCA AAC TAC GCG CTC T",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA",
+        "AGT GAT GAT GAC CCC AGG TA",
+        "GGT CAG AGC GCT GCG GTG AT"
+    )
+)
+
+```
+
+## Figure 1 Supplement 2c
+
+```{r}
+
+tibble(
+    name=c(
+        "miR34a AS F12",
+        "miR34a AS R1",
+        "miR34a AS R2",
+        "miR34a AS R3",
+        "miR34a AS Ex3 R1"
+    ),
+    sequence=c(
+        "AAA CAC AAG CGT TTA CCT GGG TGC",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "ATA GGT TCA TTT GCC CGA TGT GCC",
+        "CCA CAG CTG TTG CTT CTG AAT GCT",
+        "TGA TGG CCG CAA CTA ATG ACG GAT"
+    )
+)
+
+```
+
+## Figure 2 Supplement 2a
+
+```{r}
+
+ tibble(
+    name=c(
+        "Luc setII F",
+        "Luc setII R",
+        "Renilla pBiDir F1",
+        "Renilla pBiDir R1",
+        "ß-actin Fwd",
+        "ß-actin Rev"
+    ),
+    sequence=c(
+        "AAG ATT CAA AGT GCG CTG CTG",
+        "TTG CCT GAT ACC TGG CAG ATG",
+        "TAA CGC GGC CTC TTC TTA TTT",
+        "GAT TTG CCT GAT TTG CCC ATA",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
+)
+
+```
+
+## Figure 3 Supplement 1a
+
+Cloning primers
+
+```{r}
+
+tibble(
+    name=c(
+        "miR34aAS cloning F4",
+        "miR34aAS cloning Ex3_1"
+    ),
+    sequence=c(
+        "ACG CGT CTC TCC AGC CCG GGA T",
+        "AAT GAT GGC CGC AAC TAA TGA CGG"
+    )
+)
+
+```
+
+QPCR primers
+
+```{r}
+
+tibble(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a AS F1",
+        "miR34a AS R1"
+        
+    ),
+    sequence=c(
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TCG GGA TGT CCA CGT CA",
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT"
+        
+    )
+)
+```
+
+## Figure 3 Supplement 2a
+
+```{r}
+
+tibble(
+    name=c(
+        "CCND1 Fwd",	
+        "CCND1 Rev",
+        "ß-actin Fwd",
+        "ß-actin Rev"
+    ),
+    sequence=c(
+        "CGT GGC CTC TAA GAT GAA GG",
+        "CTG GCA TTT TGG AGA GGA AG",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
+)
+
+```
+
+```{r}
+
 ```
