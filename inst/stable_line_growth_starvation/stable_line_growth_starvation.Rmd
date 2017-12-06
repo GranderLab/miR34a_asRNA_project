@@ -30,7 +30,8 @@ packages <- c(
     "readr",
     "miR34AasRNAproject",
     "grid",
-    "gtable"
+    "gtable",
+    "broom"
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
@@ -126,21 +127,33 @@ stats <- data %>%
     CI95h = t.test(techMean)$conf.int[2]
   )
 
-#unreported p-values per time point
-p <- data %>% 
-  filter(Time != 0) %>% 
-  unite(tmp, `Biological Replicate`, `Cell line`) %>% 
-  spread(tmp, techMean) %>% 
-  group_by(Treatment, Time) %>% 
-  summarize(
-	  p = t.test(
-	    c(`1_PC3 miR34a asRNA`, `2_PC3 miR34a asRNA`, `3_PC3 miR34a asRNA`), 
-	    c(`1_PC3 Mock`, `2_PC3 Mock`, `3_PC3 Mock`)
-	  )$p.value,
-	  meanAS = mean(c(`1_PC3 miR34a asRNA`, `2_PC3 miR34a asRNA`, `3_PC3 miR34a asRNA`)),
-	  meanMock = mean(c(`1_PC3 Mock`, `2_PC3 Mock`, `3_PC3 Mock`))
-  ) %>%
-  mutate(fold = meanAS / meanMock)
+#linear model
+model.data <-  data %>%
+  mutate(Time = as.numeric(Time)) %>%
+  group_by(Treatment) %>%
+  mutate(rank = rank(techMean)) %>%
+  do(glance(lm(rank ~ Time +`Cell line`, data = .))) %>%
+  ungroup() %>%
+  rename(pValue = p.value) %>%
+  pFormat(.) %>%
+  select(-pValue) %>%
+  rename(p.value = pFormat)
+
+as.data.frame(model.data)
+
+growth.lm <- data %>%
+  mutate(Time = as.numeric(Time)) %>%
+  group_by(Treatment) %>%
+  mutate(rank = rank(techMean)) %>%
+  do(tidy(lm(rank ~ Time +`Cell line`, data = .))) %>%
+  ungroup() %>%
+  rename(pValue = p.value) %>%
+  pFormat(.) %>%
+  select(-pValue) %>%
+  rename(p.value = pFormat)
+
+as.data.frame(growth.lm)
+
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}

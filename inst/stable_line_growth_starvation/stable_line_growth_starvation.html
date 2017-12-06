@@ -487,21 +487,141 @@ stats &lt;- data %&gt;%
     CI95h = t.test(techMean)$conf.int[2]
   )
 
-#unreported p-values per time point
-p &lt;- data %&gt;% 
-  filter(Time != 0) %&gt;% 
-  unite(tmp, `Biological Replicate`, `Cell line`) %&gt;% 
-  spread(tmp, techMean) %&gt;% 
-  group_by(Treatment, Time) %&gt;% 
-  summarize(
-      p = t.test(
-        c(`1_PC3 miR34a asRNA`, `2_PC3 miR34a asRNA`, `3_PC3 miR34a asRNA`), 
-        c(`1_PC3 Mock`, `2_PC3 Mock`, `3_PC3 Mock`)
-      )$p.value,
-      meanAS = mean(c(`1_PC3 miR34a asRNA`, `2_PC3 miR34a asRNA`, `3_PC3 miR34a asRNA`)),
-      meanMock = mean(c(`1_PC3 Mock`, `2_PC3 Mock`, `3_PC3 Mock`))
-  ) %&gt;%
-  mutate(fold = meanAS / meanMock)</code></pre>
+#linear model
+model.data &lt;-  data %&gt;%
+  mutate(Time = as.numeric(Time)) %&gt;%
+  group_by(Treatment) %&gt;%
+  mutate(rank = rank(techMean)) %&gt;%
+  do(glance(lm(rank ~ Time +`Cell line`, data = .))) %&gt;%
+  ungroup() %&gt;%
+  rename(pValue = p.value) %&gt;%
+  pFormat(.) %&gt;%
+  select(-pValue) %&gt;%
+  rename(p.value = pFormat)
+
+as.data.frame(model.data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Treatment</th>
+<th style="text-align: right;">r.squared</th>
+<th style="text-align: right;">adj.r.squared</th>
+<th style="text-align: right;">sigma</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">logLik</th>
+<th style="text-align: right;">AIC</th>
+<th style="text-align: right;">BIC</th>
+<th style="text-align: right;">deviance</th>
+<th style="text-align: right;">df.residual</th>
+<th style="text-align: left;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">RPMI</td>
+<td style="text-align: right;">0.9048054</td>
+<td style="text-align: right;">0.9039115</td>
+<td style="text-align: right;">19.37201</td>
+<td style="text-align: right;">1012.260</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-945.1673</td>
+<td style="text-align: right;">1898.335</td>
+<td style="text-align: right;">1911.836</td>
+<td style="text-align: right;">79933.52</td>
+<td style="text-align: right;">213</td>
+<td style="text-align: left;">1.7e-109</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HBSS</td>
+<td style="text-align: right;">0.8523014</td>
+<td style="text-align: right;">0.8509146</td>
+<td style="text-align: right;">24.12818</td>
+<td style="text-align: right;">614.563</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">-992.5904</td>
+<td style="text-align: right;">1993.181</td>
+<td style="text-align: right;">2006.682</td>
+<td style="text-align: right;">124002.06</td>
+<td style="text-align: right;">213</td>
+<td style="text-align: left;">3.5e-89</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>growth.lm &lt;- data %&gt;%
+  mutate(Time = as.numeric(Time)) %&gt;%
+  group_by(Treatment) %&gt;%
+  mutate(rank = rank(techMean)) %&gt;%
+  do(tidy(lm(rank ~ Time +`Cell line`, data = .))) %&gt;%
+  ungroup() %&gt;%
+  rename(pValue = p.value) %&gt;%
+  pFormat(.) %&gt;%
+  select(-pValue) %&gt;%
+  rename(p.value = pFormat)
+
+as.data.frame(growth.lm)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Treatment</th>
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: left;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">RPMI</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">11.338360</td>
+<td style="text-align: right;">2.9974576</td>
+<td style="text-align: right;">3.782659</td>
+<td style="text-align: left;">2.0e-4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RPMI</td>
+<td style="text-align: left;">Time</td>
+<td style="text-align: right;">5.662141</td>
+<td style="text-align: right;">0.1268830</td>
+<td style="text-align: right;">44.624887</td>
+<td style="text-align: left;">4.7e-110</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RPMI</td>
+<td style="text-align: left;"><code>Cell line</code>PC3 miR34a asRNA</td>
+<td style="text-align: right;">-15.175926</td>
+<td style="text-align: right;">2.6361965</td>
+<td style="text-align: right;">-5.756751</td>
+<td style="text-align: left;">3.0e-8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HBSS</td>
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">80.187566</td>
+<td style="text-align: right;">3.7333873</td>
+<td style="text-align: right;">21.478502</td>
+<td style="text-align: left;">3.3e-55</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">HBSS</td>
+<td style="text-align: left;">Time</td>
+<td style="text-align: right;">3.796418</td>
+<td style="text-align: right;">0.1580351</td>
+<td style="text-align: right;">24.022627</td>
+<td style="text-align: left;">1.5e-62</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">HBSS</td>
+<td style="text-align: left;"><code>Cell line</code>PC3 miR34a asRNA</td>
+<td style="text-align: right;">-83.842593</td>
+<td style="text-align: right;">3.2834301</td>
+<td style="text-align: right;">-25.535062</td>
+<td style="text-align: left;">9.5e-67</td>
+</tr>
+</tbody>
+</table>
 <pre class="r"><code>p &lt;- ggplot(data = NULL) +
   geom_ribbon(
     data = stats,
@@ -592,15 +712,15 @@ plotRmarkdown(markdown)</code></pre>
 
 figure &lt;- plotPDF(pdf)
 
-path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;figure3c&quot;][[1]])
-ggsave(
-  plot = figure,
-  filename = path,
-  device = cairo_pdf,
-  height = 60,
-  width = 83,
-  units = &quot;mm&quot;
-)</code></pre>
+# path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;figure3c&quot;][[1]])
+# ggsave(
+#   plot = figure,
+#   filename = path,
+#   device = cairo_pdf,
+#   height = 60,
+#   width = 83,
+#   units = &quot;mm&quot;
+# )</code></pre>
 <div class="caption">
 <p>The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. The points represent the median values obtained from each independant experiment (n = 3) whereas, the shadow represents 95% confidence interval, and the vertical line represents the minimum and maximum values from the independant experiments.</p>
 </div>
@@ -627,28 +747,29 @@ ggsave(
 ## [8] base     
 ## 
 ## other attached packages:
-##  [1] bindrcpp_0.2                  gtable_0.2.0                 
-##  [3] miR34AasRNAproject_0.0.0.0001 ggthemes_3.4.0               
-##  [5] printr_0.1                    forcats_0.2.0                
-##  [7] stringr_1.2.0                 dplyr_0.7.4                  
-##  [9] purrr_0.2.4                   readr_1.1.1.9000             
-## [11] tidyr_0.7.2                   tibble_1.3.4                 
-## [13] ggplot2_2.2.1                 tidyverse_1.2.1              
+##  [1] bindrcpp_0.2                  broom_0.4.3                  
+##  [3] gtable_0.2.0                  miR34AasRNAproject_0.0.0.0001
+##  [5] ggthemes_3.4.0                printr_0.1                   
+##  [7] forcats_0.2.0                 stringr_1.2.0                
+##  [9] dplyr_0.7.4                   purrr_0.2.4                  
+## [11] readr_1.1.1.9000              tidyr_0.7.2                  
+## [13] tibble_1.3.4                  ggplot2_2.2.1                
+## [15] tidyverse_1.2.1              
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_0.2.3 reshape2_1.4.2   haven_1.1.0      lattice_0.20-35 
-##  [5] colorspace_1.3-2 htmltools_0.3.6  yaml_2.1.14      rlang_0.1.4     
-##  [9] foreign_0.8-69   glue_1.2.0       modelr_0.1.1     readxl_1.0.0    
-## [13] bindr_0.1        plyr_1.8.4       munsell_0.4.3    cellranger_1.1.0
-## [17] rvest_0.3.2      liftr_0.7        psych_1.7.8      evaluate_0.10.1 
-## [21] labeling_0.3     knitr_1.17       parallel_3.4.2   curl_3.0        
-## [25] broom_0.4.3      Rcpp_0.12.13     rgeolocate_1.0.1 backports_1.1.1 
-## [29] scales_0.5.0     jsonlite_1.5     mnormt_1.5-5     hms_0.4.0       
-## [33] digest_0.6.12    stringi_1.1.6    rprojroot_1.2    cli_1.0.0       
-## [37] tools_3.4.2      magrittr_1.5     lazyeval_0.2.1   crayon_1.3.4    
-## [41] pkgconfig_2.0.1  xml2_1.1.1       lubridate_1.7.1  assertthat_0.2.0
-## [45] rmarkdown_1.8    httr_1.3.1       rstudioapi_0.7   R6_2.2.2        
-## [49] nlme_3.1-131     compiler_3.4.2</code></pre>
+##  [1] reshape2_1.4.2   haven_1.1.0      lattice_0.20-35  colorspace_1.3-2
+##  [5] htmltools_0.3.6  yaml_2.1.14      rlang_0.1.4      foreign_0.8-69  
+##  [9] glue_1.2.0       modelr_0.1.1     readxl_1.0.0     bindr_0.1       
+## [13] plyr_1.8.4       munsell_0.4.3    cellranger_1.1.0 rvest_0.3.2     
+## [17] liftr_0.7        psych_1.7.8      evaluate_0.10.1  labeling_0.3    
+## [21] knitr_1.17       parallel_3.4.2   curl_3.0         highr_0.6       
+## [25] Rcpp_0.12.13     rgeolocate_1.0.1 backports_1.1.1  scales_0.5.0    
+## [29] jsonlite_1.5     mnormt_1.5-5     hms_0.4.0        digest_0.6.12   
+## [33] stringi_1.1.6    rprojroot_1.2    cli_1.0.0        tools_3.4.2     
+## [37] magrittr_1.5     lazyeval_0.2.1   crayon_1.3.4     pkgconfig_2.0.1 
+## [41] xml2_1.1.1       lubridate_1.7.1  assertthat_0.2.0 rmarkdown_1.8   
+## [45] httr_1.3.1       rstudioapi_0.7   R6_2.2.2         nlme_3.1-131    
+## [49] compiler_3.4.2</code></pre>
 </section>
 
 
