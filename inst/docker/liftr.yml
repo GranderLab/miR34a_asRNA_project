@@ -14,5 +14,7 @@ cran:
   - liftr/0.7
   - rlang/0.1.2
   - magrittr/1.5
+  - gridExtra/2.3
+  - broom/0.4.3
 remotes:
   - "GranderLab/miR34a_asRNA_project"

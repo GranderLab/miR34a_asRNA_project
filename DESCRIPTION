@@ -1,13 +1,17 @@
 Package: miR34AasRNAproject
-Title: What the Package Does (one line, title case)
+Title: The miR34AasRNAproject package facilitates the transparency and reproducibility of the miR34a asRNA project and associated publication.
 Version: 0.0.0.0001
 Authors@R: person("Jason", "Serviss", email = "Jason.serviss@ki.se", role = c("aut", "cre"), comment = c(ORCID = 0000-0002-5778-7014))
-Description: What the package does (one paragraph).
+Author: Jason T. Serviss [aut, cre]
+Description: This package is designed to facilitate the transparency and reproducibility of the miR34a asRNA project.
 Depends: R (>= 3.4.2)
-License: What license is it under?
+URL: https://github.com/GranderLab/miR34a_asRNA_project
+BugReports: https://github.com/GranderLab/miR34a_asRNA_project/issues
+License:  GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
+NeedsCompilation: no
 Imports: 
     liftr (>= 0.7),
     tidyverse (>= 0.2),
@@ -21,6 +25,8 @@ Suggests:
     gggenes (>= 0.2.0),
     extrafont (>= 0.17),
     scales (>= 0.5.0),
-    gtable (>= 0.2.0)
+    gtable (>= 0.2.0),
+    gridExtra (>= 2.3),
+    broom (>= 0.4.3)
 SystemRequirements: docker
 VignetteBuilder: knitr
