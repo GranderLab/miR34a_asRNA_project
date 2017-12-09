@@ -1,0 +1,261 @@
+---
+title: "Figure 1c"
+subtitle: "miR34a asRNA and miR34a TCGA correlation"
+author: "Jimmy Van den Eynden and Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
+```
+
+#### _Introduction_
+We interogated RNA sequencing data from TCGA to determine in miR34a and miR34a asRNA expression was correlated in both TP53 wild type and mutated samples.
+
+<br></br>
+
+#### _Methods_
+
+<br></br>
+
+#### _Results_
+```{r}
+url <- fileMap(type = "rds")["Figure 1c"][[1]]
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+#normalize expression values
+data <- mutate(
+    data,
+    RP3 = log2(RP3 / max(RP3)),
+    miR34a = log2(miR34a / max(miR34a))  
+  )
+
+#add BRCA subtypes
+data <- data %>%
+  mutate(PAM50 = if_else(is.na(PAM50), "", PAM50)) %>%
+  mutate(cancer_PAM50 = gsub("BRCA", "BRCA ", paste(cancer, PAM50, sep = "")))
+
+#sort 
+data <- arrange(data, cancer_PAM50, TP53, RP3)
+
+#remove infinite data
+data <- filter(data, !is.infinite(RP3) & !is.infinite(miR34a))
+
+#diploid only
+data <- filter(data, abs(RP3_cna) < 0.1)
+
+##prepare for plotting
+data <- data %>%
+  mutate(TP53 = if_else(TP53 == 0, "TP53 wt", "TP53 mut")) %>%
+  select(TCGA_cancer_id, TP53, cancer_PAM50, RP3, miR34a) %>%
+  gather(gene, value, -(TCGA_cancer_id:cancer_PAM50)) %>%
+  mutate(gene = if_else(gene == "RP3", "miR34a asRNA", "miR34a"))
+
+#remove cancers that don't have at least 5 patients in both TP53 wt and mutated
+data <- data %>%
+  group_by(cancer_PAM50, TP53, gene) %>%
+  filter(n() > 5) %>%
+  group_by(cancer_PAM50, gene) %>%
+  filter(length(unique(TP53)) == 2) %>%
+  ungroup()
+
+#calculate stats
+stats <- data %>%
+  group_by(cancer_PAM50, gene, TP53) %>%
+  summarize(value = list(value)) %>%
+  spread(TP53, value) %>%
+  mutate(
+    mean_wt = mean(unlist(`TP53 wt`)),
+    mean_mut = mean(unlist(`TP53 mut`)),
+    CI95l_wt = t.test(unlist(`TP53 wt`))$conf.int[1],
+    CI95l_mut = t.test(unlist(`TP53 mut`))$conf.int[1],
+    CI95h_wt = t.test(unlist(`TP53 wt`))$conf.int[2],
+    CI95h_mut = t.test(unlist(`TP53 mut`))$conf.int[2],
+    pValue = t.test(unlist(`TP53 wt`), unlist(`TP53 mut`))$p.value
+  ) %>%
+  ungroup() %>%
+  gather(metric, value, -(cancer_PAM50:`TP53 wt`), -pValue) %>%
+  separate(col = metric, into = c("metric", "TP53"), sep = "_") %>%
+  spread(metric, value) %>%
+  mutate(TP53 = if_else(TP53 == "wt", "TP53 wt", "TP53 mut")) %>%
+  pFormat(.)
+
+#add fake data where p53 mut is missing (will be hidden in plot) to keep empty space
+data <- data %>%
+  mutate(TP53 = parse_factor(TP53, levels = c("TP53 wt", "TP53 mut"))) %>%
+  mutate(gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a"))) %>%
+  mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = unique(cancer_PAM50)))
+
+stats <- stats %>%
+  mutate(TP53 = parse_factor(TP53, levels = c("TP53 wt", "TP53 mut"))) %>%
+  mutate(gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a"))) %>%
+  mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = unique(cancer_PAM50)))
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, message = FALSE}
+ggplot(data = NULL) + 
+  geom_jitter(
+    data = data,
+    aes(
+      x = cancer_PAM50,
+      y = value,
+      colour = TP53
+    ),
+    position = position_dodge(width = 0.75),
+    alpha = 0.5
+  ) +
+  geom_text(
+    data = stats, 
+    aes(
+      x = cancer_PAM50, 
+      y = 1, 
+      label = pFormat
+    )
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = cancer_PAM50,
+      y = mean,
+      group = TP53
+    ),
+    colour = "grey30",
+    shape = 124,
+    size = 4,
+    lwd = 1,
+    position = position_dodge(width = 0.75)
+  ) +
+  facet_wrap(~gene, ncol = 2) +
+  coord_flip(ylim = c(-12, 2.05)) +
+  labs(
+    x = "Cancer",
+    y = "Expression"
+  ) +
+  theme_few() +
+  scale_colour_economist() +
+  theme(legend.position = "top") +
+  guides(colour = guide_legend(title = "TP53 status"))
+
+#plot pdf
+figure <- ggplot(data = NULL) + 
+  geom_jitter(
+    data = data,
+    aes(
+      x = cancer_PAM50,
+      y = value,
+      colour = TP53
+    ),
+    position = position_dodge(width = 0.75),
+    alpha = 0.5,
+    size = 1
+  ) +
+  geom_text(
+    data = stats, 
+    aes(
+      x = cancer_PAM50, 
+      y = 1, 
+      label = pFormat
+    ),
+    size = 3.25
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = cancer_PAM50,
+      y = mean,
+      group = TP53
+    ),
+    colour = "grey30",
+    shape = 124,
+    size = 4,
+    lwd = 1,
+    position = position_dodge(width = 0.75)
+  ) +
+  facet_wrap(~gene, ncol = 2) +
+  coord_flip(ylim = c(-12, 2.05)) +
+  labs(
+    x = "Cancer",
+    y = "Expression"
+  ) +
+  theme_few() +
+  scale_colour_economist() +
+  theme(
+    plot.margin = unit(rep(0.1, 4), "lines"),
+    legend.position = "top",
+    legend.background = element_blank(),
+    legend.box.spacing = unit(5, "pt"), #this controls the spacing between strip.text.x and the legend
+    legend.margin = margin(rep(0, 4), unit = "pt"),
+    legend.key.size = unit(1/5, "cm"),
+    legend.title = element_text(size = 9),
+    legend.text = element_text(size = 7),
+    axis.title = element_text(size = 9),
+    axis.title.x = element_text(margin = margin(t = 5)),
+    axis.text.y = element_text(size = 10),
+    axis.text.x = element_text(size = 10),
+    axis.ticks = element_line(size = 0.25),
+    axis.ticks.length = unit(1/15, "cm"),
+    panel.border = element_rect(fill = NA, size = 0.15)
+  ) +
+  guides(colour = guide_legend(title = "TP53 status", override.aes = list(size = 3, alpha = 1)))
+
+##save to pdf
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 1-Supplement 1b"][[1]])
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 135,
+   width = 205,
+   units = "mm"
+)
+```
+
+<div class="caption">
+A graphical depiction of the TCGA expression analysis. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
+</div>
+
+<br></br>
+
+#### _Conclusions_
+miR34a asRNA and miR34a tend to be highly correlated in the cancer types examined in both TP53 wild type and mutated samples. In addition, the results indicate that both miR34a asRNA and miR34a expression levels are decreased in the presence of TP53 mutations.
+
+<br></br><br></br>
+
+```{r}
+sessionInfo()
+```
