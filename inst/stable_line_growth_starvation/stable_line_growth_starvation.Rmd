@@ -71,7 +71,7 @@ Three technical triplicates were included in each experiment and these were inde
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure3c"][[1]]
+url <- fileMap(type = "rds")["Figure 3c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to first time point for control (Mock)
@@ -248,7 +248,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3c"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3c"][[1]])
 # ggsave(
 #   plot = figure,
 #   filename = path,

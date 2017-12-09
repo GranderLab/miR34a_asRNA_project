@@ -67,7 +67,7 @@ The cell cycle phases ModFit software (Verity Software House) was used to quanti
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure3b"][[1]]
+url <- fileMap(type = "rds")["Figure 3b"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #convert the value (precent) to log2(fraction)
@@ -282,7 +282,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3b"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3b"][[1]])
 # ggsave(
 #    plot = figure,
 #    filename = path,

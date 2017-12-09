@@ -1,5 +1,6 @@
 ---
-title: "P1 shRenilla HEK293t transfections"
+title: "Figure 2-Supplement 2"
+subtitle: "P1 shRenilla HEK293t transfections"
 author: "Jason T. Serviss"
 date: "31/01/2017"
 output:
@@ -115,7 +116,7 @@ primers
 
 ```{r}
 
-url <- fileMap(type = "rds")["suppFigure2b"][[1]]
+url <- fileMap(type = "rds")["Figure 2-Supplement 2"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #Luciferase = miR34a HG
@@ -191,7 +192,7 @@ figure <- plotPDF(p) +
     axis.text.x = element_text(angle = 90)
   )
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure2b"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2-Supplement 2"][[1]])
 # ggsave(
 #    plot = figure,
 #    filename = path,

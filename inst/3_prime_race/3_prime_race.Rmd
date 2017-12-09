@@ -140,7 +140,7 @@ plotRmarkdown(p) +
 
 ```{r, out.width = "850px"}
 
-url <- fileMap(type = "png")["figure1d"][[1]]
+url <- fileMap(type = "png")["Figure 1d"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

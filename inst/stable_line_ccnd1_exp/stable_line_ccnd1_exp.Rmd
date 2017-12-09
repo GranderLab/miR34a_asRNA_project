@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Figure 2b"
+title: "Figure 3-Supplement 2a"
 subtitle: "CCND1 expression in PC3 stable cell lines"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -94,7 +94,7 @@ primers
 
 ```{r, warning=FALSE, message=FALSE}
 
-url <- fileMap(type = "rds")["suppFigure3b"][[1]]
+url <- fileMap(type = "rds")["Figure 3-Supplement 2a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -254,7 +254,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure3b"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3-Supplement 2a"][[1]])
 # ggsave(
 #   plot = figure,
 #   filename = path,

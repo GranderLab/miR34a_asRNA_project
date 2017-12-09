@@ -1,6 +1,6 @@
 ---
-title: "Figure 1c"
-subtitle: "miR34a asRNA and miR34a TCGA correlation"
+title: "Figure 1-Supplement 1b"
+subtitle: "miR34a asRNA and miR34a TCGA expression"
 author: "Jimmy Van den Eynden and Jason T. Serviss"
 date: "31/01/2017"
 output:
@@ -106,7 +106,7 @@ stats <- data %>%
     CI95l_mut = t.test(unlist(`TP53 mut`))$conf.int[1],
     CI95h_wt = t.test(unlist(`TP53 wt`))$conf.int[2],
     CI95h_mut = t.test(unlist(`TP53 mut`))$conf.int[2],
-    pValue = t.test(unlist(`TP53 wt`), unlist(`TP53 mut`))$p.value
+    pValue = wilcox.test(unlist(`TP53 wt`), unlist(`TP53 mut`), alternative = "two.sided")$p.value
   ) %>%
   ungroup() %>%
   gather(metric, value, -(cancer_PAM50:`TP53 wt`), -pValue) %>%
@@ -127,7 +127,7 @@ stats <- stats %>%
   mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = unique(cancer_PAM50)))
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12, message = FALSE}
+```{r, fig.align='center', fig.height=8, fig.width=12, message = FALSE, warning = FALSE}
 ggplot(data = NULL) + 
   geom_jitter(
     data = data,
@@ -223,8 +223,8 @@ figure <- ggplot(data = NULL) +
     legend.key.size = unit(1/5, "cm"),
     legend.title = element_text(size = 9),
     legend.text = element_text(size = 7),
-    axis.title = element_text(size = 9),
-    axis.title.x = element_text(margin = margin(t = 5)),
+    axis.title.y = element_blank(),
+    axis.title.x = element_text(size = 9, margin = margin(t = 5)),
     axis.text.y = element_text(size = 10),
     axis.text.x = element_text(size = 10),
     axis.ticks = element_line(size = 0.25),
@@ -234,15 +234,15 @@ figure <- ggplot(data = NULL) +
   guides(colour = guide_legend(title = "TP53 status", override.aes = list(size = 3, alpha = 1)))
 
 ##save to pdf
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 1-Supplement 1b"][[1]])
-ggsave(
-   plot = figure,
-   filename = path,
-   device = cairo_pdf,
-   height = 135,
-   width = 205,
-   units = "mm"
-)
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 1-Supplement 1b"][[1]])
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 135,
+#    width = 205,
+#    units = "mm"
+# )
 ```
 
 <div class="caption">

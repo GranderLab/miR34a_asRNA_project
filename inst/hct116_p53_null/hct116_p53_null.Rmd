@@ -1,5 +1,5 @@
 ---
-title: "Figure 2a"
+title: "Figure 2b"
 subtitle: "miR34a asRNA doxorubicin treatment of HCT116 p53 wt and null"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -102,7 +102,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure2b"][[1]]
+url <- fileMap(type = "rds")["Figure 2b"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
@@ -271,7 +271,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure2b"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2b"][[1]])
 # ggsave(
 #   plot = figure,
 #    filename = path,

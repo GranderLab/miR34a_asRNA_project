@@ -27,8 +27,8 @@ fileMap <- function(type) {
     `Figure 1d` = "3_prime_race/3_prime_race.Rmd",
     `Figure 1e` = "primer_walk/primer_walk.Rmd",
     `Figure 1f` = "coding_potential_cpat/coding_potential_cpat.Rmd",
-    `Figure 2b` = "hct116_p53_null/hct116_p53_null.Rmd",
     `Figure 2a` = "hct116_hek293t_dox/hct116_hek293t_dox.Rmd",
+    `Figure 2b` = "hct116_p53_null/hct116_p53_null.Rmd",
     `Figure 2c` = "p1_hct116_hek293t/p1_hct116_hek293t.Rmd",
     `Figure 2d` = "p1_shrna_renilla_dox/p1_shrna_renilla_dox.Rmd",
     `Figure 3a` = "stable_line_expression/stable_line_expression.Rmd",
@@ -50,7 +50,9 @@ fileMap <- function(type) {
     `Figure 3-Supplement 2a` = "stable_line_ccnd1_exp/stable_line_ccnd1_exp.Rmd",
     `Figure 3-Supplement 2b` = "stable_line_ccnd1_prot/stable_line_ccnd1_prot.Rmd",
     `Supplementary Document 1a` = "lnc34a_cage/lnc34a_cage.Rmd",
-    `Supplementary Document 1b` = "lnc34a_splice_jnc/lnc34a_splice_jnc.Rmd"
+    `Supplementary Document 1b` = "lnc34a_splice_jnc/lnc34a_splice_jnc.Rmd",
+    `Supplementary Document 1` = "lnc34a/lnc34a.Rmd",
+    `Supplementary Document 2` = "primers/primers.Rmd"
   )
   
   if(type == "Rmd") {

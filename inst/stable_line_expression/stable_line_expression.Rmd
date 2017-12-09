@@ -170,11 +170,8 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure3a"][[1]]
+url <- fileMap(type = "rds")["Figure 3a"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
-
-#remove Skov exp 1 due to variability in technical replicates
-#data <- filter(data, `Biological Replicate` != 1 | `Cell line` != "Skov3")
 
 #Have to divide the analysis due to the presence of several house 
 #keeping genes.
@@ -424,7 +421,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3a"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3a"][[1]])
 # ggsave(
 #    plot = figure,
 #    filename = path,

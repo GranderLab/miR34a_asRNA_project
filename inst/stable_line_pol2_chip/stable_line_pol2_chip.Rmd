@@ -90,7 +90,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["figure3d"][[1]]
+url <- fileMap(type = "rds")["Figure 3d"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate means of technical replicates
@@ -265,7 +265,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure3d"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3d"][[1]])
 # ggsave(
 #   plot = figure,
 #   filename = path,

@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Figure 2c"
+title: "Figure 3-Supplement 2b"
 subtitle: "CCND1 protein expression in PC3 stable lines"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -84,7 +84,7 @@ The resulting western blot showing results from the three independant experiment
 _Quantification_
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["suppFigure3c"][[1]]
+url <- fileMap(type = "rds")["Figure 3-Supplement 2b"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize to house keeping gene
@@ -251,7 +251,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure3c"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3-Supplement 2b"][[1]])
 # ggsave(
 #   plot = figure,
 #   filename = path,

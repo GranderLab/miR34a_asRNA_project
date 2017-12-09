@@ -97,7 +97,7 @@ Primer placement at the locus can be viewed in Supplementary Figure 1b.
 
 ```{r, out.width = "500px"}
 
-url <- fileMap(type = "png")["figure1e"][[1]]
+url <- fileMap(type = "png")["Figure 1e"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

@@ -55,7 +55,7 @@ We interogated RNA sequencing data from TCGA to determine in miR34a and miR34a a
 
 #### _Results_
 ```{r}
-url <- fileMap(type = "rds")["figure1c"][[1]]
+url <- fileMap(type = "rds")["Figure 1c"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #normalize expression values
@@ -85,7 +85,7 @@ data <- filter(data, abs(RP3_cna) < 0.1)
 plotTCGAcorrelation(data, type = "diploid only")
 
 ##save to pdf
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["figure1c"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 1c"][[1]])
 # pdf(path, width = 7.7, height = 4)
 # plotTCGAcorrelation(data, type = "diploid only")
 # invisible(dev.off())

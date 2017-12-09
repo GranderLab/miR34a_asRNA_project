@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Figure 2a"
+title: "Figure 3-Supplement 1"
 subtitle: "miR34a asRNA stable over-expression cell lines compared to HEK293t"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -150,7 +150,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["suppFigure3a"][[1]]
+url <- fileMap(type = "rds")["Figure 3-Supplement 1"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #remove PC3 experiment 6, B-act mean Ct > 30, too high.
@@ -278,7 +278,7 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure3a"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3-Supplement 1"][[1]])
 # ggsave(
 #   plot = figure,
 #    filename = path,

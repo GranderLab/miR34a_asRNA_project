@@ -1,5 +1,6 @@
 ---
-title: "miR34a asRNA cellular localization"
+title: "Figure 1-Supplement 2e"
+subtitle: "miR34a asRNA cellular localization"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
 output:
@@ -57,7 +58,7 @@ Quantified RNAseq data from 11 cell lines from the GRCh38 assembly was downloade
 
 ```{r}
 
-url <- fileMap(type = "rds")["suppFigure1e"][[1]]
+url <- fileMap(type = "rds")["Figure 1-Supplement 2e"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #SK-N-SH has a larger proportion of GAPDH in the nucleus than cytoplasm
@@ -162,7 +163,7 @@ figure <- plotPDF(pdf) +
     strip.text.x = element_text(size = 5, margin = margin(5.5, 5.5, 2.5, 5.5, unit = "pt"))
   )
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure1e"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 1-Supplement 2e"][[1]])
 # ggsave(
 #   plot = figure,
 #   filename = path,

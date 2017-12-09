@@ -1,5 +1,5 @@
 ---
-title: "Supplementary figure 1d"
+title: "Figure 1-Supplement 2c"
 subtitle: "miR34a asRNA isoform cloning"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -90,7 +90,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- fileMap(type = "png")["suppFigure1d"][[1]]
+url <- fileMap(type = "png")["Figure 1-Supplement 2c"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

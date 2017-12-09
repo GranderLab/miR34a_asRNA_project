@@ -62,7 +62,7 @@ _Coding Potential Assesment Tool_
 
 ```{r}
 
-url <- fileMap(type = "rds")["figure1f"][[1]]
+url <- fileMap(type = "rds")["Figure 1f"][[1]]
 cpat <-read_rds(url(file.path(dataUrl, url)))
 cpat
 
