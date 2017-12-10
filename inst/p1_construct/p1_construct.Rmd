@@ -129,7 +129,7 @@ Top: A schematic representation of the miR34a locus and the region cloned in the
 
 <br></br>
 
-*For all results and conclusions please see Figure 2d.
+*For all results and conclusions please see Figure 2c.
 
 ```{r}
 sessionInfo()

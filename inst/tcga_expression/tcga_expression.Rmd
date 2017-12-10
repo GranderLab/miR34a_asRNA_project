@@ -246,13 +246,14 @@ figure <- ggplot(data = NULL) +
 ```
 
 <div class="caption">
-A graphical depiction of the TCGA expression analysis. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
+A graphical depiction of the TCGA expression analysis. P-values are shown on the right side of each panel and compare TP53 wild type samples with nonsynonymous TP53 muated samples. The small vertical line indicated the mean. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
 </div>
 
 <br></br>
 
 #### _Conclusions_
-miR34a asRNA and miR34a tend to be highly correlated in the cancer types examined in both TP53 wild type and mutated samples. In addition, the results indicate that both miR34a asRNA and miR34a expression levels are decreased in the presence of TP53 mutations.
+
+miR34a asRNA and miR34a tend to exhibit a decreased expression in cancer types examined in patients with TP53 mutations. 
 
 <br></br><br></br>
 

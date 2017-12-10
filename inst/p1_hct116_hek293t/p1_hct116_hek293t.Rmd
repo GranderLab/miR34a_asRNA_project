@@ -116,7 +116,7 @@ primers
 
 #### _Results_
 
-*For a schematic representation of the P1 construct please see Figure 2c.
+*For a schematic representation of the P1 construct please see Figure 2-Supplement 1a-b.
 
 ```{r, message = FALSE}
 
