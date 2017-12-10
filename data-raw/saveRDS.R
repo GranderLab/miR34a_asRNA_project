@@ -177,21 +177,6 @@ read_tsv('./data-raw/stable_line_pol2_chip.txt', col_names = TRUE) %>%
   ) %>%
   write_rds(., path = './data/stable_line_pol2_chip.rds')
 
-#cellular_localization
-print("processing cellular_localization")
-read_tsv('./data-raw/cellular_localization.txt', col_names = TRUE) %>%
-  rename(`Cell line` = cellLine) %>%
-  mutate(
-    gene = gsub("miR34a asRNA", "miR34a\nasRNA", .data$gene),
-    gene = gsub("miR34a HG", "miR34a\nHG", .data$gene),
-    gene = gsub("B-actin", "Actin", .data$gene)
-  ) %>%
-  mutate(gene = parse_factor(
-    gene,
-    levels = c("miR34a\nasRNA", "miR34a\nHG", "Actin", "RNU48")
-  )) %>%
-  write_rds(., path = './data/cellular_localization.rds')
-
 #transcript_stability
 print("processing transcript_stability")
 read_tsv('./data-raw/transcript_stability.txt', col_names = TRUE) %>%

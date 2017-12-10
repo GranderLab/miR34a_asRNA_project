@@ -176,3 +176,36 @@ parseUCSCfiles <- function(url) {
   mutate_all(funs(replace(., . == "NA", NA))) %>%
   select(-1, 1)
 }
+
+#' getData
+#'
+#' Gets package data.
+#'
+#' @name getData
+#' @rdname getData
+#' @aliases getData
+#' @param figure Character; The name of the figure to get data for.
+#' @return tibble.
+#' @author Jason T. Serviss
+#' @examples
+#'
+#' getData('Figure 2a')
+#'
+NULL
+
+#' @rdname getData
+#' @importFrom readr read_rds
+#' @export
+
+getData <- function(figure) {
+  #check that there is data for the figure
+  figsWithData <- c(
+    'Figure 1-Supplement 2e', 'Figure 1f', 'Figure 1-Supplement 2d'
+  )
+  if(!figure %in% figsWithData) {
+    stop("There is no data for the figure you specified")
+  }
+  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
+  path <- fileMap('rds')[[figure]][[1]]
+  read_rds(gzcon(url(file.path(dataUrl, path))))
+}
