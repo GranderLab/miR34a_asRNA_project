@@ -54,7 +54,7 @@ names(out) <- names(rmds)
 
 # Figure 1-Supplement 2a
 
-`r out["Figure 1-Supplement 2a"]
+`r out["Figure 1-Supplement 2a"]`
 
 #Figure 1f
 
@@ -62,19 +62,19 @@ names(out) <- names(rmds)
 
 # Figure 1-Supplement 2d
 
-`r out["Figure 1-Supplement 2d"]
+`r out["Figure 1-Supplement 2d"]`
 
 # Figure 1-Supplement 2b
 
-`r out["Figure 1-Supplement 2b"]
+`r out["Figure 1-Supplement 2b"]`
 
 # Figure 1-Supplement 2c
 
-`r out["Figure 1-Supplement 2c"]
+`r out["Figure 1-Supplement 2c"]`
 
 # Figure 1-Supplement 2e
 
-`r out["Figure 1-Supplement 2e"]
+`r out["Figure 1-Supplement 2e"]`
 
 #Figure 2a
 
@@ -90,7 +90,7 @@ names(out) <- names(rmds)
 
 # Figure 2-Supplement 1
 
-`r out["Figure 2-Supplement 1a"]
+`r out["Figure 2-Supplement 1a"]`
 
 #Figure 2d
 
@@ -98,7 +98,7 @@ names(out) <- names(rmds)
 
 # Figure 2-Supplement 2
 
-`r out["Figure 2-Supplement 2"]
+`r out["Figure 2-Supplement 2"]`
 
 #Figure 3a
 
@@ -106,7 +106,7 @@ names(out) <- names(rmds)
 
 # Figure 3-Supplement 1
 
-`r out["Figure 3-Supplement 1"]
+`r out["Figure 3-Supplement 1"]`
 
 #Figure 3b
 
@@ -114,11 +114,11 @@ names(out) <- names(rmds)
 
 # Figure 3-Supplement 2a
 
-`r out["Figure 3-Supplement 2a"]
+`r out["Figure 3-Supplement 2a"]`
 
 # Figure 3-Supplement 2b
 
-`r out["Figure 3-Supplement 2b"]
+`r out["Figure 3-Supplement 2b"]`
 
 #Figure 3c
 
@@ -130,9 +130,9 @@ names(out) <- names(rmds)
 
 # Supplementary Document 1
 
-`r out["Supplementary Document 1"]
+`r out["Supplementary Document 1"]`
 
 # Supplementary Document 2
 
-`r out["Supplementary Document 2"]
+`r out["Supplementary Document 2"]`
 
