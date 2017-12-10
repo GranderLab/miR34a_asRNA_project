@@ -15,6 +15,7 @@ vignette: >
 ```{r, message = FALSE, include = FALSE}
 library(miR34AasRNAproject)
 rmds <- fileMap("Rmd")
+rmds <- rmds[names(rmds) != "All figures"]
 
 out <- NULL
 for (p in rmds) {
