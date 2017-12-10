@@ -423,16 +423,16 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 <h4><em>Methods</em></h4>
 <p><br /></p>
 <p><em>Cell culture and cloning</em></p>
-<p>All cell lines were cultured at 5% CO2 and 37° C with U2OS cells cultured in McCoy’s 5a (Life Technologies), . All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was performed with the specified primer sets with annealing temperature 60˚C unless otherwise indicated. PCR was run for 35 cycles for those primer sets with annealing temperature 60˚C and 40 cycles in other cases. Resulting PCR products were run on a agarose gel, gel extracted with the QIAquick gel extraction kit (Qiagen), cloned using the Strata Cloning kit (Agilent), and sequenced. The sequencing results were visualized in the UCSC genome browser.</p>
+<p>All cell lines were cultured at 5% CO2 and 37° C with U2OS cells cultured in McCoy’s 5a (Life Technologies), . All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was performed with the specified primer sets with annealing temperature 60˚C unless otherwise indicated (see below). PCR was run for 35 cycles for those primer sets with annealing temperature 60˚C and 40 cycles in other cases. Resulting PCR products were run on a agarose gel, gel extracted (8 in total) with the QIAquick gel extraction kit (Qiagen), cloned using the Strata Cloning kit (Agilent), and sequenced. The sequencing results were visualized in the UCSC genome browser. Results aligning to the opposite strand and spurious results (several small 24bp alignments) were removed from the final figure.</p>
 <p><br /></p>
 <p><em>Primers</em></p>
 <pre class="r"><code>primers &lt;- data.frame(
     name=c(
-        &quot;F12&quot;,
-        &quot;R1&quot;,
-        &quot;R2&quot;,
-        &quot;R3&quot;,
-        &quot;Ex3R1&quot;
+        &quot;miR34a AS F12&quot;,
+        &quot;miR34a AS R1&quot;,
+        &quot;miR34a AS R2&quot;,
+        &quot;miR34a AS R3&quot;,
+        &quot;miR34a AS Ex3 R1&quot;
     ),
     sequence=c(
         &quot;AAACACAAGCGTTTACCTGGGTGC&quot;,
@@ -452,27 +452,28 @@ primers</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">F12</td>
+<td style="text-align: left;">miR34a AS F12</td>
 <td style="text-align: left;">AAACACAAGCGTTTACCTGGGTGC</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">R1</td>
+<td style="text-align: left;">miR34a AS R1</td>
 <td style="text-align: left;">TTGCCTCGTGAGTCCAAGGAGAAT</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">R2</td>
+<td style="text-align: left;">miR34a AS R2</td>
 <td style="text-align: left;">ATAGGTTCATTTGCCCGATGTGCC</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">R3</td>
+<td style="text-align: left;">miR34a AS R3</td>
 <td style="text-align: left;">CCACAGCTGTTGCTTCTGAATGCT</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Ex3R1</td>
+<td style="text-align: left;">miR34a AS Ex3 R1</td>
 <td style="text-align: left;">TCAGATAGGTACCAAAAATGATGGCCGCAACTAATGACGGAT</td>
 </tr>
 </tbody>
 </table>
+<p>Primer combinations: miR34a AS F12 + miR34a AS R1 miR34a AS F12 + miR34a AS R2 miR34a AS F12 + miR34a AS R3 miR34a AS F12 + miR34a AS Ex3 R1 (56 degrees annealing) miR34a AS F12 + miR34a AS Ex3 R1 (58 degrees annealing)</p>
 <p><br /></p>
 </section>
 <section id="results" class="level4">
