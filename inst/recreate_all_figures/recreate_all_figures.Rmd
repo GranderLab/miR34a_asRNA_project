@@ -1,0 +1,137 @@
+---
+title: "Recreate all figures"
+author: "Jason T. Serviss and Jimmy Van den Eynden"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, message = FALSE, include = FALSE}
+library(miR34AasRNAproject)
+rmds <- fileMap("Rmd")
+
+out <- NULL
+for (p in rmds) {
+  out <- c(out, knit_child(system.file(p, package = "miR34AasRNAproject")))
+}
+names(out) <- names(rmds)
+```
+
+#Figure 1a
+
+`r out["Figure 1a"]`
+
+#Figure 1b
+
+`r out["Figure 1b"]`
+
+#Figure 1c
+
+`r out["Figure 1c"]`
+
+# Figure 1-Supplement 1a
+
+`r out["Figure 1-Supplement 1a"]
+
+# Figure 1-Supplement 1b
+
+`r out["Figure 1-Supplement 1b"]
+
+#Figure 1d
+
+`r out["Figure 1d"]`
+
+#Figure 1e
+
+`r out["Figure 1e"]`
+
+# Figure 1-Supplement 2a
+
+`r out["Figure 1-Supplement 2a"]
+
+#Figure 1f
+
+`r out["Figure 1f"]`
+
+# Figure 1-Supplement 2d
+
+`r out["Figure 1-Supplement 2d"]
+
+# Figure 1-Supplement 2b
+
+`r out["Figure 1-Supplement 2b"]
+
+# Figure 1-Supplement 2c
+
+`r out["Figure 1-Supplement 2c"]
+
+# Figure 1-Supplement 2e
+
+`r out["Figure 1-Supplement 2e"]
+
+#Figure 2a
+
+`r out["Figure 2a"]`
+
+#Figure 2b
+
+`r out["Figure 2b"]`
+
+#Figure 2c
+
+`r out["Figure 2c"]`
+
+# Figure 2-Supplement 1
+
+`r out["Figure 2-Supplement 1a"]
+
+#Figure 2d
+
+`r out["Figure 2d"]`
+
+# Figure 2-Supplement 2
+
+`r out["Figure 2-Supplement 2"]
+
+#Figure 3a
+
+`r out["Figure 3a"]`
+
+# Figure 3-Supplement 1
+
+`r out["Figure 3-Supplement 1"]
+
+#Figure 3b
+
+`r out["Figure 3b"]`
+
+# Figure 3-Supplement 2a
+
+`r out["Figure 3-Supplement 2a"]
+
+# Figure 3-Supplement 2b
+
+`r out["Figure 3-Supplement 2b"]
+
+#Figure 3c
+
+`r out["Figure 3c"]`
+
+#Figure 3d
+
+`r out["Figure 3d"]`
+
+# Supplementary Document 1
+
+`r out["Supplementary Document 1"]
+
+# Supplementary Document 2
+
+`r out["Supplementary Document 2"]
+

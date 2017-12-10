@@ -21,6 +21,7 @@ NULL
 
 fileMap <- function(type) {
   pList <- list(
+    `All figures` = "recreate_all_figures/recreate_all_figures.Rmd",
     `Figure 1a` = "mir34a_locus/mir34a_locus.Rmd",
     `Figure 1b` = "mir34a_asRNA_cell_panel/mir34a_asRNA_cell_panel.Rmd",
     `Figure 1c` = "tcga_correlation/tcga_correlation.Rmd",

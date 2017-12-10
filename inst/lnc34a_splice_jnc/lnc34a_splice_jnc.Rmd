@@ -52,7 +52,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 ```{r}
 nrCellLinesDown <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "txt")["suppFigure4b"][[1]]
+  url <- fileMap(type = "txt")["Supplementary Document 1b"][[1]]
 
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(16) %>% 
@@ -67,7 +67,7 @@ nrCellLinesDown <- function() {
 
 cellLinesInFinal <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "rds")["suppFigure4b"][[1]]
+  url <- fileMap(type = "rds")["Supplementary Document 1b"][[1]]
 
   read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(filename) %>%
@@ -82,14 +82,14 @@ cellLinesInFinal <- function() {
 
 RNAprepTable <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "rds")["suppFigure4b"][[1]]
+  url <- fileMap(type = "rds")["Supplementary Document 1b"][[1]]
   final <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
     select(filename) %>%
     distinct() %>%
     mutate(filename = str_replace(filename, "^(.*)\\.bedRnaElements.*", "\\1"))
   
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "txt")["suppFigure4b"][[1]]
+  url <- fileMap(type = "txt")["Supplementary Document 1b"][[1]]
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
     filter(X__15 %in% pull(final, filename)) %>%
     rename(`rna extract` = X__3) %>%
@@ -131,7 +131,7 @@ data <- tibble(
 )
 
 #splice junctions
-url <- fileMap(type = "rds")["suppFigure4b"][[1]]
+url <- fileMap(type = "rds")["Supplementary Document 1b"][[1]]
 splJnc <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 splJnc <- splJnc %>%
@@ -271,7 +271,7 @@ grobz <- lapply(list(p1, p2), ggplotGrob)
 g <- rbind(grobz[[2]], grobz[[1]], size = "last")
 g <- resize_heights(g, unit(c(6, 1), "null"))
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["suppFigure3e"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Supplementary Document 1b"][[1]])
 # ggsave(
 #   plot = g,
 #   filename = path,
