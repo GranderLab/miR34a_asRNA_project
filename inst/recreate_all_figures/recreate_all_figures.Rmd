@@ -38,11 +38,11 @@ names(out) <- names(rmds)
 
 # Figure 1-Supplement 1a
 
-`r out["Figure 1-Supplement 1a"]
+`r out["Figure 1-Supplement 1a"]`
 
 # Figure 1-Supplement 1b
 
-`r out["Figure 1-Supplement 1b"]
+`r out["Figure 1-Supplement 1b"]`
 
 #Figure 1d
 
