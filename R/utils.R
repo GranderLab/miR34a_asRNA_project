@@ -200,7 +200,14 @@ NULL
 getData <- function(figure) {
   #check that there is data for the figure
   figsWithData <- c(
-    'Figure 1-Supplement 2e', 'Figure 1f', 'Figure 1-Supplement 2d'
+    'Figure 1-Supplement 2e', 'Figure 1f', 'Figure 1-Supplement 2d',
+    'Figure 2a', 'Figure 2b', 'Supplementary Document 1a',
+    'Supplementary Document 1b', 'Figure 2c', 'Figure 2-Supplement 2',
+    'Figure 2d', 'Figure 3-Supplement 2a', 'Figure 3-Supplement 2b',
+    'Figure 3b', 'Figure 3-Supplement 1', 'Figure 3a',
+    'Figure 3c', 'Figure 3d', 'Figure 1-Supplement 1a',
+    'Figure 1c'
+    
   )
   if(!figure %in% figsWithData) {
     stop("There is no data for the figure you specified")

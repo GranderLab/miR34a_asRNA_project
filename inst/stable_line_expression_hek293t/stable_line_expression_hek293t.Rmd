@@ -1,6 +1,6 @@
 ---
 title: "Figure 3-Supplement 1"
-subtitle: "miR34a asRNA stable over-expression cell lines compared to HEK293t"
+subtitle: "miR34a asRNA stable over-expression cell lines compared to HEK293T"
 author: "Jason T. Serviss"
 date: "31/01/2017"
 output:
@@ -116,7 +116,7 @@ RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated wi
 
 _Analysis_
 
-Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. Delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding untreated samples. Five independant experiments were performed in total for all cell lines with the exception of PC3. Six independant experiments were preformed for the PC3 cell lines although, one experiment was removed due to excessivley high ct values (>30) in the house keeping gene, indicating an insufficient amount of RNA to sucessfully detect the genes of interest.   
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. Delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding untreated samples. Five independant experiments were performed in total for all cell lines.
 
 <br></br>
 

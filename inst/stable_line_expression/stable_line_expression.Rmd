@@ -116,27 +116,7 @@ RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated wi
 
 _Analysis_
 
-Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding mock samples. At least three independant experiments (biological replicates) were performed in total (see more below). The Student's t-test was used to compare the mock vs miR34a asRNA overexpressing group's delta-delta ct values for both genes.  
-
-<br></br>
-
-The sample numbers for each group are as follows:
-```{r}
-
-n <- data.frame(
-  name = c(
-    "PC3 mock",
-    "PC3 miR34a asRNA",
-    "Skov3 mock",
-    "Skov3 miR34a asRNA",
-    "Saos2 mock",
-    "Saos2 miR34a asRNA"
-  ),
-  n = c(5, 5, 4, 4, 5, 5)
-)
-n
-
-```
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding mock samples. Five independant experiments were performed in total. The Student's t-test was used to compare the mock vs miR34a asRNA overexpressing group's delta-delta ct values for both genes.  
 
 <br></br>
 

@@ -1,5 +1,6 @@
 ---
-title: "Lnc34a CAGE"
+title: "Supplementary Document 1a"
+subtitle: "Lnc34a CAGE"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
 output:

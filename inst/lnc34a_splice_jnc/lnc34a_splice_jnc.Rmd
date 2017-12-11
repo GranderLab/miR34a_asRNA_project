@@ -1,5 +1,6 @@
 ---
-title: "lnc34a splice junctions"
+title: "Supplementary Document 1b"
+subtitle: "lnc34a splice junctions"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
 output:
