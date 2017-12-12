@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 
@@ -88,7 +90,7 @@ all <- data %>%
   ) %>%
   mutate(
     `all p` = format(`all p`, scientific = TRUE, digits = 3),
-    `all rho` = format(`all rho`, scientific = TRUE, digits = 3)
+    `all rho` = format(`all rho`, scientific = FALSE, digits = 2)
   )
 
 #calculate correlation for p53 wt and mut samples per cancer type
@@ -103,7 +105,7 @@ p53 <- data %>%
   ungroup() %>%
   mutate(
     p = format(p, scientific = TRUE, digits = 3),
-    rho = format(rho, scientific = TRUE, digits = 3)
+    rho = format(rho, scientific = FALSE, digits = 1)
   ) %>%
   gather(metric, value, -(cancer_PAM50:TP53)) %>%
   unite(temp, TP53, metric, sep = " ") %>%
@@ -118,8 +120,41 @@ table <- full_join(all, p53, by = "cancer_PAM50") %>%
 
 table
 
+#add abbreviation definitions
+def <- tibble(
+  fullName = c(
+    "Adrenocortical carcinoma", "Bladder Urothelial Carcinoma", "Breast invasive carcinoma", 
+    "Breast invasive carcinoma", "Breast invasive carcinoma", "Breast invasive carcinoma",
+    "Cervical squamous cell carcinoma and\nendocervical adenocarcinoma", "Head and Neck squamous cell carcinoma", "Kidney Chromophobe",
+    "Kidney renal clear cell carcinoma", "Kidney renal papillary cell carcinoma", "Brain Lower Grade Glioma",
+    "Liver hepatocellular carcinoma", "Lung adenocarcinoma", "Lung squamous cell carcinoma",
+    "Ovarian serous cystadenocarcinoma", "Prostate adenocarcinoma", "Skin Cutaneous Melanoma",
+    "Stomach adenocarcinoma", "Thyroid carcinoma"
+  ),
+  cancer = c(
+    "ACC", "BLCA", "BRCA Basal", 
+    "BRCA Her2", "BRCA LumA", "BRCA LumB",
+    "CESC", "HNSC", "KICH",
+    "KIRC", "KIRP", "LGG",
+    "LIHC", "LUAD", "LUSC",
+    "OV", "PRAD", "SKCM", 
+    "STAD", "THCA"
+  )
+)
+
+table <- def %>%
+  full_join(table, by = "cancer") %>%
+  mutate(finalName = case_when(
+    fullName == "Breast invasive carcinoma" ~ paste(fullName, gsub("BRCA", "(BRCA)", cancer), sep = " "),
+    TRUE ~ paste(fullName, "(", cancer, ")", sep = " ")
+  )) %>%
+  select(-fullName, -cancer) %>%
+  rename(cancer = finalName) %>%
+  select(cancer, `all n`, `all rho`, `all p`, `TP53wt n`, `TP53wt rho`, `TP53wt p`, `TP53mut n`, `TP53mut rho`, `TP53mut p`)
+
+#save figure
 # path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 1-Supplement 1a"][[1]])
-# pdf(file = path, width = 14)
+# pdf(file = path, width = 13, height = 6.1)
 # gridExtra::grid.table(table, rows = NULL)
 # invisible(dev.off())
 ```

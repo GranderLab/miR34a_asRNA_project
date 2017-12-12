@@ -328,6 +328,11 @@ print("processing coding_potential_cpc")
 read_tsv('./data-raw/coding_potential_cpc.txt') %>%
   write_rds(., path = './data/coding_potential_cpc.rds')
 
+#coding potential Geiger
+print("processing coding_potential_geiger")
+read_tsv('./data-raw/coding_potential_geiger.txt') %>%
+  write_rds(., path = './data/coding_potential_geiger.rds')
+
 #tcga_correlation_table
 print("processing tcga_correlation_table")
 read_tsv('./data-raw/tcga_correlation_table.txt') %>%

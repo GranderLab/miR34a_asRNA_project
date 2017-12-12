@@ -455,7 +455,7 @@ all &lt;- data %&gt;%
   ) %&gt;%
   mutate(
     `all p` = format(`all p`, scientific = TRUE, digits = 3),
-    `all rho` = format(`all rho`, scientific = TRUE, digits = 3)
+    `all rho` = format(`all rho`, scientific = FALSE, digits = 2)
   )
 
 #calculate correlation for p53 wt and mut samples per cancer type
@@ -470,7 +470,7 @@ p53 &lt;- data %&gt;%
   ungroup() %&gt;%
   mutate(
     p = format(p, scientific = TRUE, digits = 3),
-    rho = format(rho, scientific = TRUE, digits = 3)
+    rho = format(rho, scientific = FALSE, digits = 1)
   ) %&gt;%
   gather(metric, value, -(cancer_PAM50:TP53)) %&gt;%
   unite(temp, TP53, metric, sep = &quot; &quot;) %&gt;%
@@ -503,10 +503,10 @@ table</code></pre>
 <tr class="odd">
 <td style="text-align: left;">ACC</td>
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">5.52e-01</td>
+<td style="text-align: left;">0.55</td>
 <td style="text-align: left;">1.04e-01</td>
 <td style="text-align: left;">10</td>
-<td style="text-align: left;">5.52e-01</td>
+<td style="text-align: left;">0.55</td>
 <td style="text-align: left;">1.04e-01</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -515,94 +515,94 @@ table</code></pre>
 <tr class="even">
 <td style="text-align: left;">BLCA</td>
 <td style="text-align: right;">228</td>
-<td style="text-align: left;">5.15e-01</td>
+<td style="text-align: left;">0.51</td>
 <td style="text-align: left;">7.89e-17</td>
 <td style="text-align: left;">134</td>
-<td style="text-align: left;">4.53e-01</td>
+<td style="text-align: left;">0.45</td>
 <td style="text-align: left;">3.86e-08</td>
 <td style="text-align: left;">94</td>
-<td style="text-align: left;">4.27e-01</td>
+<td style="text-align: left;">0.43</td>
 <td style="text-align: left;">1.73e-05</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">BRCA Basal</td>
 <td style="text-align: right;">42</td>
-<td style="text-align: left;">5.74e-01</td>
+<td style="text-align: left;">0.57</td>
 <td style="text-align: left;">9.54e-05</td>
 <td style="text-align: left;">10</td>
-<td style="text-align: left;">6.24e-01</td>
+<td style="text-align: left;">0.62</td>
 <td style="text-align: left;">6.02e-02</td>
 <td style="text-align: left;">32</td>
-<td style="text-align: left;">5.74e-01</td>
+<td style="text-align: left;">0.57</td>
 <td style="text-align: left;">7.41e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">BRCA Her2</td>
 <td style="text-align: right;">44</td>
-<td style="text-align: left;">1.47e-01</td>
+<td style="text-align: left;">0.15</td>
 <td style="text-align: left;">3.39e-01</td>
 <td style="text-align: left;">12</td>
-<td style="text-align: left;">2.24e-01</td>
+<td style="text-align: left;">0.22</td>
 <td style="text-align: left;">4.85e-01</td>
 <td style="text-align: left;">32</td>
-<td style="text-align: left;">6.82e-02</td>
+<td style="text-align: left;">0.07</td>
 <td style="text-align: left;">7.10e-01</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">BRCA LumA</td>
 <td style="text-align: right;">199</td>
-<td style="text-align: left;">3.41e-01</td>
+<td style="text-align: left;">0.34</td>
 <td style="text-align: left;">8.22e-07</td>
 <td style="text-align: left;">177</td>
-<td style="text-align: left;">3.43e-01</td>
+<td style="text-align: left;">0.34</td>
 <td style="text-align: left;">2.96e-06</td>
 <td style="text-align: left;">22</td>
-<td style="text-align: left;">4.86e-01</td>
+<td style="text-align: left;">0.49</td>
 <td style="text-align: left;">2.31e-02</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">BRCA LumB</td>
 <td style="text-align: right;">70</td>
-<td style="text-align: left;">1.71e-01</td>
+<td style="text-align: left;">0.17</td>
 <td style="text-align: left;">1.57e-01</td>
 <td style="text-align: left;">61</td>
-<td style="text-align: left;">1.48e-01</td>
+<td style="text-align: left;">0.15</td>
 <td style="text-align: left;">2.53e-01</td>
 <td style="text-align: left;">9</td>
-<td style="text-align: left;">1.67e-01</td>
+<td style="text-align: left;">0.17</td>
 <td style="text-align: left;">6.78e-01</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">CESC</td>
 <td style="text-align: right;">156</td>
-<td style="text-align: left;">1.39e-01</td>
+<td style="text-align: left;">0.14</td>
 <td style="text-align: left;">8.37e-02</td>
 <td style="text-align: left;">145</td>
-<td style="text-align: left;">1.60e-01</td>
+<td style="text-align: left;">0.16</td>
 <td style="text-align: left;">5.45e-02</td>
 <td style="text-align: left;">11</td>
-<td style="text-align: left;">-4.55e-02</td>
+<td style="text-align: left;">-0.05</td>
 <td style="text-align: left;">9.03e-01</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">HNSC</td>
 <td style="text-align: right;">313</td>
-<td style="text-align: left;">5.37e-01</td>
+<td style="text-align: left;">0.54</td>
 <td style="text-align: left;">8.38e-25</td>
 <td style="text-align: left;">123</td>
-<td style="text-align: left;">6.08e-01</td>
+<td style="text-align: left;">0.61</td>
 <td style="text-align: left;">0.00e+00</td>
 <td style="text-align: left;">190</td>
-<td style="text-align: left;">4.47e-01</td>
+<td style="text-align: left;">0.45</td>
 <td style="text-align: left;">9.68e-11</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">KICH</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: left;">6.00e-01</td>
+<td style="text-align: left;">0.60</td>
 <td style="text-align: left;">3.50e-01</td>
 <td style="text-align: left;">5</td>
-<td style="text-align: left;">6.00e-01</td>
+<td style="text-align: left;">0.60</td>
 <td style="text-align: left;">3.50e-01</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -611,10 +611,10 @@ table</code></pre>
 <tr class="even">
 <td style="text-align: left;">KIRC</td>
 <td style="text-align: right;">142</td>
-<td style="text-align: left;">3.49e-01</td>
+<td style="text-align: left;">0.35</td>
 <td style="text-align: left;">2.06e-05</td>
 <td style="text-align: left;">141</td>
-<td style="text-align: left;">3.37e-01</td>
+<td style="text-align: left;">0.34</td>
 <td style="text-align: left;">4.41e-05</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -623,118 +623,118 @@ table</code></pre>
 <tr class="odd">
 <td style="text-align: left;">KIRP</td>
 <td style="text-align: right;">167</td>
-<td style="text-align: left;">4.51e-01</td>
+<td style="text-align: left;">0.45</td>
 <td style="text-align: left;">9.16e-10</td>
 <td style="text-align: left;">163</td>
-<td style="text-align: left;">4.48e-01</td>
+<td style="text-align: left;">0.45</td>
 <td style="text-align: left;">2.04e-09</td>
 <td style="text-align: left;">4</td>
-<td style="text-align: left;">8.00e-01</td>
+<td style="text-align: left;">0.80</td>
 <td style="text-align: left;">3.33e-01</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LGG</td>
 <td style="text-align: right;">271</td>
-<td style="text-align: left;">6.33e-01</td>
+<td style="text-align: left;">0.63</td>
 <td style="text-align: left;">9.92e-32</td>
 <td style="text-align: left;">76</td>
-<td style="text-align: left;">7.28e-01</td>
+<td style="text-align: left;">0.73</td>
 <td style="text-align: left;">0.00e+00</td>
 <td style="text-align: left;">195</td>
-<td style="text-align: left;">3.87e-01</td>
+<td style="text-align: left;">0.39</td>
 <td style="text-align: left;">2.26e-08</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LIHC</td>
 <td style="text-align: right;">153</td>
-<td style="text-align: left;">5.63e-01</td>
+<td style="text-align: left;">0.56</td>
 <td style="text-align: left;">3.64e-14</td>
 <td style="text-align: left;">114</td>
-<td style="text-align: left;">5.16e-01</td>
+<td style="text-align: left;">0.52</td>
 <td style="text-align: left;">4.18e-09</td>
 <td style="text-align: left;">39</td>
-<td style="text-align: left;">4.55e-01</td>
+<td style="text-align: left;">0.45</td>
 <td style="text-align: left;">3.95e-03</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LUAD</td>
 <td style="text-align: right;">234</td>
-<td style="text-align: left;">2.82e-01</td>
+<td style="text-align: left;">0.28</td>
 <td style="text-align: left;">1.15e-05</td>
 <td style="text-align: left;">128</td>
-<td style="text-align: left;">3.61e-01</td>
+<td style="text-align: left;">0.36</td>
 <td style="text-align: left;">2.87e-05</td>
 <td style="text-align: left;">106</td>
-<td style="text-align: left;">2.27e-01</td>
+<td style="text-align: left;">0.23</td>
 <td style="text-align: left;">1.91e-02</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">LUSC</td>
 <td style="text-align: right;">139</td>
-<td style="text-align: left;">2.29e-01</td>
+<td style="text-align: left;">0.23</td>
 <td style="text-align: left;">6.74e-03</td>
 <td style="text-align: left;">42</td>
-<td style="text-align: left;">4.17e-02</td>
+<td style="text-align: left;">0.04</td>
 <td style="text-align: left;">7.93e-01</td>
 <td style="text-align: left;">97</td>
-<td style="text-align: left;">3.29e-01</td>
+<td style="text-align: left;">0.33</td>
 <td style="text-align: left;">9.91e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">OV</td>
 <td style="text-align: right;">56</td>
-<td style="text-align: left;">2.33e-01</td>
+<td style="text-align: left;">0.23</td>
 <td style="text-align: left;">8.37e-02</td>
 <td style="text-align: left;">10</td>
-<td style="text-align: left;">8.42e-01</td>
+<td style="text-align: left;">0.84</td>
 <td style="text-align: left;">4.46e-03</td>
 <td style="text-align: left;">46</td>
-<td style="text-align: left;">1.46e-01</td>
+<td style="text-align: left;">0.15</td>
 <td style="text-align: left;">3.31e-01</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PRAD</td>
 <td style="text-align: right;">413</td>
-<td style="text-align: left;">4.66e-01</td>
+<td style="text-align: left;">0.47</td>
 <td style="text-align: left;">1.33e-23</td>
 <td style="text-align: left;">375</td>
-<td style="text-align: left;">4.59e-01</td>
+<td style="text-align: left;">0.46</td>
 <td style="text-align: left;">6.13e-21</td>
 <td style="text-align: left;">38</td>
-<td style="text-align: left;">4.50e-01</td>
+<td style="text-align: left;">0.45</td>
 <td style="text-align: left;">4.58e-03</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">SKCM</td>
 <td style="text-align: right;">165</td>
-<td style="text-align: left;">6.48e-01</td>
+<td style="text-align: left;">0.65</td>
 <td style="text-align: left;">5.43e-21</td>
 <td style="text-align: left;">152</td>
-<td style="text-align: left;">6.10e-01</td>
+<td style="text-align: left;">0.61</td>
 <td style="text-align: left;">7.85e-17</td>
 <td style="text-align: left;">13</td>
-<td style="text-align: left;">4.34e-01</td>
+<td style="text-align: left;">0.43</td>
 <td style="text-align: left;">1.40e-01</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">STAD</td>
 <td style="text-align: right;">225</td>
-<td style="text-align: left;">3.72e-01</td>
+<td style="text-align: left;">0.37</td>
 <td style="text-align: left;">8.23e-09</td>
 <td style="text-align: left;">145</td>
-<td style="text-align: left;">3.67e-01</td>
+<td style="text-align: left;">0.37</td>
 <td style="text-align: left;">5.71e-06</td>
 <td style="text-align: left;">80</td>
-<td style="text-align: left;">4.20e-01</td>
+<td style="text-align: left;">0.42</td>
 <td style="text-align: left;">1.03e-04</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">THCA</td>
 <td style="text-align: right;">469</td>
-<td style="text-align: left;">4.58e-01</td>
+<td style="text-align: left;">0.46</td>
 <td style="text-align: left;">1.07e-25</td>
 <td style="text-align: left;">467</td>
-<td style="text-align: left;">4.62e-01</td>
+<td style="text-align: left;">0.46</td>
 <td style="text-align: left;">4.06e-26</td>
 <td style="text-align: left;">NA</td>
 <td style="text-align: left;">NA</td>
@@ -742,10 +742,43 @@ table</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code># path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;Figure 1-Supplement 1a&quot;][[1]])
-# pdf(file = path, width = 14)
-# gridExtra::grid.table(table, rows = NULL)
-# invisible(dev.off())</code></pre>
+<pre class="r"><code>#add abbreviation definitions
+def &lt;- tibble(
+  fullName = c(
+    &quot;Adrenocortical carcinoma&quot;, &quot;Bladder Urothelial Carcinoma&quot;, &quot;Breast invasive carcinoma&quot;, 
+    &quot;Breast invasive carcinoma&quot;, &quot;Breast invasive carcinoma&quot;, &quot;Breast invasive carcinoma&quot;,
+    &quot;Cervical squamous cell carcinoma and\nendocervical adenocarcinoma&quot;, &quot;Head and Neck squamous cell carcinoma&quot;, &quot;Kidney Chromophobe&quot;,
+    &quot;Kidney renal clear cell carcinoma&quot;, &quot;Kidney renal papillary cell carcinoma&quot;, &quot;Brain Lower Grade Glioma&quot;,
+    &quot;Liver hepatocellular carcinoma&quot;, &quot;Lung adenocarcinoma&quot;, &quot;Lung squamous cell carcinoma&quot;,
+    &quot;Ovarian serous cystadenocarcinoma&quot;, &quot;Prostate adenocarcinoma&quot;, &quot;Skin Cutaneous Melanoma&quot;,
+    &quot;Stomach adenocarcinoma&quot;, &quot;Thyroid carcinoma&quot;
+  ),
+  cancer = c(
+    &quot;ACC&quot;, &quot;BLCA&quot;, &quot;BRCA Basal&quot;, 
+    &quot;BRCA Her2&quot;, &quot;BRCA LumA&quot;, &quot;BRCA LumB&quot;,
+    &quot;CESC&quot;, &quot;HNSC&quot;, &quot;KICH&quot;,
+    &quot;KIRC&quot;, &quot;KIRP&quot;, &quot;LGG&quot;,
+    &quot;LIHC&quot;, &quot;LUAD&quot;, &quot;LUSC&quot;,
+    &quot;OV&quot;, &quot;PRAD&quot;, &quot;SKCM&quot;, 
+    &quot;STAD&quot;, &quot;THCA&quot;
+  )
+)
+
+table &lt;- def %&gt;%
+  full_join(table, by = &quot;cancer&quot;) %&gt;%
+  mutate(finalName = case_when(
+    fullName == &quot;Breast invasive carcinoma&quot; ~ paste(fullName, gsub(&quot;BRCA&quot;, &quot;(BRCA)&quot;, cancer), sep = &quot; &quot;),
+    TRUE ~ paste(fullName, &quot;(&quot;, cancer, &quot;)&quot;, sep = &quot; &quot;)
+  )) %&gt;%
+  select(-fullName, -cancer) %&gt;%
+  rename(cancer = finalName) %&gt;%
+  select(cancer, `all n`, `all rho`, `all p`, `TP53wt n`, `TP53wt rho`, `TP53wt p`, `TP53mut n`, `TP53mut rho`, `TP53mut p`)
+
+#save figure
+path &lt;- file.path(&quot;~/GitHub/miR34a_asRNA_project/inst&quot;, fileMap(type = &quot;pdf&quot;)[&quot;Figure 1-Supplement 1a&quot;][[1]])
+pdf(file = path, width = 13, height = 6.1)
+gridExtra::grid.table(table, rows = NULL)
+invisible(dev.off())</code></pre>
 <div class="caption">
 <p>R-squared and p-values from the correlation analysis investigating the correlation between miR34a and miR34a asRNA expression in p53 wild type (wt) and mutated (mut) samples within TCGA cancer types. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).</p>
 </div>
@@ -771,7 +804,7 @@ table</code></pre>
 ##  [3] miR34AasRNAproject_0.0.0.0001 ggthemes_3.4.0               
 ##  [5] printr_0.1                    forcats_0.2.0                
 ##  [7] stringr_1.2.0                 dplyr_0.7.4                  
-##  [9] purrr_0.2.4                   readr_1.1.1.9000             
+##  [9] purrr_0.2.4                   readr_1.1.1                  
 ## [11] tidyr_0.7.2                   tibble_1.3.4                 
 ## [13] ggplot2_2.2.1                 tidyverse_1.2.1              
 ## 
@@ -782,13 +815,13 @@ table</code></pre>
 ## [13] bindr_0.1        plyr_1.8.4       munsell_0.4.3    cellranger_1.1.0
 ## [17] rvest_0.3.2      liftr_0.7        psych_1.7.8      evaluate_0.10.1 
 ## [21] knitr_1.17       parallel_3.4.2   curl_3.0         highr_0.6       
-## [25] broom_0.4.3      Rcpp_0.12.13     rgeolocate_1.0.1 backports_1.1.1 
-## [29] scales_0.5.0     jsonlite_1.5     mnormt_1.5-5     hms_0.4.0       
-## [33] digest_0.6.12    stringi_1.1.6    rprojroot_1.2    cli_1.0.0       
-## [37] tools_3.4.2      magrittr_1.5     lazyeval_0.2.1   crayon_1.3.4    
-## [41] pkgconfig_2.0.1  xml2_1.1.1       lubridate_1.7.1  assertthat_0.2.0
-## [45] rmarkdown_1.8    httr_1.3.1       rstudioapi_0.7   R6_2.2.2        
-## [49] nlme_3.1-131     compiler_3.4.2</code></pre>
+## [25] broom_0.4.3      Rcpp_0.12.14     rgeolocate_1.0.1 backports_1.1.1 
+## [29] scales_0.5.0     jsonlite_1.5     gridExtra_2.3    mnormt_1.5-5    
+## [33] hms_0.4.0        digest_0.6.12    stringi_1.1.6    rprojroot_1.2   
+## [37] cli_1.0.0        tools_3.4.2      magrittr_1.5     lazyeval_0.2.1  
+## [41] crayon_1.3.4     pkgconfig_2.0.1  xml2_1.1.1       lubridate_1.7.1 
+## [45] assertthat_0.2.0 rmarkdown_1.8    httr_1.3.1       rstudioapi_0.7  
+## [49] R6_2.2.2         nlme_3.1-131     compiler_3.4.2</code></pre>
 
 
 

@@ -51,6 +51,10 @@ We interogated RNA sequencing data from TCGA to determine in miR34a and miR34a a
 
 #### _Methods_
 
+RNA-Seq data and copy number data were downloaded from TCGA and processed as described previously (Ashouri et al. 2016). Briefly, RNA-Seq data were aligned to the human hg19 assembly and quantified using GENCODE (v19) annotated HTSeq-counts and FPKM normalizations. Expression data from miR34a and miR34 asRNA (identified as RP3-510D11.2) were used for further analysis. Copy number amplitudes for GENCODE genes were determined from segmented copy-number data. Samples that were diploid for miR34 asRNA were identified as those samples that had copy number amplitudes between -0.1 and 0.1.
+
+Somatic mutation data were downloaded from the Genomics Data Commons data portal (GDC) as mutation annotation format (maf) files, called using Mutect2 on 30/10/2017 (v7) (Grossman et al. 2016). 
+
 <br></br>
 
 #### _Results_
@@ -100,8 +104,8 @@ stats <- data %>%
   summarize(value = list(value)) %>%
   spread(TP53, value) %>%
   mutate(
-    mean_wt = mean(unlist(`TP53 wt`)),
-    mean_mut = mean(unlist(`TP53 mut`)),
+    median_wt = median(unlist(`TP53 wt`)),
+    median_mut = median(unlist(`TP53 mut`)),
     CI95l_wt = t.test(unlist(`TP53 wt`))$conf.int[1],
     CI95l_mut = t.test(unlist(`TP53 mut`))$conf.int[1],
     CI95h_wt = t.test(unlist(`TP53 wt`))$conf.int[2],
@@ -119,15 +123,16 @@ stats <- data %>%
 data <- data %>%
   mutate(TP53 = parse_factor(TP53, levels = c("TP53 wt", "TP53 mut"))) %>%
   mutate(gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a"))) %>%
-  mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = unique(cancer_PAM50)))
+  mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = rev(unique(cancer_PAM50))))
 
 stats <- stats %>%
   mutate(TP53 = parse_factor(TP53, levels = c("TP53 wt", "TP53 mut"))) %>%
   mutate(gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a"))) %>%
-  mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = unique(cancer_PAM50)))
+  mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = rev(unique(cancer_PAM50))))
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12, message = FALSE, warning = FALSE}
+
 ggplot(data = NULL) + 
   geom_jitter(
     data = data,
@@ -151,7 +156,7 @@ ggplot(data = NULL) +
     data = stats,
     aes(
       x = cancer_PAM50,
-      y = mean,
+      y = median,
       group = TP53
     ),
     colour = "grey30",
@@ -197,7 +202,7 @@ figure <- ggplot(data = NULL) +
     data = stats,
     aes(
       x = cancer_PAM50,
-      y = mean,
+      y = median,
       group = TP53
     ),
     colour = "grey30",
@@ -246,7 +251,7 @@ figure <- ggplot(data = NULL) +
 ```
 
 <div class="caption">
-A graphical depiction of the TCGA expression analysis. P-values are shown on the right side of each panel and compare TP53 wild type samples with nonsynonymous TP53 muated samples. The small vertical line indicated the mean. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
+A graphical depiction of the TCGA expression analysis. P-values are shown on the right side of each panel and compare TP53 wild type samples with nonsynonymous TP53 muated samples. The small vertical line indicated the median. Bladder Urothelial Carcinoma (BLCA), Breast invasive carcinoma (BRCA), Head and Neck squamous cell carcinoma (HNSC), Lower Grade Glioma (LGG), Liver hepatocellular carcinoma (LIHC), Lung adenocarcinoma (LUAD), Lung squamous cell carcinoma (LUSC), Ovarian serous cystadenocarcinoma (OV), Prostate adenocarcinoma (PRAD), Skin Cutaneous Melanoma (SKCM), Stomach adenocarcinoma (STAD).
 </div>
 
 <br></br>

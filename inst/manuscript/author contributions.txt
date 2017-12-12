@@ -12,6 +12,8 @@ Nathanael Johansson Andrews: Investigation, Methodology
 
 Miranda Houtman: Investigation, Methodology
 
+Mattias Vesterlund: Investigation, Validation
+
 Laura Schwarzmueller: Investigation, Methodology
 
 Per Johnsson: Conceptualization, Methodology
