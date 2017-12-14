@@ -1,0 +1,58 @@
+---
+title: "Figure 5"
+subtitle: "A graphical summary of the proposed lncTAM34a function"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+
+#library(grDevices)
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
+```
+
+```{r, out.width = "850px"}
+
+url <- fileMap(type = "png")["Figure 5"][[1]]
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+<strong>Figure 5: A graphical summary of the proposed lncTAM34a function.</strong> Stress stimuli, originating in the cytoplasm or nucleus, activate TP53 as well as additional factors. These factors then bind to the miR34a promoter and drive baseline transcription levels of the sense and antisense strands. lncTAM34a serves to further increases miR34a HG transcription levels resulting in enrichment of polymerase II at the miR34a promoter and a positive feed-forward loop. lncTAM34a-mediated increases in miR34a HG potentially occur via direct DNA binding alone, by direct DNA binding and recruitment of additional factors, or through a yet unknown mechanism. miR34a HG then, in turn, is spliced and processed before being exported to the cytoplasm. The miR34a pre-miRNA then undergoes further processing before the mature miR34a binds to the RISC complex allowing it to bind and repress its targets and exert its tumor suppressive effects.
+</div>
