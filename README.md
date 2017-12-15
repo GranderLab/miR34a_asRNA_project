@@ -12,7 +12,7 @@
   - Replicates the R and external R package versions used to perform the original analysis.
   - Dynamically performs the analysis in real time and plots the figure.
   - Opens the resulting .html document in your web browser, allowing you to see the supplementary methods, code used to perform the analysis, and the resulting figure.
-3. The `plotFigure` function only takes one argument which is a character vector of length one specifying which figure to recreate. For example, to recreate Figure 1a, in R we would type `plotFigure('Figure 1a')`. Supplementary figures can be recreated with the following syntax `plotFigure('Figure 1-Supplement 1a')` and supplementary documents with `plotFigure('Supplementary Document 1')`.
+3. The `plotFigure` function only takes one argument which is a character vector of length one specifying which figure to recreate. For example, to recreate Figure 1a, in R we would type `plotFigure('Figure 1a')`. Supplementary figures can be recreated with the following syntax `plotFigure('Figure 1-Supplement 1a')` and supplementary documents with `plotFigure('Supplementary Document 1')`. 
 
 It is important to note that each time you call `plotFigure` on an individual figure, the origional R version and R package versions are re-installed. This takes some time to accomplish (maybe 2-5 minutes). For those interested in replicating all the figures (instead of a select few) you may use `plotFigures("All figures")`. This will reproduce all figures in one file and, thus avoids rebuilding R and R packages multiple times.
 
