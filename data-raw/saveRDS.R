@@ -167,14 +167,14 @@ read_tsv('./data-raw/stable_line_pol2_chip.txt', col_names = TRUE) %>%
     `Cell line` = cellLine
   ) %>%
   mutate(
-    condition = gsub("miR34a AS", "PC3 miR34a asRNA", .data$condition),
+    condition = gsub("miR34a AS", "PC3 lncTAM34a", .data$condition),
     condition = gsub("mock", "PC3 mock", .data$condition),
-    gene = gsub("miR34a AS", "miR34a asRNA", .data$gene)
+    gene = gsub("miR34a AS", "lncTAM34a", .data$gene)
   ) %>%
   mutate(
     condition = parse_factor(
       condition,
-      levels = c("PC3 mock", "PC3 miR34a asRNA")
+      levels = c("PC3 mock", "PC3 lncTAM34a")
     )
   ) %>%
   write_rds(., path = './data/stable_line_pol2_chip.rds')
