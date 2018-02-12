@@ -48,6 +48,7 @@ read_tsv('./data-raw/hct116_hek293t_dox.txt', col_names = TRUE) %>%
   )) %>%
   mutate(gene = case_when(
     gene == "B-actin" ~ "Actin",
+    gene == "miR34a asRNA" ~ "lncTAM34a",
     TRUE              ~ gene
   )) %>%
   write_rds(., path = './data/hct116_hek293t_dox.rds')
