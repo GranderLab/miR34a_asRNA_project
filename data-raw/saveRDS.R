@@ -94,8 +94,8 @@ read_tsv('./data-raw/stable_line_expression.txt', col_names = TRUE) %>%
     `Genetic mod` = `Sample Name`
   ) %>%
   mutate(
-    `Genetic mod` = gsub("miR34a AS", "miR34a asRNA", .data$`Genetic mod`),
-    gene = gsub("miR34a asRNA F1R1", "miR34a asRNA", .data$gene),
+    `Genetic mod` = gsub("miR34a AS", "lncTAM34a", .data$`Genetic mod`),
+    gene = gsub("miR34a asRNA F1R1", "lncTAM34a", .data$gene),
     gene = gsub("B-actin", "Actin", .data$gene)
   ) %>%
   mutate(
@@ -105,11 +105,11 @@ read_tsv('./data-raw/stable_line_expression.txt', col_names = TRUE) %>%
     ),
     `Genetic mod` = parse_factor(
       `Genetic mod`,
-      levels = c("mock", "miR34a asRNA")
+      levels = c("mock", "lncTAM34a")
     ),
     gene = parse_factor(
       gene,
-      levels = c("miR34a asRNA", "miR34a", "Actin", "RNU48")
+      levels = c("lncTAM34a", "miR34a", "Actin", "RNU48")
     )
   ) %>%
   write_rds(., path = './data/stable_line_expression.rds')
@@ -199,9 +199,9 @@ read_tsv('./data-raw/stable_line_expression_hek293t.txt', col_names = TRUE) %>%
     gene = Gene
   ) %>%
   mutate(
-    Condition = gsub("F4", "miR34a\nasRNA", Condition),
+    Condition = gsub("F4", "lncTAM34a", Condition),
     gene = gsub("B-actin", "Actin", gene),
-    gene = gsub("miR34a asRNA F1R1", "miR34a asRNA", gene)
+    gene = gsub("miR34a asRNA F1R1", "lncTAM34a", gene)
   ) %>%
   mutate(
     `Cell line` = parse_factor(
@@ -210,7 +210,7 @@ read_tsv('./data-raw/stable_line_expression_hek293t.txt', col_names = TRUE) %>%
     ),
     Condition = parse_factor(
       Condition,
-      levels = c("wt", "mock", "miR34a\nasRNA")
+      levels = c("wt", "mock", "lncTAM34a")
     )
   ) %>%
   write_rds(., path = './data/stable_line_expression_hek293t.rds')
