@@ -217,8 +217,9 @@ figure <- plotPDF(p) +
       ymax = CI95h, 
       group = GOI
     ),
-    colour = "gray20",
+    colour = "grey30",
     position = position_dodge(width = 0.9),
+    size = 0.3,
     show.legend = FALSE
   ) +
   geom_point(
@@ -228,10 +229,10 @@ figure <- plotPDF(p) +
       y = mean, 
       group = GOI
     ),
-    colour = "gray20",
+    colour = "grey30",
     position = position_dodge(width = 0.9),
     shape = 95,
-    size = 6,
+    size = 4,
     show.legend = FALSE
   ) +
   theme(
