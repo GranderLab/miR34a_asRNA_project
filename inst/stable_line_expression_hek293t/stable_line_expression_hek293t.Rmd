@@ -158,7 +158,7 @@ data <- filter(data, `Biological Replicate` != 6 | `Cell line` != "PC3")
 
 #calculate dct
 groups <- c("Condition", "Biological Replicate", "Cell line", "gene")
-gois <- c("miR34a asRNA")
+gois <- c("lncTAM34a")
 
 data <- technicalMeans(data, groups) %>%
   dct(., gois, Actin, groups)
@@ -188,21 +188,7 @@ stats <- data %>%
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
-
 p <- ggplot(data = NULL)+
-  geom_violin(
-    data = data,
-    aes(
-      x = Condition,
-      y = log2fold
-    ),
-    scale = "width",
-    trim = TRUE,
-    alpha = 0.3,
-    color = NA,
-    fill = "gray",
-    show.legend = FALSE
-  ) +
   geom_dotplot(
     data = data, 
     aes(
@@ -284,7 +270,7 @@ figure <- plotPDF(pdf)
 #    filename = path,
 #   device = cairo_pdf,
 #   height = 60,
-#   width = 130,
+#   width = 160,
 #   units = "mm"
 # )
 ```
