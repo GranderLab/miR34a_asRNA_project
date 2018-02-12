@@ -105,7 +105,7 @@ data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 #calculate dct
 groups <- c("Treatment", "Biological Replicate", "Cell line", "gene")
-gois <- c("miR34a asRNA", "miR34a HG")
+gois <- c("lncTAM34a", "miR34a HG")
 
 data <- technicalMeans(data, groups) %>%
   dct(., gois, Actin, groups)
@@ -139,11 +139,11 @@ vl <- stats %>%
   pFormat(.) %>%
   mutate(
     x = case_when(
-      GOI == "miR34a asRNA" ~ 1 - 0.25,
+      GOI == "lncTAM34a" ~ 1 - 0.25,
       GOI ==    "miR34a HG" ~ 1 + 0.25
     ),
     xend = case_when(
-      GOI == "miR34a asRNA" ~ 2 - 0.25,
+      GOI == "lncTAM34a" ~ 2 - 0.25,
       GOI ==    "miR34a HG" ~ 2 + 0.25
     ),
     pFormat = pFormat,
@@ -170,20 +170,6 @@ stats <- stats %>%
 ```{r, fig.align='center', fig.height=8, fig.width=12}
 
 p <- ggplot(data = NULL) +
-  geom_violin(
-    data = data,
-    aes(
-      x = Treatment,
-      y = log2fold,
-      group = interaction(GOI, Treatment)
-    ),
-    trim = TRUE,
-    fill = "gray",
-    alpha = 0.3,
-    color = NA,
-    scale = "width",
-    show.legend = FALSE
-  ) +
   geom_dotplot(
     data = data, 
     aes(
@@ -343,15 +329,15 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2a"][[1]])
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 53,
-#    units = "mm"
-# )
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2a"][[1]])
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 53,
+   units = "mm"
+)
 ```
 
 <div class="caption">
