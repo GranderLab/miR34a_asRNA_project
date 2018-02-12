@@ -122,10 +122,10 @@ read_tsv('./data-raw/stable_line_cell_cycle.txt', col_names = TRUE) %>%
     `Cell line` = cellLine
   ) %>%
   mutate(
-    condition = gsub("miR34a AS", "miR34a asRNA", .data$condition)
+    condition = gsub("miR34a AS", "lncTAM34a", .data$condition)
   ) %>%
   mutate(
-    condition = parse_factor(condition, levels = c("mock", "miR34a asRNA")),
+    condition = parse_factor(condition, levels = c("mock", "lncTAM34a")),
     phase = parse_factor(phase, levels = c("G1", "S", "G2"))
   ) %>%
   write_rds(., path = './data/stable_line_cell_cycle.rds')
