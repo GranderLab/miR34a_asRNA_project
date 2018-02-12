@@ -12,7 +12,7 @@ read_tsv('./data-raw/hct116_p53_null.txt', col_names = TRUE) %>%
       TRUE                    ~ "error in saveRDA.R"
     ),
     gene = case_when(
-      gene == "miR34a AS" ~ "miR34a asRNA",
+      gene == "miR34a AS" ~ "lncTAM34a",
       gene == "miR34a HG" ~ "miR34a HG",
       gene == "Actin"     ~ "Actin",
       TRUE                ~ "error in saveRNA.R"
@@ -29,7 +29,7 @@ read_tsv('./data-raw/hct116_p53_null.txt', col_names = TRUE) %>%
     ),
     gene = parse_factor(
       gene,
-      levels = c("miR34a HG", "miR34a asRNA", "Actin")
+      levels = c("miR34a HG", "lncTAM34a", "Actin")
     )
   ) %>%
   write_rds(., path = './data/hct116_p53_null.rds')
