@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 
@@ -89,7 +91,6 @@ primers
 #### _Results_
 
 ```{r, message = FALSE}
-
 url <- fileMap(type = "rds")["Figure 3d"][[1]]
 data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
@@ -114,7 +115,7 @@ data <- data %>%
 #calculate fold over mock
 .foldOverControl <- function(data, fractionInput, Biological.Replicate) {
   bool1 <- data$`Biological Replicate` == 3
-  bool2 <- data$condition == "PC3 mock"
+  bool2 <- data$condition == "mock"
   bool <- bool1 & bool2
   fractionInput / pull(data, fractionInput)[bool]
 }
@@ -138,40 +139,13 @@ stats <- data %>%
   ) %>%
   pFormat(.) %>%
   mutate(pFormat = case_when(
-    condition == "PC3 mock" ~ "", 
+    condition == "mock" ~ "", 
     TRUE ~ pFormat
   ))
-
-#prepare for plotting
-data <- data %>%
-  mutate(
-    condition = gsub("PC3 miR34a asRNA", "PC3 miR34a\nasRNA", condition),
-    condition = parse_factor(condition, levels = c("PC3 mock", "PC3 miR34a\nasRNA"))
-  )
-
-stats <- stats %>%
-  mutate(
-    condition = gsub("PC3 miR34a asRNA", "PC3 miR34a\nasRNA", condition),
-    condition = parse_factor(condition, levels = c("PC3 mock", "PC3 miR34a\nasRNA"))
-  )
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12}
-
-p <- ggplot(data = NULL)+
-  geom_violin(
-    data = data,
-    aes(
-      x = condition,
-      y = logfoldOverControl,
-      group = condition
-    ),
-    trim = TRUE,
-    alpha = 0.3,
-    colour = NA,
-    fill = "gray",
-    show.legend = FALSE
-  ) +
+p <- ggplot(data = NULL) +
   geom_dotplot(
     data = data, 
     aes(
@@ -212,7 +186,7 @@ markdown <- p +
     show.legend = FALSE
   ) +
   geom_segment(
-    data = filter(stats, condition == "PC3 miR34a\nasRNA"),
+    data = filter(stats, condition == "lncTAM34a"),
     aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
     colour = "grey43"
   ) +
@@ -246,7 +220,7 @@ pdf <- p +
     show.legend = FALSE
   ) +
   geom_segment(
-    data = filter(stats, condition == "PC3 miR34a\nasRNA"),
+    data = filter(stats, condition == "lncTAM34a"),
     aes(x = 1, y = CI95h + 0.25, xend = 2, yend = CI95h + 0.25),
     colour = "grey30",
     size = 0.3
