@@ -68,6 +68,7 @@ read_tsv('./data-raw/p1_hct116_hek293t.txt', col_names = TRUE) %>%
     ),
     construct = gsub("empty", "Empty", .data$construct)
   ) %>%
+  mutate(alias = if_else(alias == "miR34a asRNA", "lncTAM34a", alias)) %>%
   write_rds(., path = './data/p1_hct116_hek293t.rds')
 
 #p1_shrna_renilla_dox
