@@ -170,13 +170,21 @@ stats <- calcStats(data, shRNA, "shRNA Control", groups) %>%
 data <- data %>%
   mutate(plotGOI = case_when(
     GOI == "Luciferase" ~ " Luciferase\n(miR34a HG)",
-    GOI == "Renilla" ~ "  Renilla\n(miR34a asRNA)"
+    GOI == "Renilla" ~ "Renilla\n(lncTAM34a)"
+  )) %>%
+  mutate(plotGOI = factor(
+    plotGOI, 
+    levels = c("Renilla\n(lncTAM34a)", " Luciferase\n(miR34a HG)")
   ))
 
 stats <- stats %>%
   mutate(plotGOI = case_when(
     GOI == "Luciferase" ~ " Luciferase\n(miR34a HG)",
-    GOI == "Renilla" ~ "  Renilla\n(miR34a asRNA)"
+    GOI == "Renilla" ~ "Renilla\n(lncTAM34a)"
+  )) %>%
+  mutate(plotGOI = factor(
+    plotGOI, 
+    levels = c("Renilla\n(lncTAM34a)", " Luciferase\n(miR34a HG)")
   )) %>%
   group_by(GOI, treatment) %>%
   mutate(
@@ -196,22 +204,7 @@ stats <- stats %>%
 ```
 
 ```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
-
 p <- ggplot(data = NULL) +
-  geom_violin(
-    data = data,
-    aes(
-      x = treatment, 
-      y = log2fold, 
-      group = interaction(shRNA, treatment)
-    ),
-    trim = TRUE,
-    scale = "width",
-    alpha = 0.3,
-    colour = NA,
-    fill = "gray",
-    show.legend = FALSE
-  ) +
   geom_dotplot(
     data = data, 
     aes(
@@ -234,6 +227,7 @@ p <- ggplot(data = NULL) +
     x = "Doxorubicin (ng/ml)",
     title = "HCT116"
   )
+
 markdown <- p + 
   geom_linerange(
     data = stats,
@@ -345,15 +339,15 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2d"][[1]])
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 100,
-#    units = "mm"
-# )
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2d"][[1]])
+ggsave(
+   plot = figure,
+   filename = path,
+   device = cairo_pdf,
+   height = 60,
+   width = 100,
+   units = "mm"
+)
 ```
 
 <div class="caption">
