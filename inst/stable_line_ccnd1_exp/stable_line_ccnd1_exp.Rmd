@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 
@@ -108,7 +110,7 @@ data <- data %>%
 #calculate ddct
 groups[groups == "gene"] <- "GOI"
 logical <- tibble(
-  condition = pull(data, condition) == "PC3 mock"
+  condition = pull(data, condition) == "mock"
 )
  
 data <- data %>%
@@ -116,7 +118,7 @@ data <- data %>%
   folds(.)
 
 #calculate stats
-stats <- calcStats(data, condition, "PC3 mock", groups) %>%
+stats <- calcStats(data, condition, "mock", groups) %>%
   pFormat(.)
 
 ```
@@ -124,18 +126,6 @@ stats <- calcStats(data, condition, "PC3 mock", groups) %>%
 ```{r, fig.align='center', fig.height=8, fig.width=12}
 
 p <- ggplot(data = NULL) +
-  geom_violin(
-    data = data,
-    aes(
-      x = condition,
-      y = log2fold
-    ),
-    trim = TRUE,
-    alpha = 0.3,
-    color = NA,
-    fill = "gray",
-    scale = "width"
-  ) +
   geom_dotplot(
     data = data, 
     aes(
@@ -254,15 +244,15 @@ pdf <- p +
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3-Supplement 2a"][[1]])
-# ggsave(
-#   plot = figure,
-#   filename = path,
-#   device = cairo_pdf,
-#   height = 60,
-#   width = 43,
-#   units = "mm"
-# )
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3-Supplement 2a"][[1]])
+ggsave(
+  plot = figure,
+  filename = path,
+  device = cairo_pdf,
+  height = 60,
+  width = 43,
+  units = "mm"
+)
 ```
 
 <div class="caption">

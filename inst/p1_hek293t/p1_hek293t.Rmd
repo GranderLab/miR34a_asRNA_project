@@ -240,15 +240,15 @@ figure <- plotPDF(p) +
     axis.text.x = element_text(angle = 90)
   )
 
-path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2-Supplement 2"][[1]])
-ggsave(
-   plot = figure,
-   filename = path,
-   device = cairo_pdf,
-   height = 60,
-   width = 83,
-   units = "mm"
-)
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2-Supplement 2"][[1]])
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
 ```
 
 <br></br>
