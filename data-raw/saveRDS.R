@@ -240,12 +240,12 @@ print("processing stable_line_ccnd1_prot")
 read_tsv('./data-raw/stable_line_ccnd1_prot.txt', col_names = TRUE) %>%
   rename(`Biological Replicate` = experiment) %>%
   mutate(
-    condition = gsub("miR34a AS", "PC3 miR34a\nasRNA", condition),
-    condition = gsub("mock", "PC3 mock", condition)
+    condition = gsub("miR34a AS", "lncTAM34a", condition),
+    condition = gsub("mock", "mock", condition)
   ) %>%
   mutate(condition = parse_factor(
     condition,
-    levels = c("PC3 mock", "PC3 miR34a\nasRNA")
+    levels = c("mock", "lncTAM34a")
   )) %>%
   write_rds(., path = './data/stable_line_ccnd1_prot.rds')
 
