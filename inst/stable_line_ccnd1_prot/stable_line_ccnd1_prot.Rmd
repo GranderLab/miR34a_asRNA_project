@@ -95,12 +95,12 @@ data <- data %>%
   mutate(normHK = CCND1 / GAPDH)
 
 #normalize to mock
-cnt <- filter(data, condition == "PC3 mock") %>% 
+cnt <- filter(data, condition == "mock") %>% 
   pull(normHK) %>% 
   median
 
 data <- mutate(data, log2fold = log2(normHK / cnt))
-  
+
 #calculate stats
 stats <- data %>%
   group_by(condition) %>%
@@ -109,7 +109,7 @@ stats <- data %>%
     mean = mean(log2fold),
     CI95l = t.test(log2fold)$conf.int[1],
     CI95h = t.test(log2fold)$conf.int[2],
-    pValue = t.test(log2fold, pull(filter(data, condition == "PC3 mock"), log2fold))$p.value
+    pValue = t.test(log2fold, pull(filter(data, condition == "mock"), log2fold))$p.value
   ) %>%
   pFormat(.)
 
@@ -118,19 +118,6 @@ stats <- data %>%
 ```{r, fig.align='center', fig.height=8, fig.width=12}
 
 p <- ggplot(data = NULL) +
-  geom_violin(
-    data = data,
-    aes(
-      x = condition,
-      y = log2fold
-    ),
-    trim = TRUE,
-    alpha = 0.3,
-    color = NA,
-    fill = "gray",
-    scale = "width",
-    show.legend = FALSE
-  ) +
   geom_dotplot(
     data = data, 
     aes(
