@@ -140,7 +140,8 @@ read_tsv('./data-raw/stable_line_growth_starvation.txt', col_names = TRUE)  %>%
   ) %>%
   mutate(
     `Cell line` = paste(`Cell line`, Condition, sep = " "),
-    `Cell line` = gsub("PC3 F4", "PC3 miR34a asRNA", `Cell line`)
+    `Cell line` = gsub("PC3 F4", "lncTAM34a", `Cell line`),
+    `Cell line` = gsub("PC3 Mock", "mock", `Cell line`)
   ) %>%
   mutate(
     Time = parse_factor(
@@ -153,7 +154,7 @@ read_tsv('./data-raw/stable_line_growth_starvation.txt', col_names = TRUE)  %>%
     ),
     `Cell line` = parse_factor(
       `Cell line`,
-      levels = c("PC3 Mock", "PC3 miR34a asRNA")
+      levels = c("mock", "lncTAM34a")
     )
   ) %>%
   select(-Condition) %>%
@@ -396,7 +397,7 @@ read_tsv('https://www.encodeproject.org/metadata/type=Experiment&assay_term_name
   mutate(gene_id = gsub("(.*)\\.[0-9]*$", "\\1", gene_id)) %>%
   filter(gene_id %in% c("ENSG00000234546", "ENSG00000075624", "ENSG00000111640", "ENSG00000251562")) %>%
   mutate(gene_name = case_when(
-    gene_id == "ENSG00000234546" ~ "miR34a asRNA",
+    gene_id == "ENSG00000234546" ~ "lncTAM34a",
     gene_id == "ENSG00000075624" ~ "ACTB",
     gene_id == "ENSG00000251562" ~ "MALAT1",
     gene_id == "ENSG00000111640" ~ "GAPDH",
