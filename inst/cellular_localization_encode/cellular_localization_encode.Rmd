@@ -89,6 +89,9 @@ stats <- fdata %>%
     sd_max = mean(frac) - sd(frac)
   )  %>%
   ungroup()
+
+#prepare for plotting 
+stats <- mutate(stats, gene_name = parse_factor(gene_name, levels = c("GAPDH", "MALAT1", "lncTAM34a")))
 ```
 
 
@@ -124,7 +127,7 @@ plotRmarkdown(markdown) +
   theme(
     legend.position = "top",
     axis.title.y = element_text(margin = margin(r = 20, "cm"))
-  ) 
+  )
 
 pdf <- ggplot(data = NULL) +
   geom_point(
