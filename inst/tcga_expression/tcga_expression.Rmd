@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 
@@ -88,7 +90,7 @@ data <- data %>%
   mutate(TP53 = if_else(TP53 == 0, "TP53 wt", "TP53 mut")) %>%
   select(TCGA_cancer_id, TP53, cancer_PAM50, RP3, miR34a) %>%
   gather(gene, value, -(TCGA_cancer_id:cancer_PAM50)) %>%
-  mutate(gene = if_else(gene == "RP3", "miR34a asRNA", "miR34a"))
+  mutate(gene = if_else(gene == "RP3", "lncTAM34a", "miR34a"))
 
 #remove cancers that don't have at least 5 patients in both TP53 wt and mutated
 data <- data %>%
@@ -122,12 +124,12 @@ stats <- data %>%
 #add fake data where p53 mut is missing (will be hidden in plot) to keep empty space
 data <- data %>%
   mutate(TP53 = parse_factor(TP53, levels = c("TP53 wt", "TP53 mut"))) %>%
-  mutate(gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a"))) %>%
+  mutate(gene = parse_factor(gene, levels = c("lncTAM34a", "miR34a"))) %>%
   mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = rev(unique(cancer_PAM50))))
 
 stats <- stats %>%
   mutate(TP53 = parse_factor(TP53, levels = c("TP53 wt", "TP53 mut"))) %>%
-  mutate(gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a"))) %>%
+  mutate(gene = parse_factor(gene, levels = c("lncTAM34a", "miR34a"))) %>%
   mutate(cancer_PAM50 = parse_factor(cancer_PAM50, levels = rev(unique(cancer_PAM50))))
 ```
 
