@@ -223,14 +223,14 @@ read_tsv('./data-raw/stable_line_ccnd1_exp.txt', col_names = TRUE) %>%
     `Cell line` = cellLine
   ) %>%
   mutate(
-    condition = gsub("miR34a AS", "PC3 miR34a\nasRNA", condition),
-    condition = gsub("mock", "PC3 mock", condition),
+    condition = gsub("miR34a AS", "lncTAM34a ", condition),
+    condition = gsub("mock", "mock", condition),
     gene = gsub("B-actin", "Actin", gene)
   ) %>%
   mutate(
     condition = parse_factor(
       condition,
-      levels = c("PC3 mock", "PC3 miR34a\nasRNA")
+      levels = c("mock", "lncTAM34a")
     )
   ) %>%
   write_rds(., path = './data/stable_line_ccnd1_exp.rds')
