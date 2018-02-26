@@ -405,4 +405,9 @@ read_tsv('https://www.encodeproject.org/metadata/type=Experiment&assay_term_name
   )) %>%
   write_rds(., path = './data/cellular_localization_encode.rds')
 
+#tcga_survival
+read_tsv('data-raw/tcga_survival.txt') %>%
+  select(-PAM50) %>%
+  write_rds(., path = './data/tcga_survival.rds')
+
 #source('./data-raw/saveRDS.R')
