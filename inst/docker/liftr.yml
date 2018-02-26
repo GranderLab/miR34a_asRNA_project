@@ -16,5 +16,7 @@ cran:
   - magrittr/1.5
   - gridExtra/2.3
   - broom/0.4.3
+  - survival/2.41-3
+  - KMsurv/0.1-5
 remotes:
   - "GranderLab/miR34a_asRNA_project"

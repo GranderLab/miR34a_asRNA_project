@@ -407,7 +407,7 @@ read_tsv('https://www.encodeproject.org/metadata/type=Experiment&assay_term_name
 
 #tcga_survival
 read_tsv('data-raw/tcga_survival.txt') %>%
-  select(-PAM50) %>%
+  select(-PAM50, -lncTAM34a_cna) %>%
   write_rds(., path = './data/tcga_survival.rds')
 
 #source('./data-raw/saveRDS.R')

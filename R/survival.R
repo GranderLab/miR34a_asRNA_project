@@ -15,7 +15,7 @@ NULL
 
 #' @rdname get_survival
 #' @export
-#' @importFrom dplyr select mutate if_else summary bind_cols filter arrange pull
+#' @importFrom dplyr select mutate if_else bind_cols filter arrange pull
 #' @importFrom survival Surv survfit
 #' @importFrom purrr map
 #' @importFrom magrittr "%>%"
@@ -251,15 +251,41 @@ renderPlots <- function(p1, p2) {
   p1 + annotation_custom(gt2, xmin = -1.1, xmax = 1.1, ymin = -1.1, ymax = -0.91)
 }
 
-#A theme removing unnecessary elements from the plots
-theme_remove_all <- theme(
-  panel.grid.minor = element_blank(),
-  panel.grid.major = element_blank(),
-  panel.background = element_blank(),
-  plot.background = element_blank()
-)
+#' Theme for survival plot.
+#'
+#' @name theme_remove_all
+#' @rdname theme_remove_all
+#' @aliases theme_remove_all
+#' @author Jason T. Serviss
+#'
+NULL
 
-#Returns the colors for the plot
+#' @rdname theme_remove_all
+#' @export
+#' @import ggplot2
+
+theme_remove_all <- function() {
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.background = element_blank(),
+    plot.background = element_blank()
+  )
+}
+
+#' Colors for survival plot.
+#'
+#' @name getCancerColors
+#' @rdname getCancerColors
+#' @aliases getCancerColors
+#' @author Jason T. Serviss
+#'
+NULL
+
+#' @rdname getCancerColors
+#' @export
+#' @importFrom tibble tibble
+
 getCancerColors <- function() {
   cancer_colors<- c(
   rgb(0.498,0.498,0.498), rgb(0.7804,0.7804,0.7804),

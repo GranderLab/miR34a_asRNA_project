@@ -550,3 +550,22 @@ NULL
 #' @examples
 #' getData('Figure 1-Supplement 1a')
 NULL
+
+#' TCGA survival analysis
+#'
+#'
+#' @name tcga_survival
+#' @format A tibble with 22,769 rows and 8 variables:
+#'\describe{
+#'   \item{TCGA_id}{Character; TCGA sample ID.}
+#'   \item{Cancer}{Character; Indicates cancer type.}
+#'   \item{TP53}{Numeric; Indicates TP53 nonsynonymous mutation. FALSE is wild type, TRUE is mutated. Mutect2 v7 called data were downloaded from TCGA on 20171030.}
+#'   \item{lncTAM34a}{Numeric; Expression for lncTAM34a. For details on RNA-Seq processing, see Ashouri A et al. Nat Commun. 2016;7}
+#'   \item{miR34a}{Numeric; Expression for miR34a. For details on RNA-Seq processing, see Ashouri A et al. Nat Commun. 2016;7}
+#'   \item{vitalStatus}{Character; Vital state. Data were downloaded from TCGA on 20171027.}
+#'   \item{FU}{Numeric; Date of last follow-up. Data were downloaded from TCGA on 20171027.}
+#'   ...
+#' }
+#' @examples
+#' getData('Figure 4a')
+NULL
