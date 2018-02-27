@@ -1,28 +1,27 @@
 #SURVIVAL ANALYSIS
 
-#' Calculate survival probability
+#' Calculate survival object
 #'
 #' @name get_survival
 #' @rdname get_survival
 #' @aliases get_survival
 #' @param surv_data tibble; Includes columns vitalStatus and FU, date of last
 #'  follow-up.
-#' @param n_years; numeric Years to examine survival.
-#' @return The survival probability.
+#' @return The survival fit.
 #' @author Jason T. Serviss
 #'
 NULL
 
 #' @rdname get_survival
 #' @export
-#' @importFrom dplyr select mutate if_else bind_cols filter arrange pull
+#' @importFrom dplyr select mutate
+#' @importFrom tibble add_column
 #' @importFrom survival Surv survfit
-#' @importFrom purrr map
 #' @importFrom magrittr "%>%"
 
-get_survival <- function(surv_data, n_years = 5){
-  
-  survival <- surv_data %>%
+get_survival <- function(surv_data){
+  #Survival table
+  surv_data %>%
   #extract data and rename colnames
   select(vitalStatus, FU) %>%
   setNames(c("vital_state", "FU")) %>%
@@ -31,19 +30,85 @@ get_survival <- function(surv_data, n_years = 5){
   select(-vital_state) %>%
   mutate(FU = replace(FU, is.infinite(FU), NA)) %>%
   mutate(FU = FU / 365.25) %>%
-  # Survival tables
+  # Survival object
   {Surv(.$FU, .$Death)}
-  
-  #fit data
-  fit <- survfit(survival ~ 1) %>%
-  summary()
-  
+}
+
+#' Calculate survival fit
+#'
+#' @name survival_fit
+#' @rdname survival_fit
+#' @aliases survival_fit
+#' @param surv_obj Surv; Object of class Surv.
+#' @param class character; The classes if the survival should be a function of
+#' class. Otherwise a function of 1.
+#' @return The survival fit.
+#' @author Jason T. Serviss
+#'
+NULL
+
+#' @rdname get_survival
+#' @export
+#' @importFrom survival survfit
+
+survival_fit <- function(surv_obj, class = NULL) {
+  if(is.null(class)) {
+    fit <- survfit(surv_obj ~ 1)
+  } else {
+    fit <- survfit(surv_obj ~ class)
+  }
+}
+
+#' Calculate survival p-value
+#'
+#' @name survival_p
+#' @rdname survival_p
+#' @aliases survival_p
+#' @param surv_obj Surv; Object of class Surv.
+#' @param class character; The classes in the Surv object.
+#' @return The survival fit.
+#' @author Jason T. Serviss
+#'
+NULL
+
+#' @rdname survival_p
+#' @export
+#' @importFrom survival survdiff
+
+survival_p <- function(surv_obj, class = NULL) {
+  p <- survdiff(surv_obj ~ class)
+  p.val <- 1 - pchisq(p$chisq, length(p$n) - 1)
+}
+
+
+#' Calculate survival probability
+#'
+#' @name get_survival
+#' @rdname get_survival
+#' @aliases get_survival
+#' @param fit survfit; A survfit object.
+#' @param n_years; numeric Years to examine survival.
+#' @return The survival probability.
+#' @author Jason T. Serviss
+#'
+NULL
+
+#' @rdname get_survival
+#' @export
+#' @importFrom dplyr bind_cols filter arrange pull desc
+#' @importFrom purrr map
+#' @importFrom magrittr "%>%"
+
+calcSurvProb <- function(fit, n_years = 5) {
   #extract results
-  res <- if(any(map(fit, length) == 0)) return(NA) else fit %>%
+  summary <- summary(fit)
+  
+  res <- if(any(map(summary, length) == 0)) return(NA) else summary %>%
   .[c(2:6, 8:10)] %>%
   bind_cols() %>%
   filter(time < n_years)
   
+  #caclulate probability
   if(nrow(res) == 0) return(NA) else res %>%
   arrange(desc(time)) %>%
   pull(surv) %>%
@@ -309,5 +374,57 @@ getCancerColors <- function() {
   )
   
   tibble(color = cancer_colors, cancer = names(cancer_colors))
+}
+
+#' Plots KM plots
+#'
+#' Designed to be run in pmap call.
+#'
+#' @name plotKM
+#' @rdname plotKM
+#' @aliases plotKM
+#' @param data tibble; A tibble including the class information.
+#' @param fit survfit; A survfit object.
+#' @param gene Unquoted variable indicating the gene being plotted.
+#' @param cancer Unquoted variable indicating the cancer being plotted.
+#' @param p.value numeric; The p-value corresponding to the gene and cancer
+#'  being plotted.
+#' @return Plots the results.
+#' @author Jason T. Serviss
+#'
+NULL
+
+#' @rdname plotKM
+#' @export
+#' @importFrom dplyr count pull
+
+plotKM <- function(data, fit, gene, cancer, p.value) {
+  n <- count(data, class)
+  
+  if(gene == "TP53") {
+    col <- "black"
+    lty <- 1:2
+    ll = c(
+      paste0(gene, " WT (n=", pull(n, n)[2], ")"),
+      paste0(gene, " MUT (n=", pull(n, n)[1], ")")
+    )
+  } else {
+    col <- c("red", "black")
+    lty <- 1
+    ll <- c(
+      paste0(gene, " <P10 (n=", pull(n, n)[1], ")"),
+      paste0(gene, " >P10 (n=", pull(n, n)[2], ")")
+    )
+  }
+  plot(
+    fit, col = col, lty = lty, xlim = c(0, 5),
+    xlab = "Time (years)", ylab = "Survival Probability",
+    main = cancer, frame = FALSE
+  )
+  mtext(signif(p.value, digits = 3))
+  legend(
+    "bottomleft", legend = ll, bty = "n", text.col = col,
+    lty = lty, y.intersp = 1, cex = 0.8
+  )
 }
 

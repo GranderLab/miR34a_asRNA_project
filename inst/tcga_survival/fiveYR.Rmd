@@ -1,6 +1,6 @@
 ---
-title: "Figure 1-Supplement 1b"
-subtitle: "miR34a asRNA and miR34a TCGA expression"
+title: "Figure 4b"
+subtitle: "5 year survival analysis"
 author: "Jimmy Van den Eynden and Jason T. Serviss"
 date: "31/01/2017"
 output:
@@ -63,6 +63,8 @@ data <- read_rds(gzcon(url(file.path(dataUrl, url))))
 
 ```
 
+### 5 year survival analysis
+
 ```{r}
 correlation_matrix <- filter(data, !is.na(TP53) & !is.na(lncTAM34a))
 cancers <- sort(unique(correlation_matrix$Cancer))
@@ -108,9 +110,11 @@ independant <- expand.grid(
     filter(d, class == gl)
   })) %>%
   #calculate survival probability
-  mutate(surv.prob = map_dbl(data, ~get_survival(.x, 5))) %>%
+  mutate(surv.obj = map(data, ~get_survival(.x))) %>%
+  mutate(surv.fit = map(surv.obj, ~survival_fit(.x))) %>%
+  mutate(surv.prob = map_dbl(surv.fit, ~calcSurvProb(.x))) %>%
   ungroup() %>%
-  select(-data) %>%
+  select(-data, -surv.fit) %>%
   mutate(type = "independant")
 
 
@@ -152,9 +156,11 @@ dependant <- expand.grid(
   })) %>%
   filter(bool) %>%
   #calculate survival probability
-  mutate(surv.prob = map_dbl(data, ~get_survival(.x, 5))) %>%
+  mutate(surv.obj = map(data, ~get_survival(.x))) %>%
+  mutate(surv.fit = map(surv.obj, ~survival_fit(.x))) %>%
+  mutate(surv.prob = map_dbl(surv.fit, ~calcSurvProb(.x))) %>%
   ungroup() %>%
-  select(-(data:bool)) %>%
+  select(-(data:surv.fit)) %>%
   mutate(type = "dependent")
 
 #combine the analyses and filter those to be included in the figure
