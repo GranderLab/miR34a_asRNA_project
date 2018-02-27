@@ -44,10 +44,20 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 ```
 
 #### _Introduction_
-
+Kaplan-Meier survival curves comparing the effects of TP53-mutated samples,
+low lncTAM34a expression and low miR34a expression to control samples in
+17 cancers from TCGA. Panels showing survival curves based on gene expression
+include only TP53 wild type patients where RNAseq data exists.
 
 #### _Methods_
+RNAseq data was downloaded from TCGA and processed as described previously. 
+Briefly, RNAseq data were aligned to the human hg19 assembly and quantified 
+using GENCODE (v19) annotated HTSeq-counts and FPKM normalizations. Expression 
+data from miR34a and lncTAM34a (identified as RP3-510D11.2) were used for 
+further analysis. 
 
+Survival analysis was performed on TCGA vital state and follow-up data,
+downloaded from GDC on 27/10/2017 using the R survival package.
 
 <br></br>
 
