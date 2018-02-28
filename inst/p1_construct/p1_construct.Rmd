@@ -1,5 +1,5 @@
 ---
-title: "Figure 2-Supplement 1a-b"
+title: "Supplementary Figure 3a-b"
 subtitle: "Schematic representation of the P1 construct"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -118,7 +118,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- fileMap(type = "png")["Figure 2-Supplement 1a"][[1]]
+url <- fileMap(type = "png")["Supplementary Figure 3a"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

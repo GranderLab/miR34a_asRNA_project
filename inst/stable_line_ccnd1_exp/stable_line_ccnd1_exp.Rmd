@@ -1,5 +1,5 @@
 ---
-title: "Figure 3-Supplement 2a"
+title: "Supplementary Figure 4b"
 subtitle: "CCND1 expression in PC3 stable cell lines"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -39,12 +39,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 
@@ -96,8 +91,7 @@ primers
 
 ```{r, warning=FALSE, message=FALSE}
 
-url <- fileMap(type = "rds")["Figure 3-Supplement 2a"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+data <- getData("Supplementary Figure 4b")
 
 #calculate dct
 groups <- c("condition", "Biological Replicate", "Cell line", "gene")

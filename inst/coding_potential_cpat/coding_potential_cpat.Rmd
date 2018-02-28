@@ -37,13 +37,6 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
-
 #### _Introduction_
 
 We utilized a bioinformatic approach to evaluate the coding potential of the miR34a asRNA transcript. The Coding-potential assessment tool uses a linear regression model to evaluate coding-potential by examining ORF length, ORF coverage, Fickett score and hexamer score. We further confirmed these results using the Coding-potential Calculator which utilizes a support based machine-based classifier and accesses an alternate set of discriminatory features.
@@ -62,8 +55,7 @@ _Coding Potential Assesment Tool_
 
 ```{r}
 
-url <- fileMap(type = "rds")["Figure 1f"][[1]]
-cpat <-read_rds(url(file.path(dataUrl, url)))
+cpat <- getData("Figure 1f")
 cpat
 
 ```

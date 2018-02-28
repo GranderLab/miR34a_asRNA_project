@@ -36,18 +36,15 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 Kaplan-Meier survival curves comparing the effects of TP53-mutated samples,
 low lncTAM34a expression and low miR34a expression to control samples in
 17 cancers from TCGA. Panels showing survival curves based on gene expression
 include only TP53 wild type patients where RNAseq data exists.
+
+<br></br>
 
 #### _Methods_
 RNAseq data was downloaded from TCGA and processed as described previously. 
@@ -62,14 +59,11 @@ downloaded from GDC on 27/10/2017 using the R survival package.
 <br></br>
 
 #### _Results_
-```{r}
-
-url <- fileMap(type = "rds")["Figure 4b"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
-
-```
 
 ```{r}
+
+data <- getData("Figure 4a")
+
 #TP53 status independant
 #Set up all combinations of variables to calcualte survival probability for
 independant <- expand.grid(

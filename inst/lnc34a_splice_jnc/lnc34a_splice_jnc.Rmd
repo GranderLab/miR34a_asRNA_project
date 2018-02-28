@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Document 1b"
+title: "Supplementary Figure 7"
 subtitle: "lnc34a splice junctions"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
@@ -35,12 +35,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 
@@ -53,7 +48,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 ```{r}
 nrCellLinesDown <- function() {
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "txt")["Supplementary Document 1b"][[1]]
+  url <- fileMap(type = "txt")["Supplementary Figure 7"][[1]]
 
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
     pull(16) %>% 
@@ -67,10 +62,7 @@ nrCellLinesDown <- function() {
 }
 
 cellLinesInFinal <- function() {
-  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "rds")["Supplementary Document 1b"][[1]]
-
-  read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+  getData("Supplementary Figure 7") %>%
     pull(filename) %>%
     gsub(
       "^wgEncodeCshlLongRnaSeq(.*)Cell.*",
@@ -82,15 +74,13 @@ cellLinesInFinal <- function() {
 }
 
 RNAprepTable <- function() {
-  dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "rds")["Supplementary Document 1b"][[1]]
-  final <- read_rds(gzcon(url(file.path(dataUrl, url)))) %>%
+  final <- getData("Supplementary Figure 7") %>%
     select(filename) %>%
     distinct() %>%
     mutate(filename = str_replace(filename, "^(.*)\\.bedRnaElements.*", "\\1"))
   
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-  url <- fileMap(type = "txt")["Supplementary Document 1b"][[1]]
+  url <- fileMap(type = "txt")["Supplementary Figure 7"][[1]]
   read_tsv(gzcon(url(file.path(dataUrl, url)))) %>%
     filter(X__15 %in% pull(final, filename)) %>%
     rename(`rna extract` = X__3) %>%
@@ -99,7 +89,17 @@ RNAprepTable <- function() {
 }
 ```
 
-All available whole cell RNAseq splice junction data from the ENCODE project originating from the Cold Spring Harbor Lab from `r nrCellLinesDown()` cell lines was downloaded from the UCSC genome browser with the script entitled "lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines, `r cellLinesInFinal() %>% length()` had spliced reads mapping to the plus strand of chromosome 1 and in the region between the lnc34a start (9241796) and transcription termination (9257102) site (note that miR34a asRNA resides totally within this region). Splice junctions from the following cell lines were included in the final figure: `r cellLinesInFinal()`. All splice junctions were plotted and colored according to the number of reads corresponding to each. Information regarding the RNA extraction is included below:
+All available whole cell RNAseq splice junction data from the ENCODE project 
+originating from the Cold Spring Harbor Lab from `r nrCellLinesDown()` cell 
+lines was downloaded from the UCSC genome browser with the script entitled 
+"lnc34a splice junctions" in the data-raw/saveRDS.R file. Of these cell lines, 
+`r cellLinesInFinal() %>% length()` had spliced reads mapping to the plus strand
+of chromosome 1 and in the region between the lnc34a start (9241796) and 
+transcription termination (9257102) site (note that miR34a asRNA resides totally
+within this region). Splice junctions from the following cell lines were 
+included in the final figure: `r cellLinesInFinal()`. All splice junctions were 
+plotted and colored according to the number of reads corresponding to each. 
+Information regarding the RNA extraction is included below:
 
 Number of samples from included RNA extraction methods:
 
@@ -132,10 +132,7 @@ data <- tibble(
 )
 
 #splice junctions
-url <- fileMap(type = "rds")["Supplementary Document 1b"][[1]]
-splJnc <- read_rds(gzcon(url(file.path(dataUrl, url))))
-
-splJnc <- splJnc %>%
+splJnc <- getData("Supplementary Figure 7") %>%
   mutate(cellline = gsub(".*LongRnaSeq(.*)Cell.*", "\\1", filename)) %>%
   select(cellline, start, stop, score2) %>%
   group_by(start, stop) %>%

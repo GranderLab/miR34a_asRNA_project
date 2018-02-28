@@ -35,15 +35,6 @@ packages <- c(
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
 
-
-#library(grDevices)
-```
-
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
 ```
 
 #### _Introduction_
@@ -102,8 +93,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["Figure 2b"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+data <- getData("Figure 2b")
 
 #calculate dct
 groups <- c("Condition", "Treatment", "Biological Replicate", "Cell line", "gene")

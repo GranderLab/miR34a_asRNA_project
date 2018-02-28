@@ -40,12 +40,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 Correlation analysis between the effects on the 5-year survival
@@ -58,6 +53,8 @@ type. Boxplots on the bottom summarize the effects for
 the parameter on the x-axis, with indication of P values, as calculated using
 paired Wilcoxon signed rank test. Low expression was defined as TP53 non-
 mutated samples having expression values in the bottom 10th percentile.
+
+<br></br>
 
 #### _Methods_
 RNAseq data was downloaded from TCGA and processed as described previously. 
@@ -72,14 +69,10 @@ downloaded from GDC on 27/10/2017 using the R survival package.
 <br></br>
 
 #### _Results_
-```{r}
-
-url <- fileMap(type = "rds")["Figure 4b"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
-
-```
 
 ```{r}
+
+data <- getData("Figure 4b")
 correlation_matrix <- filter(data, !is.na(TP53) & !is.na(lncTAM34a))
 cancers <- sort(unique(correlation_matrix$Cancer))
 

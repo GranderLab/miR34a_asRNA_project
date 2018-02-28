@@ -39,12 +39,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 
@@ -91,8 +86,8 @@ primers
 #### _Results_
 
 ```{r, message = FALSE}
-url <- fileMap(type = "rds")["Figure 3d"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+data <- getData("Figure 3d")
 
 #calculate means of technical replicates
 data <- mutate(data, techMean = rowMeans(select(data, Quantity1, Quantity2)))

@@ -37,12 +37,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 We interogated RNA sequencing data from TCGA to determine in miR34a and miR34a asRNA expression was correlated in both TP53 wild type and mutated samples.
@@ -59,8 +54,8 @@ Somatic mutation data were downloaded from the Genomics Data Commons data portal
 
 #### _Results_
 ```{r}
-url <- fileMap(type = "rds")["Figure 1c"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+data <- getData("Figure 1c")
 
 #normalize expression values
 data <- mutate(

@@ -1,5 +1,5 @@
 ---
-title: "Figure 2-Supplement 2"
+title: "Supplementary Figure 3c"
 subtitle: "P1 shRenilla HEK293t transfections"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -8,7 +8,9 @@ output:
     code_folding: hide
     theme: flatly
 vignette: |
-  %\VignetteIndexEntry{Vignette Title} %\VignetteEngine{knitr::rmarkdown} %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Vignette Title} 
+  %\VignetteEngine{knitr::rmarkdown} 
+  %\VignetteEncoding{UTF-8}
 editor_options: 
   chunk_output_type: console
 ---
@@ -37,12 +39,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 
@@ -118,8 +115,7 @@ primers
 
 ```{r}
 
-url <- fileMap(type = "rds")["Figure 2-Supplement 2"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+data <- getData("Supplementary Figure 3c")
 
 #Luciferase = miR34a HG
 #Renilla = miR34a AS

@@ -412,11 +412,11 @@ $(document).ready(function () {
   font-size: 1.0em; 
 }
 </style>
-<pre class="r"><code>projectUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst&quot;
-dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/master/&quot;</code></pre>
+<p><br /></p>
 <section id="introduction" class="level4">
 <h4><em>Introduction</em></h4>
 <p>Correlation analysis between the effects on the 5-year survival probability of TP53-mutated samples, low lncTAM34a expression, and low miR34a expression as indicated. For each variable the 5-year survival probability was compared to the control group (negative values indicate lower survival, positive values indicate higher survival). Spearman correlation coefficients are given on top left of each plot. Each dot indicates one cancer type. Boxplots on the bottom summarize the effects for the parameter on the x-axis, with indication of P values, as calculated using paired Wilcoxon signed rank test. Low expression was defined as TP53 non- mutated samples having expression values in the bottom 10th percentile.</p>
+<p><br /></p>
 </section>
 <section id="methods" class="level4">
 <h4><em>Methods</em></h4>
@@ -426,9 +426,8 @@ dataUrl &lt;- &quot;https://github.com/GranderLab/miR34a_asRNA_project/raw/maste
 </section>
 <section id="results" class="level4">
 <h4><em>Results</em></h4>
-<pre class="r"><code>url &lt;- fileMap(type = &quot;rds&quot;)[&quot;Figure 4b&quot;][[1]]
-data &lt;- read_rds(gzcon(url(file.path(dataUrl, url))))</code></pre>
-<pre class="r"><code>correlation_matrix &lt;- filter(data, !is.na(TP53) &amp; !is.na(lncTAM34a))
+<pre class="r"><code>data &lt;- getData(&quot;Figure 4b&quot;)
+correlation_matrix &lt;- filter(data, !is.na(TP53) &amp; !is.na(lncTAM34a))
 cancers &lt;- sort(unique(correlation_matrix$Cancer))
 
 #TP53 status independant

@@ -202,18 +202,22 @@ NULL
 getData <- function(figure) {
   #check that there is data for the figure
   figsWithData <- c(
-    'Figure 1-Supplement 2e', 'Figure 1f', 'Figure 1-Supplement 2d',
-    'Figure 2a', 'Figure 2b', 'Supplementary Document 1a',
-    'Supplementary Document 1b', 'Figure 2c', 'Figure 2-Supplement 2',
-    'Figure 2d', 'Figure 3-Supplement 2a', 'Figure 3-Supplement 2b',
-    'Figure 3b', 'Figure 3-Supplement 1', 'Figure 3a',
-    'Figure 3c', 'Figure 3d', 'Figure 1-Supplement 1a',
-    'Figure 1c'
-    
+    'Figure 1c', 'Figure 1f', 'Figure 2a', 'Figure 2b', 'Figure 2c',
+    'Figure 2d', 'Figure 3a', 'Figure 3b', 'Figure 3c', 'Figure 3d',
+    'Figure 4a', 'Figure 4b', 'Supplementary Figure 1a',
+    'Supplementary Figure 1b', 'Supplementary Figure 2d',
+    'Supplementary Figure 2e', 'Supplementary Figure 3c',
+    'Supplementary Figure 4a', 'Supplementary Figure 4b',
+    'Supplementary Figure 4c', 'Supplementary Figure 5',
+    'Supplementary Figure 6', 'Supplementary Figure 7'
   )
   if(!figure %in% figsWithData) {
     stop("There is no data for the figure you specified")
   }
+  if(figure == "Figure 4a") figure <- "Figure 4b"
+  if(figure == "Supplementary Figure 1a") figure <- "Figure 1c"
+  if(figure == "Supplementary Figure 1b") figure <- "Figure 1c"
+
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
   path <- fileMap('rds')[[figure]][[1]]
   read_rds(gzcon(url(file.path(dataUrl, path))))

@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 
@@ -37,12 +39,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 
@@ -63,12 +60,13 @@ All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RP
 _Analysis_
 The cell cycle phases ModFit software (Verity Software House) was used to quantify the percentage of cells in each cell cycle phase. Percentages were converted to log2 fractions for each sample. Student's t-test was used for statistical analysis comparing the mock vs miR34a asRNA overespression conditions using five (PC3) or three (Skov3) independant experiments. 
 
+<br></br>
+
 #### _Results_
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["Figure 3b"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+data <- getData("Figure 3b")
 
 #convert the value (precent) to log2(fraction)
 data <- mutate(data, value = log2(value / 100))

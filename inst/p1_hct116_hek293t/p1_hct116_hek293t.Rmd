@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 
@@ -34,13 +36,6 @@ packages <- c(
 )
 purrr::walk(packages, library, character.only = TRUE)
 rm(packages)
-
-```
-
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```
 
@@ -120,8 +115,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["Figure 2c"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+data <- getData("Figure 2c")
 
 .calcP <- function(`Cell line`, gene, logValue, data) {
   bool1 <- pull(data, `Cell line`) == `Cell line`

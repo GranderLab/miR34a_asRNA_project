@@ -1,5 +1,5 @@
 ---
-title: "Figure 1-Supplement 2c"
+title: "Supplementary Figure 2c"
 subtitle: "miR34a asRNA isoform cloning"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 

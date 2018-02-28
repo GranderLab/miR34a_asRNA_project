@@ -1,5 +1,5 @@
 ---
-title: "Figure 1-Supplement 1a"
+title: "Supplementary Figure 1a"
 subtitle: "TCGA correlation table"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -39,20 +39,13 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
-
 <br></br>
 
 Note: in cases where less than 3 samples are in any group, r-estimates and p-values are not reported.
 
 ```{r, warning = FALSE}
-url <- fileMap(type = "rds")["Figure 1c"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+data <- getData("Supplementary Figure 1a")
 
 #normalize expression values
 data <- mutate(

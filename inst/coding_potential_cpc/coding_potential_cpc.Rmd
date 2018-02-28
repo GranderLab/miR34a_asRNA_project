@@ -1,5 +1,5 @@
 ---
-title: "Figure 1-Supplement 2d"
+title: "Supplementary Figure 2e"
 subtitle: "miR34a asRNA coding potential via CPC"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -37,17 +37,11 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 ```{r}
 
-url <- fileMap(type = "rds")["Figure 1-Supplement 2d"][[1]]
-cpat <- read_rds(url(file.path(dataUrl, url)))
+cpat <- getData("Supplementary Figure 2e")
 cpat
 
 ```

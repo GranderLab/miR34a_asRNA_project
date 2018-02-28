@@ -1,5 +1,5 @@
 ---
-title: "Figure 3-Supplement 1"
+title: "Supplementary Figure 4a"
 subtitle: "miR34a asRNA stable over-expression cell lines compared to HEK293T"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -9,8 +9,10 @@ output:
     code_folding: hide
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 <style> 
@@ -37,12 +39,7 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
+<br></br>
 
 #### _Introduction_
 
@@ -150,8 +147,7 @@ primers
 
 ```{r, message = FALSE}
 
-url <- fileMap(type = "rds")["Figure 3-Supplement 1"][[1]]
-data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+data <- getData("Supplementary Figure 4a")
 
 #remove PC3 experiment 6, B-act mean Ct > 30, too high.
 data <- filter(data, `Biological Replicate` != 6 | `Cell line` != "PC3")
