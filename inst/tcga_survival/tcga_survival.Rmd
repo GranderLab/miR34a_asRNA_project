@@ -1,0 +1,217 @@
+---
+title: "Figure 4b"
+subtitle: "5 year survival analysis"
+author: "Jimmy Van den Eynden and Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+packages <- c(
+  "tidyverse",
+  "printr",
+  "ggthemes",
+  "readr",
+  "miR34AasRNAproject",
+  "grid",
+  "gtable",
+  "survival",
+  "KMsurv"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
+```
+
+#### _Introduction_
+Correlation analysis between the effects on the 5-year survival
+probability of TP53-mutated samples, low lncTAM34a expression, and low
+miR34a expression as indicated. For each variable the 5-year survival
+probability was compared to the control group (negative values indicate lower
+survival, positive values indicate higher survival). Spearman correlation
+coefficients are given on top left of each plot. Each dot indicates one cancer
+type. Boxplots on the bottom summarize the effects for
+the parameter on the x-axis, with indication of P values, as calculated using
+paired Wilcoxon signed rank test. Low expression was defined as TP53 non-
+mutated samples having expression values in the bottom 10th percentile.
+
+#### _Methods_
+RNAseq data was downloaded from TCGA and processed as described previously. 
+Briefly, RNAseq data were aligned to the human hg19 assembly and quantified 
+using GENCODE (v19) annotated HTSeq-counts and FPKM normalizations. Expression 
+data from miR34a and lncTAM34a (identified as RP3-510D11.2) were used for 
+further analysis. 
+
+Survival analysis was performed on TCGA vital state and follow-up data,
+downloaded from GDC on 27/10/2017 using the R survival package.
+
+<br></br>
+
+#### _Results_
+```{r}
+
+url <- fileMap(type = "rds")["Figure 4b"][[1]]
+data <- read_rds(gzcon(url(file.path(dataUrl, url))))
+
+```
+
+```{r}
+correlation_matrix <- filter(data, !is.na(TP53) & !is.na(lncTAM34a))
+cancers <- sort(unique(correlation_matrix$Cancer))
+
+#TP53 status independant
+#Set up all combinations of variables to calcualte survival probability for
+independant <- expand.grid(
+  gene = c("lncTAM34a", "miR34a", "TP53"),
+  cancer = cancers,
+  geneLevel = c("low", "others")
+) %>% 
+  as_tibble() %>%
+  arrange(cancer, gene, geneLevel) %>%
+  mutate_if(is.factor, as.character) %>%
+  group_by(gene, cancer, geneLevel) %>%
+  #add data of the corresponding cancer
+  mutate(data = map(cancer, function(c, cm = correlation_matrix) {
+    filter(cm, Cancer == c)
+  })) %>%
+  #select the gene to be examined
+  mutate(data = pmap(list(gene, data), function(g, d) {
+      select(d, g, vitalStatus, FU)
+  })) %>%
+  #calculate the percentile for the gene's expression for each sample
+  mutate(data = map2(gene, data, function(g, d) {
+    if(any(grepl("TP53", colnames(d)))) {
+      mutate(d, percentile = NA)
+    } else {
+      mutate(d, percentile = ntile(x = d[[1]], n = 10))
+    }
+  })) %>%
+  #classify 10th percentile and under as "low" and the rest as "others"
+  #classify TP53 mutated as low and WT as others
+  mutate(data = map(data, function(d) {
+    if(any(grepl("TP53", colnames(d)))) {
+      mutate(d, class = if_else(TP53, "low", "others"))
+    } else {
+     mutate(d, class = if_else(percentile == 1, "low", "others")) 
+    }
+  })) %>%
+  #filter data class to correspond to expected geneLevel
+  mutate(data = map2(geneLevel, data, function(gl, d) {
+    filter(d, class == gl)
+  })) %>%
+  #calculate survival probability
+  mutate(surv.obj = map(data, ~get_survival(.x))) %>%
+  mutate(surv.fit = map(surv.obj, ~survival_fit(.x))) %>%
+  mutate(surv.prob = map_dbl(surv.fit, ~calcSurvProb(.x))) %>%
+  ungroup() %>%
+  select(-data, -surv.fit) %>%
+  mutate(type = "independant")
+
+
+# TP53 status dependent
+#Set up all combinations of variables to calcualte survival probability for
+dependant <- expand.grid(
+  gene = c("lncTAM34a", "miR34a"),
+  mutation = c(TRUE, FALSE),
+  cancer = cancers,
+  geneLevel = c("low", "others")
+) %>% 
+  as_tibble() %>%
+  arrange(cancer, mutation, gene, geneLevel) %>%
+  mutate_if(is.factor, as.character) %>%
+  group_by(gene, mutation, cancer, geneLevel) %>%
+  #add data of the corresponding cancer and TP53 status
+  mutate(data = pmap(list(cancer, mutation), function(c, m, cm = correlation_matrix) {
+    filter(cm, Cancer == c & TP53 == m)
+  })) %>%
+  #select the gene to be examined
+  mutate(data = pmap(list(gene, data), function(g, d) {
+      select(d, g, vitalStatus, FU)
+  })) %>%
+  #calculate the percentile for the gene's expression for each sample
+  mutate(data = map2(gene, data, function(g, d) {
+    mutate(d, percentile = ntile(x = d[[1]], n = 10))
+  })) %>%
+  #classify 10th percentile and under as "low" and the rest as "others"
+  mutate(data = map(data, function(d) {
+    mutate(d, class = if_else(percentile == 1, "low", "others"))
+  })) %>%
+  #filter data class to correspond to expected geneLevel
+  mutate(data = map2(geneLevel, data, function(gl, d) {
+    filter(d, class == gl)
+  })) %>%
+  #remove comparisons where there is not enough data
+  mutate(bool = map_lgl(data, function(d) {
+    !nrow(d) <= 1
+  })) %>%
+  filter(bool) %>%
+  #calculate survival probability
+  mutate(surv.obj = map(data, ~get_survival(.x))) %>%
+  mutate(surv.fit = map(surv.obj, ~survival_fit(.x))) %>%
+  mutate(surv.prob = map_dbl(surv.fit, ~calcSurvProb(.x))) %>%
+  ungroup() %>%
+  select(-(data:surv.fit)) %>%
+  mutate(type = "dependent")
+
+#combine the analyses and filter those to be included in the figure
+survData <- bind_rows(dependant, independant) %>%
+  filter(!is.na(surv.prob)) %>%
+  filter((type == "dependent") | (type == "independant" & gene == "TP53")) %>%
+  filter(is.na(mutation) | mutation == FALSE) %>%
+  group_by(gene, mutation, cancer, type) %>%
+  mutate(n = n()) %>%
+  filter(n == 2) %>%
+  summarize(relSurv = surv.prob[geneLevel == "low"] - surv.prob[geneLevel == "others"]) %>%
+  ungroup() %>%
+  select(-mutation, -type) %>%
+  spread(gene, relSurv)
+```
+
+```{r, warning = FALSE}
+#Add the colors for the plot to the data
+colors <- getCancerColors()
+survData <- full_join(survData, colors, by = "cancer")
+
+#add ggplot theme
+theme_remove_all <- theme_remove_all()
+
+#plot 1
+p1 <- mainPlot(survData, "TP53", "lncTAM34a", tRA = theme_remove_all)
+p2 <- hPlot(survData, "TP53", tRA = theme_remove_all)
+renderPlots(p1, p2)
+
+#plot 2
+p1 <- mainPlot(survData, "lncTAM34a", "miR34a", tRA = theme_remove_all)
+p2 <- hPlot(survData, "lncTAM34a", tRA = theme_remove_all)
+renderPlots(p1, p2)
+
+#plot 3
+p1 <- mainPlot(survData, "miR34a", "TP53", tRA = theme_remove_all)
+p2 <- hPlot(survData, "miR34a", tRA = theme_remove_all)
+renderPlots(p1, p2)
+```
+
