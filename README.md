@@ -1,5 +1,8 @@
 ## Introduction
+
 The package is designed to facilitate the reproduction of results associated with the miR34a asRNA project (also known as the lncTAM34a project). Many of the results in this project were derived from analysis of data where the analysis has included filtering, transformation, and statistical analysis. Due to the fact that the results may be affected by the way that these steps are carried out, it is essential for these to be accuratley recorded in detail and available to facilitate the transparency of the project. In addition, to make each analysis reproduciable, the availability of the raw data is required. For these reasons, we have designed this package which includes all steps to generate each figure included in the project as well as all of the raw data.
+
+To simply review the code associated with a figure, the easiest method is to just have a look at the vignette.html file located in the vignette folder. This can be opened in your web broswer and you can simply click on the code tabs associated with the figure you are interested in. This requires no installation of the package. To recreate figures in real time, please follow the instructions below.
 
 ## Installation
 
