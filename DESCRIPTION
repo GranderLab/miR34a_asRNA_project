@@ -29,6 +29,12 @@ Suggests:
     gtable (>= 0.2.0),
     gridExtra (>= 2.3),
     broom (>= 0.4.3),
+    dplyr (>= 0.7.4),
+    ggplot2 (>= 2.2.1.9000),
+    purrr (>= 0.2.4),
+    stringr (>= 1.2.0),
+    tibble (>= 1.4.2),
+    tidyr (>= 0.8.0),
     survival (>= 2.41-3),
     KMsurv (>= 0.1-5)
 SystemRequirements: docker
