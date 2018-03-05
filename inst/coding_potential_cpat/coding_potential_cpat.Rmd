@@ -64,7 +64,7 @@ cpat
 Coding potential analysis results from the Coding-potential Assessment Tool including miR34a asRNA and two characterized non-coding transcripts (HOTAIR and XIST) and 3 known coding transcripts (β-actin, tubulin, and MYC). 
 </div>
 
-*Results for Coding-potential Calculator are located in Supplementary figure 1g.
+*Results for Coding-potential Calculator are located in Supplementary Figure 2e.
 
 <br></br>
 

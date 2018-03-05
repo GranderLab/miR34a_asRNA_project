@@ -128,7 +128,7 @@ primers
 
 #### _Results_
 
-See Figure 2c for a schematic representation of the P1 construct.
+See Supplementary Figure 3a-b for a schematic representation of the P1 construct.
 
 ```{r, message = FALSE}
 
@@ -345,7 +345,7 @@ figure <- plotPDF(pdf)
 ```
 
 <div class="caption">
-HCT116 cells were co-transfected with the p1 construct and shRNA renilla or shRNA control and subsequently treated with increasing doses of doxorubicin. 24 hours post-treatment, cells were harvested and renilla and luciferase levels were measured using QPCR. Statistical testing compared the shRNA control with shRNA renilla transfected cells using the respective treatment condition. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown.
+HCT116 cells were co-transfected with the p1 construct and shRNA renilla or shRNA control and subsequently treated with increasing doses of doxorubicin. 24 hours post-treatment, cells were harvested and renilla and luciferase levels were measured using QPCR. Statistical testing compared the shRNA control with shRNA renilla transfected cells using the respective treatment condition. The points represent the values obtained from each independant experiment (n = 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown.
 </div>
 
 <br></br>

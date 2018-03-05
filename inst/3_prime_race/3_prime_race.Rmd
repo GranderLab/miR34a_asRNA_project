@@ -146,7 +146,7 @@ knitr::include_graphics(file.path(projectUrl, url))
 ```
 
 <div class = "caption">
-3’-RACE sequencing results displayed in the UCSC genome browser together with the annotated miR34a asRNA transcript (LINC01759) from GENCODE.
+3’-RACE sequencing results displayed in the UCSC genome browser together with the annotated miR34a asRNA transcript (LINC01759) from Refseq
 </div>
 
 <br></br>

@@ -1,0 +1,126 @@
+---
+title: "Figure 4a"
+subtitle: "Survival curves"
+author: "Jimmy Van den Eynden and Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<style>
+.col2 { 
+    columns: 2 200px; /* number of columns and width in pixels*/ 
+    -webkit-columns: 2 200px; /* chrome, safari */ 
+    -moz-columns: 2 200px; /* firefox */ 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+packages <- c(
+  "tidyverse",
+  "printr",
+  "ggthemes",
+  "readr",
+  "miR34AasRNAproject"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+<br></br>
+
+#### _Introduction_
+Kaplan-Meier survival curves comparing the effects of TP53-mutated samples,
+low lncTAM34a expression and low miR34a expression to control samples in
+17 cancers from TCGA. Panels showing survival curves based on gene expression
+include only TP53 wild type patients where RNAseq data exists.
+
+<br></br>
+
+#### _Methods_
+RNAseq data was downloaded from TCGA and processed as described previously. 
+Briefly, RNAseq data were aligned to the human hg19 assembly and quantified 
+using GENCODE (v19) annotated HTSeq-counts and FPKM normalizations. Expression 
+data from miR34a and lncTAM34a (identified as RP3-510D11.2) were used for 
+further analysis. 
+
+Survival analysis was performed on TCGA vital state and follow-up data,
+downloaded from GDC on 27/10/2017 using the R survival package.
+
+<br></br>
+
+#### _Results_
+
+```{r}
+
+data <- getData("Figure 4a")
+
+#TP53 status independant
+#Set up all combinations of variables to calcualte survival probability for
+independant <- expand.grid(
+  gene = c("lncTAM34a", "miR34a", "TP53"),
+  cancer = sort(unique(data$Cancer))
+) %>% 
+  as_tibble() %>%
+  mutate_if(is.factor, as.character) %>%
+  group_by(gene, cancer) %>%
+  #add data of the corresponding cancer and, for gene expression, filter WT TP53
+  mutate(data = map2(cancer, gene, function(c, g, cm = data) {
+    if(g == "TP53") {
+      filter(cm, Cancer == c)
+    } else {
+      filter(cm, Cancer == c & TP53 == FALSE)
+    }
+  })) %>%
+  #select the gene to be examined
+  mutate(data = pmap(list(gene, data), function(g, d) {
+      select(d, g, vitalStatus, FU)
+  })) %>%
+  #remove samples where gene expression/mutation status is na
+  mutate(data = map(data, function(x) filter(x, is.na(x[[1]]) == FALSE))) %>%
+  #remove cancers where comparisons without data exist
+  mutate(bool = map_lgl(data, function(x) nrow(x) == 0)) %>%
+  group_by(cancer) %>%
+  filter(!any(bool)) %>%
+  #calculate the percentile for the gene's expression for each sample
+  mutate(data = map2(gene, data, function(g, d) {
+    if(any(grepl("TP53", colnames(d)))) {
+      mutate(d, percentile = NA)
+    } else {
+      mutate(d, percentile = ntile(x = d[[1]], n = 10))
+    }
+  })) %>%
+  #classify 10th percentile and under as "low" and the rest as "others"
+  #classify TP53 mutated as low and WT as others
+  mutate(data = map(data, function(d) {
+    if(any(grepl("TP53", colnames(d)))) {
+      mutate(d, class = if_else(TP53, "low", "others"))
+    } else {
+     mutate(d, class = if_else(percentile == 1, "low", "others")) 
+    }
+  })) %>%
+  #calculate survival probability
+  mutate(surv.obj = map(data, ~get_survival(.x))) %>%
+  mutate(surv.fit = map2(data, surv.obj, function(x, y) survival_fit(y, x$class))) %>%
+  mutate(p.value = map2_dbl(data, surv.obj, function(x, y) survival_p(y, x$class))) %>%
+  ungroup()
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+independant <- filter(independant, cancer == "KIRP")
+trash <- pmap(
+  list(independant$data, independant$surv.fit, independant$gene, independant$cancer, independant$p.value), 
+  function(v, w, x, y, z) {
+    plotKM(v, w, x, y, z)
+  }
+)
+```

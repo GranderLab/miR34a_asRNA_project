@@ -73,6 +73,6 @@ A schematic picture of the miR34a locus from the UCSC genome browser (hg38) incl
 
 #### _Conclusion_
 
-GENCODE annotation supports the presence of a transcript orininating in the antisense orientation from the miR34a gene. 
+Refseq annotation supports the presence of a transcript orininating in the antisense orientation from the miR34a gene. 
 
 <br></br><br></br>

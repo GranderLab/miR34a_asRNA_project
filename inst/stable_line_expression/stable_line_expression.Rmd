@@ -393,7 +393,7 @@ figure <- plotPDF(pdf)
 ```
 
 <div class="caption">
-miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-expressing miR34a asRNA compared to mock over-expressing control. The points represent the values obtained from each independant experiment (n >= 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-expressing miR34a asRNA compared to mock over-expressing control. The points represent the values obtained from each independant experiment (n >= 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
 </div>
 
 <br></br>

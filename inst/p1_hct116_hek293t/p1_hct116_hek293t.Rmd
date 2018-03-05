@@ -111,7 +111,7 @@ primers
 
 #### _Results_
 
-*For a schematic representation of the P1 construct please see Figure 2-Supplement 1a-b.
+*For a schematic representation of the P1 construct please see Supplementary Figure 3a-b.
 
 ```{r, message = FALSE}
 
@@ -353,7 +353,7 @@ figure <- plotPDF(pdf)
 ```
 
 <div class="caption">
-miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection with P1 or empty constructs. Luciferase represents miR34a HG and renilla represents miR34a asRNA. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection with P1 or empty constructs. Luciferase represents miR34a HG and renilla represents miR34a asRNA. The points represent the values obtained from each independant experiment (n = 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
 </div>
 
 <br></br>

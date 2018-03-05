@@ -253,7 +253,7 @@ figure <- plotPDF(pdf)
 ```
 
 <div class="caption">
-Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA over-expressing stable lines compared to mock. The points represent the values obtained from each independant experiment (n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA over-expressing stable lines compared to mock. The points represent the values obtained from each independant experiment (n = 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
 </div>
 
 <br></br>

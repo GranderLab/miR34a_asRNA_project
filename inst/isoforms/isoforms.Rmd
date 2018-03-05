@@ -86,12 +86,13 @@ primers
 
 ```
 
-Primer combinations:
-miR34a AS F12 + miR34a AS R1
-miR34a AS F12 + miR34a AS R2
-miR34a AS F12 + miR34a AS R3
-miR34a AS F12 + miR34a AS Ex3 R1 (56 degrees annealing)
-miR34a AS F12 + miR34a AS Ex3 R1 (58 degrees annealing)
+Primer combinations:  
+
+miR34a AS F12 + miR34a AS R1  
+miR34a AS F12 + miR34a AS R2  
+miR34a AS F12 + miR34a AS R3  
+miR34a AS F12 + miR34a AS Ex3 R1 (56 degrees annealing)  
+miR34a AS F12 + miR34a AS Ex3 R1 (58 degrees annealing)  
 
 <br></br>
 
@@ -99,7 +100,7 @@ miR34a AS F12 + miR34a AS Ex3 R1 (58 degrees annealing)
 
 ```{r, out.width = "850px"}
 
-url <- fileMap(type = "png")["Figure 1-Supplement 2c"][[1]]
+url <- fileMap(type = "png")["Supplementary Figure 2c"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

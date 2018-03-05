@@ -421,7 +421,7 @@ plotKM <- function(data, fit, gene, cancer, p.value) {
     xlab = "Time (years)", ylab = "Survival Probability",
     main = cancer, frame = FALSE
   )
-  mtext(signif(p.value, digits = 3))
+  mtext(paste0("P= ", signif(p.value, digits = 3)))
   legend(
     "bottomleft", legend = ll, bty = "n", text.col = col,
     lty = lty, y.intersp = 1, cex = 0.8

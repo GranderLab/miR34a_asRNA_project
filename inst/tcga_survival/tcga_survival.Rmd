@@ -184,7 +184,7 @@ survData <- bind_rows(dependant, independant) %>%
   spread(gene, relSurv)
 ```
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, fig.align='center', fig.height=8, fig.width=12}
 #Add the colors for the plot to the data
 colors <- getCancerColors()
 survData <- full_join(survData, colors, by = "cancer")

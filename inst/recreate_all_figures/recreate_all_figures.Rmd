@@ -14,6 +14,8 @@ vignette: >
 
 ```{r, message = FALSE, include = FALSE}
 library(miR34AasRNAproject)
+library(knitr)
+
 rmds <- fileMap("Rmd")
 rmds <- rmds[names(rmds) != "All figures"]
 
@@ -24,115 +26,138 @@ for (p in rmds) {
 names(out) <- names(rmds)
 ```
 
-#Figure 1a
+# Figure 1a
 
 `r out["Figure 1a"]`
 
-#Figure 1b
+# Figure 1b
 
 `r out["Figure 1b"]`
 
-#Figure 1c
+# Figure 1c
 
 `r out["Figure 1c"]`
 
-# Figure 1-Supplement 1a
-
-`r out["Figure 1-Supplement 1a"]`
-
-# Figure 1-Supplement 1b
-
-`r out["Figure 1-Supplement 1b"]`
-
-#Figure 1d
+# Figure 1d
 
 `r out["Figure 1d"]`
 
-#Figure 1e
+# Figure 1e
 
 `r out["Figure 1e"]`
 
-# Figure 1-Supplement 2a
-
-`r out["Figure 1-Supplement 2a"]`
-
-#Figure 1f
+# Figure 1f
 
 `r out["Figure 1f"]`
 
-# Figure 1-Supplement 2d
-
-`r out["Figure 1-Supplement 2d"]`
-
-# Figure 1-Supplement 2b
-
-`r out["Figure 1-Supplement 2b"]`
-
-# Figure 1-Supplement 2c
-
-`r out["Figure 1-Supplement 2c"]`
-
-# Figure 1-Supplement 2e
-
-`r out["Figure 1-Supplement 2e"]`
-
-#Figure 2a
+# Figure 2a
 
 `r out["Figure 2a"]`
 
-#Figure 2b
+# Figure 2b
 
 `r out["Figure 2b"]`
 
-#Figure 2c
+# Figure 2c
 
 `r out["Figure 2c"]`
 
-# Figure 2-Supplement 1
-
-`r out["Figure 2-Supplement 1a"]`
-
-#Figure 2d
+# Figure  2d
 
 `r out["Figure 2d"]`
 
-# Figure 2-Supplement 2
-
-`r out["Figure 2-Supplement 2"]`
-
-#Figure 3a
+# Figure 3a
 
 `r out["Figure 3a"]`
 
-# Figure 3-Supplement 1
-
-`r out["Figure 3-Supplement 1"]`
-
-#Figure 3b
+# Figure 3b
 
 `r out["Figure 3b"]`
 
-# Figure 3-Supplement 2a
-
-`r out["Figure 3-Supplement 2a"]`
-
-# Figure 3-Supplement 2b
-
-`r out["Figure 3-Supplement 2b"]`
-
-#Figure 3c
+# Figure 3c
 
 `r out["Figure 3c"]`
 
-#Figure 3d
+# Figure 3d
 
 `r out["Figure 3d"]`
 
-# Supplementary Document 1
+# Figure 4a
 
-`r out["Supplementary Document 1"]`
+`r out["Figure 4a"]`
+
+# Figure 4b
+
+`r out["Figure 4b"]`
+
+# Figure 5
+
+`r out["Figure 5"]`
+
+# Supplementary Figure 1a
+
+`r out["Supplementary Figure 1a"]`
+
+# Supplementary Figure 1b
+
+`r out["Supplementary Figure 1b"]`
+
+# Supplementary Figure 2a
+
+`r out["Supplementary Figure 2a"]`
+
+# Supplementary Figure 2b
+
+`r out["Supplementary Figure 2b"]`
+
+# Supplementary Figure 2c
+
+`r out["Supplementary Figure 2c"]`
+
+# Supplementary Figure 2d
+
+`r out["Supplementary Figure 2d"]`
+
+# Supplementary Figure 2e
+
+`r out["Supplementary Figure 2e"]`
+
+# Supplementary Figure 3a
+
+`r out["Supplementary Figure 3a"]`
+
+# Supplementary Figure 3b
+
+`r out["Supplementary Figure 3b"]`
+
+# Supplementary Figure 3c
+
+`r out["Supplementary Figure 3c"]`
+
+# Supplementary Figure 4a
+
+`r out["Supplementary Figure 4a"]`
+
+# Supplementary Figure 4b
+
+`r out["Supplementary Figure 4b"]`
+
+# Supplementary Figure 4c
+
+`r out["Supplementary Figure 4c"]`
+
+# Supplementary Figure 5
+
+`r out["Supplementary Figure 5"]`
+
+# Supplementary Figure 6
+
+`r out["Supplementary Figure 6"]`
+
+# Supplementary Figure 7
+
+`r out["Supplementary Figure 7"]`
 
 # Supplementary Document 2
 
 `r out["Supplementary Document 2"]`
-

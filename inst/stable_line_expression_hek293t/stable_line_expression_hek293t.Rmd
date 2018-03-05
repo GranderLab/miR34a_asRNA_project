@@ -272,7 +272,7 @@ figure <- plotPDF(pdf)
 ```
 
 <div class="caption">
-miR34a asRNA over-expression levels in PC3, Skov3, and Saos2 stable cell lines compared to HEK293t cells. The points represent the values obtained from each independant experiment (n = 5) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines) and mean (horizontal black lines) are shown.
+miR34a asRNA over-expression levels in PC3, Skov3, and Saos2 stable cell lines compared to HEK293t cells. The points represent the values obtained from each independant experiment (n = 5). 95% confidence interval (vertical black lines) and mean (horizontal black lines) are shown.
 </div>
 
 <br></br>

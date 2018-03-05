@@ -58,6 +58,7 @@ All cell lines were cultured at 5% CO2 and 37° C with Skov3 and PC3 cells in RP
 <br></br>
 
 _Analysis_
+
 The cell cycle phases ModFit software (Verity Software House) was used to quantify the percentage of cells in each cell cycle phase. Percentages were converted to log2 fractions for each sample. Student's t-test was used for statistical analysis comparing the mock vs miR34a asRNA overespression conditions using five (PC3) or three (Skov3) independant experiments. 
 
 <br></br>
@@ -277,7 +278,7 @@ figure <- plotPDF(pdf)
 ```
 
 <div class="caption">
-Cell cycle analysis in miR34a asRNA over-expressing PC3, Skov3, and Saos2 stable cell lines compared to their respective mock control. The points represent the values obtained from each independant experiment (PC3 n = 5; Skov3 n = 3) whereas, the gray shadow represents the distribution of those points. 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+Cell cycle analysis in miR34a asRNA over-expressing PC3, Skov3, and Saos2 stable cell lines compared to their respective mock control. The points represent the values obtained from each independant experiment (PC3 n = 5; Skov3 n = 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
 </div>
 
 <br></br>

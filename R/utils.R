@@ -36,7 +36,7 @@ fileMap <- function(type) {
     `Figure 3b` = "stable_line_cell_cycle/stable_line_cell_cycle.Rmd",
     `Figure 3c` = "stable_line_growth_starvation/stable_line_growth_starvation.Rmd",
     `Figure 3d` = "stable_line_pol2_chip/stable_line_pol2_chip.Rmd",
-    `Figure 4a` = "tcga_survival_total/tcga_survival_total.Rmd",
+    `Figure 4a` = "tcga_survival_short/tcga_survival_short.Rmd",
     `Figure 4b` = "tcga_survival/tcga_survival.Rmd",
     `Figure 5` = "model/model.Rmd",
     `Supplementary Figure 1a` = "tcga_correlation_table/tcga_correlation_table.Rmd",

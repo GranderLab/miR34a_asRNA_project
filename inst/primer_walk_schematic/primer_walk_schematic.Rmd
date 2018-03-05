@@ -50,7 +50,7 @@ dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
 
 ```{r, out.width = "850px"}
 
-url <- fileMap(type = "png")["Figure 1-Supplement 2a"][[1]]
+url <- fileMap(type = "png")["Supplementary Figure 2a"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
