@@ -208,3 +208,7 @@ p2 <- hPlot(survData, "miR34a", tRA = theme_remove_all)
 renderPlots(p1, p2)
 ```
 
+```{r}
+sessionInfo()
+```
+

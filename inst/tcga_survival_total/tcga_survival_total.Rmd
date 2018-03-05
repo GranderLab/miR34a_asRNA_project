@@ -125,3 +125,8 @@ trash <- pmap(
 )
 ```
 </div>
+
+```{r}
+sessionInfo()
+```
+
