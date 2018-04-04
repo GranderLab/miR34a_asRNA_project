@@ -95,7 +95,7 @@
 | miR34a ChIP F1  | AAA GTT TGC AAA GAA GGA GGC GGG  |
 | miR34a ChIP R1  | AGG GAA GAA AGA ACT AGC CGA GCA  |
 
-## Figure 1 Supplement 2a
+## Supplementary Figure 2a
 
 
 | name           | sequence                         |
@@ -108,7 +108,7 @@
 | miR34a AS F15  | CAT TTG CTG CAA TAT CAC CGT GGC  |
 | miR34a AS R1   | TTG CCT CGT GAG TCC AAG GAG AAT  |
 
-## Figure 1 Supplement 2b
+## Supplementary Figure 2b
 
 
 | name               | sequence                         |
@@ -124,7 +124,7 @@
 | U48 R              | GGT CAG AGC GCT GCG GTG AT       |
 
 
-## Figure 1 Supplement 2c
+## Supplementary Figure 2c
 
 
 | name              | sequence                         |
@@ -136,7 +136,7 @@
 | miR34a AS Ex3 R1  | TGA TGG CCG CAA CTA ATG ACG GAT  |
 
 
-## Figure 2 Supplement 2a
+## Supplementary Figure 3c
 
 | name               | sequence                        |
 | ------------------ |:-------------------------------:|
@@ -147,7 +147,7 @@
 | ß-actin Fwd        | AGG TCA TCA CCA TTG GCA ATG AG  |
 | ß-actin Rev        | CTT TGC GGA TGT CCA CGT CA      |   
 
-## Figure 3 Supplement 1a
+## Supplementary Figure 4a
 
 **Cloning primers**
 
@@ -166,7 +166,7 @@
 | miR34a AS F1  | AGC GGC ATC TCC TCC ACC TGA AA   |
 | miR34a AS R1  | TTG CCT CGT GAG TCC AAG GAG AAT  |
 
-## Figure 3 Supplement 2a
+## Supplementary Figure 4b
 
 | name         | sequence                        |
 | ------------ |:-------------------------------:|
