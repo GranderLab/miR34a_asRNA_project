@@ -201,7 +201,8 @@ calcStats <- function(
     data,
     cnt.group,
     cnt.value,
-    grouping
+    grouping,
+    ...
 ){
     quo.cnt.group <- enquo(cnt.group)
     cnt <- filter(data, (!!quo.cnt.group) == cnt.value) %>%

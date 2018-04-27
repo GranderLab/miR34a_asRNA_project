@@ -1,0 +1,344 @@
+---
+title: "Figure 3a"
+subtitle: "miR34a asRNA stable over-expression cell lines"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+#### _Introduction_
+
+We hypothesized that miR34a asRNA may function to mediate the levels of its sense gene, miR34a. To this end, we stably over-expressed miR34a asRNA, using lentiviral transduction, in 3 different p53-null cell lines and monitored the effects on miR34a.
+
+<br></br>
+
+#### _Methods_
+
+<br></br>
+
+_miR34a asRNA cloning_
+
+RNA was harvested from U2OS cells using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. PCR was run using the miR34aAS_cloning_F4 and miR34aAS_cloning_Ex3_1 primers for 40 cycles at annealing temperature 58˚C and run on an agarose gel. Bands were excised and extracted using the QIAquick gel extraction kit (Qiagen). PCR products were cloned using the Strata Clone kit (Aligent) and sequenced (results below). The insert for the lentiviral construct (p-HIV-I2AG-U6) was subsequently sub-cloned from the sequenced plasmid using primers with PacI and NheI cleavage sites. The cloned transcript largley mirrors the GENCODE annotated transcript.
+
+<br></br>
+
+_Cloning primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "miR34aAS_cloning_F4",
+        "miR34aAS_cloning_Ex3_1"
+    ),
+    sequence=c(
+        "ACGCGTCTCTCCAGCCCGGGAT",
+        "AATGATGGCCGCAACTAATGACGG"
+    )
+)
+primers
+
+```
+
+<br></br>
+
+_QPCR_
+
+RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. QPCR for miRNA expression analysis was performed according to the protocol for the TaqMan microRNA Assay kit (Life Technologies) with primer/probe sets purchased from the same company (TaqMan® MicroRNA Assay, hsa-miR-34a, human and Control miRNA Assay, RNU48, human) and the same cycling scheme as above. QPCR primers are shown below.
+
+<br></br>
+
+_Analysis_
+
+Two experimental (technical) replicates were included in each QPCR run and delta ct was calculated for each sample using the mean of the gene of interest's technical replicates and the house keeping gene's technical replicates. delta-delta ct was calculated for each sample by subtracting the median dct value for the corresponding mock samples. Five independant experiments were performed in total. The Student's t-test was used to compare the mock vs miR34a asRNA overexpressing group's delta-delta ct values for both genes.  
+
+<br></br>
+
+_QPCR primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "ß-actin Fwd",
+        "ß-actin Rev",
+        "miR34a_asF1",
+        "miR34a_asR1"
+        
+    ),
+    sequence=c(
+        "AGGTCATCACCATTGGCAATGAG",
+        "CTTTCGGGATGTCCACGTCA",
+        "AGCGGCATCTCCTCCACCTGAAA",
+        "TTGCCTCGTGAGTCCAAGGAGAAT"
+        
+    )
+)
+primers
+
+```
+
+<br></br>
+
+#### _Results_
+
+```{r, message = FALSE}
+
+#data <- getData("Figure 3a")
+data <- read_tsv('~/Github/miR34a_asRNA_project/data-raw/lncTAM34a_KD.txt')
+
+#calculate dct
+groups <- c("siRNA", "Biological Replicate", "gene")
+gois <- c("miR34a HG", "lncTAM34a")
+
+data <- data %>%
+  technicalMeans(., groups) %>%
+  dct(., gois, Actin, groups, F)
+
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  siRNA = pull(data, siRNA) == "si-Ctl"
+)
+
+data <- data %>%
+  ddct(., logical, groups, F) %>%
+  folds(.)
+
+#calculate stats
+stats <- calcStats(data, siRNA, "si-Ctl", groups) %>%
+  pFormat(.)
+
+#calculate 95% CI and mean on linear scale
+stats <- data %>%
+  filter(siRNA == "si-lncTAM34a") %>%
+  group_by(GOI, siRNA) %>%
+  summarize(
+    CI95l.linear = t.test(fold)$conf.int[1], 
+    CI95h.linear = t.test(fold)$conf.int[2]
+  ) %>%
+  ungroup() %>%
+  full_join(stats, by = c("siRNA", "GOI"))
+
+stats <- data %>%
+  group_by(GOI, siRNA) %>%
+  summarize(mean.linear = mean(fold)) %>%
+  ungroup() %>%
+  full_join(stats, by = c("siRNA", "GOI"))
+
+#vertical lines and labels in plot
+vl <- stats %>%
+  mutate(
+    x = case_when(
+      GOI == "miR34a HG" ~ 2 - 0.25,
+      GOI == "lncTAM34a" ~ 1 - 0.25
+    ),
+    xend = case_when(
+      GOI ==  "miR34a HG" ~ 2 + 0.25,
+      GOI == "lncTAM34a" ~ 1 + 0.25
+    ),
+    label = if_else(GOI == "miR34a HG", 2, 1), 
+    max = 1
+  )
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
+
+p <- ggplot(data = NULL) +
+  geom_dotplot(
+    data = data, 
+    aes(
+      x = `GOI`,
+      y = fold,
+      fill = siRNA
+    ),
+    binwidth = 0.01,
+    colour = NA,
+    #alpha = 0.5,
+    position = position_dodge(width = 0.9), 
+    binaxis = 'y', 
+    stackdir = 'center',
+    dotsize = 1,
+    show.legend = TRUE
+  ) +
+  scale_y_continuous("Fold")+
+  labs(x = "Gene")
+
+markdown <- p +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = GOI,
+      ymin = CI95l.linear,
+      ymax = CI95h.linear,
+      group = interaction(siRNA, GOI)
+    ),
+    position = position_dodge(width = 0.9),
+    colour = "gray20",
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = GOI,
+      y = mean.linear,
+      group = interaction(siRNA, GOI)
+    ),
+    colour = "gray20",
+    shape = 95,
+    size = 6,
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = vl,
+    aes(
+      x = label, 
+      y = max + 0.075, 
+      label = pFormat, 
+      group = interaction(siRNA, GOI)
+    ),
+    fill = "white",
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fontface = "bold",
+    family = "Arial Unicode MS",
+    size = 3
+  ) +
+  geom_segment(
+    data = vl,
+    aes(
+      x = x,
+      y = max + 0.05,
+      xend = xend,
+      yend = max + 0.05
+    ),
+    colour = "grey43",
+    show.legend = FALSE
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 6)
+    )
+  )
+
+plotRmarkdown(markdown)
+
+pdf <- p +
+  geom_linerange(
+    data = stats,
+    aes(
+      x = GOI,
+      ymin = CI95l.linear,
+      ymax = CI95h.linear,
+      group = interaction(siRNA, GOI)
+    ),
+    position = position_dodge(width = 0.9),
+    colour = "grey30",
+    size = 0.3,
+    show.legend = FALSE
+  ) +
+  geom_point(
+    data = stats,
+    aes(
+      x = GOI,
+      y = mean.linear,
+      group = interaction(siRNA, GOI)
+    ),
+    colour = "grey30",
+    shape = 95,
+    size = 4,
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
+  ) +
+  geom_label(
+    data = vl,
+    aes(
+      x = label, 
+      y = max + 0.075, 
+      label = pFormat, 
+      group = interaction(siRNA, GOI)
+    ),
+    fill = "white",
+    colour = "grey30",
+    label.size = 0,
+    label.padding = unit(0.01, "lines"),
+    show.legend = FALSE,
+    fontface = "bold",
+    family = "Arial Unicode MS",
+    size = 2.5
+  ) +
+  geom_segment(
+    data = vl,
+    aes(
+      x = x,
+      y = max + 0.05,
+      xend = xend,
+      yend = max + 0.05
+    ),
+    colour = "grey30",
+    size = 0.3,
+    show.legend = FALSE
+  ) +
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 4)
+    )
+  )
+
+figure <- plotPDF(pdf)
+
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3a"][[1]])
+# ggsave(
+#    plot = figure,
+#    filename = path,
+#    device = cairo_pdf,
+#    height = 60,
+#    width = 83,
+#    units = "mm"
+# )
+```
+
+<div class="caption">
+miR34a asRNA and miR34a levels in PC3, Skov3, and Saos2 cell lines stably over-expressing miR34a asRNA compared to mock over-expressing control. The points represent the values obtained from each independant experiment (n >= 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+</div>
+
+<br></br>
+
+#### _Conclusion_
+
+miR34a asRNA over-expression causes a concominant up-regulation of miR34a in all 3 cell lines. This indicates that miR34a asRNA concordantly regulates miR34a.
+
+<br></br><br></br>
+
+```{r}
+sessionInfo()
+```

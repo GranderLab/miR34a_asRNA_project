@@ -410,4 +410,11 @@ read_tsv('data-raw/tcga_survival.txt') %>%
   select(-PAM50, -lncTAM34a_cna) %>%
   write_rds(., path = './data/tcga_survival.rds')
 
+#lncTAM34a KD
+read_tsv('data-raw/lncTAM34a_KD.txt') %>%
+  mutate(gene = parse_factor(gene, levels = c("lncTAM34a", "miR34a HG", "Actin"))) %>%
+  mutate(siRNA = parse_factor(siRNA, levels = c("si-Ctl", "si-lncTAM34a"))) %>%
+  write_rds(., path = './data/lncTAM34a_KD.rds')
+
+
 #source('./data-raw/saveRDS.R')
