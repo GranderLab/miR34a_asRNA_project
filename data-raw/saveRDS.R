@@ -416,5 +416,69 @@ read_tsv('data-raw/lncTAM34a_KD.txt') %>%
   mutate(siRNA = parse_factor(siRNA, levels = c("si-Ctl", "si-lncTAM34a"))) %>%
   write_rds(., path = './data/lncTAM34a_KD.rds')
 
+#Stable line proliferation
+##process day0 data
+f <- list.files(
+  'data-raw/stable_line_proliferation', pattern = ".*day0.*",
+  recursive = TRUE, full.names = TRUE
+)
+
+data0 <- f %>%
+  map(read_tsv) %>%
+  setNames(str_replace(f, ".*(day.)_(.*)_.*$", "\\2_\\1")) %>%
+  bind_rows(.id = "id") %>%
+  bind_rows(., ., .) %>%
+  separate(id, c("sample", "day"), sep = "_") %>%
+  mutate(condition = c(
+      rep("normal", nrow(.) / 3),
+      rep("0.1", nrow(.) / 3),
+      rep("HBSS", nrow(.) / 3)
+  )) %>%
+  unite(tmp, sample, condition, sep = "") %>%
+  unite(id, tmp, day)
+
+##process other files
+f <- list.files(
+  'data-raw/stable_line_proliferation', pattern = ".*day[1-3].*",
+  recursive = TRUE, full.names = TRUE
+)
+
+f %>%
+  map(read_tsv) %>%
+  setNames(str_replace(f, ".*(day.)_(.*)_.*$", "\\2_\\1")) %>%
+  bind_rows(.id = "id") %>%
+  bind_rows(data0) %>%
+  separate(id, c("Sample", "Time"), sep = "_", remove = FALSE) %>%
+  mutate(
+    Time = case_when(
+      Time == "day0" ~ "0",
+      Time == "day1" ~ "24",
+      Time == "day2" ~ "48",
+      Time == "day3" ~ "72"
+    ),
+    `Cell line` = case_when(
+      str_detect(Sample, "^m") ~ "Mock",
+      str_detect(Sample, "^[f | F]") ~ "lncTAM34a",
+      TRUE ~ Sample
+    ),
+    Condition = case_when(
+      str_detect(Sample, "0.1") ~ "0.1% FBS",
+      str_detect(Sample, "HBSS") ~ "HBSS",
+      str_detect(Sample, "normal") ~ "Normal"
+    ),
+    `Technical replicate` = case_when(
+      str_detect(Sample, "t1") ~ 1,
+      str_detect(Sample, "t2") ~ 2,
+      TRUE ~ 1
+    ),
+    `Biological replicate` = case_when(
+      str_detect(Sample, "b1") ~ 1,
+      str_detect(Sample, "b2") ~ 2,
+      str_detect(Sample, "b3") ~ 3
+    ),
+    Type = if_else(str_detect(Sample, "unstained"), "unstained", "stained")
+  ) %>%
+  select(Type, Time, `Cell line`:`Biological replicate`, `FSC-A`:Violet) %>%
+  write_rds(., path = './data/stable_line_proliferation.rds')
 
 #source('./data-raw/saveRDS.R')
