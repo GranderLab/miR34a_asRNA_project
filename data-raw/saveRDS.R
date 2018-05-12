@@ -417,27 +417,6 @@ read_tsv('data-raw/lncTAM34a_KD.txt') %>%
   write_rds(., path = './data/lncTAM34a_KD.rds')
 
 #Stable line proliferation
-##process day0 data
-f <- list.files(
-  'data-raw/stable_line_proliferation', pattern = ".*day0.*",
-  recursive = TRUE, full.names = TRUE
-)
-
-data0 <- f %>%
-  map(read_tsv) %>%
-  setNames(str_replace(f, ".*(day.)_(.*)_.*$", "\\2_\\1")) %>%
-  bind_rows(.id = "id") %>%
-  bind_rows(., ., .) %>%
-  separate(id, c("sample", "day"), sep = "_") %>%
-  mutate(condition = c(
-      rep("normal", nrow(.) / 3),
-      rep("0.1", nrow(.) / 3),
-      rep("HBSS", nrow(.) / 3)
-  )) %>%
-  unite(tmp, sample, condition, sep = "") %>%
-  unite(id, tmp, day)
-
-##process other files
 f <- list.files(
   'data-raw/stable_line_proliferation', pattern = "\\.csv$",
   recursive = TRUE, full.names = TRUE
