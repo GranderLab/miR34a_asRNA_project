@@ -1,6 +1,6 @@
 ---
-title: "Figure 3a"
-subtitle: "miR34a asRNA stable over-expression cell lines"
+title: "Figure 2c"
+subtitle: "miR34a asRNA knock down in U2Os cells"
 author: "Jason T. Serviss"
 date: "31/01/2017"
 output:
@@ -109,7 +109,6 @@ Three independant experiments (biological replicates) were performed in total me
 ```{r, message = FALSE}
 
 data <- getData("Figure 2c")
-#data <- read_tsv('~/Github/miR34a_asRNA_project/data-raw/lncTAM34a_KD.txt')
 
 #calculate dct
 groups <- c("siRNA", "Biological Replicate", "gene")
@@ -189,7 +188,7 @@ p <- ggplot(data = NULL) +
     position = position_dodge(width = 0.9), 
     binaxis = 'y', 
     stackdir = 'center',
-    dotsize = 1,
+    dotsize = 4,
     show.legend = TRUE
   ) +
   scale_y_continuous("Fold")+
@@ -288,7 +287,7 @@ pdf <- p +
     data = vl,
     aes(
       x = label, 
-      y = max + 0.075, 
+      y = max + 0.1, 
       label = pFormat, 
       group = interaction(siRNA, GOI)
     ),
@@ -328,7 +327,7 @@ ggsave(
   filename = path,
   device = cairo_pdf,
   height = 60,
-  width = 83,
+  width = 68,
   units = "mm"
 )
 ```
