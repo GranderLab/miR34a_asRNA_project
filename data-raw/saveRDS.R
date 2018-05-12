@@ -439,7 +439,7 @@ data0 <- f %>%
 
 ##process other files
 f <- list.files(
-  'data-raw/stable_line_proliferation', pattern = ".*day[1-3].*",
+  'data-raw/stable_line_proliferation', pattern = "\\.csv$",
   recursive = TRUE, full.names = TRUE
 )
 
@@ -447,7 +447,6 @@ f %>%
   map(read_tsv) %>%
   setNames(str_replace(f, ".*(day.)_(.*)_.*$", "\\2_\\1")) %>%
   bind_rows(.id = "id") %>%
-  bind_rows(data0) %>%
   separate(id, c("Sample", "Time"), sep = "_", remove = FALSE) %>%
   mutate(
     Time = case_when(
@@ -479,6 +478,6 @@ f %>%
     Type = if_else(str_detect(Sample, "unstained"), "unstained", "stained")
   ) %>%
   select(Type, Time, `Cell line`:`Biological replicate`, `FSC-A`:Violet) %>%
-  write_rds(., path = './data/stable_line_proliferation.rds', compress = 'gz')
+  write_rds(., path = './data/stable_line_proliferation.rds')
 
 #source('./data-raw/saveRDS.R')
