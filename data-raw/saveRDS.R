@@ -479,6 +479,6 @@ f %>%
     Type = if_else(str_detect(Sample, "unstained"), "unstained", "stained")
   ) %>%
   select(Type, Time, `Cell line`:`Biological replicate`, `FSC-A`:Violet) %>%
-  write_rds(., path = './data/stable_line_proliferation.rds')
+  write_rds(., path = './data/stable_line_proliferation.rds', compress = 'bz2')
 
 #source('./data-raw/saveRDS.R')
