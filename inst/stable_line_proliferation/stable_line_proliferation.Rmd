@@ -29,10 +29,7 @@ packages <- c(
     "tidyverse",
     "printr",
     "ggthemes",
-    "readr",
     "miR34AasRNAproject",
-    "grid",
-    "gtable",
     "broom"
 )
 purrr::walk(packages, library, character.only = TRUE)
@@ -52,9 +49,9 @@ As p53 is a well-known regulator of senescence, growth, and apoptosis and has be
 
 <br></br>
 
-_Cell culture and confluency quantification_
+_Cell culture and proliferation assay_
 
-10^4 PC3 cells, either miR34a asRNA overexpressing or WT, were seeded in 96 well plates. After attachment (3-4h) media was replaced with either RPMI (Gibco, life technology) (supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum) or HBSS. Cells were incubated in Spark Multimode Microplate reader for 48 hours at 37°C with 5% CO2 in a humidity chamber. Confluency was measured every hour. 
+20^4 PC3 cells, either miR34a asRNA overexpressing or mock, were harvested and stained in 1 ml PBS with 5uM CellTrace Violet (!!!!) for 5min and subsequently seeded in 12 well plates. Time 0 measurements were taken once cells had attatched and treatments with RPMI (Gibco, life technology) 10% FBS, RPMI 0.1% FBS, or HBSS were simultaniously initiated in the remaining cells. RPMI mediums were all additionally supplemented with 2mM L-glutamine and 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum. Cells were incubated for the indicated times before harvesting and CellTrace Violet was quantified via flow cytometry (Sony SH800S Cell Sorter). Time 0 was performed in biological triplicate and technical duplicate whereas all other time points were performed in biological triplicates with one technical replicate.
 
 <br></br>
 
@@ -68,60 +65,86 @@ Three technical triplicates were included in each experiment and these were inde
 
 ```{r, message = FALSE}
 
-data <- getData("Figure 3c")
+#data <- getData("Figure 3c")
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
+path <- "data/stable_line_proliferation.rds"
+data <- read_rds(gzcon(url(file.path(dataUrl, path))))
 
-#normalize to first time point for control (Mock)
-.normFun <- function(
-  data,
-  Confluency,
-  Treatment,
-  Biological.Replicate,
-  Technical.Replicate,
-  Cell.line
-){
-  bool1 <- data$Treatment == Treatment
-  bool2 <- data$`Biological Replicate` == Biological.Replicate
-  bool3 <- data$`Technical Replicate` == Technical.Replicate
-  bool4 <- data$Time == 0
-  bool5 <- data$`Cell line` == Cell.line
-  bool <- bool1 & bool2 & bool3 & bool4 & bool5
-  Confluency / pull(data, Confluency)[bool]
-}
+#remove cells with negative fluorescence. Consider these 1224 cells artifacts 
+data <- filter(data, Violet > 0)
 
-data <- data %>%
-  group_by(Treatment, `Biological Replicate`, `Technical Replicate`, Time, `Cell line`) %>%
+##fix day0 data
+#Since there are no treatments at time 0 and we want a corresponding Time 0 for 
+#each of the treated samples, here we expand the Time 0 sample 3 times, one for 
+#each treatment condition at later time points.
+dataExpandT0 <- data %>% 
+  filter(Time == 0) %>%
+  bind_rows(., ., .) %>%
+  mutate(Condition = c(
+      rep("Normal", nrow(.) / 3),
+      rep("0.1% FBS", nrow(.) / 3),
+      rep("HBSS", nrow(.) / 3)
+  )) %>%
+  bind_rows(filter(data, Time != 0))
+
+#calculate means of technical replicates in day0
+#need to subsample first so that each condition has the same number of cells
+set.seed(2387723)
+data0 <- dataExpandT0 %>%
+  filter(Time == "0" & Type == "stained") %>%
+  select(-`FSC-A`, -`BSC-A`) %>%
+  group_by(`Biological replicate`, `Technical replicate`, Condition, `Cell line`, Type) %>%
+  sample_n(size = 5000) %>%
+  ungroup() %>%
+  arrange(`Cell line`, Condition, `Biological replicate`, `Technical replicate`, Violet) %>%
   mutate(
-    normConfluency = .normFun(
-      data,
-      Confluency,
-      Treatment,
-      `Biological Replicate`,
-      `Technical Replicate`,
-      `Cell line`
-    )
+    `Technical replicate` = rep(c("Tr1", "Tr2"), nrow(.)/2),
+    row = rep(1:(nrow(.) / 2), each = 2)
   ) %>%
-  ungroup()
+  spread(`Technical replicate`, Violet) %>%
+  rowwise() %>%
+  mutate(Violet = mean(c(Tr1, Tr2))) %>%
+  ungroup() %>%
+  select(-(row:Tr2)) %>%
+  bind_rows(., ., ., .) %>%
+  mutate(Time = rep(c("0", "24", "48", "72"), each = nrow(.) / 4)) %>%
+  arrange(Time, `Cell line`, Condition, `Biological replicate`, Violet)
 
-#calculate mean for each technical replicate
-data <- data %>%
-  group_by(Treatment, `Biological Replicate`, Time, `Cell line`) %>%
-  summarize(
-    techMean = mean(normConfluency)
-  ) %>%
-  ungroup()
+#Randomly sample 5000 cells from each condition so that all samples have the 
+#same number of cells
+set.seed(2387723)
+subData <- dataExpandT0 %>%
+  select(-`FSC-A`, -`BSC-A`, -`Technical replicate`) %>%
+  filter(Type == "stained" & Time != "0") %>%
+  group_by(`Biological replicate`, Condition, `Cell line`, Type, Time) %>%
+  sample_n(size = 5000) %>%
+  ungroup() 
 
-#calculate stats
-stats <- data %>%
-  filter(Time != 0) %>%
-  group_by(`Cell line`, Treatment, Time) %>%
+#add back data from time point 0 with mean technical replicates calculated
+#in addition, add a time point 0 corresponding to each cell and condition and
+##calculate the difference for each cell from time 0
+subData <- subData %>%
+  bind_rows(filter(data0, Time == "0")) %>%
+  arrange(Time, `Cell line`, Condition, `Biological replicate`, Violet) %>%
+  add_column(day0Violet = data0$Violet) %>%
+  mutate(violetNorm = Violet - day0Violet)
+
+
+means <- subData %>%
+  group_by(Time, `Cell line`, Condition) %>%
   summarize(
-    min = min(techMean),
-    max = max(techMean),
-    mean = mean(techMean),
-    median = median(techMean),
-    CI95l = t.test(techMean)$conf.int[1],
-    CI95h = t.test(techMean)$conf.int[2]
+    mean = mean(violetNorm),
+    CI95l = t.test(violetNorm)$conf.int[1],
+    CI95h = t.test(violetNorm)$conf.int[2]
   )
+  
+subData %>%
+  ggplot() +
+  geom_smooth(aes(Time, violetNorm, colour = `Cell line`, group = `Cell line`), method = "lm") +
+  geom_point(data = means, aes(Time, mean, colour = `Cell line`, group = `Cell line`)) +
+  facet_wrap(~Condition) + 
+  scale_y_continuous(breaks = c(0, -5000, -10000, -15000, -20000)) +
+  theme_few()
 
 #linear model
 model.data <-  data %>%
