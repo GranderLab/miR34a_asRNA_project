@@ -1,3 +1,2 @@
 *.ai filter=lfs diff=lfs merge=lfs -text
 *.docx filter=lfs diff=lfs merge=lfs -text
-stable_line_proliferation.rds filter=lfs diff=lfs merge=lfs -text
