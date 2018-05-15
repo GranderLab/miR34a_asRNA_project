@@ -1,0 +1,262 @@
+---
+title: "Supplementary Figure 6"
+subtitle: "Monitoring proliferation of miR34a asRNA overexpressings cells under conditions of starvation"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "miR34AasRNAproject",
+    "broom"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+<br></br>
+
+#### _Introduction_
+
+As p53 is a well-known regulator of senescence, growth, and apoptosis and has been shown to specifically important under conditions of cellular stress, such as starvation. Therefore, we investigated whether overexpression of miR34a AS affects proliferation rate under normal and starvation conditions.
+
+<br></br>
+
+#### _Methods_
+
+<br></br>
+
+_Cell culture and proliferation assay_
+
+20^4 PC3 cells, either miR34a asRNA overexpressing or mock, were harvested and stained in 1 ml PBS with 5uM CellTrace Violet (Invitrogen) for 5min and subsequently seeded in 12 well plates. Time 0 measurements were taken once cells had attatched and treatments with RPMI (Gibco, life technology) 10% FBS, RPMI 0.1% FBS, or HBSS were simultaniously initiated in the remaining cells. RPMI mediums were all additionally supplemented with 2mM L-glutamine and 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum. Cells were incubated for the indicated times before harvesting and CellTrace Violet was quantified via flow cytometry (Sony SH800S Cell Sorter). Time 0 was performed in biological triplicate and technical duplicate whereas all other time points were performed in biological triplicates with one technical replicate.
+
+<br></br>
+
+_Analysis_
+
+Each replicate and condition were subsampled so that each had a total of 10000 cells. The mean of each technical replicate for time point 0 was calculated and, subsequently, the time 0 flouresence intensity was subtracted from each sample. The mean difference in flouresence intensity was then calculated for each biological replicate and condition and used to build a polynomial model per condition (i.e. RPMI, 0.1% FBS, and HBSS).
+
+<br></br>
+
+#### _Results_
+
+```{r, message = FALSE}
+
+data <- getData("Supplementary Figure 5c")
+
+#remove cells with negative fluorescence. Consider these 1224 cells artifacts 
+data <- filter(data, Violet > 0)
+
+##fix day0 data
+#Since there are no treatments at time 0 and we want a corresponding Time 0 for 
+#each of the treated samples, here we expand the Time 0 sample 3 times, one for 
+#each treatment condition at later time points.
+dataExpandT0 <- data %>% 
+  filter(Time == 0) %>%
+  bind_rows(., ., .) %>%
+  mutate(Condition = c(
+      rep("RPMI", nrow(.) / 3),
+      rep("0.1% FBS", nrow(.) / 3),
+      rep("HBSS", nrow(.) / 3)
+  )) %>%
+  bind_rows(filter(data, Time != 0))
+
+#calculate means of technical replicates in day0
+#need to subsample first so that each condition has the same number of cells
+sampleN <- 10000
+
+set.seed(2387723)
+data0 <- dataExpandT0 %>%
+  filter(Time == "0" & Type == "stained") %>%
+  select(-`FSC-A`, -`BSC-A`) %>%
+  group_by(`Biological replicate`, `Technical replicate`, Condition, `Cell line`, Type) %>%
+  sample_n(size = sampleN) %>%
+  ungroup() %>%
+  arrange(`Cell line`, Condition, `Biological replicate`, `Technical replicate`, Violet) %>%
+  mutate(
+    `Technical replicate` = rep(c("Tr1", "Tr2"), nrow(.)/2),
+    row = rep(1:(nrow(.) / 2), each = 2)
+  ) %>%
+  spread(`Technical replicate`, Violet) %>%
+  rowwise() %>%
+  mutate(Violet = mean(c(Tr1, Tr2))) %>%
+  ungroup() %>%
+  select(-(row:Tr2)) %>%
+  bind_rows(., ., ., .) %>%
+  mutate(Time = rep(c("0", "24", "48", "72"), each = nrow(.) / 4)) %>%
+  arrange(Time, `Cell line`, Condition, `Biological replicate`, Violet)
+
+#Randomly sample 10000 cells from each condition so that all samples have the 
+#same number of cells
+set.seed(2387723)
+subData <- dataExpandT0 %>%
+  select(-`FSC-A`, -`BSC-A`, -`Technical replicate`) %>%
+  filter(Type == "stained" & Time != "0") %>%
+  group_by(`Biological replicate`, Condition, `Cell line`, Type, Time) %>%
+  sample_n(size = sampleN) %>%
+  ungroup() 
+
+#add back data from time point 0 with mean technical replicates calculated
+#in addition, add a time point 0 corresponding to each cell and condition and
+##calculate the difference for each cell from time 0
+subData <- subData %>%
+  bind_rows(filter(data0, Time == "0")) %>%
+  arrange(Time, `Cell line`, Condition, `Biological replicate`, Violet) %>%
+  add_column(day0Violet = data0$Violet) %>%
+  mutate(violetNorm = Violet - day0Violet) %>%
+  mutate(
+    Time = as.numeric(Time), 
+    cellLine = parse_factor(`Cell line`, levels = c("mock", "lncTAM34a"))
+  ) %>% 
+  select(-`Cell line`)
+  
+#calculate mean normalized flouresence for each condition and biological replicate
+subDataMeans <- subData %>%
+  group_by(cellLine, Time, Condition, `Biological replicate`) %>%
+  summarize(mean = mean(violetNorm)) %>%
+  ungroup()
+
+#model each condition using the mean of all biological replicates using a lm
+model.info <- subDataMeans %>%
+  group_by(Condition) %>%
+  do(glance(lm(mean ~ poly(Time, 3) + cellLine, data = .))) %>%
+  ungroup()
+
+as.data.frame(model.info)
+
+proliferation.lm <- subDataMeans %>%
+  group_by(Condition) %>%
+  do(tidy(lm(mean ~ poly(Time, 3) + cellLine, data = .))) %>%
+  ungroup()
+
+as.data.frame(proliferation.lm)
+
+#extract model components to plot
+model.data <- proliferation.lm %>%
+  filter(term == "cellLinelncTAM34a") %>%
+  mutate(Condition = parse_factor(
+    Condition, levels = c("RPMI", "0.1% FBS", "HBSS")
+  )) %>% 
+  rename(pValue = p.value) %>%
+  pFormat(.)
+```
+
+```{r, fig.align='center', fig.height=8, fig.width=12}
+p <- subDataMeans %>% 
+  mutate(Condition = parse_factor(Condition, levels = c("RPMI", "0.1% FBS", "HBSS"))) %>% 
+  ggplot() + 
+  geom_smooth(
+    aes(Time, mean, colour = cellLine, group = cellLine), colour = "lightgrey",
+    method = "lm", formula = y ~ poly(x, 3), size = 0.5, alpha = 0.1
+  ) +
+  geom_boxplot(
+    aes(Time, mean, colour = cellLine, group = interaction(Time, cellLine)),
+    fatten = 2, lwd = 0.2
+  ) +
+  facet_wrap(~Condition) + 
+  scale_x_continuous(breaks = c(0, 24, 48, 72)) +
+  labs(
+    x = "Time (hours)", 
+    y = "Mean \U0394 fluorescence intensity"
+  ) + 
+  guides(colour = guide_legend(title = "Cell line"))
+
+markdown <- p +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 2000, label = paste0("estimate=", round(estimate))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 1500, label = paste0("std.error=", round(std.error))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 1000, label = paste0("p=", pFormat)),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
+  )
+
+plotRmarkdown(markdown)
+
+pdf <- p +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 3000, label = paste0("estimate=", round(estimate))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 2000, label = paste0("std.error=", round(std.error))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 1000, label = paste0("p=", pFormat)),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
+  )
+
+figure <- plotPDF(pdf)
+
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Supplementary Figure 5c"][[1]])
+ggsave(
+  plot = figure,
+  filename = path,
+  device = cairo_pdf,
+  height = 60,
+  width = 100,
+  units = "mm"
+)
+```
+
+<div class="caption">
+The effects of miR34a asRNA overexpression on proliferation in normal and starvation conditions in the PC3 prostate cancer cell line. The y-axis illustrates the mean difference (&Delta;; Time - Time 0) in flouresence intensity for each biological replicate and condition where decreased flouresence intensity indicates increased proliferation. Boxplots show the distribution of the mean differences from each of the biological replicates (n = 3). Grey lines indicate the polynomial regression model with the shadows indicating the 95% confidence intervals. Estimates, standard error (std.error), and P values for the cell line covariate for each model are indicated in the upper left hand corner.
+</div>
+
+<br></br>
+
+#### _Conclusions_
+
+miR34a asRNA overexpression causes a decrease in cell growth under all examined conditions. 
+
+<br></br><br></br>
+
+```{r}
+sessionInfo()
+```

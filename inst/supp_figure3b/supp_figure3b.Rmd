@@ -1,0 +1,134 @@
+---
+title: "Supplementary Figure 3a-b"
+subtitle: "Schematic representation of the P1 construct"
+author: "Jason T. Serviss"
+date: "31/01/2017"
+output:
+  html_document:
+    theme: flatly
+    code_folding: hide
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style> 
+.caption { 
+  color: Black; 
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.0em; 
+}
+</style>
+
+```{r, echo = FALSE, message = FALSE}
+
+packages <- c(
+    "tidyverse",
+    "printr",
+    "ggthemes",
+    "readr",
+    "miR34AasRNAproject",
+    "grid",
+    "gtable"
+)
+purrr::walk(packages, library, character.only = TRUE)
+rm(packages)
+
+```
+
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
+```
+
+#### _Introduction_
+
+It is likely, due to the head-to head orientation of miR34a HG and asRNA, that transcription initiation may be activated from a single promoter in a bi-directional manner. To investigate whether miR34a HG and asRNA are transcribed from the same promoter as convergent transcripts, we cloned the miR34a HG promoter, including the p53 binding site, into a luciferase/renilla dual reporter vector which we hereafter refer to as p1. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43.
+
+<br></br>
+
+#### _Methods_
+
+<br></br>
+
+_Cell culture, transfection and luminescence quantification_
+
+All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 10,000 cells per well in a 96-well plate with a white bottom and cultured overnight. The following day cells were co-transfected with 10ng of empty, p1, or p2 plasmid and GFP using the standard lipofektamine 2000 (Life Technologies) protocol. The expression of GFP and luminescence was measured 24 h post transfection by using the Dual-Glo Luciferase Assay System (Promega) and detected by the GloMax-Multi+ Detection System (Promega). The expression of luminescence was normalized to GFP.
+
+<br></br>
+
+_Analysis_
+
+Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the empty vs p1 group's log2 activity for both genes.
+
+<br></br>
+
+_Constructs_
+
+```{r}
+
+ps <- data.frame(
+  name = c("p1"),
+  sequence = c("GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT
+              CCC GTC GGT CTG GGG ACA GCC CAG CTC CCC GGA TCC CGG GCT GGA GAG ACG CGT CGC GGC   
+              CCC GGG GCC TGG TGG CAC GAG CAG GAA GGA GGA CCC GGC GGC GGG CTC TGC CTG GGC TTG 
+              CCT GGG CTT GTT CCG AGC CGG GCT GCT TCT CGG TGA CCA CGC AGA TCG GGG GCA TTT GGA
+              GAT TTT GCG GGA GTC CTG CAG CCA AGC TCC GGG GCA GGA GAG GCC TGG AAG CCT GCA CTA
+              CCT GCT C"
+  )
+)
+ps
+
+```
+
+<br></br>
+
+_Primers_
+
+```{r}
+
+primers <- data.frame(
+    name=c(
+        "Luc_set_II_F",
+        "Luc_set_II_R",
+        "Renilla_pBiDir_F1",
+        "Renilla_pBiDir_R1",
+        "B-actin_F",
+        "B-actin_R"
+    ),
+    sequence=c(
+        "AAG ATT CAA AGT GCG CTG CTG",
+        "TTG CCT GAT ACC TGG CAG ATG",
+        "TAA CGC GGC CTC TTC TTA TTT",
+        "GAT TTG CCT GAT TTG CCC ATA",
+        "AGG TCA TCA CCA TTG GCA ATG AG",
+        "CTT TGC GGA TGT CCA CGT CA"
+    )
+)
+primers
+
+```
+
+<br></br>
+
+#### _Results_
+
+```{r, out.width = "850px"}
+
+url <- fileMap(type = "png")["Supplementary Figure 3a"][[1]]
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class="caption">
+Top: A schematic representation of the miR34a locus and the region cloned in the P1 construct including the overlapping region between miR34a host gene (purple) and miR34a asRNA (green), the region cloned into the P1 construct (red), and the P53 binding site (light blue). Bottom: A schematic representation of the fully cloned P1 construct including the overlapping region between miR34a host gene and miR34a asRNA (green), the reported genes, luciferase (purple) and renilla (red), the primer binding sites, and the shRNA binding site (used in Figure 2d).
+</div>
+
+<br></br>
+
+```{r}
+sessionInfo()
+```

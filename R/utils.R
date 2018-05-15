@@ -22,42 +22,42 @@ NULL
 fileMap <- function(type) {
   pList <- list(
     `All figures` = "recreate_all_figures/recreate_all_figures.Rmd",
-    `Figure 1a` = "mir34a_locus/mir34a_locus.Rmd",
-    `Figure 1b` = "mir34a_asRNA_cell_panel/mir34a_asRNA_cell_panel.Rmd",
-    `Figure 1c` = "tcga_correlation/tcga_correlation.Rmd",
-    `Figure 1d` = "3_prime_race/3_prime_race.Rmd",
-    `Figure 1e` = "primer_walk/primer_walk.Rmd",
-    `Figure 1f` = "coding_potential_cpat/coding_potential_cpat.Rmd",
-    `Figure 2a` = "hct116_hek293t_dox/hct116_hek293t_dox.Rmd",
-    `Figure 2b` = "hct116_p53_null/hct116_p53_null.Rmd",
-    `Figure 2c` = "lncTAM34a_KD/lncTAM34a_KD.Rmd",
-    `Figure 2d` = "p1_hct116_hek293t/p1_hct116_hek293t.Rmd",
-    `Figure 2e` = "p1_shrna_renilla_dox/p1_shrna_renilla_dox.Rmd",
-    `Figure 3a` = "stable_line_expression/stable_line_expression.Rmd",
-    `Figure 3b` = "stable_line_cell_cycle/stable_line_cell_cycle.Rmd",
-    `Figure 3c` = "stable_line_growth_starvation/stable_line_growth_starvation.Rmd",
-    `Figure 3d` = "stable_line_pol2_chip/stable_line_pol2_chip.Rmd",
-    `Figure 4a` = "tcga_survival_short/tcga_survival_short.Rmd",
-    `Figure 4b` = "tcga_survival/tcga_survival.Rmd",
-    `Figure 5` = "model/model.Rmd",
-    `Supplementary Figure 1a` = "tcga_correlation_table/tcga_correlation_table.Rmd",
-    `Supplementary Figure 1b` = "tcga_expression/tcga_expression.Rmd",
-    `Supplementary Figure 2a` = "primer_walk_schematic/primer_walk_schematic.Rmd",
-    `Supplementary Figure 2b` = "polyadenylation/polyadenylation.Rmd",
-    `Supplementary Figure 2c` = "isoforms/isoforms.Rmd",
-    `Supplementary Figure 2d` = "cellular_localization_encode/cellular_localization_encode.Rmd",
-    `Supplementary Figure 2e` = "coding_potential_cpc/coding_potential_cpc.Rmd",
-    `Supplementary Figure 3a` = "p1_construct/p1_construct.Rmd",
-    `Supplementary Figure 3b` = "p1_construct/p1_construct.Rmd",
-    `Supplementary Figure 3c` = "p1_hek293t/p1_hek293t.Rmd",
-    `Supplementary Figure 4a` = "stable_line_expression_hek293t/stable_line_expression_hek293t.Rmd",
-    `Supplementary Figure 4c` = "stable_line_ccnd1_exp/stable_line_ccnd1_exp.Rmd",
-    `Supplementary Figure 4d` = "stable_line_ccnd1_prot/stable_line_ccnd1_prot.Rmd",
-    `Supplementary Figure 6` = "stable_line_proliferation/stable_line_proliferation.Rmd",
-    `Supplementary Figure 7` = "tcga_survival_total/tcga_survival_total.Rmd",
-    `Supplementary Figure 8` = "lnc34a_splice_jnc/lnc34a_splice_jnc.Rmd",
-    `Supplementary Figure 9` = "lnc34a_cage/lnc34a_cage.Rmd",
-    `Supplementary Document 2` = "primers/primers.Rmd"
+    `Figure 1a` = "figure1a/figure1a.Rmd",
+    `Figure 1b` = "figure1b/figure1b.Rmd",
+    `Figure 1c` = "figure1c/figure1c.Rmd",
+    `Figure 1d` = "figure1d/figure1d.Rmd",
+    `Figure 1e` = "figure1e/figure1e.Rmd",
+    `Figure 1f` = "figure1f/figure1f.Rmd",
+    `Figure 2a` = "figure2a/figure2a.Rmd",
+    `Figure 2b` = "figure2b/figure2b.Rmd",
+    `Figure 2c` = "figure2c/figure2c.Rmd",
+    `Figure 2d` = "figure2d/figure2d.Rmd",
+    `Figure 2e` = "figure2e/figure2e.Rmd",
+    `Figure 3a` = "figure3a/figure3a.Rmd",
+    `Figure 3b` = "figure3b/figure3b.Rmd",
+    `Figure 3c` = "figure3c/figure3c.Rmd",
+    `Figure 3d` = "figure3d/figure3d.Rmd",
+    `Figure 4a` = "figure4a/figure4a.Rmd",
+    `Figure 4b` = "figure4b/figure4b.Rmd",
+    `Figure 5` = "figure5/figure5.Rmd",
+    `Supplementary Figure 1a` = "supp_figure1a/supp_figure1a.Rmd",
+    `Supplementary Figure 1b` = "supp_figure1b/supp_figure1b.Rmd",
+    `Supplementary Figure 2a` = "supp_figure2a/supp_figure2a.Rmd",
+    `Supplementary Figure 2b` = "supp_figure2b/supp_figure2b.Rmd",
+    `Supplementary Figure 2c` = "supp_figure2c/supp_figure2c.Rmd",
+    `Supplementary Figure 2d` = "supp_figure2d/supp_figure2d.Rmd",
+    `Supplementary Figure 2e` = "supp_figure2e/supp_figure2e.Rmd",
+    `Supplementary Figure 3a` = "supp_figure3a/supp_figure3a.Rmd",
+    `Supplementary Figure 3b` = "supp_figure3b/supp_figure3b.Rmd",
+    `Supplementary Figure 3c` = "supp_figure3c/supp_figure3c.Rmd",
+    `Supplementary Figure 4a` = "supp_figure4a/supp_figure4a.Rmd",
+    `Supplementary Figure 4c` = "supp_figure4c/supp_figure4c.Rmd",
+    `Supplementary Figure 4d` = "supp_figure4d/supp_figure4d.Rmd",
+    `Supplementary Figure 5c` = "supp_figure5c/supp_figure5c.Rmd",
+    `Supplementary Figure 6` = "supp_figure6/supp_figure6.Rmd",
+    `Supplementary Figure 7` = "supp_figure7/supp_figure7.Rmd",
+    `Supplementary Figure 8` = "supp_figure8/supp_figure8.Rmd",
+    `Supplementary Document 2` = "supp_doc2/primers.Rmd"
   )
   
   if(type == "Rmd") {
@@ -205,13 +205,14 @@ getData <- function(figure) {
   #check that there is data for the figure
   figsWithData <- c(
     'Figure 1c', 'Figure 1f', 'Figure 2a', 'Figure 2b', 'Figure 2c',
-    'Figure 2d', 'Figure 3a', 'Figure 3b', 'Figure 3c', 'Figure 3d',
-    'Figure 4a', 'Figure 4b', 'Supplementary Figure 1a',
+    'Figure 2d', 'Figure 2e', 'Figure 3a', 'Figure 3b', 'Figure 3c',
+    'Figure 3d', 'Figure 4a', 'Figure 4b', 'Supplementary Figure 1a',
     'Supplementary Figure 1b', 'Supplementary Figure 2d',
     'Supplementary Figure 2e', 'Supplementary Figure 3c',
-    'Supplementary Figure 4a', 'Supplementary Figure 4b',
-    'Supplementary Figure 4c', 'Supplementary Figure 5',
-    'Supplementary Figure 6', 'Supplementary Figure 7'
+    'Supplementary Figure 4a', 'Supplementary Figure 4c',
+    'Supplementary Figure 4d', 'Supplementary Figure 5c',
+    'Supplementary Figure 6', 'Supplementary Figure 7',
+    'Supplementary Figure 8'
   )
   if(!figure %in% figsWithData) {
     stop("There is no data for the figure you specified")
@@ -219,6 +220,7 @@ getData <- function(figure) {
   if(figure == "Figure 4a") figure <- "Figure 4b"
   if(figure == "Supplementary Figure 1a") figure <- "Figure 1c"
   if(figure == "Supplementary Figure 1b") figure <- "Figure 1c"
+  if(figure == "Supplementary Figure 6") figure <- "Figure 4a"
 
   dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master"
   path <- fileMap('rds')[[figure]][[1]]

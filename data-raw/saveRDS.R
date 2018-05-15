@@ -1,9 +1,44 @@
 library(tidyverse)
 library(miR34AasRNAproject)
 
-#hct116_p53_null
+#Figure 1c, tcga_correlation
+print("processing tcga_correlation")
+read_tsv('./data-raw/figure1c.txt') %>%
+  mutate(
+    TP53 = as.numeric(TP53),
+    RP3 = as.numeric(RP3),
+    RP3_cna = as.numeric(RP3_cna),
+    miR34a = as.numeric(miR34a)
+  ) %>%
+  write_rds(., path = './data/figure1c.rds')
+
+#Figure 1f, coding_potential_cpat
+print("processing coding_potential_cpat")
+  read_tsv('./data-raw/figure1f.txt') %>%
+  write_rds(., path = './data/figure1f.rds')
+
+#Figure 2a, hct116_hek293t_dox
+print("processing hct116_hek293t_dox")
+read_tsv('./data-raw/figure2a.txt', col_names = TRUE) %>%
+  rename(
+    `Biological Replicate` = experiment,
+    `Cell line` = cellLine,
+    Treatment = treatment
+  ) %>%
+  mutate(Treatment = parse_factor(
+    Treatment,
+    levels = c("untreated", "doxorubicin")
+  )) %>%
+  mutate(gene = case_when(
+    gene == "B-actin" ~ "Actin",
+    gene == "miR34a asRNA" ~ "lncTAM34a",
+    TRUE              ~ gene
+  )) %>%
+  write_rds(., path = './data/figure2a.rds')
+
+#Figure 2b, hct116_p53_null
 print("processing hct116_p53_null")
-read_tsv('./data-raw/hct116_p53_null.txt', col_names = TRUE) %>%
+read_tsv('./data-raw/figure2b.txt', col_names = TRUE) %>%
   rename(gene = Target) %>%
   mutate(
     Condition = case_when(
@@ -32,30 +67,17 @@ read_tsv('./data-raw/hct116_p53_null.txt', col_names = TRUE) %>%
       levels = c("miR34a HG", "lncTAM34a", "Actin")
     )
   ) %>%
-  write_rds(., path = './data/hct116_p53_null.rds')
+  write_rds(., path = './data/figure2b.rds')
 
-#hct116_hek293t_dox
-print("processing hct116_hek293t_dox")
-read_tsv('./data-raw/hct116_hek293t_dox.txt', col_names = TRUE) %>%
-  rename(
-    `Biological Replicate` = experiment,
-    `Cell line` = cellLine,
-    Treatment = treatment
-  ) %>%
-  mutate(Treatment = parse_factor(
-    Treatment,
-    levels = c("untreated", "doxorubicin")
-  )) %>%
-  mutate(gene = case_when(
-    gene == "B-actin" ~ "Actin",
-    gene == "miR34a asRNA" ~ "lncTAM34a",
-    TRUE              ~ gene
-  )) %>%
-  write_rds(., path = './data/hct116_hek293t_dox.rds')
+#Figure 2c, lncTAM34a KD
+read_tsv('data-raw/figure2c.txt') %>%
+  mutate(gene = parse_factor(gene, levels = c("lncTAM34a", "miR34a HG", "Actin"))) %>%
+  mutate(siRNA = parse_factor(siRNA, levels = c("si-Ctl", "si-lncTAM34a"))) %>%
+  write_rds(., path = './data/figure2c.rds')
 
-#p1_hct116_hek293t
+#Figure 2d, p1_hct116_hek293t
 print("processing p1_hct116_hek293t")
-read_tsv('./data-raw/p1_hct116_hek293t.txt', col_names = TRUE) %>%
+read_tsv('./data-raw/figure2d.txt', col_names = TRUE) %>%
   rename(
     `Biological Replicate` = experiment,
     `Cell line` = cellLine
@@ -69,11 +91,11 @@ read_tsv('./data-raw/p1_hct116_hek293t.txt', col_names = TRUE) %>%
     construct = gsub("empty", "Empty", .data$construct)
   ) %>%
   mutate(alias = if_else(alias == "miR34a asRNA", "lncTAM34a", alias)) %>%
-  write_rds(., path = './data/p1_hct116_hek293t.rds')
+  write_rds(., path = './data/figure2d.rds')
 
-#p1_shrna_renilla_dox
+#Figure 2e, p1_shrna_renilla_dox
 print("processing p1_shrna_renilla_dox")
-read_tsv('./data-raw/p1_shrna_renilla_dox.txt', col_names = TRUE) %>%
+read_tsv('./data-raw/figure2e.txt', col_names = TRUE) %>%
   rename(`Biological Replicate` = experiment) %>%
   mutate(
     shRNA = gsub("shCtrl", "shRNA Control", .data$shRNA),
@@ -82,11 +104,11 @@ read_tsv('./data-raw/p1_shrna_renilla_dox.txt', col_names = TRUE) %>%
     treatment = parse_factor(treatment, levels = c("0", "300", "500"))
   ) %>%
   select(-alias, -correspondsWith) %>%
-  write_rds(., path = './data/p1_shrna_renilla_dox.rds')
+  write_rds(., path = './data/figure2e.rds')
 
-#stable_line_expression
+#Figure 3a, stable_line_expression
 print("processing stable_line_expression")
-read_tsv('./data-raw/stable_line_expression.txt', col_names = TRUE) %>%
+read_tsv('./data-raw/figure3a.txt', col_names = TRUE) %>%
   rename(
     gene = Gene,
     `Biological Replicate` = experiment,
@@ -112,11 +134,11 @@ read_tsv('./data-raw/stable_line_expression.txt', col_names = TRUE) %>%
       levels = c("lncTAM34a", "miR34a", "Actin", "RNU48")
     )
   ) %>%
-  write_rds(., path = './data/stable_line_expression.rds')
+  write_rds(., path = './data/figure3a.rds')
 
-#stable_line_cell_cycle
+#Figure 3b, stable_line_cell_cycle
 print("processing stable_line_cell_cycle")
-read_tsv('./data-raw/stable_line_cell_cycle.txt', col_names = TRUE) %>%
+read_tsv('./data-raw/figure3b.txt', col_names = TRUE) %>%
   rename(
     `Biological Replicate` = experiment,
     `Cell line` = cellLine
@@ -128,11 +150,11 @@ read_tsv('./data-raw/stable_line_cell_cycle.txt', col_names = TRUE) %>%
     condition = parse_factor(condition, levels = c("mock", "lncTAM34a")),
     phase = parse_factor(phase, levels = c("G1", "S", "G2"))
   ) %>%
-  write_rds(., path = './data/stable_line_cell_cycle.rds')
+  write_rds(., path = './data/figure3b.rds')
 
-#stable_line_growth_starvation
+#Figure 3c, stable_line_growth_starvation
 print("processing stable_line_growth_starvation")
-read_tsv('./data-raw/stable_line_growth_starvation.txt', col_names = TRUE)  %>%
+read_tsv('./data-raw/figure3c.txt', col_names = TRUE)  %>%
   filter(Time <= 35) %>%
   rename(
     `Biological Replicate` = Biological.replicate,
@@ -158,11 +180,11 @@ read_tsv('./data-raw/stable_line_growth_starvation.txt', col_names = TRUE)  %>%
     )
   ) %>%
   select(-Condition) %>%
-  write_rds(., path = './data/stable_line_growth_starvation.rds')
+  write_rds(., path = './data/figure3c.rds')
 
-#stable_line_pol2_chip
+#Figure 3d, stable_line_pol2_chip
 print("processing stable_line_pol2_chip")
-read_tsv('./data-raw/stable_line_pol2_chip.txt', col_names = TRUE) %>%
+read_tsv('./data-raw/figure3d.txt', col_names = TRUE) %>%
   rename(
     `Biological Replicate` = experiment,
     `Cell line` = cellLine
@@ -178,167 +200,16 @@ read_tsv('./data-raw/stable_line_pol2_chip.txt', col_names = TRUE) %>%
       levels = c("mock", "lncTAM34a")
     )
   ) %>%
-  write_rds(., path = './data/stable_line_pol2_chip.rds')
+  write_rds(., path = './data/figure3d.rds')
 
-#transcript_stability
-print("processing transcript_stability")
-read_tsv('./data-raw/transcript_stability.txt', col_names = TRUE) %>%
-  rename(`Biological Replicate` = experiment) %>%
-  mutate(gene = gsub("B-actin", "Actin", gene)) %>%
-  mutate(
-    treatment = parse_factor(treatment, levels = c("0", "1", "2", "4")),
-    gene = parse_factor(gene, levels = c("miR34a asRNA", "miR34a HG", "Actin"))
-  ) %>%
-  write_rds(., path = './data/transcript_stability.rds')
+#Figure 4a, tcga_survival
+read_tsv('data-raw/figure4a.txt') %>%
+  select(-PAM50, -lncTAM34a_cna) %>%
+  write_rds(., path = './data/figure4a.rds')
 
-#stable_line_expression_hek293t
-print("processing stable_line_expression_hek293t")
-read_tsv('./data-raw/stable_line_expression_hek293t.txt', col_names = TRUE) %>%
-  rename(
-    `Biological Replicate` = experiment,
-    `Cell line` = cellLine,
-    gene = Gene
-  ) %>%
-  mutate(
-    Condition = gsub("F4", "lncTAM34a", Condition),
-    gene = gsub("B-actin", "Actin", gene),
-    gene = gsub("miR34a asRNA F1R1", "lncTAM34a", gene)
-  ) %>%
-  mutate(
-    `Cell line` = parse_factor(
-      `Cell line`,
-      levels = c("HEK293t", "PC3", "Skov3", "Saos2")
-    ),
-    Condition = parse_factor(
-      Condition,
-      levels = c("wt", "mock", "lncTAM34a")
-    )
-  ) %>%
-  write_rds(., path = './data/stable_line_expression_hek293t.rds')
-
-#stable_line_ccnd1_exp
-print("processing stable_line_ccnd1_exp")
-read_tsv('./data-raw/stable_line_ccnd1_exp.txt', col_names = TRUE) %>%
-  rename(
-    `Biological Replicate` = experiment,
-    `Cell line` = cellLine
-  ) %>%
-  mutate(
-    condition = gsub("miR34a AS", "lncTAM34a ", condition),
-    condition = gsub("mock", "mock", condition),
-    gene = gsub("B-actin", "Actin", gene)
-  ) %>%
-  mutate(
-    condition = parse_factor(
-      condition,
-      levels = c("mock", "lncTAM34a")
-    )
-  ) %>%
-  write_rds(., path = './data/stable_line_ccnd1_exp.rds')
-
-#stable_line_ccnd1_prot
-print("processing stable_line_ccnd1_prot")
-read_tsv('./data-raw/stable_line_ccnd1_prot.txt', col_names = TRUE) %>%
-  rename(`Biological Replicate` = experiment) %>%
-  mutate(
-    condition = gsub("miR34a AS", "lncTAM34a", condition),
-    condition = gsub("mock", "mock", condition)
-  ) %>%
-  mutate(condition = parse_factor(
-    condition,
-    levels = c("mock", "lncTAM34a")
-  )) %>%
-  write_rds(., path = './data/stable_line_ccnd1_prot.rds')
-
-#lnc34a_cage
-#the chromosomal regions correspond to 200 bp upstream of the lnc34a start
-#site and 200 bp downstream of the GENCODE annotated miR34a asRNA start site.
-print("processing lnc34a_cage")
-parseUCSCfiles('http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeRikenCage/files.txt') %>%
-  filter(type == "bedRnaElements") %>%
-  write_tsv(., path = './data-raw/lnc34a_cage.txt') %>%
-  mutate(fileContens =
-    map(
-      `url`,
-      ~ print(.) %>%
-        read_tsv(., col_names = FALSE, na = c("", "NA", ".")) %>%
-        filter(X1 == "chr1" & X2 >= (9241796 - 200) & X3 <= (9242263 + 200) & X6 == "+")
-    )
-  ) %>%
-  unnest() %>%
-  rename(
-    chr = X1, start = X2, stop = X3, name = X4, score = X5,
-    strand = X6, level = X7, signif = X8, score2 = X9
-  ) %>%
-  write_rds(., path = './data/lnc34a_cage.rds')
-
-#lnc34a_splice_jnc
-print("processing lnc34a_splice_jnc")
-read_tsv('./data-raw/lnc34a_splice_jnc.txt') %>%
-  pull(16) %>%
-  data_frame(filename = .) %>%
-  mutate(file_contents = map(
-    filename,
-    ~ miR34AasRNAproject:::.readAndFilter(
-      .,
-      start = 9241796,
-      stop = 9257102,
-      col_types = list(
-        col_character(), col_double(), col_double(), col_character(),
-        col_double(), col_character(), col_double(), col_character(),
-        col_double()
-      )
-    )
-  )) %>%
-  unnest() %>%
-  mutate(filename = basename(filename)) %>%
-  rename(
-    chr = X1, start = X2, stop = X3, name = X4, score = X5,
-    strand = X6, level = X7, signif = X8, score2 = X9
-  ) %>%
-  write_rds(., path = './data/lnc34a_splice_jnc.rds')
-
-#p1_hek293t
-print("processing p1_hek293t")
-read_tsv('./data-raw/p1_hek293t.txt') %>%
-  rename(`Biological Replicate` = experiment) %>%
-  mutate(
-    shRNA = gsub("shCrtl", "shCtrl", shRNA),
-    shRNA = gsub("shRenilla1.1", "shRenilla 1.1", shRNA),
-    shRNA = gsub("shRenilla2.1", "shRenilla 2.1", shRNA),
-    shRNA = gsub("shRenillaPool", "shRenilla pool", shRNA),
-    gene = gsub("B-actin", "Actin", gene)
-  ) %>%
-  mutate(
-    shRNA = parse_factor(
-      shRNA,
-      levels = c("shCtrl", "shRenilla 1.1", "shRenilla 2.1", "shRenilla pool")
-    ),
-    gene = parse_factor(
-      gene,
-      levels = c("Renilla", "Luciferase", "Actin")
-    )
-  ) %>%
-  write_rds(., path = './data/p1_hek293t.rds')
-
-#coding_potential_cpat
-print("processing coding_potential_cpat")
-read_tsv('./data-raw/coding_potential_cpat.txt') %>%
-  write_rds(., path = './data/coding_potential_cpat.rds')
-
-#coding_potential_cpc
-print("processing coding_potential_cpc")
-read_tsv('./data-raw/coding_potential_cpc.txt') %>%
-  write_rds(., path = './data/coding_potential_cpc.rds')
-
-#coding potential Geiger
-print("processing coding_potential_geiger")
-read_tsv('./data-raw/coding_potential_geiger.txt') %>%
-  write_rds(., path = './data/coding_potential_geiger.rds')
-
-#tcga_correlation_table
+#Supplementary Figure 1a, tcga_correlation_table
 print("processing tcga_correlation_table")
-read_tsv('./data-raw/tcga_correlation_table.txt') %>%
+read_tsv('./data-raw/supp_figure1a.txt') %>%
   rename(
     r_total = r,
     p_value_total = p,
@@ -361,20 +232,9 @@ read_tsv('./data-raw/tcga_correlation_table.txt') %>%
     r_nonmut = as.numeric(r_nonmut),
     p_value_nonmut = as.numeric(p_value_nonmut)
   ) %>%
-  write_rds(., path = './data/tcga_correlation_table.rds')
+  write_rds(., path = './data/supp_figure1a.rds')
 
-#tcga_correlation
-print("processing tcga_correlation")
-read_tsv('./data-raw/tcga_correlation.txt') %>%
-  mutate(
-    TP53 = as.numeric(TP53),
-    RP3 = as.numeric(RP3),
-    RP3_cna = as.numeric(RP3_cna),
-    miR34a = as.numeric(miR34a)
-  ) %>%
-  write_rds(., path = './data/tcga_correlation.rds')
-
-#cellular_localization_encode
+#Supplementary Figure 2d, cellular_localization_encode
 read_tsv('https://www.encodeproject.org/metadata/type=Experiment&assay_term_name=RNA-seq&replicates.library.biosample.donor.organism.scientific_name=Homo+sapiens&biosample_type=immortalized+cell+line&files.file_type=tsv&assay_title%21=small+RNA-seq&assembly=GRCh38/metadata.tsv') %>%
   rename(fraction = `Biosample subcellular fraction term name`) %>%
   filter(
@@ -403,22 +263,98 @@ read_tsv('https://www.encodeproject.org/metadata/type=Experiment&assay_term_name
     gene_id == "ENSG00000111640" ~ "GAPDH",
     TRUE ~ "error"
   )) %>%
-  write_rds(., path = './data/cellular_localization_encode.rds')
+  write_rds(., path = './data/supp_figure2d.rds')
 
-#tcga_survival
-read_tsv('data-raw/tcga_survival.txt') %>%
-  select(-PAM50, -lncTAM34a_cna) %>%
-  write_rds(., path = './data/tcga_survival.rds')
+#Supplementary Figure 2e, coding_potential_cpc
+print("processing coding_potential_cpc")
+read_tsv('./data-raw/supp_figure2e.txt') %>%
+  write_rds(., path = './data/supp_figure2e.rds')
 
-#lncTAM34a KD
-read_tsv('data-raw/lncTAM34a_KD.txt') %>%
-  mutate(gene = parse_factor(gene, levels = c("lncTAM34a", "miR34a HG", "Actin"))) %>%
-  mutate(siRNA = parse_factor(siRNA, levels = c("si-Ctl", "si-lncTAM34a"))) %>%
-  write_rds(., path = './data/lncTAM34a_KD.rds')
+#Supplementary Figure 3c, p1_hek293t
+print("processing p1_hek293t")
+read_tsv('./data-raw/supp_figure3c.txt') %>%
+  rename(`Biological Replicate` = experiment) %>%
+  mutate(
+    shRNA = gsub("shCrtl", "shCtrl", shRNA),
+    shRNA = gsub("shRenilla1.1", "shRenilla 1.1", shRNA),
+    shRNA = gsub("shRenilla2.1", "shRenilla 2.1", shRNA),
+    shRNA = gsub("shRenillaPool", "shRenilla pool", shRNA),
+    gene = gsub("B-actin", "Actin", gene)
+  ) %>%
+  mutate(
+    shRNA = parse_factor(
+      shRNA,
+      levels = c("shCtrl", "shRenilla 1.1", "shRenilla 2.1", "shRenilla pool")
+    ),
+    gene = parse_factor(
+      gene,
+      levels = c("Renilla", "Luciferase", "Actin")
+    )
+  ) %>%
+  write_rds(., path = './data/supp_figure3c.rds')
 
-#Stable line proliferation
+#Supplementary Figure 4a, stable_line_expression_hek293t
+print("processing stable_line_expression_hek293t")
+read_tsv('./data-raw/supp_figure4a.txt', col_names = TRUE) %>%
+  rename(
+    `Biological Replicate` = experiment,
+    `Cell line` = cellLine,
+    gene = Gene
+  ) %>%
+  mutate(
+    Condition = gsub("F4", "lncTAM34a", Condition),
+    gene = gsub("B-actin", "Actin", gene),
+    gene = gsub("miR34a asRNA F1R1", "lncTAM34a", gene)
+  ) %>%
+  mutate(
+    `Cell line` = parse_factor(
+      `Cell line`,
+      levels = c("HEK293t", "PC3", "Skov3", "Saos2")
+    ),
+    Condition = parse_factor(
+      Condition,
+      levels = c("wt", "mock", "lncTAM34a")
+    )
+  ) %>%
+  write_rds(., path = './data/supp_figure4a.rds')
+
+#Supplementary Figure 4c, stable_line_ccnd1_exp
+print("processing stable_line_ccnd1_exp")
+read_tsv('./data-raw/supp_figure4c.txt', col_names = TRUE) %>%
+  rename(
+    `Biological Replicate` = experiment,
+    `Cell line` = cellLine
+  ) %>%
+  mutate(
+    condition = gsub("miR34a AS", "lncTAM34a ", condition),
+    condition = gsub("mock", "mock", condition),
+    gene = gsub("B-actin", "Actin", gene)
+  ) %>%
+  mutate(
+    condition = parse_factor(
+      condition,
+      levels = c("mock", "lncTAM34a")
+    )
+  ) %>%
+  write_rds(., path = './data/supp_figure4c.rds')
+
+#Supplementary Figure 4d, stable_line_ccnd1_prot
+print("processing stable_line_ccnd1_prot")
+read_tsv('./data-raw/supp_figure4d.txt', col_names = TRUE) %>%
+  rename(`Biological Replicate` = experiment) %>%
+  mutate(
+    condition = gsub("miR34a AS", "lncTAM34a", condition),
+    condition = gsub("mock", "mock", condition)
+  ) %>%
+  mutate(condition = parse_factor(
+    condition,
+    levels = c("mock", "lncTAM34a")
+  )) %>%
+  write_rds(., path = './data/supp_figure4d.rds')
+
+#Supplementary Figure 5c, Stable line proliferation
 f <- list.files(
-  'data-raw/stable_line_proliferation', pattern = "\\.csv$",
+  'data-raw/supp_figure5c', pattern = "\\.csv$",
   recursive = TRUE, full.names = TRUE
 )
 
@@ -457,6 +393,59 @@ f %>%
     Type = if_else(str_detect(Sample, "unstained"), "unstained", "stained")
   ) %>%
   select(Type, Time, `Cell line`:`Biological replicate`, `FSC-A`:Violet) %>%
-  write_rds(., path = './data/stable_line_proliferation.rds')
+  write_rds(., path = './data/supp_figure5c.rds')
+
+#Supplementary Figure 7, lnc34a_splice_jnc
+print("processing lnc34a_splice_jnc")
+read_tsv('./data-raw/supp_figure7.txt') %>%
+  pull(16) %>%
+  data_frame(filename = .) %>%
+  mutate(file_contents = map(
+    filename,
+    ~ miR34AasRNAproject:::.readAndFilter(
+      .,
+      start = 9241796,
+      stop = 9257102,
+      col_types = list(
+        col_character(), col_double(), col_double(), col_character(),
+        col_double(), col_character(), col_double(), col_character(),
+        col_double()
+      )
+    )
+  )) %>%
+  unnest() %>%
+  mutate(filename = basename(filename)) %>%
+  rename(
+    chr = X1, start = X2, stop = X3, name = X4, score = X5,
+    strand = X6, level = X7, signif = X8, score2 = X9
+  ) %>%
+  write_rds(., path = './data/supp_figure7.rds')
+
+#Supplementary Figure 8, lnc34a_cage
+#the chromosomal regions correspond to 200 bp upstream of the lnc34a start
+#site and 200 bp downstream of the GENCODE annotated miR34a asRNA start site.
+print("processing lnc34a_cage")
+parseUCSCfiles('http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeRikenCage/files.txt') %>%
+  filter(type == "bedRnaElements") %>%
+  write_tsv(., path = './data-raw/supp_figure8.txt') %>%
+  mutate(fileContens =
+    map(
+      `url`,
+      ~ print(.) %>%
+        read_tsv(., col_names = FALSE, na = c("", "NA", ".")) %>%
+        filter(X1 == "chr1" & X2 >= (9241796 - 200) & X3 <= (9242263 + 200) & X6 == "+")
+    )
+  ) %>%
+  unnest() %>%
+  rename(
+    chr = X1, start = X2, stop = X3, name = X4, score = X5,
+    strand = X6, level = X7, signif = X8, score2 = X9
+  ) %>%
+  write_rds(., path = './data/supp_figure8.rds')
+
+#coding potential Geiger
+print("processing coding_potential_geiger")
+read_tsv('./data-raw/coding_potential_geiger.txt') %>%
+  write_rds(., path = './data/coding_potential_geiger.rds')
 
 #source('./data-raw/saveRDS.R')
