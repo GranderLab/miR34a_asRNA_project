@@ -51,11 +51,12 @@ fileMap <- function(type) {
     `Supplementary Figure 3b` = "p1_construct/p1_construct.Rmd",
     `Supplementary Figure 3c` = "p1_hek293t/p1_hek293t.Rmd",
     `Supplementary Figure 4a` = "stable_line_expression_hek293t/stable_line_expression_hek293t.Rmd",
-    `Supplementary Figure 4b` = "stable_line_ccnd1_exp/stable_line_ccnd1_exp.Rmd",
-    `Supplementary Figure 4c` = "stable_line_ccnd1_prot/stable_line_ccnd1_prot.Rmd",
-    `Supplementary Figure 5` = "tcga_survival_total/tcga_survival_total.Rmd",
-    `Supplementary Figure 6` = "lnc34a_cage/lnc34a_cage.Rmd",
-    `Supplementary Figure 7` = "lnc34a_splice_jnc/lnc34a_splice_jnc.Rmd",
+    `Supplementary Figure 4c` = "stable_line_ccnd1_exp/stable_line_ccnd1_exp.Rmd",
+    `Supplementary Figure 4d` = "stable_line_ccnd1_prot/stable_line_ccnd1_prot.Rmd",
+    `Supplementary Figure 6` = "stable_line_proliferation/stable_line_proliferation.Rmd",
+    `Supplementary Figure 7` = "tcga_survival_total/tcga_survival_total.Rmd",
+    `Supplementary Figure 8` = "lnc34a_splice_jnc/lnc34a_splice_jnc.Rmd",
+    `Supplementary Figure 9` = "lnc34a_cage/lnc34a_cage.Rmd",
     `Supplementary Document 2` = "primers/primers.Rmd"
   )
   
