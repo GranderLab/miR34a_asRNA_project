@@ -435,7 +435,7 @@ f %>%
       Time == "day3" ~ "72"
     ),
     `Cell line` = case_when(
-      str_detect(Sample, "^m") ~ "Mock",
+      str_detect(Sample, "^m") ~ "mock",
       str_detect(Sample, "^[f | F]") ~ "lncTAM34a",
       TRUE ~ Sample
     ),
