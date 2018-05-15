@@ -442,7 +442,7 @@ f %>%
     Condition = case_when(
       str_detect(Sample, "0.1") ~ "0.1% FBS",
       str_detect(Sample, "HBSS") ~ "HBSS",
-      str_detect(Sample, "normal") ~ "Normal"
+      str_detect(Sample, "normal") ~ "RPMI"
     ),
     `Technical replicate` = case_when(
       str_detect(Sample, "t1") ~ 1,
