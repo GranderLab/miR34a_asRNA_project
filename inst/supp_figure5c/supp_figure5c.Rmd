@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Figure 6"
+title: "Supplementary Figure 5c"
 subtitle: "Monitoring proliferation of miR34a asRNA overexpressings cells under conditions of starvation"
 author: "Jason T. Serviss"
 date: "31/01/2017"

@@ -115,7 +115,7 @@ primers
 
 ```{r, message = FALSE}
 
-data <- getData("Figure 2c")
+data <- getData("Figure 2d")
 
 .calcP <- function(`Cell line`, gene, logValue, data) {
   bool1 <- pull(data, `Cell line`) == `Cell line`

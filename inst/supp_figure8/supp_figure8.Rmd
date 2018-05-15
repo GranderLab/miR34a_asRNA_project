@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Figure 6"
+title: "Supplementary Figure 8"
 subtitle: "Lnc34a CAGE"
 author: "Jason T. Serviss"
 date: "`r Sys.Date()`"
@@ -48,27 +48,27 @@ rm(packages)
 
 ```{r}
 nrCellLinesDown <- function() {
-  getData("Supplementary Figure 6") %>% 
+  getData("Supplementary Figure 8") %>% 
     pull(cell) %>%
     unique() %>%
     length()
 }
 
 cellLinesInFinal <- function() {
-  getData("Supplementary Figure 6") %>%
+  getData("Supplementary Figure 8") %>%
     pull(cell) %>%
     unique()
 }
 
 RNAprepTable <- function() {
-  getData("Supplementary Figure 6") %>%
+  getData("Supplementary Figure 8") %>%
     mutate(`rna extract` = str_replace(`rna extract`, "total", "total RNA")) %>%
     select(`rna extract`) %>%
     dplyr::count(`rna extract`)
 }
 
 localizationTable <- function() {
-  getData("Supplementary Figure 6") %>%
+  getData("Supplementary Figure 8") %>%
     select(localization) %>%
     dplyr::count(localization)
 }
@@ -129,14 +129,13 @@ gdata <- bind_rows(gdata, pw) %>%
   mutate(gene = readr::parse_factor(gene, levels = c("miR34a asRNA", "lnc34a", "Primers")))
 
 #cage data
-cage <- getData("Supplementary Figure 6") %>%
+cage <- getData("Supplementary Figure 8") %>%
   select(start, stop, level) %>%
   group_by(start, stop) %>%
   summarize(level = sum(level)) %>%
   ungroup() %>%
   arrange(desc(level)) %>%
   mutate(y = 1:n())
-  
 
 ```
 
@@ -319,7 +318,7 @@ g <- rbind(grobz[[2]], grobz[[3]], grobz[[1]], size = "last")
 g <- resize_heights(g, unit(c(5, 1, 2), "null"))
 #grid.draw(g)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Supplementary Document 1a"][[1]])
+# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Supplementary Figure 8"][[1]])
 # ggsave(
 #   plot = g,
 #   filename = path,

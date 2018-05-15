@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Figure 4c"
+title: "Supplementary Figure 4d"
 subtitle: "CCND1 protein expression in PC3 stable lines"
 author: "Jason T. Serviss"
 date: "31/01/2017"
@@ -74,7 +74,7 @@ Resulting bands on the western blots were quantified using the ImageJ software w
 _Western blot_
 ```{r, out.width = "500px"}
 
-url <- "stable_line_ccnd1_prot/stable_line_ccnd1_prot.png"
+url <- "supp_figure4d/supp_figure4d_gel.png"
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```
@@ -88,7 +88,7 @@ The resulting western blot showing results from the three independant experiment
 _Quantification_
 ```{r, message = FALSE}
 
-data <- getData("Supplementary Figure 4c")
+data <- getData("Supplementary Figure 4d")
 
 #normalize to house keeping gene
 data <- data %>%
@@ -253,6 +253,7 @@ figure <- plotPDF(pdf)
 ```
 
 <div class="caption">
+
 Western blot quantification showing cyclin D1 protein levels in PC3 miR34a asRNA over-expressing stable lines compared to mock. The points represent the values obtained from each independant experiment (n = 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
 </div>
 

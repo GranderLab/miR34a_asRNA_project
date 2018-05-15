@@ -118,7 +118,7 @@ primers
 
 ```{r, out.width = "850px"}
 
-url <- fileMap(type = "png")["Supplementary Figure 3a"][[1]]
+url <- fileMap(type = "png")["Supplementary Figure 3b"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
 
 ```

@@ -132,7 +132,7 @@ See Supplementary Figure 3a-b for a schematic representation of the P1 construct
 
 ```{r, message = FALSE}
 
-data <- getData("Figure 2d")
+data <- getData("Figure 2e")
 
 #Luciferase = miR34a HG
 #Renilla = miR34a AS

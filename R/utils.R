@@ -217,7 +217,7 @@ getData <- function(figure) {
   if(!figure %in% figsWithData) {
     stop("There is no data for the figure you specified")
   }
-  if(figure == "Figure 4a") figure <- "Figure 4b"
+  if(figure == "Figure 4b") figure <- "Figure 4a"
   if(figure == "Supplementary Figure 1a") figure <- "Figure 1c"
   if(figure == "Supplementary Figure 1b") figure <- "Figure 1c"
   if(figure == "Supplementary Figure 6") figure <- "Figure 4a"
