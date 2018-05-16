@@ -51,13 +51,13 @@ As p53 is a well-known regulator of senescence, growth, and apoptosis and has be
 
 _Cell culture and proliferation assay_
 
-20^4 PC3 cells, either miR34a asRNA overexpressing or mock, were harvested and stained in 1 ml PBS with 5uM CellTrace Violet (Invitrogen) for 5min and subsequently seeded in 12 well plates. Time 0 measurements were taken once cells had attatched and treatments with RPMI (Gibco, life technology) 10% FBS, RPMI 0.1% FBS, or HBSS were simultaniously initiated in the remaining cells. RPMI mediums were all additionally supplemented with 2mM L-glutamine and 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum. Cells were incubated for the indicated times before harvesting and CellTrace Violet was quantified via flow cytometry (Sony SH800S Cell Sorter). Time 0 was performed in biological triplicate and technical duplicate whereas all other time points were performed in biological triplicates with one technical replicate.
+PC3 stable cell lines, either miR34a asRNA overexpressing or mock, were harvested and stained in 1 ml PBS with 5uM CellTrace Violet for 5 minutes and subsequently seeded in 12 well plates at 2 x 104 cells per well. Time 0 measurements were taken once cells had attached and treatments with RPMI (Gibco, life technology) 10% FBS, RPMI 0.1% FBS, or HBSS were simultaneously initiated in the remaining cells. RPMI mediums were all additionally supplemented with 2mM L-glutamine and 50ug/ml Penicillin-Streptomycin. Cells were incubated for the indicated times before harvesting and CellTrace Violet was quantified via flow cytometry (Sony SH800S Cell Sorter). Time 0 was performed in biological triplicate and technical duplicate whereas all other time points were performed in biological triplicates with one technical replicate. 
 
 <br></br>
 
 _Analysis_
 
-Each replicate and condition were subsampled so that each had a total of 10000 cells. The mean of each technical replicate for time point 0 was calculated and, subsequently, the time 0 flouresence intensity was subtracted from each sample. The mean difference in flouresence intensity was then calculated for each biological replicate and condition and used to build a polynomial model per condition (i.e. RPMI, 0.1% FBS, and HBSS).
+Analysis was performed by first, subsampling each replicate and condition so that each had a total of 10000 cells. The mean of each technical replicate for time point 0 was calculated and, subsequently, the time 0 fluorescence intensity was subtracted from each sample. The mean difference in fluorescence intensity was then calculated for each biological replicate and condition and used to build a polynomial regression model per condition (i.e. RPMI, 0.1% FBS, and HBSS) where difference in fluorescence intensity was modeled as a function of time and cell line. Reported P values are derived from the t-test, testing the null hypothesis that the coefficient estimate of the cell line covariate is equal to 0.
 
 <br></br>
 

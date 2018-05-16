@@ -67,7 +67,7 @@ _Cell culture and confluency quantification_
 
 _Analysis_
 
-Three technical triplicates and three biological replicates were included in each experiment and these were independantly normalized for each condition to the 0 time point afterwhich the mean was calculated for the technical replicates. A polynomial regression model was then implemented separatley for each culture condition. with the mean of the technical replicates as the dependant variable and time and cell line as the independant variables.
+Fold confluency was then calculated as % confluency / % confluency time 0 for each condition and the mean of the 3 technical replicates was subsequently calculated for each of the 3 biological replicates. A polynomial regression model was then constructed modeling the fold confluency as the dependent variable and time and cell line as independent variables. Reported P values are derived from the t-test, testing the null hypothesis that the coefficient estimate of the cell line covariate is equal to 0. 
 
 <br></br>
 
@@ -265,7 +265,7 @@ ggsave(
 ```
 
 <div class="caption">
-The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. Fold confluency (% confluency / Time 0 % confluency) is indicated on the y-axis. Colored lines indicate the polynomial regression model where mean fold confluency from 3 independant experiments is the dependant variable and time and cell line are independant variables. The grey shadows illustrate the 95% confidence interval for the regression. Estimates, standard error (std.error), and P values for the cell line covariate for each model are indicated in the upper left hand corner.
+The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. Fold confluency (% confluency / Time 0 % confluency) is indicated on the y-axis. Colored lines indicate the polynomial regression model where mean fold confluency from 3 independent experiments was modeled as a function of time and cell line. The grey shadows illustrate the 95% confidence interval for the regression. Estimates, standard error (std.error), and P values for the cell line covariate for each model are indicated in the upper left hand corner.
 </div>
 
 <br></br>
