@@ -67,7 +67,7 @@ _Cell culture and confluency quantification_
 
 _Analysis_
 
-Three technical triplicates were included in each experiment and these were independantly normalized for each condition to the 0 time point afterwhich the mean was calculated. The 95% confidence interval was then calculated based on the three independant experiments which were preformed.
+Three technical triplicates and three biological replicates were included in each experiment and these were independantly normalized for each condition to the 0 time point afterwhich the mean was calculated for the technical replicates. A polynomial regression model was then implemented separatley for each culture condition. with the mean of the technical replicates as the dependant variable and time and cell line as the independant variables.
 
 <br></br>
 
@@ -75,7 +75,7 @@ Three technical triplicates were included in each experiment and these were inde
 
 _Example confluence measurment_
 
-```{r, out.width = "850px"}
+```{r, out.width = "450px"}
 
 url <- fileMap(type = "png")["Supplementary Figure 5a"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
@@ -90,7 +90,7 @@ Representative pictures from the growth analysis shown in Figure 3C. The green c
 
 _Example phase contrast_
 
-```{r, out.width = "850px"}
+```{r, out.width = "450px"}
 
 url <- fileMap(type = "png")["Supplementary Figure 5b"][[1]]
 knitr::include_graphics(file.path(projectUrl, url))
@@ -147,25 +147,11 @@ data <- data %>%
   ) %>%
   ungroup()
 
-#calculate stats
-stats <- data %>%
-  filter(Time != 0) %>%
-  group_by(`Cell line`, Treatment, Time) %>%
-  summarize(
-    min = min(techMean),
-    max = max(techMean),
-    mean = mean(techMean),
-    median = median(techMean),
-    CI95l = t.test(techMean)$conf.int[1],
-    CI95h = t.test(techMean)$conf.int[2]
-  )
-
 #linear model
 model.data <-  data %>%
   mutate(Time = as.numeric(Time)) %>%
   group_by(Treatment) %>%
-  mutate(rank = rank(techMean)) %>%
-  do(glance(lm(rank ~ Time +`Cell line`, data = .))) %>%
+  do(glance(lm(techMean ~ poly(Time, 24) +`Cell line`, data = .))) %>%
   ungroup() %>%
   rename(pValue = p.value) %>%
   pFormat(.) %>%
@@ -177,8 +163,7 @@ as.data.frame(model.data)
 growth.lm <- data %>%
   mutate(Time = as.numeric(Time)) %>%
   group_by(Treatment) %>%
-  mutate(rank = rank(techMean)) %>%
-  do(tidy(lm(rank ~ Time +`Cell line`, data = .))) %>%
+  do(tidy(lm(techMean ~ poly(Time, 24) +`Cell line`, data = .))) %>%
   ungroup() %>%
   rename(pValue = p.value) %>%
   pFormat(.) %>%
@@ -192,23 +177,26 @@ as.data.frame(growth.lm)
 ```{r, fig.align='center', fig.height=8, fig.width=12}
 
 p <- ggplot(data = NULL) +
-  geom_ribbon(
-    data = stats,
+  geom_smooth(
+    data = data,
     aes(
       x = Time,
-      ymin = CI95l, 
-      ymax = CI95h, 
+      y = techMean,
       group = `Cell line`,
-      fill = `Cell line`
-    ), 
+      colour = `Cell line`
+    ),
+    method = "lm", 
+    formula = y ~ poly(x, 24),
     alpha = 0.2,
-    show.legend = FALSE
+    size = 0.5,
+    show.legend = TRUE
   ) +
   facet_grid(. ~ Treatment) +
   scale_x_discrete(breaks = seq(0, 35, 5)) +
+  scale_y_continuous(breaks = c(1, 1.2, 1.4, 1.6)) +
   labs(
     x = "Time (hours)", 
-    y = "Normalized % confluency",
+    y = "Fold confluency",
     title = "miR34a asRNA's role in growth regulation."
   ) + 
   guides(
@@ -216,91 +204,75 @@ p <- ggplot(data = NULL) +
   )
 
 markdown <- p +
-  geom_linerange(
-    data = stats,
-    aes(
-      x = Time,
-      colour = `Cell line`,
-      ymin = min,
-      ymax = max
-    ), 
-    position = position_dodge(width = 1),
-    show.legend = FALSE
-  ) + 
-  geom_point(
-    data = stats,
-    aes(
-      x = Time, 
-      y = median,
-      group = `Cell line`,
-      colour = `Cell line`
-    ), 
-    position = position_dodge(width = 1),
-    show.legend = TRUE
-  ) + 
-  guides(
-    colour = guide_legend(
-      title = "Cell line", 
-      override.aes = list(size = 3)
-    )
+  geom_label(
+    data = filter(growth.lm, term == "`Cell line`lncTAM34a"),
+    aes(x = 2, y = 1.64, label = paste0("estimate=", round(estimate, digits = 4))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
+  ) +
+  geom_label(
+    data = filter(growth.lm, term == "`Cell line`lncTAM34a"),
+    aes(x = 2, y = 1.62, label = paste0("std.error=", round(std.error, digits = 4))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
+  ) +
+  geom_label(
+    data = filter(growth.lm, term == "`Cell line`lncTAM34a"),
+    aes(x = 2, y = 1.6, label = paste0("p=", p.value)),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
   )
 
 plotRmarkdown(markdown)
 
 pdf <- p +
-  geom_linerange(
-    data = stats,
-    aes(
-      x = Time,
-      colour = `Cell line`,
-      ymin = min,
-      ymax = max
-    ), 
-    position = position_dodge(width = 1),
-    lwd = 0.2,
-    show.legend = FALSE
-  ) + 
-  geom_point(
-    data = stats,
-    aes(
-      x = Time, 
-      y = median,
-      group = `Cell line`,
-      colour = `Cell line`
-    ), 
-    size = 0.25,
-    position = position_dodge(width = 1),
-    show.legend = TRUE
-  ) + 
-  guides(
-    colour = guide_legend(
-      title = "Cell line", 
-      override.aes = list(size = 2)
-    )
+  geom_label(
+    data = filter(growth.lm, term == "`Cell line`lncTAM34a"),
+    aes(x = 2, y = 1.68, label = paste0("estimate=", round(estimate, digits = 4))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
+  ) +
+  geom_label(
+    data = filter(growth.lm, term == "`Cell line`lncTAM34a"),
+    aes(x = 2, y = 1.64, label = paste0("std.error=", round(std.error, digits = 4))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
+  ) +
+  geom_label(
+    data = filter(growth.lm, term == "`Cell line`lncTAM34a"),
+    aes(x = 2, y = 1.6, label = paste0("p=", p.value)),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
   )
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3c"][[1]])
-# ggsave(
-#   plot = figure,
-#   filename = path,
-#   device = cairo_pdf,
-#   height = 60,
-#   width = 83,
-#   units = "mm"
-# )
+path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3c"][[1]])
+ggsave(
+  plot = figure,
+  filename = path,
+  device = cairo_pdf,
+  height = 60,
+  width = 83,
+  units = "mm"
+)
 ```
 
 <div class="caption">
-The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. The points represent the median values obtained from each independant experiment (n = 3) whereas, the shadow represents 95% confidence interval, and the vertical line represents the minimum and maximum values from the independant experiments.
+The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. Fold confluency (% confluency / Time 0 % confluency) is indicated on the y-axis. Colored lines indicate the polynomial regression model where mean fold confluency from 3 independant experiments is the dependant variable and time and cell line are independant variables. The grey shadows illustrate the 95% confidence interval for the regression. Estimates, standard error (std.error), and P values for the cell line covariate for each model are indicated in the upper left hand corner.
 </div>
 
 <br></br>
 
 #### _Conclusions_
 
-miR34a asRNA overexpression causes a minor decrease in cell growth under normal conditions (RPMI) although under conditions of cellular stress through starvation, this effect is increased dramatically. 
+miR34a asRNA overexpression causes a minor decrease in cell growth under normal conditions (RPMI) although under conditions of cellular stress through starvation, this effect is increased. 
 
 <br></br><br></br>
 
