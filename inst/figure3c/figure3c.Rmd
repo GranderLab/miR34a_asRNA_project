@@ -40,6 +40,13 @@ rm(packages)
 
 ```
 
+```{r}
+
+projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
+dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
+
+```
+
 <br></br>
 
 #### _Introduction_
@@ -65,6 +72,36 @@ Three technical triplicates were included in each experiment and these were inde
 <br></br>
 
 #### _Results_
+
+_Example confluence measurment_
+
+```{r, out.width = "850px"}
+
+url <- fileMap(type = "png")["Supplementary Figure 5a"][[1]]
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+Representative pictures from the growth analysis shown in Figure 3C. The green color indicates the surface covered by cells as detected by the analysis software.
+</div>
+
+<br></br>
+
+_Example phase contrast_
+
+```{r, out.width = "850px"}
+
+url <- fileMap(type = "png")["Supplementary Figure 5b"][[1]]
+knitr::include_graphics(file.path(projectUrl, url))
+
+```
+
+<div class = "caption">
+A representative phase contrast picture from the 12 hour time point of the growth analysis in Figure 3C.
+</div>
+
+<br></br>
 
 ```{r, message = FALSE}
 

@@ -54,6 +54,8 @@ fileMap <- function(type) {
     `Supplementary Figure 4b` = "supp_figure4b/supp_figure4b.Rmd",
     `Supplementary Figure 4c` = "supp_figure4c/supp_figure4c.Rmd",
     `Supplementary Figure 4d` = "supp_figure4d/supp_figure4d.Rmd",
+    `Supplementary Figure 5a` = "supp_figure5a/supp_figure5a.Rmd",
+    `Supplementary Figure 5b` = "supp_figure5b/supp_figure5b.Rmd",
     `Supplementary Figure 5c` = "supp_figure5c/supp_figure5c.Rmd",
     `Supplementary Figure 6` = "supp_figure6/supp_figure6.Rmd",
     `Supplementary Figure 7` = "supp_figure7/supp_figure7.Rmd",
