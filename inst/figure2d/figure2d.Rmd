@@ -1,6 +1,6 @@
 ---
 title: "Figure 2d"
-subtitle: "P1 transfections in HCT116 and HEK293t cells"
+subtitle: "miR34a asRNA knock down in U2OS cells"
 author: "Jason T. Serviss"
 date: "31/01/2017"
 output:
@@ -14,14 +14,6 @@ vignette: >
 editor_options: 
   chunk_output_type: console
 ---
-
-<style> 
-.caption { 
-  color: Black; 
-  font-family: "Times New Roman", Times, serif;
-  font-size: 1.0em; 
-}
-</style>
 
 ```{r, echo = FALSE, message = FALSE}
 
@@ -41,7 +33,9 @@ rm(packages)
 
 #### _Introduction_
 
-It is likely, due to the head-to head orientation of miR34a HG and asRNA, that transcription initiation may be activated from a single promoter in a bi-directional manner. To investigate whether miR34a HG and asRNA are transcribed from the same promoter as convergent transcripts, we cloned the miR34a HG promoter, including the p53 binding site, into a luciferase/renilla dual reporter vector which we hereafter refer to as p1. The p1 sequence was previously published in Raver-Shapira, N., et al., Transcriptional activation of miR-34a contributes to p53-mediated apoptosis. Mol Cell, 2007. 26(5): p. 731-43.
+We hypothesized that miR34a asRNA may function to mediate the levels of its sense gene, miR34a. To this end, we utilized
+siRNA targeting exon 2 of the miR34a asRNA transcript to lower its expression levels and observe possible effects on 
+miR34a HG in U2OS cells.
 
 <br></br>
 
@@ -51,54 +45,48 @@ It is likely, due to the head-to head orientation of miR34a HG and asRNA, that t
 
 _Cell culture, transfection and luminescence quantification_
 
-All cell lines were cultured at 5% CO2 and 37° C with HEK293T cells cultured in DMEM high glucose (Hyclone) and HCT116 cells in McCoy’s 5a (Life Technologies). All growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 10,000 cells per well in a 96-well plate with a white bottom and cultured overnight. The following day cells were co-transfected with 10ng of empty, p1, or p2 plasmid and GFP using the standard lipofektamine 2000 (Life Technologies) protocol. The expression of GFP and luminescence was measured 24 h post transfection by using the Dual-Glo Luciferase Assay System (Promega) and detected by the GloMax-Multi+ Detection System (Promega). The expression of luminescence was normalized to GFP.
+All cell lines were cultured at 5% CO2 and 37° C with U2OS cells cultured in McCoy’s 5a (Life Technologies). Growth mediums were supplemented with 10% heat-inactivated FBS and 50 μg/ml of streptomycin and 50 μg/ml of penicillin. Cells were plated at 25,000 cells per well in a 12-well plate and cultured overnight. The following day cells were transfected with 10nM si-Ctl or si-lncTAM34a using the standard lipofektamine 2000 (Life Technologies) protocol. si-Ctl was purchased from Qiagen (cat. nr. 1027310) and si-lncTAM34a was purchased from Eurofins. The sequence for si-Ctl is not available from the manufacturer although the sequence for si-lncTAM34a is shown below. Cells were harvested for RNA extraction 48 hours after transfection.
 
 <br></br>
 
-_Analysis_
-
-Three independant experiments (biological replicates) were performed in total. The Student's t-test was used to compare the empty vs p1 group's log2 activity for both genes.
-
-<br></br>
-
-_Constructs_
+_siRNA_
 
 ```{r}
 
-ps <- data.frame(
-  name = c("p1"),
-  sequence = c("GCG CCC TGC CTG GCC CCC ACC TGG TCC TCT TTC CTT TTC AGG TGG AGG AGA TGC CGC TGT
-              CCC GTC GGT CTG GGG ACA GCC CAG CTC CCC GGA TCC CGG GCT GGA GAG ACG CGT CGC GGC   
-              CCC GGG GCC TGG TGG CAC GAG CAG GAA GGA GGA CCC GGC GGC GGG CTC TGC CTG GGC TTG 
-              CCT GGG CTT GTT CCG AGC CGG GCT GCT TCT CGG TGA CCA CGC AGA TCG GGG GCA TTT GGA
-              GAT TTT GCG GGA GTC CTG CAG CCA AGC TCC GGG GCA GGA GAG GCC TGG AAG CCT GCA CTA
-              CCT GCT C"
-  )
+siRNA <- data.frame(
+  name = c("si-lncTAM34a"),
+  sequence = c("GGG AGA AGA CGA UUC UUU")
 )
-ps
+siRNA
 
 ```
 
 <br></br>
 
-_Primers_
+_QPCR_
+
+RNA was extracted using the RNeasy mini kit (Qiagen) and subsequently treated with DNase (Ambion Turbo DNA-free, Life Technologies). 500ng RNA was used for cDNA synthesis using MuMLV (Life Technologies) and a 1:1 mix of oligo(dT) and random nanomers. QPCR was carried out using KAPA 2G SYBRGreen (Kapa Biosystems) using the Applied Biosystems 7900HT machine with the cycling conditions: 95 °C for 3 min, 95 °C for 3 s, 60 °C for 30 s. QPCR primers are shown below.
+
+<br></br>
+
+_QPCR Primers_
 
 ```{r}
 
 primers <- data.frame(
     name=c(
-        "Luc_set_II_F",
-        "Luc_set_II_R",
-        "Renilla_pBiDir_F1",
-        "Renilla_pBiDir_R1",
+        "miR34a asRNA F1",
+        "miR34a asRNA R1",
+        "miR34aHG_F",
+        "miR34aHG_R",
         "B-actin_F",
         "B-actin_R"
     ),
     sequence=c(
-        "AAG ATT CAA AGT GCG CTG CTG",
-        "TTG CCT GAT ACC TGG CAG ATG",
-        "TAA CGC GGC CTC TTC TTA TTT",
-        "GAT TTG CCT GAT TTG CCC ATA",
+        "AGC GGC ATC TCC TCC ACC TGA AA",
+        "TTG CCT CGT GAG TCC AAG GAG AAT",
+        "TCT GCT CCA GTG GCT GAT GAG AAA",
+        "GTT CAC TGG CCT CAA AGT TGG CAT",
         "AGG TCA TCA CCA TTG GCA ATG AG",
         "CTT TGC GGA TGT CCA CGT CA"
     )
@@ -109,172 +97,161 @@ primers
 
 <br></br>
 
-#### _Results_
+_Analysis_
 
-*For a schematic representation of the P1 construct please see Supplementary Figure 3a-b.
+Three independant experiments (biological replicates) were performed in total measuring miR34a HG whereas miR34a asRNA was measured in 4 biological replicates. The Student's t-test was used to compare the si-Ctl and si-lncTAM34a conditions log2 fold change for both genes.
+
+<br></br>
+
+#### _Results_
 
 ```{r, message = FALSE}
 
 data <- getData("Figure 2d")
 
-.calcP <- function(`Cell line`, gene, logValue, data) {
-  bool1 <- pull(data, `Cell line`) == `Cell line`
-  bool2 <- pull(data, gene) == gene
-  bool3 <- pull(data, construct) == "Empty"
-  bool <- bool1 & bool2 & bool3
-  t.test(logValue, pull(data, logValue)[bool])$p.value
-}
+#calculate dct
+groups <- c("siRNA", "Biological Replicate", "gene")
+gois <- c("miR34a HG", "lncTAM34a")
 
 data <- data %>%
-    mutate(logValue = log2(value))
+  gather(Ct, ctMean, -(gene:`Biological Replicate`)) %>%
+  group_by_at(groups) %>%
+  mutate(`Technical Replicate` = 1:n()) %>%
+  dct(., gois, Actin, c(groups, 'Technical Replicate'), F)
 
-stats <- data %>%
-  group_by(`construct`, `Cell line`, gene) %>%
-  summarize(
-    n = n(),
-    mean = mean(logValue),
-    CI95l = t.test(logValue)$conf.int[1],
-    CI95h = t.test(logValue)$conf.int[2],
-    pValue = .calcP(`Cell line`, gene, logValue, data)
-  ) %>%
-  ungroup() %>%
+#calculate ddct
+groups[groups == "gene"] <- "GOI"
+logical <- tibble(
+  siRNA = pull(data, siRNA) == "si-Ctl"
+)
+
+data <- data %>%
+  mutate(br = `Biological Replicate`) %>%
+  ddct(., logical, c(groups, "br")) %>%
+  filter(`Technical Replicate` == 1) %>%
+  select(-`Technical Replicate`) %>%
+  distinct() %>%
+  na.omit() %>%
+  folds(.)
+
+#calculate stats
+stats <- calcStats(data, siRNA, "si-Ctl", groups) %>%
   pFormat(.)
 
-#vertical lines and labels in plot
-ys <- stats %>%
-  group_by(`Cell line`) %>%
-  summarize(max = max(CI95h)) 
-
-vl <- stats %>%
-  group_by(`Cell line`, gene) %>%
+#calculate 95% CI and mean on linear scale
+stats <- data %>%
+  #filter(siRNA == "si-lncTAM34a") %>%
+  group_by(GOI, siRNA) %>%
   summarize(
-    pValue = as.numeric(min(pValue))
+    CI95l.linear = t.test(fold)$conf.int[1], 
+    CI95h.linear = t.test(fold)$conf.int[2]
   ) %>%
   ungroup() %>%
-  pFormat(.) %>%
+  full_join(stats, by = c("siRNA", "GOI"))
+
+stats <- data %>%
+  group_by(GOI, siRNA) %>%
+  summarize(mean.linear = mean(fold)) %>%
+  ungroup() %>%
+  full_join(stats, by = c("siRNA", "GOI"))
+
+#vertical lines and labels in plot
+vl <- stats %>%
   mutate(
     x = case_when(
-      gene == "Renilla" ~ 1 + 0.25,
-      gene == "Luciferase" ~ 1 - 0.25
+      GOI == "miR34a HG" ~ 2 - 0.25,
+      GOI == "lncTAM34a" ~ 1 - 0.25
     ),
     xend = case_when(
-      gene == "Renilla" ~ 2 + 0.25,
-      gene == "Luciferase" ~ 2 - 0.25
+      GOI ==  "miR34a HG" ~ 2 + 0.25,
+      GOI == "lncTAM34a" ~ 1 + 0.25
     ),
-    pFormat = pFormat
-  ) %>%
-  left_join(ys) %>%
-  mutate(max = max + c(0.25, 1.2, 0.25, 1.2))
-
-#fix gene labels
-data <- data %>%
-  mutate(plotGene = case_when(
-    gene == "Luciferase" ~ "  Luciferase\n(miR34a HG)",
-    gene == "Renilla"    ~ "    Renilla\n(lncTAM34a)",
-    TRUE ~ "somehow missed a gene"
-  ))
-
-stats <- stats %>%
-  mutate(plotGene = case_when(
-    gene == "Luciferase" ~ "  Luciferase\n(miR34a HG)",
-    gene == "Renilla"    ~ "    Renilla\n(lncTAM34a)",
-    TRUE ~ "somehow missed a gene"
-  ))
-
-vl <- vl %>%
-  mutate(plotGene = case_when(
-    gene == "Luciferase" ~ "  Luciferase\n(miR34a HG)",
-    gene == "Renilla"    ~ "    Renilla\n(lncTAM34a)",
-    TRUE ~ "somehow missed a gene"
-  ))
-
+    label = if_else(GOI == "miR34a HG", 2, 1), 
+    max = max(CI95h.linear)
+  )
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12}
-
-data <- filter(data, construct %in% c("p1", "Empty"))
-stats <- filter(stats, construct %in% c("p1", "Empty"))
+```{r, fig.align='center', fig.height=8, fig.width=12, warning = FALSE}
 
 p <- ggplot(data = NULL) +
   geom_dotplot(
     data = data, 
     aes(
-      x = construct,
-      y = logValue,
-      fill = plotGene
+      x = `GOI`,
+      y = fold,
+      fill = siRNA
     ),
-    binwidth = 1/10,
-    #alpha = 0.5,
+    binwidth = 0.01,
     colour = NA,
+    #alpha = 0.5,
     position = position_dodge(width = 0.9), 
     binaxis = 'y', 
     stackdir = 'center',
-    dotsize = 3,
+    dotsize = 4,
     show.legend = TRUE
   ) +
-  facet_grid(. ~ `Cell line`) +
-  labs(
-    x = "Construct",
-    y = "log2 activity (a.u.)"
-  )
+  scale_y_continuous("Fold")+
+  labs(x = "Gene")
 
 markdown <- p +
   geom_linerange(
     data = stats,
     aes(
-      x = construct,
-      ymin = CI95l,
-      ymax = CI95h,
-      group = plotGene
+      x = GOI,
+      ymin = CI95l.linear,
+      ymax = CI95h.linear,
+      group = interaction(siRNA, GOI)
     ),
-    colour = "grey20",
     position = position_dodge(width = 0.9),
+    colour = "gray20",
     show.legend = FALSE
   ) +
   geom_point(
     data = stats,
     aes(
-      x = construct,
-      y = mean,
-      group = plotGene
+      x = GOI,
+      y = mean.linear,
+      group = interaction(siRNA, GOI)
     ),
-    position = position_dodge(width = 0.9),
-    show.legend = FALSE,
     colour = "gray20",
+    shape = 95,
     size = 6,
-    shape = 95
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
   ) +
   geom_label(
     data = vl,
     aes(
-      x = 1.5, 
-      y = max + 0.25, 
+      x = label, 
+      y = max + 0.075, 
       label = pFormat, 
-      group = gene
+      group = interaction(siRNA, GOI)
     ),
+    fill = "white",
     label.size = 0,
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
-    fill = "white",
-    size = 5,
+    fontface = "bold",
     family = "Arial Unicode MS",
-    position = position_dodge(width = 0.9)
+    size = 3
   ) +
   geom_segment(
     data = vl,
     aes(
       x = x,
-      y = max,
+      y = max + 0.05,
       xend = xend,
-      yend = max
+      yend = max + 0.05
     ),
     colour = "grey43",
     show.legend = FALSE
   ) +
-  guides(fill = guide_legend(
-    title = "Gene", 
-    override.aes = list(size = 6)
-  ))
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 6)
+    )
+  )
 
 plotRmarkdown(markdown)
 
@@ -282,85 +259,87 @@ pdf <- p +
   geom_linerange(
     data = stats,
     aes(
-      x = construct,
-      ymin = CI95l,
-      ymax = CI95h,
-      group = plotGene
+      x = GOI,
+      ymin = CI95l.linear,
+      ymax = CI95h.linear,
+      group = interaction(siRNA, GOI)
     ),
+    position = position_dodge(width = 0.9),
     colour = "grey30",
     size = 0.3,
-    position = position_dodge(width = 0.9),
     show.legend = FALSE
   ) +
   geom_point(
     data = stats,
     aes(
-      x = construct,
-      y = mean,
-      group = plotGene
+      x = GOI,
+      y = mean.linear,
+      group = interaction(siRNA, GOI)
     ),
-    position = position_dodge(width = 0.9),
-    show.legend = FALSE,
     colour = "grey30",
+    shape = 95,
     size = 4,
-    shape = 95
+    position = position_dodge(width = 0.9),
+    show.legend = FALSE
   ) +
   geom_label(
     data = vl,
     aes(
-      x = 1.5, 
-      y = max + 0.4, 
+      x = label, 
+      y = max + 0.1, 
       label = pFormat, 
-      group = gene
+      group = interaction(siRNA, GOI)
     ),
+    fill = "white",
+    colour = "grey30",
     label.size = 0,
     label.padding = unit(0.01, "lines"),
     show.legend = FALSE,
-    fill = "white",
-    colour = "grey30",
-    size = 2.5,
+    fontface = "bold",
     family = "Arial Unicode MS",
-    position = position_dodge(width = 0.9)
+    size = 2.5
   ) +
   geom_segment(
     data = vl,
     aes(
       x = x,
-      y = max,
+      y = max + 0.05,
       xend = xend,
-      yend = max
+      yend = max + 0.05
     ),
     colour = "grey30",
     size = 0.3,
     show.legend = FALSE
   ) +
-  guides(fill = guide_legend(
-    title = "Gene", 
-    override.aes = list(size = 4)
-  ))
+  guides(
+    fill = guide_legend(
+      title = "Gene", 
+      override.aes = list(size = 4)
+    )
+  )
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2c"][[1]])
-# ggsave(
-#    plot = figure,
-#    filename = path,
-#    device = cairo_pdf,
-#    height = 60,
-#    width = 68,
-#    units = "mm"
-# )
+#path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 2d"][[1]])
+#ggsave(
+#  plot = figure,
+#  filename = path,
+#  device = cairo_pdf,
+#  height = 60,
+#  width = 68,
+#  units = "mm"
+#)
 ```
 
 <div class="caption">
-miR34a asRNA and miR34a HG levels in HCT116 and HEK293t cells after transfection with P1 or empty constructs. Luciferase represents miR34a HG and renilla represents miR34a asRNA. The points represent the values obtained from each independant experiment (n = 3). 95% confidence interval (vertical black lines), mean (horizontal black lines), and p-values are shown with the horizontal line under the p-value indicating the comparison that was tested.
+lncTAM34a (n = 4) and miR34a HG (n = 3) levels after 48 hour siRNA-mediated knock down of lncTAM34a in U2OS cells.
 </div>
 
 <br></br>
 
 #### _Conclusion_
 
-Upon transfection of this construct in two separate cell lines we observed increases in both luciferase and renilla indicating that miR34a HG and asRNA expression is regulated by a single promoter contained within the p1 construct.
+miR34a asRNA KD gives rise to a ~20% decrease in miR34a HG expression levels.
 
 <br></br><br></br>
 

@@ -5,7 +5,7 @@
 \alias{calcStats}
 \title{calcStats}
 \usage{
-calcStats(data, cnt.group, cnt.value, grouping)
+calcStats(data, cnt.group, cnt.value, grouping, ...)
 }
 \arguments{
 \item{data}{tibble; A tibble output by the \link{code{ddct}}
