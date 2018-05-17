@@ -12,7 +12,8 @@ RUN  rm -f /var/lib/dpkg/available \
     libcurl4-openssl-dev \
     libxml2-dev \
     git \
-    xdg-utils
+    xdg-utils \
+    links2
 
 RUN Rscript -e "install.packages(c('devtools','knitr','rmarkdown','shiny','RCurl'), repos = 'https://cran.rstudio.com')"
 
