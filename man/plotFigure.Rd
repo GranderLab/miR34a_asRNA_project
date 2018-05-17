@@ -5,10 +5,14 @@
 \alias{plotFigure}
 \title{plotFigure}
 \usage{
-plotFigure(figure, ...)
+plotFigure(figure, open = TRUE, outputPath = NULL, ...)
 }
 \arguments{
 \item{figure}{Character; Figure to plot.}
+
+\item{open}{Logical; Should the html file be opened in the local browser?}
+
+\item{outputPath}{Character; Path to output the html file.}
 
 \item{...}{additional arguments to pass on.}
 }

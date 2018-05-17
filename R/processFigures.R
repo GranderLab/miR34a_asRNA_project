@@ -9,6 +9,8 @@
 #' @rdname plotFigure
 #' @aliases plotFigure
 #' @param figure Character; Figure to plot.
+#' @param open Logical; Should the html file be opened in the local browser?
+#' @param outputPath Character; Path to output the html file.
 #' @param ... additional arguments to pass on.
 #' @author Jason T. Serviss
 #' @examples
@@ -21,9 +23,17 @@ NULL
 #' @export
 #' @importFrom liftr lift render_docker
 
-plotFigure <- function(figure, ...) {
+plotFigure <- function(figure, open = TRUE, outputPath = NULL, ...) {
   path <- getPath(figure)
-  runDockerAndView(path)
+  htmlPath <- runDockerAndView(path)
+  if(open) {
+    browseURL(paste0('file://', htmlPath))
+  }
+  if(!is.null(outputPath)) {
+    cmd <- paste0('cp ', htmlPath, outputPath)
+    system(cmd)
+  }
+  return(htmlPath)
 }
 
 #returns the path to the figure's .rmd file
@@ -42,9 +52,7 @@ runDockerAndView <- function(path) {
   render_docker(file.path(tmpPath, basename(rmdPath)), cache = FALSE)
   print(tmpPath)
   
-  htmlPath <- file.path(tmpPath, paste0(sans_ext(basename(rmdPath)), '.html'))
-  browseURL(paste0('file://', htmlPath))
-  #unlink(tmpPath, recursive = TRUE)
+  file.path(tmpPath, paste0(sans_ext(basename(rmdPath)), '.html'))
 }
 
 #runs lift and copies the .rmd file and Dockerfile to a tmp directory (due to
@@ -71,37 +79,4 @@ moveToTmp <- function(rmdPath){
   system(sysCmd2)
   
   return(tmpPath)
-}
-
-#' renderFigure
-#'
-#' Recreates any figure from scratch.
-#'
-#' Include description.
-#'
-#' @name renderFigure
-#' @rdname renderFigure
-#' @aliases renderFigure
-#' @param figure Character; Rmd to render
-#' @param ... additional arguments to pass on.
-#' @author Jason T. Serviss
-#' @examples
-#'
-#' \dontrun{renderFigure("Figure 1a")}
-#'
-NULL
-
-#' @rdname renderFigure
-#' @export
-#' @importFrom liftr lift render_docker
-
-renderFigure <- function(figure) {
-  tmpdir <- tempdir()
-  path <- getPath(figure)
-  rmdPath <- system.file(path, package = "miR34AasRNAproject")
-  rmarkdown::render(rmdPath, output_file = file.path(tmpdir, "out.html"))
-  
-  sans_ext = tools::file_path_sans_ext
-  htmlPath <- file.path(tmpdir, "out.html")
-  browseURL(paste0('file://', htmlPath))
 }
