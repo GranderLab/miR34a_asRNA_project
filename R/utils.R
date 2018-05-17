@@ -56,7 +56,6 @@ fileMap <- function(type) {
     `Supplementary Figure 4d` = "supp_figure4d/supp_figure4d.Rmd",
     `Supplementary Figure 5a` = "supp_figure5a/supp_figure5a.Rmd",
     `Supplementary Figure 5b` = "supp_figure5b/supp_figure5b.Rmd",
-    `Supplementary Figure 5c` = "supp_figure5c/supp_figure5c.Rmd",
     `Supplementary Figure 6` = "supp_figure6/supp_figure6.Rmd",
     `Supplementary Figure 7` = "supp_figure7/supp_figure7.Rmd",
     `Supplementary Figure 8` = "supp_figure8/supp_figure8.Rmd",
@@ -213,7 +212,7 @@ getData <- function(figure) {
     'Supplementary Figure 1b', 'Supplementary Figure 2d',
     'Supplementary Figure 2e', 'Supplementary Figure 3c',
     'Supplementary Figure 4a', 'Supplementary Figure 4c',
-    'Supplementary Figure 4d', 'Supplementary Figure 5c',
+    'Supplementary Figure 4d', 'Supplementary Figure 5b',
     'Supplementary Figure 6', 'Supplementary Figure 7',
     'Supplementary Figure 8'
   )

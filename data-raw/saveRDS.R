@@ -352,9 +352,9 @@ read_tsv('./data-raw/supp_figure4d.txt', col_names = TRUE) %>%
   )) %>%
   write_rds(., path = './data/supp_figure4d.rds')
 
-#Supplementary Figure 5c, Stable line proliferation
+#Supplementary Figure 5b, Stable line proliferation
 f <- list.files(
-  'data-raw/supp_figure5c', pattern = "\\.csv$",
+  'data-raw/supp_figure5b', pattern = "\\.csv$",
   recursive = TRUE, full.names = TRUE
 )
 
@@ -393,7 +393,7 @@ f %>%
     Type = if_else(str_detect(Sample, "unstained"), "unstained", "stained")
   ) %>%
   select(Type, Time, `Cell line`:`Biological replicate`, `FSC-A`:Violet) %>%
-  write_rds(., path = './data/supp_figure5c.rds')
+  write_rds(., path = './data/supp_figure5b.rds')
 
 #Supplementary Figure 7, lnc34a_splice_jnc
 print("processing lnc34a_splice_jnc")

@@ -1,6 +1,6 @@
 ---
-title: "Figure 3c"
-subtitle: "Monitoring growth of miR34a asRNA overexpressings cells under conditions of starvation"
+title: "Supplementary Figure 5b"
+subtitle: "Monitoring proliferation of miR34a asRNA overexpressings cells under conditions of starvation"
 author: "Jason T. Serviss"
 date: "31/01/2017"
 output:
@@ -29,10 +29,7 @@ packages <- c(
     "tidyverse",
     "printr",
     "ggthemes",
-    "readr",
     "miR34AasRNAproject",
-    "grid",
-    "gtable",
     "broom"
 )
 purrr::walk(packages, library, character.only = TRUE)
@@ -40,18 +37,11 @@ rm(packages)
 
 ```
 
-```{r}
-
-projectUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/inst"
-dataUrl <- "https://github.com/GranderLab/miR34a_asRNA_project/raw/master/"
-
-```
-
 <br></br>
 
 #### _Introduction_
 
-As p53 is a well-known regulator of senescence, growth, and apoptosis and has been shown to specifically important under conditions of cellular stress, such as starvation. Therefore, we investigated whether overexpression of miR34a AS affects growth rate under normal and starvation conditions by measuring changes in confluency over time.
+As p53 is a well-known regulator of senescence, growth, and apoptosis and has been shown to specifically important under conditions of cellular stress, such as starvation. Therefore, we investigated whether overexpression of miR34a AS affects proliferation rate under normal and starvation conditions.
 
 <br></br>
 
@@ -59,248 +49,293 @@ As p53 is a well-known regulator of senescence, growth, and apoptosis and has be
 
 <br></br>
 
-_Cell culture and confluency quantification_
+_Cell culture and proliferation assay_
 
-10^4 PC3 cells, either miR34a asRNA overexpressing or WT, were seeded in 96 well plates. After attachment (3-4h) media was replaced with either RPMI (Gibco, life technology) (supplemented with 2mM L-glutamine, 50ug/ml Penicillin-Streptomycin and 10% Fetal Calf Serum) or HBSS. Cells were incubated in Spark Multimode Microplate reader for 48 hours at 37°C with 5% CO2 in a humidity chamber. Confluency was measured every hour. 
+PC3 stable cell lines, either miR34a asRNA overexpressing or mock, were harvested and stained in 1 ml PBS with 5uM CellTrace Violet for 5 minutes and subsequently seeded in 12 well plates at 2 x 104 cells per well. Time 0 measurements were taken once cells had attached and treatments with RPMI (Gibco, life technology) 10% FBS, RPMI 0.1% FBS, or HBSS were simultaneously initiated in the remaining cells. RPMI mediums were all additionally supplemented with 2mM L-glutamine and 50ug/ml Penicillin-Streptomycin. Cells were incubated for the indicated times before harvesting and CellTrace Violet was quantified via flow cytometry (Sony SH800S Cell Sorter). Time 0 was performed in biological triplicate and technical duplicate whereas all other time points were performed in biological triplicates with one technical replicate. 
 
 <br></br>
 
 _Analysis_
 
-Three technical triplicates were included in each experiment and these were independantly normalized for each condition to the 0 time point afterwhich the mean was calculated. The 95% confidence interval was then calculated based on the three independant experiments which were preformed.
+Analysis was performed by first, subsampling each replicate and condition so that each had a total of 10000 cells. The mean of each technical replicate for time point 0 was calculated and, subsequently, the time 0 fluorescence intensity was subtracted from each sample. The mean difference in fluorescence intensity was then calculated for each biological replicate and condition and used to build a polynomial regression model per condition (i.e. RPMI, 0.1% FBS, and HBSS) where difference in fluorescence intensity was modeled as a function of time and cell line. Reported P values are derived from the t-test, testing the null hypothesis that the coefficient estimate of the cell line covariate is equal to 0.
 
 <br></br>
 
 #### _Results_
 
-_Example confluence measurment_
-
-```{r, out.width = "850px"}
-
-url <- fileMap(type = "png")["Supplementary Figure 5a"][[1]]
-knitr::include_graphics(file.path(projectUrl, url))
-
-```
-
-<div class = "caption">
-Representative pictures from the growth analysis shown in Figure 3C. The green color indicates the surface covered by cells as detected by the analysis software.
-</div>
-
-<br></br>
-
-_Example phase contrast_
-
-```{r, out.width = "850px"}
-
-url <- fileMap(type = "png")["Supplementary Figure 5b"][[1]]
-knitr::include_graphics(file.path(projectUrl, url))
-
-```
-
-<div class = "caption">
-A representative phase contrast picture from the 12 hour time point of the growth analysis in Figure 3C.
-</div>
-
-<br></br>
-
 ```{r, message = FALSE}
 
-data <- getData("Figure 3c")
+data <- getData("Supplementary Figure 5b")
 
-#normalize to first time point for control (Mock)
-.normFun <- function(
-  data,
-  Confluency,
-  Treatment,
-  Biological.Replicate,
-  Technical.Replicate,
-  Cell.line
-){
-  bool1 <- data$Treatment == Treatment
-  bool2 <- data$`Biological Replicate` == Biological.Replicate
-  bool3 <- data$`Technical Replicate` == Technical.Replicate
-  bool4 <- data$Time == 0
-  bool5 <- data$`Cell line` == Cell.line
-  bool <- bool1 & bool2 & bool3 & bool4 & bool5
-  Confluency / pull(data, Confluency)[bool]
-}
+#remove cells with negative fluorescence. Consider these 1224 cells artifacts 
+data <- filter(data, Violet > 0)
 
-data <- data %>%
-  group_by(Treatment, `Biological Replicate`, `Technical Replicate`, Time, `Cell line`) %>%
+##fix day0 data
+#Since there are no treatments at time 0 and we want a corresponding Time 0 for 
+#each of the treated samples, here we expand the Time 0 sample 3 times, one for 
+#each treatment condition at later time points.
+dataExpandT0 <- data %>% 
+  filter(Time == 0) %>%
+  bind_rows(., ., .) %>%
+  mutate(Condition = c(
+      rep("RPMI", nrow(.) / 3),
+      rep("0.1% FBS", nrow(.) / 3),
+      rep("HBSS", nrow(.) / 3)
+  )) %>%
+  bind_rows(filter(data, Time != 0))
+
+#calculate means of technical replicates in day0
+#need to subsample first so that each condition has the same number of cells
+sampleN <- 10000
+
+set.seed(2387723)
+data0 <- dataExpandT0 %>%
+  filter(Time == "0" & Type == "stained") %>%
+  select(-`FSC-A`, -`BSC-A`) %>%
+  group_by(`Biological replicate`, `Technical replicate`, Condition, `Cell line`, Type) %>%
+  sample_n(size = sampleN) %>%
+  ungroup() %>%
+  arrange(`Cell line`, Condition, `Biological replicate`, `Technical replicate`, Violet) %>%
   mutate(
-    normConfluency = .normFun(
-      data,
-      Confluency,
-      Treatment,
-      `Biological Replicate`,
-      `Technical Replicate`,
-      `Cell line`
-    )
+    `Technical replicate` = rep(c("Tr1", "Tr2"), nrow(.)/2),
+    row = rep(1:(nrow(.) / 2), each = 2)
   ) %>%
-  ungroup()
-
-#calculate mean for each technical replicate
-data <- data %>%
-  group_by(Treatment, `Biological Replicate`, Time, `Cell line`) %>%
-  summarize(
-    techMean = mean(normConfluency)
-  ) %>%
-  ungroup()
-
-#calculate stats
-stats <- data %>%
-  filter(Time != 0) %>%
-  group_by(`Cell line`, Treatment, Time) %>%
-  summarize(
-    min = min(techMean),
-    max = max(techMean),
-    mean = mean(techMean),
-    median = median(techMean),
-    CI95l = t.test(techMean)$conf.int[1],
-    CI95h = t.test(techMean)$conf.int[2]
-  )
-
-#linear model
-model.data <-  data %>%
-  mutate(Time = as.numeric(Time)) %>%
-  group_by(Treatment) %>%
-  mutate(rank = rank(techMean)) %>%
-  do(glance(lm(rank ~ Time +`Cell line`, data = .))) %>%
+  spread(`Technical replicate`, Violet) %>%
+  rowwise() %>%
+  mutate(Violet = mean(c(Tr1, Tr2))) %>%
   ungroup() %>%
-  rename(pValue = p.value) %>%
-  pFormat(.) %>%
-  select(-pValue) %>%
-  rename(p.value = pFormat)
+  select(-(row:Tr2)) %>%
+  bind_rows(., ., ., .) %>%
+  mutate(Time = rep(c("0", "24", "48", "72"), each = nrow(.) / 4)) %>%
+  arrange(Time, `Cell line`, Condition, `Biological replicate`, Violet)
 
-as.data.frame(model.data)
+#Randomly sample 10000 cells from each condition so that all samples have the 
+#same number of cells
+set.seed(2387723)
+subData <- dataExpandT0 %>%
+  select(-`FSC-A`, -`BSC-A`, -`Technical replicate`) %>%
+  filter(Type == "stained" & Time != "0") %>%
+  group_by(`Biological replicate`, Condition, `Cell line`, Type, Time) %>%
+  sample_n(size = sampleN) %>%
+  ungroup() 
 
-growth.lm <- data %>%
-  mutate(Time = as.numeric(Time)) %>%
-  group_by(Treatment) %>%
-  mutate(rank = rank(techMean)) %>%
-  do(tidy(lm(rank ~ Time +`Cell line`, data = .))) %>%
-  ungroup() %>%
-  rename(pValue = p.value) %>%
-  pFormat(.) %>%
-  select(-pValue) %>%
-  rename(p.value = pFormat)
+#add back data from time point 0 with mean technical replicates calculated
+#in addition, add a time point 0 corresponding to each cell and condition and
+##calculate the difference for each cell from time 0
+subData <- subData %>%
+  bind_rows(filter(data0, Time == "0")) %>%
+  arrange(Time, `Cell line`, Condition, `Biological replicate`, Violet) %>%
+  add_column(day0Violet = data0$Violet) %>%
+  mutate(violetNorm = Violet - day0Violet) %>%
+  mutate(
+    Time = as.numeric(Time), 
+    cellLine = parse_factor(`Cell line`, levels = c("mock", "lncTAM34a"))
+  ) %>% 
+  select(-`Cell line`)
 
-as.data.frame(growth.lm)
-
+#calculate mean normalized flouresence for each condition and biological replicate
+subDataMeans <- subData %>%
+  group_by(cellLine, Time, Condition, `Biological replicate`) %>%
+  summarize(mean = mean(violetNorm)) %>%
+  ungroup()
 ```
 
-```{r, fig.align='center', fig.height=8, fig.width=12}
+Show stained vs. Unstained
+```{r, fig.align="center", fig.width=10, fig.height=8}
+data %>%
+  ggplot() +
+  geom_histogram(aes(Violet, fill = Type), alpha = 1/2, position = position_dodge(), binwidth = 0.01) +
+  theme_bw() +
+  scale_x_log10() +
+  labs(x = "log10(Fluorescence intensity)", y = "Count") +
+  facet_wrap(~Time)
+```
 
-p <- ggplot(data = NULL) +
-  geom_ribbon(
-    data = stats,
-    aes(
-      x = Time,
-      ymin = CI95l, 
-      ymax = CI95h, 
-      group = `Cell line`,
-      fill = `Cell line`
-    ), 
-    alpha = 0.2,
-    show.legend = FALSE
+Show time 0
+```{r, fig.align="center", fig.width=10, fig.height=8}
+data %>%
+  filter(Time == 0) %>%
+  unite(Sample, c("Cell line", "Biological replicate")) %>%
+  mutate(Sample = case_when(
+    str_detect(Sample, "unstained-F4") ~ "unstained-lncTAM34a",
+    str_detect(Sample, "unstained-mock") ~ "unstained-mock",
+    TRUE ~ Sample
+  )) %>%
+  select(Sample, Violet) %>%
+  distinct() %>%
+  ggplot() +
+  geom_boxplot(aes(Sample, Violet)) +
+  scale_y_log10() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  labs(x = "Sample_replicate", y = "log10(Fluorescence intensity)") +
+  theme_bw()
+```
+
+Show fluorescence loss over time
+```{r, fig.align="center", fig.width=10, fig.height=8}
+data %>%
+  mutate(Condition = if_else(Time == "0", "RPMI", Condition)) %>%
+  ggplot() +
+  geom_boxplot(aes(Time, Violet)) +
+  facet_wrap(~Type) +
+  scale_y_log10() +
+  labs(y = "log10(Fluorescence intensity)") +
+  theme_bw()
+```
+
+Show fluorescence per condition
+```{r, fig.align="center", fig.width=10, fig.height=8}
+data %>%
+  filter(Type == "stained") %>%
+  filter(Time != "0") %>%
+  mutate(Condition = parse_factor(Condition, levels = c("RPMI", "0.1% FBS", "HBSS"))) %>%
+  ggplot() +
+  geom_boxplot(aes(Time, Violet)) +
+  facet_wrap(~Condition) +
+  theme_bw() +
+  scale_y_log10() +
+  labs(y = "log10(Fluorescence intensity)")
+```
+
+Show polynomial model info
+```{r}
+#model each condition using the mean of all biological replicates using a lm
+model.info <- subDataMeans %>%
+  group_by(Condition) %>%
+  do(glance(lm(mean ~ poly(Time, 3) + cellLine, data = .))) %>%
+  ungroup()
+
+as.data.frame(model.info)
+
+proliferation.lm <- subDataMeans %>%
+  group_by(Condition) %>%
+  do(tidy(lm(mean ~ poly(Time, 3) + cellLine, data = .))) %>%
+  ungroup()
+
+as.data.frame(proliferation.lm)
+
+#extract model components to plot
+model.data <- proliferation.lm %>%
+  filter(term == "cellLinelncTAM34a") %>%
+  mutate(Condition = parse_factor(
+    Condition, levels = c("RPMI", "0.1% FBS", "HBSS")
+  )) %>% 
+  rename(pValue = p.value) %>%
+  pFormat(.)
+```
+
+```{r, eval = FALSE}
+subData %>% 
+  select(-Violet, -day0Violet) %>% 
+  nest(violetNorm) %>% 
+  spread(Time, data) %>% 
+  mutate(`24-0` = map2_dbl(`0`, `24`, function(x, y) mean(unlist(y) - unlist(x)))) %>% 
+  mutate(`48-24` = map2_dbl(`24`, `48`, function(x, y) mean(unlist(y) - unlist(x)))) %>% 
+  mutate(`72-48` = map2_dbl(`48`, `72`, function(x, y) mean(unlist(y) - unlist(x)))) %>% 
+  select(-(`0`:`72`)) %>% 
+  gather(Time, diff, -(Type:cellLine)) %>% 
+  group_by(Condition, Time) %>% 
+  summarize(m = mean(diff))
+
+subDataMeans %>% 
+  spread(cellLine, mean) %>% 
+  mutate(diff = lncTAM34a - mock) %>% 
+  group_by(Time, Condition) %>% 
+  summarize(meanDiff = mean(diff)) %>% 
+  print(n = nrow(.))
+```
+
+Plot final figure
+```{r, fig.align='center', fig.height=8, fig.width=12}
+p <- subDataMeans %>% 
+  mutate(Condition = parse_factor(Condition, levels = c("RPMI", "0.1% FBS", "HBSS"))) %>% 
+  ggplot() + 
+  geom_smooth(
+    aes(Time, mean, colour = cellLine, group = cellLine), colour = "lightgrey",
+    method = "lm", formula = y ~ poly(x, 3), size = 0.5, alpha = 0.1
   ) +
-  facet_grid(. ~ Treatment) +
-  scale_x_discrete(breaks = seq(0, 35, 5)) +
+  geom_boxplot(
+    aes(Time, mean, colour = cellLine, group = interaction(Time, cellLine)),
+    fatten = 2, lwd = 0.2
+  ) +
+  facet_wrap(~Condition) + 
+  scale_x_continuous(breaks = c(0, 24, 48, 72)) +
   labs(
     x = "Time (hours)", 
-    y = "Normalized % confluency",
-    title = "miR34a asRNA's role in growth regulation."
+    y = "Mean \U0394 fluorescence intensity"
   ) + 
-  guides(
-    colour = guide_legend(title = "Cell line", override.aes = list(size = 3))
-  )
+  guides(colour = guide_legend(title = "Cell line"))
 
 markdown <- p +
-  geom_linerange(
-    data = stats,
-    aes(
-      x = Time,
-      colour = `Cell line`,
-      ymin = min,
-      ymax = max
-    ), 
-    position = position_dodge(width = 1),
-    show.legend = FALSE
-  ) + 
-  geom_point(
-    data = stats,
-    aes(
-      x = Time, 
-      y = median,
-      group = `Cell line`,
-      colour = `Cell line`
-    ), 
-    position = position_dodge(width = 1),
-    show.legend = TRUE
-  ) + 
-  guides(
-    colour = guide_legend(
-      title = "Cell line", 
-      override.aes = list(size = 3)
-    )
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 2000, label = paste0("estimate=", round(estimate))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 1500, label = paste0("std.error=", round(std.error))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 1000, label = paste0("p=", pFormat)),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "bold", family = "Arial Unicode MS", size = 3, hjust = 0
   )
 
 plotRmarkdown(markdown)
 
 pdf <- p +
-  geom_linerange(
-    data = stats,
-    aes(
-      x = Time,
-      colour = `Cell line`,
-      ymin = min,
-      ymax = max
-    ), 
-    position = position_dodge(width = 1),
-    lwd = 0.2,
-    show.legend = FALSE
-  ) + 
-  geom_point(
-    data = stats,
-    aes(
-      x = Time, 
-      y = median,
-      group = `Cell line`,
-      colour = `Cell line`
-    ), 
-    size = 0.25,
-    position = position_dodge(width = 1),
-    show.legend = TRUE
-  ) + 
-  guides(
-    colour = guide_legend(
-      title = "Cell line", 
-      override.aes = list(size = 2)
-    )
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 3000, label = paste0("estimate=", round(estimate))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 2000, label = paste0("std.error=", round(std.error))),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
+  ) +
+  geom_label(
+    data = model.data, 
+    aes(x = 0, y = 1000, label = paste0("p=", pFormat)),
+    fill = "white", label.size = 0, label.padding = unit(0.01, "lines"),
+    position = position_dodge(width = 0.9), show.legend = FALSE,
+    fontface = "plain", family = "Arial Unicode MS", size = 2, hjust = 0
   )
 
 figure <- plotPDF(pdf)
 
-# path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Figure 3c"][[1]])
-# ggsave(
-#   plot = figure,
-#   filename = path,
-#   device = cairo_pdf,
-#   height = 60,
-#   width = 83,
-#   units = "mm"
-# )
+#path <- file.path("~/GitHub/miR34a_asRNA_project/inst", fileMap(type = "pdf")["Supplementary Figure 5b"][[1]])
+#ggsave(
+#  plot = figure,
+#  filename = path,
+#  device = cairo_pdf,
+#  height = 60,
+#  width = 100,
+#  units = "mm"
+#)
 ```
 
 <div class="caption">
-The effects of miR34a asRNA overexpression on growth in normal and starvation conditions in the PC3 prostate cancer cell line. The points represent the median values obtained from each independant experiment (n = 3) whereas, the shadow represents 95% confidence interval, and the vertical line represents the minimum and maximum values from the independant experiments.
+The effects of miR34a asRNA overexpression on proliferation in normal and starvation conditions in the PC3 prostate cancer cell line. The y-axis illustrates the mean difference (&Delta;; Time - Time 0) in flouresence intensity for each biological replicate and condition where decreased flouresence intensity indicates increased proliferation. Boxplots show the distribution of the mean differences from each of the biological replicates (n = 3). Grey lines indicate the polynomial regression model with the shadows indicating the 95% confidence intervals. Estimates, standard error (std.error), and P values for the cell line covariate for each model are indicated in the upper left hand corner.
 </div>
 
 <br></br>
 
 #### _Conclusions_
 
-miR34a asRNA overexpression causes a minor decrease in cell growth under normal conditions (RPMI) although under conditions of cellular stress through starvation, this effect is increased dramatically. 
+miR34a asRNA overexpression causes a decrease in cell growth under all examined conditions. 
 
 <br></br><br></br>
 
