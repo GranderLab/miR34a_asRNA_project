@@ -8,13 +8,12 @@
 #' @name plotFigure
 #' @rdname plotFigure
 #' @aliases plotFigure
-#' @param figure Character;
+#' @param figure Character; Figure to plot.
 #' @param ... additional arguments to pass on.
-#' @return spCounts object.
 #' @author Jason T. Serviss
 #' @examples
 #'
-#' \dontrun{plotFigure("figure1a")}
+#' \dontrun{plotFigure("Figure 1a")}
 #'
 NULL
 
@@ -72,4 +71,37 @@ moveToTmp <- function(rmdPath){
   system(sysCmd2)
   
   return(tmpPath)
+}
+
+#' renderFigure
+#'
+#' Recreates any figure from scratch.
+#'
+#' Include description.
+#'
+#' @name renderFigure
+#' @rdname renderFigure
+#' @aliases renderFigure
+#' @param figure Character; Rmd to render
+#' @param ... additional arguments to pass on.
+#' @author Jason T. Serviss
+#' @examples
+#'
+#' \dontrun{renderFigure("Figure 1a")}
+#'
+NULL
+
+#' @rdname renderFigure
+#' @export
+#' @importFrom liftr lift render_docker
+
+renderFigure <- function(figure) {
+  tmpdir <- tempdir()
+  path <- getPath(figure)
+  rmdPath <- system.file(path, package = "miR34AasRNAproject")
+  rmarkdown::render(rmdPath, output_file = file.path(tmpdir, "out.html"))
+  
+  sans_ext = tools::file_path_sans_ext
+  htmlPath <- file.path(tmpdir, "out.html")
+  browseURL(paste0('file://', htmlPath))
 }

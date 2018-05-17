@@ -19,5 +19,4 @@ RUN Rscript -e "source('https://cdn.rawgit.com/road2stat/liftrlib/aa132a2d/insta
 
 RUN Rscript -e "source('https://cdn.rawgit.com/road2stat/liftrlib/aa132a2d/install_remotes.R');install_remotes(c('GranderLab/miR34a_asRNA_project'))"
 
-RUN mkdir /liftrroot/
-WORKDIR /liftrroot/
+WORKDIR /home/miR34a_asRNA_project
