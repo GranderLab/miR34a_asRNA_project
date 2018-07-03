@@ -4,7 +4,7 @@
 
 <br></br>
 <p align="center">
-<img src="/Users/jasonserviss/Github/miR34a_asRNA_project/inst/supp_figure5b/supp_figure5b.pdf" alt="Drawing" style="width: 400px;"/>
+<img src="/Users/jasonserviss/Github/miR34a_asRNA_project/inst/supp_figure5b/supp_figure5b.png" alt="Drawing" style="width: 600px;"/>
 </p>
 
 _The effects of miR34a asRNA overexpression on proliferation in normal and starvation conditions in the PC3 prostate cancer cell line. The y-axis illustrates the mean difference (∆; Time - Time 0) in flouresence intensity for each biological replicate and condition where decreased flouresence intensity indicates increased proliferation. Boxplots show the distribution of the mean differences from each of the biological replicates (n = 3). Grey lines indicate the polynomial regression model with the shadows indicating the 95% confidence intervals. Estimates, standard error (std.error), and P values for the cell line covariate for each model are indicated in the upper left hand corner._
